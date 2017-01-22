@@ -1,0 +1,68 @@
+/** 科目 */
+entity Subject {
+  /** 名稱 */
+  title String required
+}
+
+/** 冊別 */
+entity Volume {
+  /** 名稱 */
+  name String required
+}
+
+/** 章、節、課 */
+entity Section {
+  name String required
+}
+
+/** 題目 */
+entity Question {
+  /** 題型 */
+  type Type required,
+  /** 文字描述 */
+  text String required
+}
+
+/** 題型 */
+enum Type {
+  /** 單選題 (Multiple Choice Question) */
+  MULTIPLE_CHOICE,
+  /** 多選題 (Multipe-Response Question) */
+  MULTIPLE_RESPONSE,
+  /** 問答題 (Essay Question) */
+  ESSAY,
+  /** 題組 */
+  GROUP
+}
+
+/** 選擇題選項 */
+entity Option {
+  /** 文字描述 */
+  text String required,
+  /** 是固定為該題的最後一個選項 */
+  showAtLast Boolean
+}
+
+relationship ManyToOne {
+  Section{subject} to Subject
+}
+
+relationship ManyToOne {
+  Section{volume} to Volume 
+}
+
+relationship ManyToOne {
+  Section{parent} to Section
+}
+
+relationship ManyToOne {
+  Question{section} to Section
+}
+
+relationship ManyToOne {
+  Option{question} to Question
+}
+
+relationship ManyToOne {
+  Question{parent} to Question
+}

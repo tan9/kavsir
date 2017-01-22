@@ -25,14 +25,10 @@ entity Question {
 
 /** 題型 */
 enum Type {
-  /** 單選題 (Multiple Choice Question) */
-  MULTIPLE_CHOICE,
-  /** 多選題 (Multipe-Response Question) */
-  MULTIPLE_RESPONSE,
-  /** 問答題 (Essay Question) */
-  ESSAY,
-  /** 題組 */
-  GROUP
+  MULTIPLE_CHOICE, // 單選題 (Multiple Choice Question)
+  MULTIPLE_RESPONSE, // 多選題 (Multipe-Response Question)
+  ESSAY, // 問答題 (Essay Question)
+  GROUP // 題組
 }
 
 /** 選擇題選項 */

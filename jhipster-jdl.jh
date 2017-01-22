@@ -1,7 +1,8 @@
+
 /** 科目 */
 entity Subject {
   /** 名稱 */
-  title String required
+  name String required
 }
 
 /** 冊別 */
@@ -15,12 +16,80 @@ entity Section {
   name String required
 }
 
-/** 題目 */
-entity Question {
-  /** 題型 */
+/** 選擇題 */
+entity ChoiceQuestion {
+  /** 選擇題編號 */
+  choiceNo Integer required,
+  /** 題型(單選 or 複選) */
   type Type required,
   /** 文字描述 */
+  text String required,
+  /** 題組編號 */
+  groupNo Integer
+}
+
+/** 選擇題答案 */
+entity ChoiceQuestionAns {
+  /** 選擇題編號 */
+  choiceNo Integer required,
+  /** 答案編號 */
+  choiceAnsNo Integer required,
+  /** 題型 */
+  isAns Boolean required,
+  /** 文字描述 */
   text String required
+}
+
+/** 是非題 */
+entity TrueFalseQuestion {
+  /** 是非題編號 */
+  trueFalseNo Integer required,
+  /** 答案 */
+  correct Boolean required,
+  /** 文字描述 */
+  text String required,
+  /** 題組編號 */
+  groupNo Integer
+}
+
+/** 問答題 */
+entity EssayQuestion {
+  /** 是非題編號 */
+  essayNo Integer required,
+  /** 文字描述 */
+  text String required,
+  /** 解答 */
+  ans String required,
+  /** 題組編號 */
+  groupNo Integer
+}
+
+/** 題組 */
+entity GroupQuestion {
+  /** 是非題編號 */
+  groupNo Integer required,
+  /** 文字描述 */
+  text String required,
+}
+
+/** 題組關聯 */
+entity GroupRelationship  {
+  /** 題組編號 */
+  groupNo Integer required,
+  /** 問題類型(是非、選擇、問答) */
+  type Type required,
+  /** 問題編號 */
+  questionNo Integer required
+}
+
+/** 章節關聯 */
+entity SectionRelationship  {
+  /** 科目；冊；章、節、課 */
+  name String required,
+  /** 問題類型(是非、選擇、問答) */
+  type Type required,
+  /** 問題編號 */
+  questionNo Integer required
 }
 
 /** 題型 */
@@ -28,38 +97,21 @@ enum Type {
   TRUE_OR_FALSE, // 是非題
   MULTIPLE_CHOICE, // 單選題 (Multiple Choice Question)
   MULTIPLE_RESPONSE, // 多選題 (Multipe-Response Question)
-  ESSAY, // 問答題 (Essay Question)
-  GROUP // 題組
+  ESSAY // 問答題 (Essay Question)
 }
 
-/** 選擇題選項 */
-entity QuestionOption {
-  /** 文字描述 */
-  text String required,
-  /** 是固定為該題的最後一個選項 */
-  showAtLast Boolean
+relationship OneToMany {
+  Subject{volume} to Volume
 }
 
-relationship ManyToOne {
-  Section{subject} to Subject
+relationship OneToMany {
+  Volume{section} to Section 
 }
 
-relationship ManyToOne {
-  Section{volume} to Volume 
-}
-
-relationship ManyToOne {
+relationship OneToMany {
   Section{parent} to Section
 }
 
-relationship ManyToOne {
-  Question{section} to Section
-}
-
-relationship ManyToOne {
-  QuestionOption{question} to Question
-}
-
-relationship ManyToOne {
-  Question{parent} to Question
+relationship OneToMany {
+  ChoiceQuestion{choiceQuestionAns} to ChoiceQuestionAns
 }

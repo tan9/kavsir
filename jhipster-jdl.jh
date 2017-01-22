@@ -25,6 +25,7 @@ entity Question {
 
 /** 題型 */
 enum Type {
+  TRUE_OR_FALSE, // 是否題
   MULTIPLE_CHOICE, // 單選題 (Multiple Choice Question)
   MULTIPLE_RESPONSE, // 多選題 (Multipe-Response Question)
   ESSAY, // 問答題 (Essay Question)

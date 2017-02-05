@@ -1,8 +1,17 @@
+/** 學校 */
+entity School {
+  /** 名稱 */
+  name String required
+}
 
 /** 科目 */
 entity Subject {
   /** 名稱 */
   name String required
+}
+
+relationship OneToMany {
+  School{subject} to Subject
 }
 
 /** 冊別 */
@@ -11,33 +20,59 @@ entity Volume {
   name String required
 }
 
-/** 章、節、課 */
+relationship OneToMany {
+  Subject{volume} to Volume
+}
+
+/** 章 */
+entity Chapter {
+  /** 名稱 */
+  name String required
+}
+
+relationship OneToMany {
+  Volume{chapter} to Chapter 
+}
+
+/** 節 */
 entity Section {
   name String required
 }
 
+relationship OneToMany {
+  Chapter{section} to Section 
+}
+
 /** 選擇題 */
 entity ChoiceQuestion {
-  /** 選擇題編號 */
-  choiceNo Integer required,
   /** 題型(單選 or 複選) */
   type Type required,
   /** 文字描述 */
   text String required,
-  /** 題組編號 */
-  groupNo Integer
+  /** 題目來源學校 */
+  school String, 
+  /** 題目來源科目 */
+  subject String,
+  /** 題目來源冊別 */
+  volume String,
+  /** 題目來源章 */
+  chapter String,
+  /** 題目來源節 */
+  section String, 
+  /** 題組中題目序號 */
+  groupSeq Integer
 }
 
 /** 選擇題答案 */
 entity ChoiceQuestionAns {
-  /** 選擇題編號 */
-  choiceNo Integer required,
-  /** 答案編號 */
-  choiceAnsNo Integer required,
   /** 題型 */
   isAns Boolean required,
   /** 文字描述 */
   text String required
+}
+
+relationship OneToMany {
+  ChoiceQuestion{choiceQuestionAns} to ChoiceQuestionAns
 }
 
 /** 是非題 */
@@ -48,8 +83,18 @@ entity TrueFalseQuestion {
   correct Boolean required,
   /** 文字描述 */
   text String required,
-  /** 題組編號 */
-  groupNo Integer
+  /** 題目來源學校 */
+  school String, 
+  /** 題目來源科目 */
+  subject String,
+  /** 題目來源冊別 */
+  volume String,
+  /** 題目來源章 */
+  chapter String,
+  /** 題目來源節 */
+  section String, 
+  /** 題組中題目序號 */
+  groupSeq Integer
 }
 
 /** 問答題 */
@@ -60,36 +105,65 @@ entity EssayQuestion {
   text String required,
   /** 解答 */
   ans String required,
-  /** 題組編號 */
-  groupNo Integer
+  /** 題目來源學校 */
+  school String, 
+  /** 題目來源科目 */
+  subject String,
+  /** 題目來源冊別 */
+  volume String,
+  /** 題目來源章 */
+  chapter String,
+  /** 題目來源節 */
+  section String, 
+  /** 題組中題目序號 */
+  groupSeq Integer
 }
 
 /** 題組 */
 entity GroupQuestion {
-  /** 是非題編號 */
-  groupNo Integer required,
   /** 文字描述 */
   text String required,
+  /** 題目來源學校 */
+  school String, 
+  /** 題目來源科目 */
+  subject String,
+  /** 題目來源冊別 */
+  volume String,
+  /** 題目來源章 */
+  chapter String,
+  /** 題目來源節 */
+  section String, 
 }
 
-/** 題組關聯 */
-entity GroupRelationship  {
-  /** 題組編號 */
-  groupNo Integer required,
-  /** 問題類型(是非、選擇、問答) */
-  type Type required,
-  /** 問題編號 */
-  questionNo Integer required
+relationship OneToMany {
+  GroupQuestion{choiceQuestion} to ChoiceQuestion
+}
+relationship OneToMany {
+  GroupQuestion{trueFalseQuestion} to TrueFalseQuestion
+}
+relationship OneToMany {
+  GroupQuestion{essayQuestion} to EssayQuestion
 }
 
-/** 章節關聯 */
-entity SectionRelationship  {
-  /** 科目；冊；章、節、課 */
-  name String required,
-  /** 問題類型(是非、選擇、問答) */
-  type Type required,
-  /** 問題編號 */
-  questionNo Integer required
+/** 題目附件(題目或答案中的圖片) */
+entity QuestionAttachement{
+  /** 附件圖檔 */
+  attachement ImageBlob required,
+  /** 附件題型 */
+  type Type
+}
+
+relationship ManyToMany {
+  ChoiceQuestion{questionAttachement} to QuestionAttachement{choiceQuestion}
+}
+relationship ManyToMany {
+  ChoiceQuestionAns{questionAttachement} to QuestionAttachement{choiceQuestionAns}
+}
+relationship ManyToMany {
+  TrueFalseQuestion{questionAttachement} to QuestionAttachement{trueFalseQuestion}
+}
+relationship ManyToMany {
+  EssayQuestion{questionAttachement} to QuestionAttachement{essayQuestion}
 }
 
 /** 題型 */
@@ -97,21 +171,6 @@ enum Type {
   TRUE_OR_FALSE, // 是非題
   MULTIPLE_CHOICE, // 單選題 (Multiple Choice Question)
   MULTIPLE_RESPONSE, // 多選題 (Multipe-Response Question)
-  ESSAY // 問答題 (Essay Question)
-}
-
-relationship OneToMany {
-  Subject{volume} to Volume
-}
-
-relationship OneToMany {
-  Volume{section} to Section 
-}
-
-relationship OneToMany {
-  Section{parent} to Section
-}
-
-relationship OneToMany {
-  ChoiceQuestion{choiceQuestionAns} to ChoiceQuestionAns
+  ESSAY, // 問答題 (Essay Question)
+  GROUP //題組
 }

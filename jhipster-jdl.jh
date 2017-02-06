@@ -1,7 +1,27 @@
-/** 學校 */
-entity School {
+/** 年段(國小,國中,高中...) */
+entity Phase {
   /** 名稱 */
   name String required
+}
+
+/** 年級(一年級,二年級...) */
+entity Grade {
+  /** 名稱 */
+  name String required
+}
+
+relationship OneToMany {
+  Phase{grade} to Grade
+}
+
+/** 學期(上學期,下學期,全學期...) */
+entity Semester {
+  /** 名稱 */
+  name String required
+}
+
+relationship OneToMany {
+  Grade{semester} to Semester
 }
 
 /** 科目 */
@@ -11,7 +31,17 @@ entity Subject {
 }
 
 relationship OneToMany {
-  School{subject} to Subject
+  Semester{subject} to Subject
+}
+
+/** 版本(康軒,翰林,三民...) */
+entity Publishing {
+  /** 名稱 */
+  name String required
+}
+
+relationship OneToMany {
+  Subject{publishing} to Publishing
 }
 
 /** 冊別 */
@@ -21,10 +51,10 @@ entity Volume {
 }
 
 relationship OneToMany {
-  Subject{volume} to Volume
+  Publishing{volume} to Volume
 }
 
-/** 章 */
+/** 章,課,篇 */
 entity Chapter {
   /** 名稱 */
   name String required
@@ -49,16 +79,26 @@ entity ChoiceQuestion {
   type Type required,
   /** 文字描述 */
   text String required,
-  /** 題目來源學校 */
-  school String, 
+  /** 題目來源年段 */
+  phase String,
+  /** 題目來源年級 */
+  grade String,
+  /** 題目來源學期 */
+  semester String,
   /** 題目來源科目 */
   subject String,
+  /** 題目來源版本 */
+  publishing String,
   /** 題目來源冊別 */
   volume String,
-  /** 題目來源章 */
+  /** 題目來源章,課,篇 */
   chapter String,
   /** 題目來源節 */
-  section String, 
+  section String,   
+  /** 題目來源學校 */
+  school String, 
+  /** 題目來源備註 */
+  originMemo String, 
   /** 題組中題目序號 */
   groupSeq Integer
 }
@@ -83,16 +123,26 @@ entity TrueFalseQuestion {
   correct Boolean required,
   /** 文字描述 */
   text String required,
-  /** 題目來源學校 */
-  school String, 
+  /** 題目來源年段 */
+  phase String,
+  /** 題目來源年級 */
+  grade String,
+  /** 題目來源學期 */
+  semester String,
   /** 題目來源科目 */
   subject String,
+  /** 題目來源版本 */
+  publishing String,
   /** 題目來源冊別 */
   volume String,
-  /** 題目來源章 */
+  /** 題目來源章,課,篇 */
   chapter String,
   /** 題目來源節 */
-  section String, 
+  section String,   
+  /** 題目來源學校 */
+  school String, 
+  /** 題目來源備註 */
+  originMemo String, 
   /** 題組中題目序號 */
   groupSeq Integer
 }
@@ -105,16 +155,26 @@ entity EssayQuestion {
   text String required,
   /** 解答 */
   ans String required,
-  /** 題目來源學校 */
-  school String, 
+  /** 題目來源年段 */
+  phase String,
+  /** 題目來源年級 */
+  grade String,
+  /** 題目來源學期 */
+  semester String,
   /** 題目來源科目 */
   subject String,
+  /** 題目來源版本 */
+  publishing String,
   /** 題目來源冊別 */
   volume String,
-  /** 題目來源章 */
+  /** 題目來源章,課,篇 */
   chapter String,
   /** 題目來源節 */
-  section String, 
+  section String,   
+  /** 題目來源學校 */
+  school String, 
+  /** 題目來源備註 */
+  originMemo String, 
   /** 題組中題目序號 */
   groupSeq Integer
 }
@@ -123,16 +183,26 @@ entity EssayQuestion {
 entity GroupQuestion {
   /** 文字描述 */
   text String required,
-  /** 題目來源學校 */
-  school String, 
+  /** 題目來源年段 */
+  phase String,
+  /** 題目來源年級 */
+  grade String,
+  /** 題目來源學期 */
+  semester String,
   /** 題目來源科目 */
   subject String,
+  /** 題目來源版本 */
+  publishing String,
   /** 題目來源冊別 */
   volume String,
-  /** 題目來源章 */
+  /** 題目來源章,課,篇 */
   chapter String,
   /** 題目來源節 */
-  section String, 
+  section String,   
+  /** 題目來源學校 */
+  school String, 
+  /** 題目來源備註 */
+  originMemo String
 }
 
 relationship OneToMany {
@@ -145,12 +215,8 @@ relationship OneToMany {
   GroupQuestion{essayQuestion} to EssayQuestion
 }
 
-/** 題目附件(題目或答案中的圖片) */
 entity QuestionAttachement{
-  /** 附件圖檔 */
-  attachement ImageBlob required,
-  /** 附件題型 */
-  type Type
+  attachement ImageBlob required
 }
 
 relationship ManyToMany {

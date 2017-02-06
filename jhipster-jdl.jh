@@ -117,8 +117,6 @@ relationship OneToMany {
 
 /** 是非題 */
 entity TrueFalseQuestion {
-  /** 是非題編號 */
-  trueFalseNo Integer required,
   /** 答案 */
   correct Boolean required,
   /** 文字描述 */
@@ -149,8 +147,6 @@ entity TrueFalseQuestion {
 
 /** 問答題 */
 entity EssayQuestion {
-  /** 是非題編號 */
-  essayNo Integer required,
   /** 文字描述 */
   text String required,
   /** 解答 */

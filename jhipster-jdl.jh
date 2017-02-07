@@ -44,16 +44,6 @@ relationship OneToMany {
   Subject{publishing} to Publishing
 }
 
-/** 冊別 */
-entity Volume {
-  /** 名稱 */
-  name String required
-}
-
-relationship OneToMany {
-  Publishing{volume} to Volume
-}
-
 /** 章,課,篇 */
 entity Chapter {
   /** 名稱 */
@@ -61,7 +51,7 @@ entity Chapter {
 }
 
 relationship OneToMany {
-  Volume{chapter} to Chapter 
+  Publishing{chapter} to Chapter 
 }
 
 /** 節 */
@@ -71,6 +61,11 @@ entity Section {
 
 relationship OneToMany {
   Chapter{section} to Section 
+}
+
+/** 節可以再分小節 */
+relationship OneToMany {
+  Section{section} to Section 
 }
 
 /** 選擇題 */
@@ -117,6 +112,8 @@ relationship OneToMany {
 
 /** 是非題 */
 entity TrueFalseQuestion {
+  /** 是非題編號 */
+  trueFalseNo Integer required,
   /** 答案 */
   correct Boolean required,
   /** 文字描述 */
@@ -147,6 +144,8 @@ entity TrueFalseQuestion {
 
 /** 問答題 */
 entity EssayQuestion {
+  /** 是非題編號 */
+  essayNo Integer required,
   /** 文字描述 */
   text String required,
   /** 解答 */

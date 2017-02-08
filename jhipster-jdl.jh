@@ -1,26 +1,230 @@
-/** 科目 */
-entity Subject {
-  /** 名稱 */
-  title String required
-}
-
-/** 冊別 */
-entity Volume {
+/** 年段(國小,國中,高中...) */
+entity Phase {
   /** 名稱 */
   name String required
 }
 
-/** 章、節、課 */
+/** 年級(一年級,二年級...) */
+entity Grade {
+  /** 名稱 */
+  name String required
+}
+
+relationship OneToMany {
+  Phase{grade} to Grade
+}
+
+/** 學期(上學期,下學期,全學期...) */
+entity Semester {
+  /** 名稱 */
+  name String required
+}
+
+relationship OneToMany {
+  Grade{semester} to Semester
+}
+
+/** 科目 */
+entity Subject {
+  /** 名稱 */
+  name String required
+}
+
+relationship OneToMany {
+  Semester{subject} to Subject
+}
+
+/** 版本(康軒,翰林,三民...) */
+entity Publishing {
+  /** 名稱 */
+  name String required
+}
+
+relationship OneToMany {
+  Subject{publishing} to Publishing
+}
+
+/** 章,課,篇 */
+entity Chapter {
+  /** 名稱 */
+  name String required
+}
+
+relationship OneToMany {
+  Publishing{chapter} to Chapter 
+}
+
+/** 節 */
 entity Section {
   name String required
 }
 
-/** 題目 */
-entity Question {
-  /** 題型 */
+relationship OneToMany {
+  Chapter{section} to Section 
+}
+
+/** 節可以再分小節 */
+relationship OneToMany {
+  Section{section} to Section 
+}
+
+/** 選擇題 */
+entity ChoiceQuestion {
+  /** 題型(單選 or 複選) */
   type Type required,
   /** 文字描述 */
+  text String required,
+  /** 題目來源年段 */
+  phase String,
+  /** 題目來源年級 */
+  grade String,
+  /** 題目來源學期 */
+  semester String,
+  /** 題目來源科目 */
+  subject String,
+  /** 題目來源版本 */
+  publishing String,
+  /** 題目來源冊別 */
+  volume String,
+  /** 題目來源章,課,篇 */
+  chapter String,
+  /** 題目來源節 */
+  section String,   
+  /** 題目來源學校 */
+  school String, 
+  /** 題目來源備註 */
+  originMemo String, 
+  /** 題組中題目序號 */
+  groupSeq Integer
+}
+
+/** 選擇題答案 */
+entity ChoiceQuestionAns {
+  /** 題型 */
+  isAns Boolean required,
+  /** 文字描述 */
   text String required
+}
+
+relationship OneToMany {
+  ChoiceQuestion{choiceQuestionAns} to ChoiceQuestionAns
+}
+
+/** 是非題 */
+entity TrueFalseQuestion {
+  /** 是非題編號 */
+  trueFalseNo Integer required,
+  /** 答案 */
+  correct Boolean required,
+  /** 文字描述 */
+  text String required,
+  /** 題目來源年段 */
+  phase String,
+  /** 題目來源年級 */
+  grade String,
+  /** 題目來源學期 */
+  semester String,
+  /** 題目來源科目 */
+  subject String,
+  /** 題目來源版本 */
+  publishing String,
+  /** 題目來源冊別 */
+  volume String,
+  /** 題目來源章,課,篇 */
+  chapter String,
+  /** 題目來源節 */
+  section String,   
+  /** 題目來源學校 */
+  school String, 
+  /** 題目來源備註 */
+  originMemo String, 
+  /** 題組中題目序號 */
+  groupSeq Integer
+}
+
+/** 問答題 */
+entity EssayQuestion {
+  /** 是非題編號 */
+  essayNo Integer required,
+  /** 文字描述 */
+  text String required,
+  /** 解答 */
+  ans String required,
+  /** 題目來源年段 */
+  phase String,
+  /** 題目來源年級 */
+  grade String,
+  /** 題目來源學期 */
+  semester String,
+  /** 題目來源科目 */
+  subject String,
+  /** 題目來源版本 */
+  publishing String,
+  /** 題目來源冊別 */
+  volume String,
+  /** 題目來源章,課,篇 */
+  chapter String,
+  /** 題目來源節 */
+  section String,   
+  /** 題目來源學校 */
+  school String, 
+  /** 題目來源備註 */
+  originMemo String, 
+  /** 題組中題目序號 */
+  groupSeq Integer
+}
+
+/** 題組 */
+entity GroupQuestion {
+  /** 文字描述 */
+  text String required,
+  /** 題目來源年段 */
+  phase String,
+  /** 題目來源年級 */
+  grade String,
+  /** 題目來源學期 */
+  semester String,
+  /** 題目來源科目 */
+  subject String,
+  /** 題目來源版本 */
+  publishing String,
+  /** 題目來源冊別 */
+  volume String,
+  /** 題目來源章,課,篇 */
+  chapter String,
+  /** 題目來源節 */
+  section String,   
+  /** 題目來源學校 */
+  school String, 
+  /** 題目來源備註 */
+  originMemo String
+}
+
+relationship OneToMany {
+  GroupQuestion{choiceQuestion} to ChoiceQuestion
+}
+relationship OneToMany {
+  GroupQuestion{trueFalseQuestion} to TrueFalseQuestion
+}
+relationship OneToMany {
+  GroupQuestion{essayQuestion} to EssayQuestion
+}
+
+entity QuestionAttachement{
+  attachement ImageBlob required
+}
+
+relationship ManyToMany {
+  ChoiceQuestion{questionAttachement} to QuestionAttachement{choiceQuestion}
+}
+relationship ManyToMany {
+  ChoiceQuestionAns{questionAttachement} to QuestionAttachement{choiceQuestionAns}
+}
+relationship ManyToMany {
+  TrueFalseQuestion{questionAttachement} to QuestionAttachement{trueFalseQuestion}
+}
+relationship ManyToMany {
+  EssayQuestion{questionAttachement} to QuestionAttachement{essayQuestion}
 }
 
 /** 題型 */
@@ -29,37 +233,5 @@ enum Type {
   MULTIPLE_CHOICE, // 單選題 (Multiple Choice Question)
   MULTIPLE_RESPONSE, // 多選題 (Multipe-Response Question)
   ESSAY, // 問答題 (Essay Question)
-  GROUP // 題組
-}
-
-/** 選擇題選項 */
-entity QuestionOption {
-  /** 文字描述 */
-  text String required,
-  /** 是固定為該題的最後一個選項 */
-  showAtLast Boolean
-}
-
-relationship ManyToOne {
-  Section{subject} to Subject
-}
-
-relationship ManyToOne {
-  Section{volume} to Volume 
-}
-
-relationship ManyToOne {
-  Section{parent} to Section
-}
-
-relationship ManyToOne {
-  Question{section} to Section
-}
-
-relationship ManyToOne {
-  QuestionOption{question} to Question
-}
-
-relationship ManyToOne {
-  Question{parent} to Question
+  GROUP //題組
 }

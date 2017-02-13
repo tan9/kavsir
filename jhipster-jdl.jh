@@ -1,10 +1,10 @@
-/** 年段(國小,國中,高中...) */
+/** 年段 (國小、國中、高中...) */
 entity Phase {
   /** 名稱 */
   name String required
 }
 
-/** 年級(一年級,二年級...) */
+/** 年級 (一年級、二年級...) */
 entity Grade {
   /** 名稱 */
   name String required
@@ -14,7 +14,7 @@ relationship OneToMany {
   Phase{grade} to Grade
 }
 
-/** 學期(上學期,下學期,全學期...) */
+/** 學期 (上學期、下學期、全學期...) */
 entity Semester {
   /** 名稱 */
   name String required
@@ -34,24 +34,24 @@ relationship OneToMany {
   Semester{subject} to Subject
 }
 
-/** 版本(康軒,翰林,三民...) */
-entity Publishing {
+/** 版本 (康軒、翰林、三民...) */
+entity Publisher {
   /** 名稱 */
   name String required
 }
 
 relationship OneToMany {
-  Subject{publishing} to Publishing
+  Subject{publisher} to Publisher
 }
 
-/** 章,課,篇 */
+/** 章、課、篇 */
 entity Chapter {
   /** 名稱 */
   name String required
 }
 
 relationship OneToMany {
-  Publishing{chapter} to Chapter 
+  Publisher{chapter} to Chapter 
 }
 
 /** 節 */
@@ -70,7 +70,7 @@ relationship OneToMany {
 
 /** 選擇題 */
 entity ChoiceQuestion {
-  /** 題型(單選 or 複選) */
+  /** 題型 (單選/複選) */
   type Type required,
   /** 文字描述 */
   text String required,
@@ -83,10 +83,10 @@ entity ChoiceQuestion {
   /** 題目來源科目 */
   subject String,
   /** 題目來源版本 */
-  publishing String,
+  publisher String,
   /** 題目來源冊別 */
   volume String,
-  /** 題目來源章,課,篇 */
+  /** 題目來源章、課、篇 */
   chapter String,
   /** 題目來源節 */
   section String,   
@@ -127,10 +127,10 @@ entity TrueFalseQuestion {
   /** 題目來源科目 */
   subject String,
   /** 題目來源版本 */
-  publishing String,
+  publisher String,
   /** 題目來源冊別 */
   volume String,
-  /** 題目來源章,課,篇 */
+  /** 題目來源章、課、篇 */
   chapter String,
   /** 題目來源節 */
   section String,   
@@ -159,10 +159,10 @@ entity EssayQuestion {
   /** 題目來源科目 */
   subject String,
   /** 題目來源版本 */
-  publishing String,
+  publisher String,
   /** 題目來源冊別 */
   volume String,
-  /** 題目來源章,課,篇 */
+  /** 題目來源章、課、篇 */
   chapter String,
   /** 題目來源節 */
   section String,   
@@ -187,10 +187,10 @@ entity GroupQuestion {
   /** 題目來源科目 */
   subject String,
   /** 題目來源版本 */
-  publishing String,
+  publisher String,
   /** 題目來源冊別 */
   volume String,
-  /** 題目來源章,課,篇 */
+  /** 題目來源章、課、篇 */
   chapter String,
   /** 題目來源節 */
   section String,   

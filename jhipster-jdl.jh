@@ -210,28 +210,28 @@ relationship OneToMany {
   GroupQuestion{essayQuestion} to EssayQuestion
 }
 
-entity QuestionAttachement{
-  attachement ImageBlob required
+entity QuestionAttachment{
+  attachment ImageBlob required
 }
 
 relationship ManyToMany {
-  ChoiceQuestion{questionAttachement} to QuestionAttachement{choiceQuestion}
+  ChoiceQuestion{questionAttachment} to QuestionAttachment{choiceQuestion}
 }
 relationship ManyToMany {
-  ChoiceQuestionAns{questionAttachement} to QuestionAttachement{choiceQuestionAns}
+  ChoiceQuestionAns{questionAttachment} to QuestionAttachment{choiceQuestionAns}
 }
 relationship ManyToMany {
-  TrueFalseQuestion{questionAttachement} to QuestionAttachement{trueFalseQuestion}
+  TrueFalseQuestion{questionAttachment} to QuestionAttachment{trueFalseQuestion}
 }
 relationship ManyToMany {
-  EssayQuestion{questionAttachement} to QuestionAttachement{essayQuestion}
+  EssayQuestion{questionAttachment} to QuestionAttachment{essayQuestion}
 }
 
 /** 題型 */
 enum Type {
   TRUE_OR_FALSE, // 是非題
   MULTIPLE_CHOICE, // 單選題 (Multiple Choice Question)
-  MULTIPLE_RESPONSE, // 多選題 (Multipe-Response Question)
+  MULTIPLE_RESPONSE, // 多選題 (Multiple-Response Question)
   ESSAY, // 問答題 (Essay Question)
   GROUP //題組
 }

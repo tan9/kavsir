@@ -1,6 +1,6 @@
 
-/** 學年度 */
-entity SchoolYear {
+/** 學年 */
+entity AcademicYear {
   /** 順序 */
   seq Integer required,
   /** 名稱 */

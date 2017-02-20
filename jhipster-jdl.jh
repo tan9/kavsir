@@ -45,7 +45,11 @@ entity SegmentNode {
   /** 參照名稱，在 type !== SEGMENT 時需指定到 type 對應表格資料 */
   typeId BigDecimal,
   /** 名稱 (章、課、篇、節)，只有在 type == SEGMENT 時有效 */
-  name String required
+  name String required,
+  /** Nested Set Model 左值 */
+  lft Integer required,
+  /** Nested Set Model 右值 */
+  rgt Integer required
 }
 
 enum SegmentNodeType {
@@ -55,15 +59,6 @@ enum SegmentNodeType {
   SUBJECT,
   PUBLISHER,
   SEGMENT
-}
-
-/** 課程關聯 */
-relationship ManyToOne {
-  SegmentNode{parent} to SegmentNode
-}
-
-relationship OneToOne {
-  SegmentNode{sibling} to SegmentNode
 }
 
 /** 選擇題 */

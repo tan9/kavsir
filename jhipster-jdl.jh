@@ -76,7 +76,9 @@ entity QuestionTrueFalse {
   /** 文字描述 */
   text String required,
   /** 題目備註 */
-  memo String
+  memo String,
+  /** 題組中題目序號 */
+  groupPosition Integer
 }
 
 /** 選擇題 */
@@ -86,7 +88,9 @@ entity QuestionChoice {
   /** 文字描述 */
   text String required,
   /** 題目備註 */
-  memo String
+  memo String,
+  /** 題組中題目序號 */
+  groupPosition Integer
 }
 
 /** 選擇題答案 */
@@ -110,7 +114,9 @@ entity QuestionEssay {
   /** 解答文字 */
   answer String required,
   /** 題目備註 */
-  memo String
+  memo String,
+  /** 題組中題目序號 */
+  groupPosition Integer
 }
 
 /** 題組 */

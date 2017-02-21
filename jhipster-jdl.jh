@@ -62,7 +62,7 @@ enum CategoryType {
 }
 
 /** 選擇題 */
-entity ChoiceQuestion {
+entity QuestionChoice {
   /** 題型 (單選/複選) */
   type QuestionType required,
   /** 文字描述 */
@@ -74,11 +74,11 @@ entity ChoiceQuestion {
 }
 
 relationship ManyToMany {
-    ChoiceQuestion{category} to CategoryNode{choice}
+    QuestionChoice{category} to CategoryNode{choice}
 }
 
 /** 選擇題答案 */
-entity ChoiceQuestionAnswer {
+entity QuestionChoiceAnswer {
   /** 是否正解 */
   correct Boolean required,
   /** 答案文字描述 */
@@ -88,11 +88,11 @@ entity ChoiceQuestionAnswer {
 }
 
 relationship OneToMany {
-  ChoiceQuestion{choiceQuestionAnswer} to ChoiceQuestionAnswer
+  QuestionChoice{choiceQuestionAnswer} to QuestionChoiceAnswer
 }
 
 /** 是非題 */
-entity TrueFalseQuestion {
+entity QuestionTrueFalse {
   /** 答案 */
   correct Boolean required,
   /** 文字描述 */
@@ -104,11 +104,11 @@ entity TrueFalseQuestion {
 }
 
 relationship ManyToMany {
-    TrueFalseQuestion{category} to CategoryNode{trueOrFalse}
+    QuestionTrueFalse{category} to CategoryNode{trueOrFalse}
 }
 
 /** 問答題 */
-entity EssayQuestion {
+entity QuestionEssay {
   /** 問題描述 */
   text String required,
   /** 解答文字 */
@@ -120,11 +120,11 @@ entity EssayQuestion {
 }
 
 relationship ManyToMany {
-    EssayQuestion{category} to CategoryNode{essay}
+    QuestionEssay{category} to CategoryNode{essay}
 }
 
 /** 題組 */
-entity GroupQuestion {
+entity QuestionGroup {
   /** 文字描述 */
   text String required,
   /** 題目來源備註 */
@@ -136,9 +136,9 @@ relationship ManyToMany {
 }
 
 relationship OneToMany {
-  GroupQuestion{choiceQuestion} to ChoiceQuestion,
-  GroupQuestion{trueFalseQuestion} to TrueFalseQuestion,
-  GroupQuestion{essayQuestion} to EssayQuestion
+  QuestionGroup{choiceQuestion} to QuestionChoice,
+  QuestionGroup{trueFalseQuestion} to QuestionTrueFalse,
+  QuestionGroup{essayQuestion} to QuestionEssay
 }
 
 /** 題目或答案圖檔資源 */
@@ -150,10 +150,10 @@ entity QuestionAttachment {
 }
 
 relationship ManyToMany {
-  ChoiceQuestion{questionAttachment} to QuestionAttachment{choiceQuestion},
-  ChoiceQuestionAnswer{questionAttachment} to QuestionAttachment{choiceQuestionAnswer},
-  TrueFalseQuestion{questionAttachment} to QuestionAttachment{trueFalseQuestion},
-  EssayQuestion{questionAttachment} to QuestionAttachment{essayQuestion}
+  QuestionChoice{questionAttachment} to QuestionAttachment{choiceQuestion},
+  QuestionChoiceAnswer{questionAttachment} to QuestionAttachment{choiceQuestionAnswer},
+  QuestionFalseTrue{questionAttachment} to QuestionAttachment{trueFalseQuestion},
+  QuestionEssay{questionAttachment} to QuestionAttachment{essayQuestion}
 }
 
 /** 題型 */

@@ -1,7 +1,6 @@
 version: '2'
 services:
     kavsir-mariadb:
-        container_name: kavsir-mariadb
         image: mariadb:10.1.17
         # volumes:
         #     - ~/volumes/jhipster/kavsir/mysql/:/var/lib/mysql/

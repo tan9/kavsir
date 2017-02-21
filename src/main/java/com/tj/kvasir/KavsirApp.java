@@ -1,5 +1,6 @@
 package com.tj.kvasir;
 
+import com.tj.kvasir.config.ApplicationProperties;
 import com.tj.kvasir.config.DefaultProfileUtil;
 
 import io.github.jhipster.config.JHipsterConstants;
@@ -22,7 +23,7 @@ import java.util.Collection;
 
 @ComponentScan
 @EnableAutoConfiguration(exclude = {MetricFilterAutoConfiguration.class, MetricRepositoryAutoConfiguration.class})
-@EnableConfigurationProperties(LiquibaseProperties.class)
+@EnableConfigurationProperties({LiquibaseProperties.class, ApplicationProperties.class})
 public class KavsirApp {
 
     private static final Logger log = LoggerFactory.getLogger(KavsirApp.class);
@@ -63,13 +64,19 @@ public class KavsirApp {
         SpringApplication app = new SpringApplication(KavsirApp.class);
         DefaultProfileUtil.addDefaultProfile(app);
         Environment env = app.run(args).getEnvironment();
+        String protocol = "http";
+        if (env.getProperty("server.ssl.key-store") != null) {
+            protocol = "https";
+        }
         log.info("\n----------------------------------------------------------\n\t" +
                 "Application '{}' is running! Access URLs:\n\t" +
-                "Local: \t\thttp://localhost:{}\n\t" +
-                "External: \thttp://{}:{}\n\t" +
+                "Local: \t\t{}://localhost:{}\n\t" +
+                "External: \t{}://{}:{}\n\t" +
                 "Profile(s): \t{}\n----------------------------------------------------------",
             env.getProperty("spring.application.name"),
+            protocol,
             env.getProperty("server.port"),
+            protocol,
             InetAddress.getLocalHost().getHostAddress(),
             env.getProperty("server.port"),
             env.getActiveProfiles());

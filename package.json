@@ -31,10 +31,10 @@
     "zone.js": "0.7.6"
   },
   "devDependencies": {
+    "@angular/cli": "1.0.0-beta.28.3",
     "@types/jasmine": "2.5.42",
     "@types/node": "7.0.5",
     "add-asset-html-webpack-plugin": "1.0.2",
-    "angular-cli": "1.0.0-beta.28.3",
     "angular2-template-loader": "0.6.2",
     "awesome-typescript-loader": "3.0.4-rc.2",
     "browser-sync": "2.18.7",
@@ -47,7 +47,7 @@
     "exports-loader": "0.6.3",
     "extract-text-webpack-plugin": "2.0.0-beta.5",
     "file-loader": "0.10.0",
-    "generator-jhipster": "4.0.3",
+    "generator-jhipster": "4.0.5",
     "html-webpack-plugin": "2.28.0",
     "image-webpack-loader": "3.2.0",
     "jasmine-core": "2.5.2",
@@ -97,6 +97,6 @@
     "webpack:prod": "yarn test && webpack -p --config webpack/webpack.vendor.js && webpack -p --config webpack/webpack.prod.js",
     "test": "yarn run lint && karma start src/test/javascript/karma.conf.js",
     "test:watch": "karma start --watch",
-    "postinstall": "yarn run webpack:build"
+    "postinstall": "node node_modules/pngquant-bin/lib/install.js && node node_modules/phantomjs-prebuilt/install.js && yarn run webpack:build"
   }
 }

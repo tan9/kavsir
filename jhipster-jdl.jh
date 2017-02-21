@@ -128,11 +128,11 @@ relationship OneToMany {
 }
 
 /** 題目或答案圖檔資源 */
-entity QuestionAttachment {
+entity ResourceImage {
   /** 名稱 */
   name String required,
   /** 圖檔 */
-  attachment ImageBlob required
+  content ImageBlob required
 }
 
 relationship ManyToMany {
@@ -143,8 +143,8 @@ relationship ManyToMany {
 }
 
 relationship ManyToMany {
-  QuestionChoice{attachment} to QuestionAttachment{choice},
-  QuestionChoiceOption{attachment} to QuestionAttachment{choiceOption},
-  QuestionFalseTrue{attachment} to QuestionAttachment{trueFalse},
-  QuestionEssay{attachment} to QuestionAttachment{essay}
+  QuestionChoice{image} to ResourceImage{choice},
+  QuestionChoiceOption{image} to ResourceImage{choiceOption},
+  QuestionFalseTrue{image} to ResourceImage{trueFalse},
+  QuestionEssay{image} to ResourceImage{essay}
 }

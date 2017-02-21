@@ -136,10 +136,10 @@ entity ResourceImage {
 }
 
 relationship ManyToMany {
-    QuestionTrueFalse{category} to CategoryNode{trueOrFalse},
-    QuestionChoice{category} to CategoryNode{choice},
-    QuestionEssay{category} to CategoryNode{essay},
-    QuestionGroup{category} to CategoryNode{group}
+  QuestionTrueFalse{category} to CategoryNode{trueOrFalse},
+  QuestionChoice{category} to CategoryNode{choice},
+  QuestionEssay{category} to CategoryNode{essay},
+  QuestionGroup{category} to CategoryNode{group}
 }
 
 relationship ManyToMany {

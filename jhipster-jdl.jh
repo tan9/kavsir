@@ -31,7 +31,7 @@ entity Subject {
   name String required
 }
 
-/** 版本 (康軒、翰林、三民...) */
+/** 出版社 (康軒、翰林、三民...) */
 entity Publisher {
   /** 順序 */
   seq Integer required,

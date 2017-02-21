@@ -1,6 +1,6 @@
 
 /** 學年 */
-entity AcademicYear {
+entity CategoryAcademicYear {
   /** 順序 */
   position Integer required,
   /** 名稱 */
@@ -8,7 +8,7 @@ entity AcademicYear {
 }
 
 /** 年級 (一年級 ~ 十二年級) */
-entity Grade {
+entity CategoryGrade {
   /** 順序 */
   position Integer required,
   /** 名稱 */
@@ -16,7 +16,7 @@ entity Grade {
 }
 
 /** 學期 (上學期、下學期、全學期...) */
-entity Semester {
+entity CategorySemester {
   /** 順序 */
   position Integer required,
   /** 名稱 */
@@ -24,7 +24,7 @@ entity Semester {
 }
 
 /** 科目 */
-entity Subject {
+entity CategorySubject {
   /** 順序 */
   position Integer required,
   /** 名稱 */
@@ -32,7 +32,7 @@ entity Subject {
 }
 
 /** 出版社 (康軒、翰林、三民...) */
-entity Publisher {
+entity CategoryPublisher {
   /** 順序 */
   position Integer required,
   /** 名稱 */
@@ -40,8 +40,8 @@ entity Publisher {
 }
 
 /** 課程樹狀資料檔 */
-entity SegmentNode {
-  type SegmentNodeType required,
+entity CategoryNode {
+  type CategoryType required,
   /** 參照名稱，在 type !== SEGMENT 時需指定到 type 對應表格資料 */
   typeId Long,
   /** 名稱 (章、課、篇、節)，只有在 type == SEGMENT 時有效 */
@@ -52,7 +52,7 @@ entity SegmentNode {
   rgt Integer required
 }
 
-enum SegmentNodeType {
+enum CategoryType {
   ACADEMIC_YEAR,
   GRADE,
   SEMESTER,
@@ -74,7 +74,7 @@ entity ChoiceQuestion {
 }
 
 relationship ManyToMany {
-    ChoiceQuestion{segment} to SegmentNode{choice}
+    ChoiceQuestion{category} to CategoryNode{choice}
 }
 
 /** 選擇題答案 */
@@ -104,7 +104,7 @@ entity TrueFalseQuestion {
 }
 
 relationship ManyToMany {
-    TrueFalseQuestion{segment} to SegmentNode{trueOrFalse}
+    TrueFalseQuestion{category} to CategoryNode{trueOrFalse}
 }
 
 /** 問答題 */
@@ -120,7 +120,7 @@ entity EssayQuestion {
 }
 
 relationship ManyToMany {
-    EssayQuestion{segment} to SegmentNode{essay}
+    EssayQuestion{category} to CategoryNode{essay}
 }
 
 /** 題組 */
@@ -132,7 +132,7 @@ entity GroupQuestion {
 }
 
 relationship ManyToMany {
-    GroupQuestion{segment} to SegmentNode{group}
+    GroupQuestion{category} to CategoryNode{group}
 }
 
 relationship OneToMany {

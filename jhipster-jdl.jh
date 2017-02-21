@@ -43,7 +43,7 @@ entity Publisher {
 entity SegmentNode {
   type SegmentNodeType required,
   /** 參照名稱，在 type !== SEGMENT 時需指定到 type 對應表格資料 */
-  typeId BigDecimal,
+  typeId Long,
   /** 名稱 (章、課、篇、節)，只有在 type == SEGMENT 時有效 */
   name String required,
   /** Nested Set Model 左值 */

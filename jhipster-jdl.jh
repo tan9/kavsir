@@ -1,3 +1,24 @@
+/** 課程樹狀資料檔 */
+entity CategoryNode {
+  type CategoryType required,
+  /** 參照名稱，在 type !== SEGMENT 時需指定到 type 對應表格資料 */
+  typeId Long,
+  /** 名稱 (章、課、篇、節)，只有在 type == SEGMENT 時有效 */
+  name String required,
+  /** Nested Set Model 左值 */
+  lft Integer required,
+  /** Nested Set Model 右值 */
+  rgt Integer required
+}
+
+enum CategoryType {
+  ACADEMIC_YEAR,
+  GRADE,
+  SEMESTER,
+  SUBJECT,
+  PUBLISHER,
+  SEGMENT
+}
 
 /** 學年 */
 entity CategoryAcademicYear {
@@ -39,26 +60,25 @@ entity CategoryPublisher {
   name String required
 }
 
-/** 課程樹狀資料檔 */
-entity CategoryNode {
-  type CategoryType required,
-  /** 參照名稱，在 type !== SEGMENT 時需指定到 type 對應表格資料 */
-  typeId Long,
-  /** 名稱 (章、課、篇、節)，只有在 type == SEGMENT 時有效 */
-  name String required,
-  /** Nested Set Model 左值 */
-  lft Integer required,
-  /** Nested Set Model 右值 */
-  rgt Integer required
+/** 題型 */
+enum QuestionType {
+  TRUE_OR_FALSE, // 是非題
+  MULTIPLE_CHOICE, // 單選題 (Multiple Choice Question)
+  MULTIPLE_RESPONSE, // 多選題 (Multiple-Response Question)
+  ESSAY, // 問答題 (Essay Question)
+  GROUP // 題組
 }
 
-enum CategoryType {
-  ACADEMIC_YEAR,
-  GRADE,
-  SEMESTER,
-  SUBJECT,
-  PUBLISHER,
-  SEGMENT
+/** 是非題 */
+entity QuestionTrueFalse {
+  /** 答案 */
+  correct Boolean required,
+  /** 文字描述 */
+  text String required,
+  /** 題目備註 */
+  memo String,
+  /** 題組中題目序號 */
+  groupPosition Integer
 }
 
 /** 選擇題 */
@@ -71,10 +91,6 @@ entity QuestionChoice {
   memo String,
   /** 題組中題目序號 */
   groupPosition Integer
-}
-
-relationship ManyToMany {
-    QuestionChoice{category} to CategoryNode{choice}
 }
 
 /** 選擇題答案 */
@@ -91,22 +107,6 @@ relationship OneToMany {
   QuestionChoice{answer} to QuestionChoiceAnswer
 }
 
-/** 是非題 */
-entity QuestionTrueFalse {
-  /** 答案 */
-  correct Boolean required,
-  /** 文字描述 */
-  text String required,
-  /** 題目備註 */
-  memo String,
-  /** 題組中題目序號 */
-  groupPosition Integer
-}
-
-relationship ManyToMany {
-    QuestionTrueFalse{category} to CategoryNode{trueOrFalse}
-}
-
 /** 問答題 */
 entity QuestionEssay {
   /** 問題描述 */
@@ -119,20 +119,12 @@ entity QuestionEssay {
   groupPosition Integer
 }
 
-relationship ManyToMany {
-    QuestionEssay{category} to CategoryNode{essay}
-}
-
 /** 題組 */
 entity QuestionGroup {
   /** 文字描述 */
   text String required,
   /** 題目來源備註 */
   memo String
-}
-
-relationship ManyToMany {
-    GroupQuestion{category} to CategoryNode{group}
 }
 
 relationship OneToMany {
@@ -150,17 +142,15 @@ entity QuestionAttachment {
 }
 
 relationship ManyToMany {
+    QuestionTrueFalse{category} to CategoryNode{trueOrFalse},
+    QuestionChoice{category} to CategoryNode{choice},
+    QuestionEssay{category} to CategoryNode{essay},
+    QuestionGroup{category} to CategoryNode{group}
+}
+
+relationship ManyToMany {
   QuestionChoice{attachment} to QuestionAttachment{choice},
   QuestionChoiceAnswer{attachment} to QuestionAttachment{choiceAnswer},
   QuestionFalseTrue{attachment} to QuestionAttachment{trueFalse},
   QuestionEssay{attachment} to QuestionAttachment{essay}
-}
-
-/** 題型 */
-enum QuestionType {
-  TRUE_OR_FALSE, // 是非題
-  MULTIPLE_CHOICE, // 單選題 (Multiple Choice Question)
-  MULTIPLE_RESPONSE, // 多選題 (Multiple-Response Question)
-  ESSAY, // 問答題 (Essay Question)
-  GROUP // 題組
 }

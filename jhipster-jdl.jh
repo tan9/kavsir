@@ -88,7 +88,7 @@ entity QuestionChoiceAnswer {
 }
 
 relationship OneToMany {
-  QuestionChoice{choiceQuestionAnswer} to QuestionChoiceAnswer
+  QuestionChoice{answer} to QuestionChoiceAnswer
 }
 
 /** 是非題 */
@@ -136,9 +136,9 @@ relationship ManyToMany {
 }
 
 relationship OneToMany {
-  QuestionGroup{choiceQuestion} to QuestionChoice,
-  QuestionGroup{trueFalseQuestion} to QuestionTrueFalse,
-  QuestionGroup{essayQuestion} to QuestionEssay
+  QuestionGroup{choice} to QuestionChoice,
+  QuestionGroup{trueFalse} to QuestionTrueFalse,
+  QuestionGroup{essay} to QuestionEssay
 }
 
 /** 題目或答案圖檔資源 */
@@ -150,10 +150,10 @@ entity QuestionAttachment {
 }
 
 relationship ManyToMany {
-  QuestionChoice{questionAttachment} to QuestionAttachment{choiceQuestion},
-  QuestionChoiceAnswer{questionAttachment} to QuestionAttachment{choiceQuestionAnswer},
-  QuestionFalseTrue{questionAttachment} to QuestionAttachment{trueFalseQuestion},
-  QuestionEssay{questionAttachment} to QuestionAttachment{essayQuestion}
+  QuestionChoice{attachment} to QuestionAttachment{choice},
+  QuestionChoiceAnswer{attachment} to QuestionAttachment{choiceAnswer},
+  QuestionFalseTrue{attachment} to QuestionAttachment{trueFalse},
+  QuestionEssay{attachment} to QuestionAttachment{essay}
 }
 
 /** 題型 */

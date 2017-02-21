@@ -94,7 +94,7 @@ entity QuestionChoice {
 }
 
 /** 選擇題答案 */
-entity QuestionChoiceAnswer {
+entity QuestionChoiceOption {
   /** 是否正解 */
   correct Boolean required,
   /** 答案文字描述 */
@@ -104,7 +104,7 @@ entity QuestionChoiceAnswer {
 }
 
 relationship OneToMany {
-  QuestionChoice{answer} to QuestionChoiceAnswer
+  QuestionChoice{option} to QuestionChoiceOption
 }
 
 /** 問答題 */
@@ -150,7 +150,7 @@ relationship ManyToMany {
 
 relationship ManyToMany {
   QuestionChoice{attachment} to QuestionAttachment{choice},
-  QuestionChoiceAnswer{attachment} to QuestionAttachment{choiceAnswer},
+  QuestionChoiceOption{attachment} to QuestionAttachment{choiceOption},
   QuestionFalseTrue{attachment} to QuestionAttachment{trueFalse},
   QuestionEssay{attachment} to QuestionAttachment{essay}
 }

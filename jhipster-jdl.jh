@@ -142,7 +142,7 @@ relationship OneToMany {
 }
 
 /** 題目或答案圖檔資源 */
-entity QuestionAttachment{
+entity QuestionAttachment {
   /** 題目中圖檔順序 */
   groupPosition Integer,
   /** 圖檔 */

@@ -145,6 +145,6 @@ relationship ManyToMany {
 relationship ManyToMany {
   QuestionChoice{image} to ResourceImage{choice},
   QuestionChoiceOption{image} to ResourceImage{choiceOption},
-  QuestionFalseTrue{image} to ResourceImage{trueFalse},
+  QuestionTrueFalse{image} to ResourceImage{trueFalse},
   QuestionEssay{image} to ResourceImage{essay}
 }

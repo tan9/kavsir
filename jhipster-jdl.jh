@@ -2,7 +2,7 @@
 /** 學年 */
 entity AcademicYear {
   /** 順序 */
-  seq Integer required,
+  position Integer required,
   /** 名稱 */
   name String required
 }
@@ -10,7 +10,7 @@ entity AcademicYear {
 /** 年級 (一年級 ~ 十二年級) */
 entity Grade {
   /** 順序 */
-  seq Integer required,
+  position Integer required,
   /** 名稱 */
   name String required
 }
@@ -18,7 +18,7 @@ entity Grade {
 /** 學期 (上學期、下學期、全學期...) */
 entity Semester {
   /** 順序 */
-  seq Integer required,
+  position Integer required,
   /** 名稱 */
   name String required
 }
@@ -26,7 +26,7 @@ entity Semester {
 /** 科目 */
 entity Subject {
   /** 順序 */
-  seq Integer required,
+  position Integer required,
   /** 名稱 */
   name String required
 }
@@ -34,7 +34,7 @@ entity Subject {
 /** 出版社 (康軒、翰林、三民...) */
 entity Publisher {
   /** 順序 */
-  seq Integer required,
+  position Integer required,
   /** 名稱 */
   name String required
 }
@@ -70,7 +70,7 @@ entity ChoiceQuestion {
   /** 題目備註 */
   memo String,
   /** 題組中題目序號 */
-  groupSeq Integer
+  groupPosition Integer
 }
 
 relationship ManyToMany {
@@ -100,7 +100,7 @@ entity TrueFalseQuestion {
   /** 題目備註 */
   memo String,
   /** 題組中題目序號 */
-  groupSeq Integer
+  groupPosition Integer
 }
 
 relationship ManyToMany {
@@ -116,7 +116,7 @@ entity EssayQuestion {
   /** 題目備註 */
   memo String,
   /** 題組中題目序號 */
-  groupSeq Integer
+  groupPosition Integer
 }
 
 relationship ManyToMany {
@@ -144,7 +144,7 @@ relationship OneToMany {
 /** 題目或答案圖檔資源 */
 entity QuestionAttachment{
   /** 題目中圖檔順序 */
-  groupSeq Integer,
+  groupPosition Integer,
   /** 圖檔 */
   attachment ImageBlob required
 }

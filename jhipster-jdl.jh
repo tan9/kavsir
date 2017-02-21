@@ -60,15 +60,6 @@ entity CategoryPublisher {
   name String required
 }
 
-/** 題型 */
-enum QuestionType {
-  TRUE_OR_FALSE, // 是非題
-  MULTIPLE_CHOICE, // 單選題 (Multiple Choice Question)
-  MULTIPLE_RESPONSE, // 多選題 (Multiple-Response Question)
-  ESSAY, // 問答題 (Essay Question)
-  GROUP // 題組
-}
-
 /** 是非題 */
 entity QuestionTrueFalse {
   /** 答案 */
@@ -83,8 +74,8 @@ entity QuestionTrueFalse {
 
 /** 選擇題 */
 entity QuestionChoice {
-  /** 題型 (單選/複選) */
-  type QuestionType required,
+  /** 單選/複選 */
+  multipleResponse Boolean required,
   /** 文字描述 */
   text String required,
   /** 題目備註 */

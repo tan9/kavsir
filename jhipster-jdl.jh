@@ -135,8 +135,8 @@ relationship OneToMany {
 
 /** 題目或答案圖檔資源 */
 entity QuestionAttachment {
-  /** 題目中圖檔順序 */
-  groupPosition Integer,
+  /** 名稱 */
+  name String required,
   /** 圖檔 */
   attachment ImageBlob required
 }

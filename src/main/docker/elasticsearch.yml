@@ -1,7 +1,6 @@
 version: '2'
 services:
     kavsir-elasticsearch:
-        container_name: kavsir-elasticsearch
         image: elasticsearch:2.4.1
         # volumes:
         #     - ~/volumes/jhipster/kavsir/elasticsearch/:/usr/share/elasticsearch/data/

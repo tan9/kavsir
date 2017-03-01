@@ -4,6 +4,7 @@ import com.tj.kvasir.domain.Authority;
 import com.tj.kvasir.domain.User;
 import com.tj.kvasir.repository.AuthorityRepository;
 import com.tj.kvasir.repository.PersistentTokenRepository;
+import com.tj.kvasir.config.Constants;
 import com.tj.kvasir.repository.UserRepository;
 import com.tj.kvasir.repository.search.UserSearchRepository;
 import com.tj.kvasir.security.AuthoritiesConstants;
@@ -204,7 +205,7 @@ public class UserService {
 
     @Transactional(readOnly = true)    
     public Page<UserDTO> getAllManagedUsers(Pageable pageable) {
-        return userRepository.findAll(pageable).map(UserDTO::new);
+        return userRepository.findAllByLoginNot(pageable, Constants.ANONYMOUS_USER).map(UserDTO::new);
     }
 
     @Transactional(readOnly = true)

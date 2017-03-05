@@ -1,0 +1,67 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "option",
+            "otherEntityName": "questionChoiceOption",
+            "otherEntityRelationshipName": "questionChoice"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "choice",
+            "relationshipName": "category",
+            "otherEntityName": "categoryNode",
+            "otherEntityField": "id",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "choice",
+            "relationshipName": "image",
+            "otherEntityName": "resourceImage",
+            "otherEntityField": "id",
+            "ownerSide": true
+        },
+        {
+            "relationshipName": "questionGroup",
+            "otherEntityName": "questionGroup",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "multipleResponse",
+            "javadoc": "單選/複選",
+            "fieldType": "Boolean",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "text",
+            "javadoc": "文字描述",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "memo",
+            "javadoc": "題目備註",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "groupPosition",
+            "javadoc": "題組中題目序號",
+            "fieldType": "Integer"
+        }
+    ],
+    "changelogDate": "20170302142432",
+    "javadoc": "選擇題",
+    "entityTableName": "question_choice",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no"
+}

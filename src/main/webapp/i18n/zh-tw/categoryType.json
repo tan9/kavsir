@@ -1,0 +1,13 @@
+{
+    "kavsirApp": {
+        "CategoryType" : {
+            "null": "",
+            "ACADEMIC_YEAR": "ACADEMIC_YEAR",
+            "GRADE": "GRADE",
+            "SEMESTER": "SEMESTER",
+            "SUBJECT": "SUBJECT",
+            "PUBLISHER": "PUBLISHER",
+            "SEGMENT": "SEGMENT"
+        }
+    }
+}

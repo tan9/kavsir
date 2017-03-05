@@ -7,6 +7,18 @@
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Entities",
+                "questionChoice": "Question Choice",
+                "categoryAcademicYear": "Category Academic Year",
+                "categoryNode": "Category Node",
+                "categoryPublisher": "Category Publisher",
+                "categorySemester": "Category Semester",
+                "categorySubject": "Category Subject",
+                "categoryGrade": "Category Grade",
+                "questionChoiceOption": "Question Choice Option",
+                "questionEssay": "Question Essay",
+                "questionGroup": "Question Group",
+                "questionTrueFalse": "Question True False",
+                "resourceImage": "Resource Image",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

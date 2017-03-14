@@ -39,10 +39,12 @@ export class CategoryAcademicYearDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.categoryAcademicYear.id !== undefined) {
             this.categoryAcademicYearService.update(this.categoryAcademicYear)
-                .subscribe((res: CategoryAcademicYear) => this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
+                .subscribe((res: CategoryAcademicYear) =>
+                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
         } else {
             this.categoryAcademicYearService.create(this.categoryAcademicYear)
-                .subscribe((res: CategoryAcademicYear) => this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
+                .subscribe((res: CategoryAcademicYear) =>
+                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
         }
     }
 

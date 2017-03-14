@@ -69,7 +69,7 @@ public class CategoryGradeResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-            CategoryGradeResource categoryGradeResource = new CategoryGradeResource(categoryGradeRepository, categoryGradeSearchRepository);
+        CategoryGradeResource categoryGradeResource = new CategoryGradeResource(categoryGradeRepository, categoryGradeSearchRepository);
         this.restCategoryGradeMockMvc = MockMvcBuilders.standaloneSetup(categoryGradeResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -84,8 +84,8 @@ public class CategoryGradeResourceIntTest {
      */
     public static CategoryGrade createEntity(EntityManager em) {
         CategoryGrade categoryGrade = new CategoryGrade()
-                .position(DEFAULT_POSITION)
-                .name(DEFAULT_NAME);
+            .position(DEFAULT_POSITION)
+            .name(DEFAULT_NAME);
         return categoryGrade;
     }
 
@@ -101,7 +101,6 @@ public class CategoryGradeResourceIntTest {
         int databaseSizeBeforeCreate = categoryGradeRepository.findAll().size();
 
         // Create the CategoryGrade
-
         restCategoryGradeMockMvc.perform(post("/api/category-grades")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(categoryGrade)))
@@ -125,13 +124,12 @@ public class CategoryGradeResourceIntTest {
         int databaseSizeBeforeCreate = categoryGradeRepository.findAll().size();
 
         // Create the CategoryGrade with an existing ID
-        CategoryGrade existingCategoryGrade = new CategoryGrade();
-        existingCategoryGrade.setId(1L);
+        categoryGrade.setId(1L);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restCategoryGradeMockMvc.perform(post("/api/category-grades")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(existingCategoryGrade)))
+            .content(TestUtil.convertObjectToJsonBytes(categoryGrade)))
             .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
@@ -224,8 +222,8 @@ public class CategoryGradeResourceIntTest {
         // Update the categoryGrade
         CategoryGrade updatedCategoryGrade = categoryGradeRepository.findOne(categoryGrade.getId());
         updatedCategoryGrade
-                .position(UPDATED_POSITION)
-                .name(UPDATED_NAME);
+            .position(UPDATED_POSITION)
+            .name(UPDATED_NAME);
 
         restCategoryGradeMockMvc.perform(put("/api/category-grades")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -301,6 +299,7 @@ public class CategoryGradeResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(CategoryGrade.class);
     }

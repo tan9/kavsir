@@ -75,7 +75,7 @@ public class QuestionChoiceResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-            QuestionChoiceResource questionChoiceResource = new QuestionChoiceResource(questionChoiceRepository, questionChoiceSearchRepository);
+        QuestionChoiceResource questionChoiceResource = new QuestionChoiceResource(questionChoiceRepository, questionChoiceSearchRepository);
         this.restQuestionChoiceMockMvc = MockMvcBuilders.standaloneSetup(questionChoiceResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -90,10 +90,10 @@ public class QuestionChoiceResourceIntTest {
      */
     public static QuestionChoice createEntity(EntityManager em) {
         QuestionChoice questionChoice = new QuestionChoice()
-                .multipleResponse(DEFAULT_MULTIPLE_RESPONSE)
-                .text(DEFAULT_TEXT)
-                .memo(DEFAULT_MEMO)
-                .groupPosition(DEFAULT_GROUP_POSITION);
+            .multipleResponse(DEFAULT_MULTIPLE_RESPONSE)
+            .text(DEFAULT_TEXT)
+            .memo(DEFAULT_MEMO)
+            .groupPosition(DEFAULT_GROUP_POSITION);
         return questionChoice;
     }
 
@@ -109,7 +109,6 @@ public class QuestionChoiceResourceIntTest {
         int databaseSizeBeforeCreate = questionChoiceRepository.findAll().size();
 
         // Create the QuestionChoice
-
         restQuestionChoiceMockMvc.perform(post("/api/question-choices")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(questionChoice)))
@@ -135,13 +134,12 @@ public class QuestionChoiceResourceIntTest {
         int databaseSizeBeforeCreate = questionChoiceRepository.findAll().size();
 
         // Create the QuestionChoice with an existing ID
-        QuestionChoice existingQuestionChoice = new QuestionChoice();
-        existingQuestionChoice.setId(1L);
+        questionChoice.setId(1L);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restQuestionChoiceMockMvc.perform(post("/api/question-choices")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(existingQuestionChoice)))
+            .content(TestUtil.convertObjectToJsonBytes(questionChoice)))
             .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
@@ -238,10 +236,10 @@ public class QuestionChoiceResourceIntTest {
         // Update the questionChoice
         QuestionChoice updatedQuestionChoice = questionChoiceRepository.findOne(questionChoice.getId());
         updatedQuestionChoice
-                .multipleResponse(UPDATED_MULTIPLE_RESPONSE)
-                .text(UPDATED_TEXT)
-                .memo(UPDATED_MEMO)
-                .groupPosition(UPDATED_GROUP_POSITION);
+            .multipleResponse(UPDATED_MULTIPLE_RESPONSE)
+            .text(UPDATED_TEXT)
+            .memo(UPDATED_MEMO)
+            .groupPosition(UPDATED_GROUP_POSITION);
 
         restQuestionChoiceMockMvc.perform(put("/api/question-choices")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -321,6 +319,7 @@ public class QuestionChoiceResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(QuestionChoice.class);
     }

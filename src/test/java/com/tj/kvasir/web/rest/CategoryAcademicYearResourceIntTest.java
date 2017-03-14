@@ -69,7 +69,7 @@ public class CategoryAcademicYearResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-            CategoryAcademicYearResource categoryAcademicYearResource = new CategoryAcademicYearResource(categoryAcademicYearRepository, categoryAcademicYearSearchRepository);
+        CategoryAcademicYearResource categoryAcademicYearResource = new CategoryAcademicYearResource(categoryAcademicYearRepository, categoryAcademicYearSearchRepository);
         this.restCategoryAcademicYearMockMvc = MockMvcBuilders.standaloneSetup(categoryAcademicYearResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -84,8 +84,8 @@ public class CategoryAcademicYearResourceIntTest {
      */
     public static CategoryAcademicYear createEntity(EntityManager em) {
         CategoryAcademicYear categoryAcademicYear = new CategoryAcademicYear()
-                .position(DEFAULT_POSITION)
-                .name(DEFAULT_NAME);
+            .position(DEFAULT_POSITION)
+            .name(DEFAULT_NAME);
         return categoryAcademicYear;
     }
 
@@ -101,7 +101,6 @@ public class CategoryAcademicYearResourceIntTest {
         int databaseSizeBeforeCreate = categoryAcademicYearRepository.findAll().size();
 
         // Create the CategoryAcademicYear
-
         restCategoryAcademicYearMockMvc.perform(post("/api/category-academic-years")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(categoryAcademicYear)))
@@ -125,13 +124,12 @@ public class CategoryAcademicYearResourceIntTest {
         int databaseSizeBeforeCreate = categoryAcademicYearRepository.findAll().size();
 
         // Create the CategoryAcademicYear with an existing ID
-        CategoryAcademicYear existingCategoryAcademicYear = new CategoryAcademicYear();
-        existingCategoryAcademicYear.setId(1L);
+        categoryAcademicYear.setId(1L);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restCategoryAcademicYearMockMvc.perform(post("/api/category-academic-years")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(existingCategoryAcademicYear)))
+            .content(TestUtil.convertObjectToJsonBytes(categoryAcademicYear)))
             .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
@@ -224,8 +222,8 @@ public class CategoryAcademicYearResourceIntTest {
         // Update the categoryAcademicYear
         CategoryAcademicYear updatedCategoryAcademicYear = categoryAcademicYearRepository.findOne(categoryAcademicYear.getId());
         updatedCategoryAcademicYear
-                .position(UPDATED_POSITION)
-                .name(UPDATED_NAME);
+            .position(UPDATED_POSITION)
+            .name(UPDATED_NAME);
 
         restCategoryAcademicYearMockMvc.perform(put("/api/category-academic-years")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -301,6 +299,7 @@ public class CategoryAcademicYearResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(CategoryAcademicYear.class);
     }

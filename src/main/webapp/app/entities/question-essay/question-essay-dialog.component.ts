@@ -57,10 +57,12 @@ export class QuestionEssayDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.questionEssay.id !== undefined) {
             this.questionEssayService.update(this.questionEssay)
-                .subscribe((res: QuestionEssay) => this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
+                .subscribe((res: QuestionEssay) =>
+                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
         } else {
             this.questionEssayService.create(this.questionEssay)
-                .subscribe((res: QuestionEssay) => this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
+                .subscribe((res: QuestionEssay) =>
+                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
         }
     }
 

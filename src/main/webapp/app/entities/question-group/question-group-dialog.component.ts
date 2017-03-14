@@ -63,10 +63,12 @@ export class QuestionGroupDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.questionGroup.id !== undefined) {
             this.questionGroupService.update(this.questionGroup)
-                .subscribe((res: QuestionGroup) => this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
+                .subscribe((res: QuestionGroup) =>
+                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
         } else {
             this.questionGroupService.create(this.questionGroup)
-                .subscribe((res: QuestionGroup) => this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
+                .subscribe((res: QuestionGroup) =>
+                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
         }
     }
 

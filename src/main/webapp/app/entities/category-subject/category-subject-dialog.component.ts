@@ -39,10 +39,12 @@ export class CategorySubjectDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.categorySubject.id !== undefined) {
             this.categorySubjectService.update(this.categorySubject)
-                .subscribe((res: CategorySubject) => this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
+                .subscribe((res: CategorySubject) =>
+                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
         } else {
             this.categorySubjectService.create(this.categorySubject)
-                .subscribe((res: CategorySubject) => this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
+                .subscribe((res: CategorySubject) =>
+                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
         }
     }
 

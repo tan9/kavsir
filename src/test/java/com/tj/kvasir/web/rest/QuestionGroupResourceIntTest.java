@@ -69,7 +69,7 @@ public class QuestionGroupResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-            QuestionGroupResource questionGroupResource = new QuestionGroupResource(questionGroupRepository, questionGroupSearchRepository);
+        QuestionGroupResource questionGroupResource = new QuestionGroupResource(questionGroupRepository, questionGroupSearchRepository);
         this.restQuestionGroupMockMvc = MockMvcBuilders.standaloneSetup(questionGroupResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -84,8 +84,8 @@ public class QuestionGroupResourceIntTest {
      */
     public static QuestionGroup createEntity(EntityManager em) {
         QuestionGroup questionGroup = new QuestionGroup()
-                .text(DEFAULT_TEXT)
-                .memo(DEFAULT_MEMO);
+            .text(DEFAULT_TEXT)
+            .memo(DEFAULT_MEMO);
         return questionGroup;
     }
 
@@ -101,7 +101,6 @@ public class QuestionGroupResourceIntTest {
         int databaseSizeBeforeCreate = questionGroupRepository.findAll().size();
 
         // Create the QuestionGroup
-
         restQuestionGroupMockMvc.perform(post("/api/question-groups")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(questionGroup)))
@@ -125,13 +124,12 @@ public class QuestionGroupResourceIntTest {
         int databaseSizeBeforeCreate = questionGroupRepository.findAll().size();
 
         // Create the QuestionGroup with an existing ID
-        QuestionGroup existingQuestionGroup = new QuestionGroup();
-        existingQuestionGroup.setId(1L);
+        questionGroup.setId(1L);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restQuestionGroupMockMvc.perform(post("/api/question-groups")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(existingQuestionGroup)))
+            .content(TestUtil.convertObjectToJsonBytes(questionGroup)))
             .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
@@ -206,8 +204,8 @@ public class QuestionGroupResourceIntTest {
         // Update the questionGroup
         QuestionGroup updatedQuestionGroup = questionGroupRepository.findOne(questionGroup.getId());
         updatedQuestionGroup
-                .text(UPDATED_TEXT)
-                .memo(UPDATED_MEMO);
+            .text(UPDATED_TEXT)
+            .memo(UPDATED_MEMO);
 
         restQuestionGroupMockMvc.perform(put("/api/question-groups")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -283,6 +281,7 @@ public class QuestionGroupResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(QuestionGroup.class);
     }

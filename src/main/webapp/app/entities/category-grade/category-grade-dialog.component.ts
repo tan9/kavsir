@@ -39,10 +39,12 @@ export class CategoryGradeDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.categoryGrade.id !== undefined) {
             this.categoryGradeService.update(this.categoryGrade)
-                .subscribe((res: CategoryGrade) => this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
+                .subscribe((res: CategoryGrade) =>
+                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
         } else {
             this.categoryGradeService.create(this.categoryGrade)
-                .subscribe((res: CategoryGrade) => this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
+                .subscribe((res: CategoryGrade) =>
+                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
         }
     }
 

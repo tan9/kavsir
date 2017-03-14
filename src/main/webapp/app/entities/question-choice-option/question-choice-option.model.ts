@@ -9,6 +9,6 @@ export class QuestionChoiceOption {
         public questionChoice?: QuestionChoice,
         public image?: ResourceImage,
     ) {
-        this.correct = false; 
+        this.correct = false;
     }
 }

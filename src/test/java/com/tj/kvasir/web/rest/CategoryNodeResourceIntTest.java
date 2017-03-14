@@ -79,7 +79,7 @@ public class CategoryNodeResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-            CategoryNodeResource categoryNodeResource = new CategoryNodeResource(categoryNodeRepository, categoryNodeSearchRepository);
+        CategoryNodeResource categoryNodeResource = new CategoryNodeResource(categoryNodeRepository, categoryNodeSearchRepository);
         this.restCategoryNodeMockMvc = MockMvcBuilders.standaloneSetup(categoryNodeResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -94,11 +94,11 @@ public class CategoryNodeResourceIntTest {
      */
     public static CategoryNode createEntity(EntityManager em) {
         CategoryNode categoryNode = new CategoryNode()
-                .type(DEFAULT_TYPE)
-                .typeId(DEFAULT_TYPE_ID)
-                .name(DEFAULT_NAME)
-                .lft(DEFAULT_LFT)
-                .rgt(DEFAULT_RGT);
+            .type(DEFAULT_TYPE)
+            .typeId(DEFAULT_TYPE_ID)
+            .name(DEFAULT_NAME)
+            .lft(DEFAULT_LFT)
+            .rgt(DEFAULT_RGT);
         return categoryNode;
     }
 
@@ -114,7 +114,6 @@ public class CategoryNodeResourceIntTest {
         int databaseSizeBeforeCreate = categoryNodeRepository.findAll().size();
 
         // Create the CategoryNode
-
         restCategoryNodeMockMvc.perform(post("/api/category-nodes")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(categoryNode)))
@@ -141,13 +140,12 @@ public class CategoryNodeResourceIntTest {
         int databaseSizeBeforeCreate = categoryNodeRepository.findAll().size();
 
         // Create the CategoryNode with an existing ID
-        CategoryNode existingCategoryNode = new CategoryNode();
-        existingCategoryNode.setId(1L);
+        categoryNode.setId(1L);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restCategoryNodeMockMvc.perform(post("/api/category-nodes")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(existingCategoryNode)))
+            .content(TestUtil.convertObjectToJsonBytes(categoryNode)))
             .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
@@ -282,11 +280,11 @@ public class CategoryNodeResourceIntTest {
         // Update the categoryNode
         CategoryNode updatedCategoryNode = categoryNodeRepository.findOne(categoryNode.getId());
         updatedCategoryNode
-                .type(UPDATED_TYPE)
-                .typeId(UPDATED_TYPE_ID)
-                .name(UPDATED_NAME)
-                .lft(UPDATED_LFT)
-                .rgt(UPDATED_RGT);
+            .type(UPDATED_TYPE)
+            .typeId(UPDATED_TYPE_ID)
+            .name(UPDATED_NAME)
+            .lft(UPDATED_LFT)
+            .rgt(UPDATED_RGT);
 
         restCategoryNodeMockMvc.perform(put("/api/category-nodes")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -368,6 +366,7 @@ public class CategoryNodeResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(CategoryNode.class);
     }

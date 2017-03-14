@@ -57,10 +57,12 @@ export class QuestionTrueFalseDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.questionTrueFalse.id !== undefined) {
             this.questionTrueFalseService.update(this.questionTrueFalse)
-                .subscribe((res: QuestionTrueFalse) => this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
+                .subscribe((res: QuestionTrueFalse) =>
+                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
         } else {
             this.questionTrueFalseService.create(this.questionTrueFalse)
-                .subscribe((res: QuestionTrueFalse) => this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
+                .subscribe((res: QuestionTrueFalse) =>
+                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
         }
     }
 

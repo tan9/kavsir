@@ -75,7 +75,7 @@ public class QuestionTrueFalseResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-            QuestionTrueFalseResource questionTrueFalseResource = new QuestionTrueFalseResource(questionTrueFalseRepository, questionTrueFalseSearchRepository);
+        QuestionTrueFalseResource questionTrueFalseResource = new QuestionTrueFalseResource(questionTrueFalseRepository, questionTrueFalseSearchRepository);
         this.restQuestionTrueFalseMockMvc = MockMvcBuilders.standaloneSetup(questionTrueFalseResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -90,10 +90,10 @@ public class QuestionTrueFalseResourceIntTest {
      */
     public static QuestionTrueFalse createEntity(EntityManager em) {
         QuestionTrueFalse questionTrueFalse = new QuestionTrueFalse()
-                .correct(DEFAULT_CORRECT)
-                .text(DEFAULT_TEXT)
-                .memo(DEFAULT_MEMO)
-                .groupPosition(DEFAULT_GROUP_POSITION);
+            .correct(DEFAULT_CORRECT)
+            .text(DEFAULT_TEXT)
+            .memo(DEFAULT_MEMO)
+            .groupPosition(DEFAULT_GROUP_POSITION);
         return questionTrueFalse;
     }
 
@@ -109,7 +109,6 @@ public class QuestionTrueFalseResourceIntTest {
         int databaseSizeBeforeCreate = questionTrueFalseRepository.findAll().size();
 
         // Create the QuestionTrueFalse
-
         restQuestionTrueFalseMockMvc.perform(post("/api/question-true-falses")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(questionTrueFalse)))
@@ -135,13 +134,12 @@ public class QuestionTrueFalseResourceIntTest {
         int databaseSizeBeforeCreate = questionTrueFalseRepository.findAll().size();
 
         // Create the QuestionTrueFalse with an existing ID
-        QuestionTrueFalse existingQuestionTrueFalse = new QuestionTrueFalse();
-        existingQuestionTrueFalse.setId(1L);
+        questionTrueFalse.setId(1L);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restQuestionTrueFalseMockMvc.perform(post("/api/question-true-falses")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(existingQuestionTrueFalse)))
+            .content(TestUtil.convertObjectToJsonBytes(questionTrueFalse)))
             .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
@@ -238,10 +236,10 @@ public class QuestionTrueFalseResourceIntTest {
         // Update the questionTrueFalse
         QuestionTrueFalse updatedQuestionTrueFalse = questionTrueFalseRepository.findOne(questionTrueFalse.getId());
         updatedQuestionTrueFalse
-                .correct(UPDATED_CORRECT)
-                .text(UPDATED_TEXT)
-                .memo(UPDATED_MEMO)
-                .groupPosition(UPDATED_GROUP_POSITION);
+            .correct(UPDATED_CORRECT)
+            .text(UPDATED_TEXT)
+            .memo(UPDATED_MEMO)
+            .groupPosition(UPDATED_GROUP_POSITION);
 
         restQuestionTrueFalseMockMvc.perform(put("/api/question-true-falses")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -321,6 +319,7 @@ public class QuestionTrueFalseResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(QuestionTrueFalse.class);
     }

@@ -84,10 +84,12 @@ export class ResourceImageDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.resourceImage.id !== undefined) {
             this.resourceImageService.update(this.resourceImage)
-                .subscribe((res: ResourceImage) => this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
+                .subscribe((res: ResourceImage) =>
+                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
         } else {
             this.resourceImageService.create(this.resourceImage)
-                .subscribe((res: ResourceImage) => this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
+                .subscribe((res: ResourceImage) =>
+                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
         }
     }
 

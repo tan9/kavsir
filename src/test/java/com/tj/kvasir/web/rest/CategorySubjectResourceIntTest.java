@@ -69,7 +69,7 @@ public class CategorySubjectResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-            CategorySubjectResource categorySubjectResource = new CategorySubjectResource(categorySubjectRepository, categorySubjectSearchRepository);
+        CategorySubjectResource categorySubjectResource = new CategorySubjectResource(categorySubjectRepository, categorySubjectSearchRepository);
         this.restCategorySubjectMockMvc = MockMvcBuilders.standaloneSetup(categorySubjectResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -84,8 +84,8 @@ public class CategorySubjectResourceIntTest {
      */
     public static CategorySubject createEntity(EntityManager em) {
         CategorySubject categorySubject = new CategorySubject()
-                .position(DEFAULT_POSITION)
-                .name(DEFAULT_NAME);
+            .position(DEFAULT_POSITION)
+            .name(DEFAULT_NAME);
         return categorySubject;
     }
 
@@ -101,7 +101,6 @@ public class CategorySubjectResourceIntTest {
         int databaseSizeBeforeCreate = categorySubjectRepository.findAll().size();
 
         // Create the CategorySubject
-
         restCategorySubjectMockMvc.perform(post("/api/category-subjects")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(categorySubject)))
@@ -125,13 +124,12 @@ public class CategorySubjectResourceIntTest {
         int databaseSizeBeforeCreate = categorySubjectRepository.findAll().size();
 
         // Create the CategorySubject with an existing ID
-        CategorySubject existingCategorySubject = new CategorySubject();
-        existingCategorySubject.setId(1L);
+        categorySubject.setId(1L);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restCategorySubjectMockMvc.perform(post("/api/category-subjects")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(existingCategorySubject)))
+            .content(TestUtil.convertObjectToJsonBytes(categorySubject)))
             .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
@@ -224,8 +222,8 @@ public class CategorySubjectResourceIntTest {
         // Update the categorySubject
         CategorySubject updatedCategorySubject = categorySubjectRepository.findOne(categorySubject.getId());
         updatedCategorySubject
-                .position(UPDATED_POSITION)
-                .name(UPDATED_NAME);
+            .position(UPDATED_POSITION)
+            .name(UPDATED_NAME);
 
         restCategorySubjectMockMvc.perform(put("/api/category-subjects")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -301,6 +299,7 @@ public class CategorySubjectResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(CategorySubject.class);
     }

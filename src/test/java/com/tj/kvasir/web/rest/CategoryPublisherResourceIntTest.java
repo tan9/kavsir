@@ -69,7 +69,7 @@ public class CategoryPublisherResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-            CategoryPublisherResource categoryPublisherResource = new CategoryPublisherResource(categoryPublisherRepository, categoryPublisherSearchRepository);
+        CategoryPublisherResource categoryPublisherResource = new CategoryPublisherResource(categoryPublisherRepository, categoryPublisherSearchRepository);
         this.restCategoryPublisherMockMvc = MockMvcBuilders.standaloneSetup(categoryPublisherResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -84,8 +84,8 @@ public class CategoryPublisherResourceIntTest {
      */
     public static CategoryPublisher createEntity(EntityManager em) {
         CategoryPublisher categoryPublisher = new CategoryPublisher()
-                .position(DEFAULT_POSITION)
-                .name(DEFAULT_NAME);
+            .position(DEFAULT_POSITION)
+            .name(DEFAULT_NAME);
         return categoryPublisher;
     }
 
@@ -101,7 +101,6 @@ public class CategoryPublisherResourceIntTest {
         int databaseSizeBeforeCreate = categoryPublisherRepository.findAll().size();
 
         // Create the CategoryPublisher
-
         restCategoryPublisherMockMvc.perform(post("/api/category-publishers")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(categoryPublisher)))
@@ -125,13 +124,12 @@ public class CategoryPublisherResourceIntTest {
         int databaseSizeBeforeCreate = categoryPublisherRepository.findAll().size();
 
         // Create the CategoryPublisher with an existing ID
-        CategoryPublisher existingCategoryPublisher = new CategoryPublisher();
-        existingCategoryPublisher.setId(1L);
+        categoryPublisher.setId(1L);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restCategoryPublisherMockMvc.perform(post("/api/category-publishers")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(existingCategoryPublisher)))
+            .content(TestUtil.convertObjectToJsonBytes(categoryPublisher)))
             .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
@@ -224,8 +222,8 @@ public class CategoryPublisherResourceIntTest {
         // Update the categoryPublisher
         CategoryPublisher updatedCategoryPublisher = categoryPublisherRepository.findOne(categoryPublisher.getId());
         updatedCategoryPublisher
-                .position(UPDATED_POSITION)
-                .name(UPDATED_NAME);
+            .position(UPDATED_POSITION)
+            .name(UPDATED_NAME);
 
         restCategoryPublisherMockMvc.perform(put("/api/category-publishers")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -301,6 +299,7 @@ public class CategoryPublisherResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(CategoryPublisher.class);
     }

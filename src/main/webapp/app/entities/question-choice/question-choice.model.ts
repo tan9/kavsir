@@ -14,6 +14,6 @@ export class QuestionChoice {
         public image?: ResourceImage,
         public questionGroup?: QuestionGroup,
     ) {
-        this.multipleResponse = false; 
+        this.multipleResponse = false;
     }
 }

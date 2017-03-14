@@ -2747,7 +2747,7 @@ generate-object-property@^1.1.0:
   dependencies:
     is-property "^1.0.0"
 
-generator-jhipster@4.0.8:
+generator-jhipster@^4.0.8:
   version "4.0.8"
   resolved "https://registry.yarnpkg.com/generator-jhipster/-/generator-jhipster-4.0.8.tgz#9daff076cc628500726026fad6cfb0a8b55eb1b0"
   dependencies:

@@ -75,7 +75,7 @@ public class QuestionEssayResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-            QuestionEssayResource questionEssayResource = new QuestionEssayResource(questionEssayRepository, questionEssaySearchRepository);
+        QuestionEssayResource questionEssayResource = new QuestionEssayResource(questionEssayRepository, questionEssaySearchRepository);
         this.restQuestionEssayMockMvc = MockMvcBuilders.standaloneSetup(questionEssayResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -90,10 +90,10 @@ public class QuestionEssayResourceIntTest {
      */
     public static QuestionEssay createEntity(EntityManager em) {
         QuestionEssay questionEssay = new QuestionEssay()
-                .text(DEFAULT_TEXT)
-                .answer(DEFAULT_ANSWER)
-                .memo(DEFAULT_MEMO)
-                .groupPosition(DEFAULT_GROUP_POSITION);
+            .text(DEFAULT_TEXT)
+            .answer(DEFAULT_ANSWER)
+            .memo(DEFAULT_MEMO)
+            .groupPosition(DEFAULT_GROUP_POSITION);
         return questionEssay;
     }
 
@@ -109,7 +109,6 @@ public class QuestionEssayResourceIntTest {
         int databaseSizeBeforeCreate = questionEssayRepository.findAll().size();
 
         // Create the QuestionEssay
-
         restQuestionEssayMockMvc.perform(post("/api/question-essays")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(questionEssay)))
@@ -135,13 +134,12 @@ public class QuestionEssayResourceIntTest {
         int databaseSizeBeforeCreate = questionEssayRepository.findAll().size();
 
         // Create the QuestionEssay with an existing ID
-        QuestionEssay existingQuestionEssay = new QuestionEssay();
-        existingQuestionEssay.setId(1L);
+        questionEssay.setId(1L);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restQuestionEssayMockMvc.perform(post("/api/question-essays")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(existingQuestionEssay)))
+            .content(TestUtil.convertObjectToJsonBytes(questionEssay)))
             .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
@@ -238,10 +236,10 @@ public class QuestionEssayResourceIntTest {
         // Update the questionEssay
         QuestionEssay updatedQuestionEssay = questionEssayRepository.findOne(questionEssay.getId());
         updatedQuestionEssay
-                .text(UPDATED_TEXT)
-                .answer(UPDATED_ANSWER)
-                .memo(UPDATED_MEMO)
-                .groupPosition(UPDATED_GROUP_POSITION);
+            .text(UPDATED_TEXT)
+            .answer(UPDATED_ANSWER)
+            .memo(UPDATED_MEMO)
+            .groupPosition(UPDATED_GROUP_POSITION);
 
         restQuestionEssayMockMvc.perform(put("/api/question-essays")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -321,6 +319,7 @@ public class QuestionEssayResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(QuestionEssay.class);
     }

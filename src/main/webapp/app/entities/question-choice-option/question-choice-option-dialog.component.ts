@@ -51,10 +51,12 @@ export class QuestionChoiceOptionDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.questionChoiceOption.id !== undefined) {
             this.questionChoiceOptionService.update(this.questionChoiceOption)
-                .subscribe((res: QuestionChoiceOption) => this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
+                .subscribe((res: QuestionChoiceOption) =>
+                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
         } else {
             this.questionChoiceOptionService.create(this.questionChoiceOption)
-                .subscribe((res: QuestionChoiceOption) => this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
+                .subscribe((res: QuestionChoiceOption) =>
+                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
         }
     }
 

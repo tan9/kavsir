@@ -12,6 +12,6 @@ export class QuestionTrueFalse {
         public image?: ResourceImage,
         public questionGroup?: QuestionGroup,
     ) {
-        this.correct = false; 
+        this.correct = false;
     }
 }

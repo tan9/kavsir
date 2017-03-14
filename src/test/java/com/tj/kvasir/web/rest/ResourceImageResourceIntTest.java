@@ -72,7 +72,7 @@ public class ResourceImageResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-            ResourceImageResource resourceImageResource = new ResourceImageResource(resourceImageRepository, resourceImageSearchRepository);
+        ResourceImageResource resourceImageResource = new ResourceImageResource(resourceImageRepository, resourceImageSearchRepository);
         this.restResourceImageMockMvc = MockMvcBuilders.standaloneSetup(resourceImageResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -87,9 +87,9 @@ public class ResourceImageResourceIntTest {
      */
     public static ResourceImage createEntity(EntityManager em) {
         ResourceImage resourceImage = new ResourceImage()
-                .name(DEFAULT_NAME)
-                .content(DEFAULT_CONTENT)
-                .contentContentType(DEFAULT_CONTENT_CONTENT_TYPE);
+            .name(DEFAULT_NAME)
+            .content(DEFAULT_CONTENT)
+            .contentContentType(DEFAULT_CONTENT_CONTENT_TYPE);
         return resourceImage;
     }
 
@@ -105,7 +105,6 @@ public class ResourceImageResourceIntTest {
         int databaseSizeBeforeCreate = resourceImageRepository.findAll().size();
 
         // Create the ResourceImage
-
         restResourceImageMockMvc.perform(post("/api/resource-images")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(resourceImage)))
@@ -130,13 +129,12 @@ public class ResourceImageResourceIntTest {
         int databaseSizeBeforeCreate = resourceImageRepository.findAll().size();
 
         // Create the ResourceImage with an existing ID
-        ResourceImage existingResourceImage = new ResourceImage();
-        existingResourceImage.setId(1L);
+        resourceImage.setId(1L);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restResourceImageMockMvc.perform(post("/api/resource-images")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(existingResourceImage)))
+            .content(TestUtil.convertObjectToJsonBytes(resourceImage)))
             .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
@@ -231,9 +229,9 @@ public class ResourceImageResourceIntTest {
         // Update the resourceImage
         ResourceImage updatedResourceImage = resourceImageRepository.findOne(resourceImage.getId());
         updatedResourceImage
-                .name(UPDATED_NAME)
-                .content(UPDATED_CONTENT)
-                .contentContentType(UPDATED_CONTENT_CONTENT_TYPE);
+            .name(UPDATED_NAME)
+            .content(UPDATED_CONTENT)
+            .contentContentType(UPDATED_CONTENT_CONTENT_TYPE);
 
         restResourceImageMockMvc.perform(put("/api/resource-images")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -311,6 +309,7 @@ public class ResourceImageResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(ResourceImage.class);
     }

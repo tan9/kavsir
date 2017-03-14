@@ -1,0 +1,76 @@
+<div>
+    <h2>
+        <span jhiTranslate="kavsirApp.resourceImage.home.title">Resource Images</span>
+        <button class="btn btn-primary float-right create-resource-image" [routerLink]="['/', { outlets: { popup: ['resource-image-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span class="hidden-sm-down"  jhiTranslate="kavsirApp.resourceImage.home.createLabel">
+            Create new Resource Image
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+        <div class="col-sm-12 no-padding-right">
+            <form name="searchForm" class="form-inline">
+                <div class="input-group w-100 mt-3">
+                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'kavsirApp.resourceImage.home.search' | translate }}">
+                    <button class="input-group-addon btn btn-info" (click)="search(currentSearch)">
+                        <span class="fa fa-search"></span>
+                    </button>
+                    <button class="input-group-addon btn btn-danger" (click)="clear()" *ngIf="currentSearch">
+                        <span class="fa fa-trash-o"></span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="resourceImages">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="kavsirApp.resourceImage.name">Name</span></th>
+            <th><span jhiTranslate="kavsirApp.resourceImage.content">Content</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let resourceImage of resourceImages ;trackBy: trackId">
+                <td><a [routerLink]="['../resource-image', resourceImage.id ]">{{resourceImage.id}}</a></td>
+                <td>{{resourceImage.name}}</td>
+                <td>
+                    <a *ngIf="resourceImage.content" (click)="openFile(resourceImage.contentContentType, resourceImage.content)">
+                        <img [src]="'data:' + resourceImage.contentContentType + ';base64,' + resourceImage.content" style="max-height: 30px;" alt="resourceImage image"/>
+                    </a>
+                    <span *ngIf="resourceImage.content">{{resourceImage.contentContentType}}, {{byteSize(resourceImage.content)}}</span>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../resource-image', resourceImage.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="hidden-md-down" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'resource-image/'+ resourceImage.id + '/edit'} }]"
+                                replaceUrl="true"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="hidden-md-down" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'resource-image/'+ resourceImage.id + '/delete'} }]"
+                                replaceUrl="true"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="hidden-md-down" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

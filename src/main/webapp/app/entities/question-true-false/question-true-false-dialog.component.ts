@@ -11,6 +11,7 @@ import { QuestionTrueFalseService } from './question-true-false.service';
 import { CategoryNode, CategoryNodeService } from '../category-node';
 import { ResourceImage, ResourceImageService } from '../resource-image';
 import { QuestionGroup, QuestionGroupService } from '../question-group';
+
 @Component({
     selector: 'jhi-question-true-false-dialog',
     templateUrl: './question-true-false-dialog.component.html'
@@ -58,11 +59,11 @@ export class QuestionTrueFalseDialogComponent implements OnInit {
         if (this.questionTrueFalse.id !== undefined) {
             this.questionTrueFalseService.update(this.questionTrueFalse)
                 .subscribe((res: QuestionTrueFalse) =>
-                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
+                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
         } else {
             this.questionTrueFalseService.create(this.questionTrueFalse)
                 .subscribe((res: QuestionTrueFalse) =>
-                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
+                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
         }
     }
 
@@ -73,6 +74,11 @@ export class QuestionTrueFalseDialogComponent implements OnInit {
     }
 
     private onSaveError (error) {
+        try {
+            error.json();
+        } catch (exception) {
+            error.message = error.text();
+        }
         this.isSaving = false;
         this.onError(error);
     }
@@ -128,7 +134,6 @@ export class QuestionTrueFalsePopupComponent implements OnInit, OnDestroy {
                 this.modalRef = this.questionTrueFalsePopupService
                     .open(QuestionTrueFalseDialogComponent);
             }
-
         });
     }
 

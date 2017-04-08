@@ -19,14 +19,16 @@ export const categoryGradeRoute: Routes = [
     data: {
         authorities: ['ROLE_USER'],
         pageTitle: 'kavsirApp.categoryGrade.home.title'
-    }
+    },
+    canActivate: [UserRouteAccessService]
   }, {
     path: 'category-grade/:id',
     component: CategoryGradeDetailComponent,
     data: {
         authorities: ['ROLE_USER'],
         pageTitle: 'kavsirApp.categoryGrade.home.title'
-    }
+    },
+    canActivate: [UserRouteAccessService]
   }
 ];
 
@@ -38,6 +40,7 @@ export const categoryGradePopupRoute: Routes = [
         authorities: ['ROLE_USER'],
         pageTitle: 'kavsirApp.categoryGrade.home.title'
     },
+    canActivate: [UserRouteAccessService],
     outlet: 'popup'
   },
   {
@@ -47,6 +50,7 @@ export const categoryGradePopupRoute: Routes = [
         authorities: ['ROLE_USER'],
         pageTitle: 'kavsirApp.categoryGrade.home.title'
     },
+    canActivate: [UserRouteAccessService],
     outlet: 'popup'
   },
   {
@@ -56,6 +60,7 @@ export const categoryGradePopupRoute: Routes = [
         authorities: ['ROLE_USER'],
         pageTitle: 'kavsirApp.categoryGrade.home.title'
     },
+    canActivate: [UserRouteAccessService],
     outlet: 'popup'
   }
 ];

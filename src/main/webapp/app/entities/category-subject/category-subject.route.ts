@@ -19,14 +19,16 @@ export const categorySubjectRoute: Routes = [
     data: {
         authorities: ['ROLE_USER'],
         pageTitle: 'kavsirApp.categorySubject.home.title'
-    }
+    },
+    canActivate: [UserRouteAccessService]
   }, {
     path: 'category-subject/:id',
     component: CategorySubjectDetailComponent,
     data: {
         authorities: ['ROLE_USER'],
         pageTitle: 'kavsirApp.categorySubject.home.title'
-    }
+    },
+    canActivate: [UserRouteAccessService]
   }
 ];
 
@@ -38,6 +40,7 @@ export const categorySubjectPopupRoute: Routes = [
         authorities: ['ROLE_USER'],
         pageTitle: 'kavsirApp.categorySubject.home.title'
     },
+    canActivate: [UserRouteAccessService],
     outlet: 'popup'
   },
   {
@@ -47,6 +50,7 @@ export const categorySubjectPopupRoute: Routes = [
         authorities: ['ROLE_USER'],
         pageTitle: 'kavsirApp.categorySubject.home.title'
     },
+    canActivate: [UserRouteAccessService],
     outlet: 'popup'
   },
   {
@@ -56,6 +60,7 @@ export const categorySubjectPopupRoute: Routes = [
         authorities: ['ROLE_USER'],
         pageTitle: 'kavsirApp.categorySubject.home.title'
     },
+    canActivate: [UserRouteAccessService],
     outlet: 'popup'
   }
 ];

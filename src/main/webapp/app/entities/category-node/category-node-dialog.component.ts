@@ -12,6 +12,7 @@ import { QuestionTrueFalse, QuestionTrueFalseService } from '../question-true-fa
 import { QuestionChoice, QuestionChoiceService } from '../question-choice';
 import { QuestionEssay, QuestionEssayService } from '../question-essay';
 import { QuestionGroup, QuestionGroupService } from '../question-group';
+
 @Component({
     selector: 'jhi-category-node-dialog',
     templateUrl: './category-node-dialog.component.html'
@@ -64,11 +65,11 @@ export class CategoryNodeDialogComponent implements OnInit {
         if (this.categoryNode.id !== undefined) {
             this.categoryNodeService.update(this.categoryNode)
                 .subscribe((res: CategoryNode) =>
-                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
+                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
         } else {
             this.categoryNodeService.create(this.categoryNode)
                 .subscribe((res: CategoryNode) =>
-                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
+                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
         }
     }
 
@@ -79,6 +80,11 @@ export class CategoryNodeDialogComponent implements OnInit {
     }
 
     private onSaveError (error) {
+        try {
+            error.json();
+        } catch (exception) {
+            error.message = error.text();
+        }
         this.isSaving = false;
         this.onError(error);
     }
@@ -138,7 +144,6 @@ export class CategoryNodePopupComponent implements OnInit, OnDestroy {
                 this.modalRef = this.categoryNodePopupService
                     .open(CategoryNodeDialogComponent);
             }
-
         });
     }
 

@@ -8,6 +8,7 @@ import { EventManager, AlertService, JhiLanguageService } from 'ng-jhipster';
 import { CategoryPublisher } from './category-publisher.model';
 import { CategoryPublisherPopupService } from './category-publisher-popup.service';
 import { CategoryPublisherService } from './category-publisher.service';
+
 @Component({
     selector: 'jhi-category-publisher-dialog',
     templateUrl: './category-publisher-dialog.component.html'
@@ -40,11 +41,11 @@ export class CategoryPublisherDialogComponent implements OnInit {
         if (this.categoryPublisher.id !== undefined) {
             this.categoryPublisherService.update(this.categoryPublisher)
                 .subscribe((res: CategoryPublisher) =>
-                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
+                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
         } else {
             this.categoryPublisherService.create(this.categoryPublisher)
                 .subscribe((res: CategoryPublisher) =>
-                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
+                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
         }
     }
 
@@ -55,6 +56,11 @@ export class CategoryPublisherDialogComponent implements OnInit {
     }
 
     private onSaveError (error) {
+        try {
+            error.json();
+        } catch (exception) {
+            error.message = error.text();
+        }
         this.isSaving = false;
         this.onError(error);
     }
@@ -87,7 +93,6 @@ export class CategoryPublisherPopupComponent implements OnInit, OnDestroy {
                 this.modalRef = this.categoryPublisherPopupService
                     .open(CategoryPublisherDialogComponent);
             }
-
         });
     }
 

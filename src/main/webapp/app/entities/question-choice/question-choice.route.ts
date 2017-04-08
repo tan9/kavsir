@@ -19,14 +19,16 @@ export const questionChoiceRoute: Routes = [
     data: {
         authorities: ['ROLE_USER'],
         pageTitle: 'kavsirApp.questionChoice.home.title'
-    }
+    },
+    canActivate: [UserRouteAccessService]
   }, {
     path: 'question-choice/:id',
     component: QuestionChoiceDetailComponent,
     data: {
         authorities: ['ROLE_USER'],
         pageTitle: 'kavsirApp.questionChoice.home.title'
-    }
+    },
+    canActivate: [UserRouteAccessService]
   }
 ];
 
@@ -38,6 +40,7 @@ export const questionChoicePopupRoute: Routes = [
         authorities: ['ROLE_USER'],
         pageTitle: 'kavsirApp.questionChoice.home.title'
     },
+    canActivate: [UserRouteAccessService],
     outlet: 'popup'
   },
   {
@@ -47,6 +50,7 @@ export const questionChoicePopupRoute: Routes = [
         authorities: ['ROLE_USER'],
         pageTitle: 'kavsirApp.questionChoice.home.title'
     },
+    canActivate: [UserRouteAccessService],
     outlet: 'popup'
   },
   {
@@ -56,6 +60,7 @@ export const questionChoicePopupRoute: Routes = [
         authorities: ['ROLE_USER'],
         pageTitle: 'kavsirApp.questionChoice.home.title'
     },
+    canActivate: [UserRouteAccessService],
     outlet: 'popup'
   }
 ];

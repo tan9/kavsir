@@ -1,6 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { JhiLanguageService } from 'ng-jhipster';
+import { Subscription } from 'rxjs/Rx';
+import { EventManager , JhiLanguageService  } from 'ng-jhipster';
+
 import { QuestionTrueFalse } from './question-true-false.model';
 import { QuestionTrueFalseService } from './question-true-false.service';
 
@@ -12,8 +14,10 @@ export class QuestionTrueFalseDetailComponent implements OnInit, OnDestroy {
 
     questionTrueFalse: QuestionTrueFalse;
     private subscription: any;
+    private eventSubscriber: Subscription;
 
     constructor(
+        private eventManager: EventManager,
         private jhiLanguageService: JhiLanguageService,
         private questionTrueFalseService: QuestionTrueFalseService,
         private route: ActivatedRoute
@@ -25,6 +29,7 @@ export class QuestionTrueFalseDetailComponent implements OnInit, OnDestroy {
         this.subscription = this.route.params.subscribe(params => {
             this.load(params['id']);
         });
+        this.registerChangeInQuestionTrueFalses();
     }
 
     load (id) {
@@ -38,6 +43,11 @@ export class QuestionTrueFalseDetailComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
+        this.eventManager.destroy(this.eventSubscriber);
+    }
+
+    registerChangeInQuestionTrueFalses() {
+        this.eventSubscriber = this.eventManager.subscribe('questionTrueFalseListModification', response => this.load(this.questionTrueFalse.id));
     }
 
 }

@@ -8,6 +8,7 @@ import { EventManager, AlertService, JhiLanguageService } from 'ng-jhipster';
 import { CategoryGrade } from './category-grade.model';
 import { CategoryGradePopupService } from './category-grade-popup.service';
 import { CategoryGradeService } from './category-grade.service';
+
 @Component({
     selector: 'jhi-category-grade-dialog',
     templateUrl: './category-grade-dialog.component.html'
@@ -40,11 +41,11 @@ export class CategoryGradeDialogComponent implements OnInit {
         if (this.categoryGrade.id !== undefined) {
             this.categoryGradeService.update(this.categoryGrade)
                 .subscribe((res: CategoryGrade) =>
-                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
+                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
         } else {
             this.categoryGradeService.create(this.categoryGrade)
                 .subscribe((res: CategoryGrade) =>
-                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
+                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
         }
     }
 
@@ -55,6 +56,11 @@ export class CategoryGradeDialogComponent implements OnInit {
     }
 
     private onSaveError (error) {
+        try {
+            error.json();
+        } catch (exception) {
+            error.message = error.text();
+        }
         this.isSaving = false;
         this.onError(error);
     }
@@ -87,7 +93,6 @@ export class CategoryGradePopupComponent implements OnInit, OnDestroy {
                 this.modalRef = this.categoryGradePopupService
                     .open(CategoryGradeDialogComponent);
             }
-
         });
     }
 

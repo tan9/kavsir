@@ -1,6 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { JhiLanguageService } from 'ng-jhipster';
+import { Subscription } from 'rxjs/Rx';
+import { EventManager , JhiLanguageService  } from 'ng-jhipster';
+
 import { CategorySubject } from './category-subject.model';
 import { CategorySubjectService } from './category-subject.service';
 
@@ -12,8 +14,10 @@ export class CategorySubjectDetailComponent implements OnInit, OnDestroy {
 
     categorySubject: CategorySubject;
     private subscription: any;
+    private eventSubscriber: Subscription;
 
     constructor(
+        private eventManager: EventManager,
         private jhiLanguageService: JhiLanguageService,
         private categorySubjectService: CategorySubjectService,
         private route: ActivatedRoute
@@ -25,6 +29,7 @@ export class CategorySubjectDetailComponent implements OnInit, OnDestroy {
         this.subscription = this.route.params.subscribe(params => {
             this.load(params['id']);
         });
+        this.registerChangeInCategorySubjects();
     }
 
     load (id) {
@@ -38,6 +43,11 @@ export class CategorySubjectDetailComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
+        this.eventManager.destroy(this.eventSubscriber);
+    }
+
+    registerChangeInCategorySubjects() {
+        this.eventSubscriber = this.eventManager.subscribe('categorySubjectListModification', response => this.load(this.categorySubject.id));
     }
 
 }

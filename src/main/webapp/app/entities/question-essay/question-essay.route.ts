@@ -19,14 +19,16 @@ export const questionEssayRoute: Routes = [
     data: {
         authorities: ['ROLE_USER'],
         pageTitle: 'kavsirApp.questionEssay.home.title'
-    }
+    },
+    canActivate: [UserRouteAccessService]
   }, {
     path: 'question-essay/:id',
     component: QuestionEssayDetailComponent,
     data: {
         authorities: ['ROLE_USER'],
         pageTitle: 'kavsirApp.questionEssay.home.title'
-    }
+    },
+    canActivate: [UserRouteAccessService]
   }
 ];
 
@@ -38,6 +40,7 @@ export const questionEssayPopupRoute: Routes = [
         authorities: ['ROLE_USER'],
         pageTitle: 'kavsirApp.questionEssay.home.title'
     },
+    canActivate: [UserRouteAccessService],
     outlet: 'popup'
   },
   {
@@ -47,6 +50,7 @@ export const questionEssayPopupRoute: Routes = [
         authorities: ['ROLE_USER'],
         pageTitle: 'kavsirApp.questionEssay.home.title'
     },
+    canActivate: [UserRouteAccessService],
     outlet: 'popup'
   },
   {
@@ -56,6 +60,7 @@ export const questionEssayPopupRoute: Routes = [
         authorities: ['ROLE_USER'],
         pageTitle: 'kavsirApp.questionEssay.home.title'
     },
+    canActivate: [UserRouteAccessService],
     outlet: 'popup'
   }
 ];

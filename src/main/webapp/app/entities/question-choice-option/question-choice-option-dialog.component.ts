@@ -10,6 +10,7 @@ import { QuestionChoiceOptionPopupService } from './question-choice-option-popup
 import { QuestionChoiceOptionService } from './question-choice-option.service';
 import { QuestionChoice, QuestionChoiceService } from '../question-choice';
 import { ResourceImage, ResourceImageService } from '../resource-image';
+
 @Component({
     selector: 'jhi-question-choice-option-dialog',
     templateUrl: './question-choice-option-dialog.component.html'
@@ -52,11 +53,11 @@ export class QuestionChoiceOptionDialogComponent implements OnInit {
         if (this.questionChoiceOption.id !== undefined) {
             this.questionChoiceOptionService.update(this.questionChoiceOption)
                 .subscribe((res: QuestionChoiceOption) =>
-                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
+                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
         } else {
             this.questionChoiceOptionService.create(this.questionChoiceOption)
                 .subscribe((res: QuestionChoiceOption) =>
-                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
+                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
         }
     }
 
@@ -67,6 +68,11 @@ export class QuestionChoiceOptionDialogComponent implements OnInit {
     }
 
     private onSaveError (error) {
+        try {
+            error.json();
+        } catch (exception) {
+            error.message = error.text();
+        }
         this.isSaving = false;
         this.onError(error);
     }
@@ -118,7 +124,6 @@ export class QuestionChoiceOptionPopupComponent implements OnInit, OnDestroy {
                 this.modalRef = this.questionChoiceOptionPopupService
                     .open(QuestionChoiceOptionDialogComponent);
             }
-
         });
     }
 

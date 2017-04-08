@@ -19,14 +19,16 @@ export const questionTrueFalseRoute: Routes = [
     data: {
         authorities: ['ROLE_USER'],
         pageTitle: 'kavsirApp.questionTrueFalse.home.title'
-    }
+    },
+    canActivate: [UserRouteAccessService]
   }, {
     path: 'question-true-false/:id',
     component: QuestionTrueFalseDetailComponent,
     data: {
         authorities: ['ROLE_USER'],
         pageTitle: 'kavsirApp.questionTrueFalse.home.title'
-    }
+    },
+    canActivate: [UserRouteAccessService]
   }
 ];
 
@@ -38,6 +40,7 @@ export const questionTrueFalsePopupRoute: Routes = [
         authorities: ['ROLE_USER'],
         pageTitle: 'kavsirApp.questionTrueFalse.home.title'
     },
+    canActivate: [UserRouteAccessService],
     outlet: 'popup'
   },
   {
@@ -47,6 +50,7 @@ export const questionTrueFalsePopupRoute: Routes = [
         authorities: ['ROLE_USER'],
         pageTitle: 'kavsirApp.questionTrueFalse.home.title'
     },
+    canActivate: [UserRouteAccessService],
     outlet: 'popup'
   },
   {
@@ -56,6 +60,7 @@ export const questionTrueFalsePopupRoute: Routes = [
         authorities: ['ROLE_USER'],
         pageTitle: 'kavsirApp.questionTrueFalse.home.title'
     },
+    canActivate: [UserRouteAccessService],
     outlet: 'popup'
   }
 ];

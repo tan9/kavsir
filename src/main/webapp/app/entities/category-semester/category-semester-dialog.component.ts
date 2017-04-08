@@ -8,6 +8,7 @@ import { EventManager, AlertService, JhiLanguageService } from 'ng-jhipster';
 import { CategorySemester } from './category-semester.model';
 import { CategorySemesterPopupService } from './category-semester-popup.service';
 import { CategorySemesterService } from './category-semester.service';
+
 @Component({
     selector: 'jhi-category-semester-dialog',
     templateUrl: './category-semester-dialog.component.html'
@@ -40,11 +41,11 @@ export class CategorySemesterDialogComponent implements OnInit {
         if (this.categorySemester.id !== undefined) {
             this.categorySemesterService.update(this.categorySemester)
                 .subscribe((res: CategorySemester) =>
-                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
+                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
         } else {
             this.categorySemesterService.create(this.categorySemester)
                 .subscribe((res: CategorySemester) =>
-                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
+                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
         }
     }
 
@@ -55,6 +56,11 @@ export class CategorySemesterDialogComponent implements OnInit {
     }
 
     private onSaveError (error) {
+        try {
+            error.json();
+        } catch (exception) {
+            error.message = error.text();
+        }
         this.isSaving = false;
         this.onError(error);
     }
@@ -87,7 +93,6 @@ export class CategorySemesterPopupComponent implements OnInit, OnDestroy {
                 this.modalRef = this.categorySemesterPopupService
                     .open(CategorySemesterDialogComponent);
             }
-
         });
     }
 

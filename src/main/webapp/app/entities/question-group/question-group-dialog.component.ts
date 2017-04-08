@@ -8,10 +8,8 @@ import { EventManager, AlertService, JhiLanguageService } from 'ng-jhipster';
 import { QuestionGroup } from './question-group.model';
 import { QuestionGroupPopupService } from './question-group-popup.service';
 import { QuestionGroupService } from './question-group.service';
-import { QuestionChoice, QuestionChoiceService } from '../question-choice';
-import { QuestionTrueFalse, QuestionTrueFalseService } from '../question-true-false';
-import { QuestionEssay, QuestionEssayService } from '../question-essay';
 import { CategoryNode, CategoryNodeService } from '../category-node';
+
 @Component({
     selector: 'jhi-question-group-dialog',
     templateUrl: './question-group-dialog.component.html'
@@ -22,21 +20,12 @@ export class QuestionGroupDialogComponent implements OnInit {
     authorities: any[];
     isSaving: boolean;
 
-    questionchoices: QuestionChoice[];
-
-    questiontruefalses: QuestionTrueFalse[];
-
-    questionessays: QuestionEssay[];
-
     categorynodes: CategoryNode[];
     constructor(
         public activeModal: NgbActiveModal,
         private jhiLanguageService: JhiLanguageService,
         private alertService: AlertService,
         private questionGroupService: QuestionGroupService,
-        private questionChoiceService: QuestionChoiceService,
-        private questionTrueFalseService: QuestionTrueFalseService,
-        private questionEssayService: QuestionEssayService,
         private categoryNodeService: CategoryNodeService,
         private eventManager: EventManager
     ) {
@@ -46,12 +35,6 @@ export class QuestionGroupDialogComponent implements OnInit {
     ngOnInit() {
         this.isSaving = false;
         this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
-        this.questionChoiceService.query().subscribe(
-            (res: Response) => { this.questionchoices = res.json(); }, (res: Response) => this.onError(res.json()));
-        this.questionTrueFalseService.query().subscribe(
-            (res: Response) => { this.questiontruefalses = res.json(); }, (res: Response) => this.onError(res.json()));
-        this.questionEssayService.query().subscribe(
-            (res: Response) => { this.questionessays = res.json(); }, (res: Response) => this.onError(res.json()));
         this.categoryNodeService.query().subscribe(
             (res: Response) => { this.categorynodes = res.json(); }, (res: Response) => this.onError(res.json()));
     }
@@ -64,11 +47,11 @@ export class QuestionGroupDialogComponent implements OnInit {
         if (this.questionGroup.id !== undefined) {
             this.questionGroupService.update(this.questionGroup)
                 .subscribe((res: QuestionGroup) =>
-                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
+                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
         } else {
             this.questionGroupService.create(this.questionGroup)
                 .subscribe((res: QuestionGroup) =>
-                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
+                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
         }
     }
 
@@ -79,24 +62,17 @@ export class QuestionGroupDialogComponent implements OnInit {
     }
 
     private onSaveError (error) {
+        try {
+            error.json();
+        } catch (exception) {
+            error.message = error.text();
+        }
         this.isSaving = false;
         this.onError(error);
     }
 
     private onError (error) {
         this.alertService.error(error.message, null, null);
-    }
-
-    trackQuestionChoiceById(index: number, item: QuestionChoice) {
-        return item.id;
-    }
-
-    trackQuestionTrueFalseById(index: number, item: QuestionTrueFalse) {
-        return item.id;
-    }
-
-    trackQuestionEssayById(index: number, item: QuestionEssay) {
-        return item.id;
     }
 
     trackCategoryNodeById(index: number, item: CategoryNode) {
@@ -138,7 +114,6 @@ export class QuestionGroupPopupComponent implements OnInit, OnDestroy {
                 this.modalRef = this.questionGroupPopupService
                     .open(QuestionGroupDialogComponent);
             }
-
         });
     }
 

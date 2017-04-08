@@ -12,6 +12,7 @@ import { QuestionChoice, QuestionChoiceService } from '../question-choice';
 import { QuestionChoiceOption, QuestionChoiceOptionService } from '../question-choice-option';
 import { QuestionTrueFalse, QuestionTrueFalseService } from '../question-true-false';
 import { QuestionEssay, QuestionEssayService } from '../question-essay';
+
 @Component({
     selector: 'jhi-resource-image-dialog',
     templateUrl: './resource-image-dialog.component.html'
@@ -85,11 +86,11 @@ export class ResourceImageDialogComponent implements OnInit {
         if (this.resourceImage.id !== undefined) {
             this.resourceImageService.update(this.resourceImage)
                 .subscribe((res: ResourceImage) =>
-                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
+                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
         } else {
             this.resourceImageService.create(this.resourceImage)
                 .subscribe((res: ResourceImage) =>
-                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
+                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
         }
     }
 
@@ -100,6 +101,11 @@ export class ResourceImageDialogComponent implements OnInit {
     }
 
     private onSaveError (error) {
+        try {
+            error.json();
+        } catch (exception) {
+            error.message = error.text();
+        }
         this.isSaving = false;
         this.onError(error);
     }
@@ -159,7 +165,6 @@ export class ResourceImagePopupComponent implements OnInit, OnDestroy {
                 this.modalRef = this.resourceImagePopupService
                     .open(ResourceImageDialogComponent);
             }
-
         });
     }
 

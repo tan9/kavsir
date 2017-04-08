@@ -34,7 +34,7 @@ public class CategoryNode implements Serializable {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "type", nullable = false)
+    @Column(name = "jhi_type", nullable = false)
     private CategoryType type;
 
     /**

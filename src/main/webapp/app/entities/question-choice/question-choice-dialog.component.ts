@@ -8,10 +8,10 @@ import { EventManager, AlertService, JhiLanguageService } from 'ng-jhipster';
 import { QuestionChoice } from './question-choice.model';
 import { QuestionChoicePopupService } from './question-choice-popup.service';
 import { QuestionChoiceService } from './question-choice.service';
-import { QuestionChoiceOption, QuestionChoiceOptionService } from '../question-choice-option';
 import { CategoryNode, CategoryNodeService } from '../category-node';
 import { ResourceImage, ResourceImageService } from '../resource-image';
 import { QuestionGroup, QuestionGroupService } from '../question-group';
+
 @Component({
     selector: 'jhi-question-choice-dialog',
     templateUrl: './question-choice-dialog.component.html'
@@ -21,8 +21,6 @@ export class QuestionChoiceDialogComponent implements OnInit {
     questionChoice: QuestionChoice;
     authorities: any[];
     isSaving: boolean;
-
-    questionchoiceoptions: QuestionChoiceOption[];
 
     categorynodes: CategoryNode[];
 
@@ -34,7 +32,6 @@ export class QuestionChoiceDialogComponent implements OnInit {
         private jhiLanguageService: JhiLanguageService,
         private alertService: AlertService,
         private questionChoiceService: QuestionChoiceService,
-        private questionChoiceOptionService: QuestionChoiceOptionService,
         private categoryNodeService: CategoryNodeService,
         private resourceImageService: ResourceImageService,
         private questionGroupService: QuestionGroupService,
@@ -46,8 +43,6 @@ export class QuestionChoiceDialogComponent implements OnInit {
     ngOnInit() {
         this.isSaving = false;
         this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
-        this.questionChoiceOptionService.query().subscribe(
-            (res: Response) => { this.questionchoiceoptions = res.json(); }, (res: Response) => this.onError(res.json()));
         this.categoryNodeService.query().subscribe(
             (res: Response) => { this.categorynodes = res.json(); }, (res: Response) => this.onError(res.json()));
         this.resourceImageService.query().subscribe(
@@ -64,11 +59,11 @@ export class QuestionChoiceDialogComponent implements OnInit {
         if (this.questionChoice.id !== undefined) {
             this.questionChoiceService.update(this.questionChoice)
                 .subscribe((res: QuestionChoice) =>
-                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
+                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
         } else {
             this.questionChoiceService.create(this.questionChoice)
                 .subscribe((res: QuestionChoice) =>
-                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
+                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
         }
     }
 
@@ -79,16 +74,17 @@ export class QuestionChoiceDialogComponent implements OnInit {
     }
 
     private onSaveError (error) {
+        try {
+            error.json();
+        } catch (exception) {
+            error.message = error.text();
+        }
         this.isSaving = false;
         this.onError(error);
     }
 
     private onError (error) {
         this.alertService.error(error.message, null, null);
-    }
-
-    trackQuestionChoiceOptionById(index: number, item: QuestionChoiceOption) {
-        return item.id;
     }
 
     trackCategoryNodeById(index: number, item: CategoryNode) {
@@ -138,7 +134,6 @@ export class QuestionChoicePopupComponent implements OnInit, OnDestroy {
                 this.modalRef = this.questionChoicePopupService
                     .open(QuestionChoiceDialogComponent);
             }
-
         });
     }
 

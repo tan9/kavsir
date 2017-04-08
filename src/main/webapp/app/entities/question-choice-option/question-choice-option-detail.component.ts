@@ -1,6 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { JhiLanguageService } from 'ng-jhipster';
+import { Subscription } from 'rxjs/Rx';
+import { EventManager , JhiLanguageService  } from 'ng-jhipster';
+
 import { QuestionChoiceOption } from './question-choice-option.model';
 import { QuestionChoiceOptionService } from './question-choice-option.service';
 
@@ -12,8 +14,10 @@ export class QuestionChoiceOptionDetailComponent implements OnInit, OnDestroy {
 
     questionChoiceOption: QuestionChoiceOption;
     private subscription: any;
+    private eventSubscriber: Subscription;
 
     constructor(
+        private eventManager: EventManager,
         private jhiLanguageService: JhiLanguageService,
         private questionChoiceOptionService: QuestionChoiceOptionService,
         private route: ActivatedRoute
@@ -25,6 +29,7 @@ export class QuestionChoiceOptionDetailComponent implements OnInit, OnDestroy {
         this.subscription = this.route.params.subscribe(params => {
             this.load(params['id']);
         });
+        this.registerChangeInQuestionChoiceOptions();
     }
 
     load (id) {
@@ -38,6 +43,11 @@ export class QuestionChoiceOptionDetailComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
+        this.eventManager.destroy(this.eventSubscriber);
+    }
+
+    registerChangeInQuestionChoiceOptions() {
+        this.eventSubscriber = this.eventManager.subscribe('questionChoiceOptionListModification', response => this.load(this.questionChoiceOption.id));
     }
 
 }

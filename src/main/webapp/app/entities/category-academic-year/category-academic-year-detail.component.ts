@@ -1,6 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { JhiLanguageService } from 'ng-jhipster';
+import { Subscription } from 'rxjs/Rx';
+import { EventManager , JhiLanguageService  } from 'ng-jhipster';
+
 import { CategoryAcademicYear } from './category-academic-year.model';
 import { CategoryAcademicYearService } from './category-academic-year.service';
 
@@ -12,8 +14,10 @@ export class CategoryAcademicYearDetailComponent implements OnInit, OnDestroy {
 
     categoryAcademicYear: CategoryAcademicYear;
     private subscription: any;
+    private eventSubscriber: Subscription;
 
     constructor(
+        private eventManager: EventManager,
         private jhiLanguageService: JhiLanguageService,
         private categoryAcademicYearService: CategoryAcademicYearService,
         private route: ActivatedRoute
@@ -25,6 +29,7 @@ export class CategoryAcademicYearDetailComponent implements OnInit, OnDestroy {
         this.subscription = this.route.params.subscribe(params => {
             this.load(params['id']);
         });
+        this.registerChangeInCategoryAcademicYears();
     }
 
     load (id) {
@@ -38,6 +43,11 @@ export class CategoryAcademicYearDetailComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
+        this.eventManager.destroy(this.eventSubscriber);
+    }
+
+    registerChangeInCategoryAcademicYears() {
+        this.eventSubscriber = this.eventManager.subscribe('categoryAcademicYearListModification', response => this.load(this.categoryAcademicYear.id));
     }
 
 }

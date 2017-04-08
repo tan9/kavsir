@@ -8,6 +8,7 @@ import { EventManager, AlertService, JhiLanguageService } from 'ng-jhipster';
 import { CategoryAcademicYear } from './category-academic-year.model';
 import { CategoryAcademicYearPopupService } from './category-academic-year-popup.service';
 import { CategoryAcademicYearService } from './category-academic-year.service';
+
 @Component({
     selector: 'jhi-category-academic-year-dialog',
     templateUrl: './category-academic-year-dialog.component.html'
@@ -40,11 +41,11 @@ export class CategoryAcademicYearDialogComponent implements OnInit {
         if (this.categoryAcademicYear.id !== undefined) {
             this.categoryAcademicYearService.update(this.categoryAcademicYear)
                 .subscribe((res: CategoryAcademicYear) =>
-                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
+                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
         } else {
             this.categoryAcademicYearService.create(this.categoryAcademicYear)
                 .subscribe((res: CategoryAcademicYear) =>
-                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
+                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
         }
     }
 
@@ -55,6 +56,11 @@ export class CategoryAcademicYearDialogComponent implements OnInit {
     }
 
     private onSaveError (error) {
+        try {
+            error.json();
+        } catch (exception) {
+            error.message = error.text();
+        }
         this.isSaving = false;
         this.onError(error);
     }
@@ -87,7 +93,6 @@ export class CategoryAcademicYearPopupComponent implements OnInit, OnDestroy {
                 this.modalRef = this.categoryAcademicYearPopupService
                     .open(CategoryAcademicYearDialogComponent);
             }
-
         });
     }
 

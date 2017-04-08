@@ -1,5 +1,3 @@
-
-
 <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
 
     <div class="modal-header">
@@ -29,7 +27,6 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="kavsirApp.resourceImage.content" for="field_content">Content</label>
             <div>
-                <img [src]="'data:' + resourceImage.contentContentType + ';base64,' + resourceImage.content" style="max-height: 100px;" *ngIf="resourceImage.content" alt="resourceImage image"/>
                 <div *ngIf="resourceImage.content" class="form-text text-danger clearfix">
                     <span class="pull-left">{{resourceImage.contentContentType}}, {{byteSize(resourceImage.content)}}</span>
                     <button type="button" (click)="resourceImage.content=null;resourceImage.contentContentType=null;"
@@ -37,7 +34,7 @@
                         <span class="fa fa-times"></span>
                     </button>
                 </div>
-                <input type="file" (change)="setFileData($event, resourceImage, 'content', true)" accept="image/*" jhiTranslate="entity.action.addimage"/>
+                <input type="file" (change)="setFileData($event, resourceImage, 'content', false)" jhiTranslate="entity.action.addblob"/>
             </div>
             <input type="hidden" class="form-control" name="content" id="field_content"
                 [(ngModel)]="resourceImage.content"

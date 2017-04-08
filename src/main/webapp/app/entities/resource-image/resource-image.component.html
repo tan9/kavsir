@@ -39,12 +39,7 @@
             <tr *ngFor="let resourceImage of resourceImages ;trackBy: trackId">
                 <td><a [routerLink]="['../resource-image', resourceImage.id ]">{{resourceImage.id}}</a></td>
                 <td>{{resourceImage.name}}</td>
-                <td>
-                    <a *ngIf="resourceImage.content" (click)="openFile(resourceImage.contentContentType, resourceImage.content)">
-                        <img [src]="'data:' + resourceImage.contentContentType + ';base64,' + resourceImage.content" style="max-height: 30px;" alt="resourceImage image"/>
-                    </a>
-                    <span *ngIf="resourceImage.content">{{resourceImage.contentContentType}}, {{byteSize(resourceImage.content)}}</span>
-                </td>
+                <td>{{resourceImage.content}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

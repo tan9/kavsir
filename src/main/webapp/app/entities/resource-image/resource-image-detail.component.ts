@@ -1,6 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { JhiLanguageService, DataUtils } from 'ng-jhipster';
+import { Subscription } from 'rxjs/Rx';
+import { EventManager , JhiLanguageService , DataUtils } from 'ng-jhipster';
+
 import { ResourceImage } from './resource-image.model';
 import { ResourceImageService } from './resource-image.service';
 
@@ -12,8 +14,10 @@ export class ResourceImageDetailComponent implements OnInit, OnDestroy {
 
     resourceImage: ResourceImage;
     private subscription: any;
+    private eventSubscriber: Subscription;
 
     constructor(
+        private eventManager: EventManager,
         private jhiLanguageService: JhiLanguageService,
         private dataUtils: DataUtils,
         private resourceImageService: ResourceImageService,
@@ -26,6 +30,7 @@ export class ResourceImageDetailComponent implements OnInit, OnDestroy {
         this.subscription = this.route.params.subscribe(params => {
             this.load(params['id']);
         });
+        this.registerChangeInResourceImages();
     }
 
     load (id) {
@@ -46,6 +51,11 @@ export class ResourceImageDetailComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
+        this.eventManager.destroy(this.eventSubscriber);
+    }
+
+    registerChangeInResourceImages() {
+        this.eventSubscriber = this.eventManager.subscribe('resourceImageListModification', response => this.load(this.resourceImage.id));
     }
 
 }

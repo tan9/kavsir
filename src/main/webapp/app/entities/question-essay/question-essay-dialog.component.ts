@@ -11,6 +11,7 @@ import { QuestionEssayService } from './question-essay.service';
 import { CategoryNode, CategoryNodeService } from '../category-node';
 import { ResourceImage, ResourceImageService } from '../resource-image';
 import { QuestionGroup, QuestionGroupService } from '../question-group';
+
 @Component({
     selector: 'jhi-question-essay-dialog',
     templateUrl: './question-essay-dialog.component.html'
@@ -58,11 +59,11 @@ export class QuestionEssayDialogComponent implements OnInit {
         if (this.questionEssay.id !== undefined) {
             this.questionEssayService.update(this.questionEssay)
                 .subscribe((res: QuestionEssay) =>
-                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
+                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
         } else {
             this.questionEssayService.create(this.questionEssay)
                 .subscribe((res: QuestionEssay) =>
-                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
+                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
         }
     }
 
@@ -73,6 +74,11 @@ export class QuestionEssayDialogComponent implements OnInit {
     }
 
     private onSaveError (error) {
+        try {
+            error.json();
+        } catch (exception) {
+            error.message = error.text();
+        }
         this.isSaving = false;
         this.onError(error);
     }
@@ -128,7 +134,6 @@ export class QuestionEssayPopupComponent implements OnInit, OnDestroy {
                 this.modalRef = this.questionEssayPopupService
                     .open(QuestionEssayDialogComponent);
             }
-
         });
     }
 

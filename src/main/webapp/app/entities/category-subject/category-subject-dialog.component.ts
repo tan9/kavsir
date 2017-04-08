@@ -8,6 +8,7 @@ import { EventManager, AlertService, JhiLanguageService } from 'ng-jhipster';
 import { CategorySubject } from './category-subject.model';
 import { CategorySubjectPopupService } from './category-subject-popup.service';
 import { CategorySubjectService } from './category-subject.service';
+
 @Component({
     selector: 'jhi-category-subject-dialog',
     templateUrl: './category-subject-dialog.component.html'
@@ -40,11 +41,11 @@ export class CategorySubjectDialogComponent implements OnInit {
         if (this.categorySubject.id !== undefined) {
             this.categorySubjectService.update(this.categorySubject)
                 .subscribe((res: CategorySubject) =>
-                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
+                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
         } else {
             this.categorySubjectService.create(this.categorySubject)
                 .subscribe((res: CategorySubject) =>
-                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res.json()));
+                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
         }
     }
 
@@ -55,6 +56,11 @@ export class CategorySubjectDialogComponent implements OnInit {
     }
 
     private onSaveError (error) {
+        try {
+            error.json();
+        } catch (exception) {
+            error.message = error.text();
+        }
         this.isSaving = false;
         this.onError(error);
     }
@@ -87,7 +93,6 @@ export class CategorySubjectPopupComponent implements OnInit, OnDestroy {
                 this.modalRef = this.categorySubjectPopupService
                     .open(CategorySubjectDialogComponent);
             }
-
         });
     }
 

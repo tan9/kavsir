@@ -43,7 +43,6 @@
             "fieldName": "content",
             "javadoc": "圖檔",
             "fieldType": "byte[]",
-            "fieldTypeBlobContent": "image",
             "fieldValidateRules": [
                 "required"
             ]

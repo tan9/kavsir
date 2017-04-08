@@ -1,6 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { JhiLanguageService } from 'ng-jhipster';
+import { Subscription } from 'rxjs/Rx';
+import { EventManager , JhiLanguageService  } from 'ng-jhipster';
+
 import { QuestionGroup } from './question-group.model';
 import { QuestionGroupService } from './question-group.service';
 
@@ -12,8 +14,10 @@ export class QuestionGroupDetailComponent implements OnInit, OnDestroy {
 
     questionGroup: QuestionGroup;
     private subscription: any;
+    private eventSubscriber: Subscription;
 
     constructor(
+        private eventManager: EventManager,
         private jhiLanguageService: JhiLanguageService,
         private questionGroupService: QuestionGroupService,
         private route: ActivatedRoute
@@ -25,6 +29,7 @@ export class QuestionGroupDetailComponent implements OnInit, OnDestroy {
         this.subscription = this.route.params.subscribe(params => {
             this.load(params['id']);
         });
+        this.registerChangeInQuestionGroups();
     }
 
     load (id) {
@@ -38,6 +43,11 @@ export class QuestionGroupDetailComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
+        this.eventManager.destroy(this.eventSubscriber);
+    }
+
+    registerChangeInQuestionGroups() {
+        this.eventSubscriber = this.eventManager.subscribe('questionGroupListModification', response => this.load(this.questionGroup.id));
     }
 
 }

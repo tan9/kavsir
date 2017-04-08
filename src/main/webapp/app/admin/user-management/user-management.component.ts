@@ -32,7 +32,8 @@ export class UserMgmtComponent implements OnInit, OnDestroy {
         private parseLinks: ParseLinks,
         private alertService: AlertService,
         private principal: Principal,
-        private eventManager: EventManager,        private paginationUtil: PaginationUtil,
+        private eventManager: EventManager,
+        private paginationUtil: PaginationUtil,
         private paginationConfig: PaginationConfig,
         private activatedRoute: ActivatedRoute,
         private router: Router
@@ -60,7 +61,7 @@ export class UserMgmtComponent implements OnInit, OnDestroy {
     }
 
     registerChangeInUsers() {
-        this.eventManager.subscribe('userListModification', (response) => this.loadAll());
+        this.eventManager.subscribe('userListModification', response => this.loadAll());
     }
 
     setActive (user, isActivated) {

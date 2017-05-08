@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
-import { EventManager , JhiLanguageService  } from 'ng-jhipster';
+import { EventManager  } from 'ng-jhipster';
 
 import { CategorySemester } from './category-semester.model';
 import { CategorySemesterService } from './category-semester.service';
@@ -13,27 +13,25 @@ import { CategorySemesterService } from './category-semester.service';
 export class CategorySemesterDetailComponent implements OnInit, OnDestroy {
 
     categorySemester: CategorySemester;
-    private subscription: any;
+    private subscription: Subscription;
     private eventSubscriber: Subscription;
 
     constructor(
         private eventManager: EventManager,
-        private jhiLanguageService: JhiLanguageService,
         private categorySemesterService: CategorySemesterService,
         private route: ActivatedRoute
     ) {
-        this.jhiLanguageService.setLocations(['categorySemester']);
     }
 
     ngOnInit() {
-        this.subscription = this.route.params.subscribe(params => {
+        this.subscription = this.route.params.subscribe((params) => {
             this.load(params['id']);
         });
         this.registerChangeInCategorySemesters();
     }
 
-    load (id) {
-        this.categorySemesterService.find(id).subscribe(categorySemester => {
+    load(id) {
+        this.categorySemesterService.find(id).subscribe((categorySemester) => {
             this.categorySemester = categorySemester;
         });
     }
@@ -47,7 +45,9 @@ export class CategorySemesterDetailComponent implements OnInit, OnDestroy {
     }
 
     registerChangeInCategorySemesters() {
-        this.eventSubscriber = this.eventManager.subscribe('categorySemesterListModification', response => this.load(this.categorySemester.id));
+        this.eventSubscriber = this.eventManager.subscribe(
+            'categorySemesterListModification',
+            (response) => this.load(this.categorySemester.id)
+        );
     }
-
 }

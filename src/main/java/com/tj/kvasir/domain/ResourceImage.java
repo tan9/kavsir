@@ -226,24 +226,24 @@ public class ResourceImage implements Serializable {
             return false;
         }
         ResourceImage resourceImage = (ResourceImage) o;
-        if (resourceImage.id == null || id == null) {
+        if (resourceImage.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(id, resourceImage.id);
+        return Objects.equals(getId(), resourceImage.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "ResourceImage{" +
-            "id=" + id +
-            ", name='" + name + "'" +
-            ", content='" + content + "'" +
+            "id=" + getId() +
+            ", name='" + getName() + "'" +
+            ", content='" + getContent() + "'" +
             ", contentContentType='" + contentContentType + "'" +
-            '}';
+            "}";
     }
 }

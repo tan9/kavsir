@@ -20,7 +20,6 @@ categoryAcademicYears: CategoryAcademicYear[];
     currentSearch: string;
 
     constructor(
-        private jhiLanguageService: JhiLanguageService,
         private categoryAcademicYearService: CategoryAcademicYearService,
         private alertService: AlertService,
         private eventManager: EventManager,
@@ -28,7 +27,6 @@ categoryAcademicYears: CategoryAcademicYear[];
         private principal: Principal
     ) {
         this.currentSearch = activatedRoute.snapshot.params['search'] ? activatedRoute.snapshot.params['search'] : '';
-        this.jhiLanguageService.setLocations(['categoryAcademicYear']);
     }
 
     loadAll() {
@@ -50,7 +48,7 @@ categoryAcademicYears: CategoryAcademicYear[];
         );
     }
 
-    search (query) {
+    search(query) {
         if (!query) {
             return this.clear();
         }
@@ -74,18 +72,14 @@ categoryAcademicYears: CategoryAcademicYear[];
         this.eventManager.destroy(this.eventSubscriber);
     }
 
-    trackId (index: number, item: CategoryAcademicYear) {
+    trackId(index: number, item: CategoryAcademicYear) {
         return item.id;
     }
-
-
-
     registerChangeInCategoryAcademicYears() {
         this.eventSubscriber = this.eventManager.subscribe('categoryAcademicYearListModification', (response) => this.loadAll());
     }
 
-
-    private onError (error) {
+    private onError(error) {
         this.alertService.error(error.message, null, null);
     }
 }

@@ -20,7 +20,6 @@ questionGroups: QuestionGroup[];
     currentSearch: string;
 
     constructor(
-        private jhiLanguageService: JhiLanguageService,
         private questionGroupService: QuestionGroupService,
         private alertService: AlertService,
         private eventManager: EventManager,
@@ -28,7 +27,6 @@ questionGroups: QuestionGroup[];
         private principal: Principal
     ) {
         this.currentSearch = activatedRoute.snapshot.params['search'] ? activatedRoute.snapshot.params['search'] : '';
-        this.jhiLanguageService.setLocations(['questionGroup']);
     }
 
     loadAll() {
@@ -50,7 +48,7 @@ questionGroups: QuestionGroup[];
         );
     }
 
-    search (query) {
+    search(query) {
         if (!query) {
             return this.clear();
         }
@@ -74,18 +72,14 @@ questionGroups: QuestionGroup[];
         this.eventManager.destroy(this.eventSubscriber);
     }
 
-    trackId (index: number, item: QuestionGroup) {
+    trackId(index: number, item: QuestionGroup) {
         return item.id;
     }
-
-
-
     registerChangeInQuestionGroups() {
         this.eventSubscriber = this.eventManager.subscribe('questionGroupListModification', (response) => this.loadAll());
     }
 
-
-    private onError (error) {
+    private onError(error) {
         this.alertService.error(error.message, null, null);
     }
 }

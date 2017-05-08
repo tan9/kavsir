@@ -302,5 +302,14 @@ public class CategoryPublisherResourceIntTest {
     @Transactional
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(CategoryPublisher.class);
+        CategoryPublisher categoryPublisher1 = new CategoryPublisher();
+        categoryPublisher1.setId(1L);
+        CategoryPublisher categoryPublisher2 = new CategoryPublisher();
+        categoryPublisher2.setId(categoryPublisher1.getId());
+        assertThat(categoryPublisher1).isEqualTo(categoryPublisher2);
+        categoryPublisher2.setId(2L);
+        assertThat(categoryPublisher1).isNotEqualTo(categoryPublisher2);
+        categoryPublisher1.setId(null);
+        assertThat(categoryPublisher1).isNotEqualTo(categoryPublisher2);
     }
 }

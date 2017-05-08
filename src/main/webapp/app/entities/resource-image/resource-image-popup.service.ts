@@ -6,21 +6,21 @@ import { ResourceImageService } from './resource-image.service';
 @Injectable()
 export class ResourceImagePopupService {
     private isOpen = false;
-    constructor (
+    constructor(
         private modalService: NgbModal,
         private router: Router,
         private resourceImageService: ResourceImageService
 
     ) {}
 
-    open (component: Component, id?: number | any): NgbModalRef {
+    open(component: Component, id?: number | any): NgbModalRef {
         if (this.isOpen) {
             return;
         }
         this.isOpen = true;
 
         if (id) {
-            this.resourceImageService.find(id).subscribe(resourceImage => {
+            this.resourceImageService.find(id).subscribe((resourceImage) => {
                 this.resourceImageModalRef(component, resourceImage);
             });
         } else {
@@ -29,9 +29,9 @@ export class ResourceImagePopupService {
     }
 
     resourceImageModalRef(component: Component, resourceImage: ResourceImage): NgbModalRef {
-        let modalRef = this.modalService.open(component, { size: 'lg', backdrop: 'static'});
+        const modalRef = this.modalService.open(component, { size: 'lg', backdrop: 'static'});
         modalRef.componentInstance.resourceImage = resourceImage;
-        modalRef.result.then(result => {
+        modalRef.result.then((result) => {
             this.router.navigate([{ outlets: { popup: null }}], { replaceUrl: true });
             this.isOpen = false;
         }, (reason) => {

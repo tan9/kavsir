@@ -20,7 +20,6 @@ categorySemesters: CategorySemester[];
     currentSearch: string;
 
     constructor(
-        private jhiLanguageService: JhiLanguageService,
         private categorySemesterService: CategorySemesterService,
         private alertService: AlertService,
         private eventManager: EventManager,
@@ -28,7 +27,6 @@ categorySemesters: CategorySemester[];
         private principal: Principal
     ) {
         this.currentSearch = activatedRoute.snapshot.params['search'] ? activatedRoute.snapshot.params['search'] : '';
-        this.jhiLanguageService.setLocations(['categorySemester']);
     }
 
     loadAll() {
@@ -50,7 +48,7 @@ categorySemesters: CategorySemester[];
         );
     }
 
-    search (query) {
+    search(query) {
         if (!query) {
             return this.clear();
         }
@@ -74,18 +72,14 @@ categorySemesters: CategorySemester[];
         this.eventManager.destroy(this.eventSubscriber);
     }
 
-    trackId (index: number, item: CategorySemester) {
+    trackId(index: number, item: CategorySemester) {
         return item.id;
     }
-
-
-
     registerChangeInCategorySemesters() {
         this.eventSubscriber = this.eventManager.subscribe('categorySemesterListModification', (response) => this.loadAll());
     }
 
-
-    private onError (error) {
+    private onError(error) {
         this.alertService.error(error.message, null, null);
     }
 }

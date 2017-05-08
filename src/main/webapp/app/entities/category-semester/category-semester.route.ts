@@ -11,56 +11,55 @@ import { CategorySemesterDeletePopupComponent } from './category-semester-delete
 
 import { Principal } from '../../shared';
 
-
 export const categorySemesterRoute: Routes = [
-  {
-    path: 'category-semester',
-    component: CategorySemesterComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'kavsirApp.categorySemester.home.title'
-    },
-    canActivate: [UserRouteAccessService]
-  }, {
-    path: 'category-semester/:id',
-    component: CategorySemesterDetailComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'kavsirApp.categorySemester.home.title'
-    },
-    canActivate: [UserRouteAccessService]
-  }
+    {
+        path: 'category-semester',
+        component: CategorySemesterComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'kavsirApp.categorySemester.home.title'
+        },
+        canActivate: [UserRouteAccessService]
+    }, {
+        path: 'category-semester/:id',
+        component: CategorySemesterDetailComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'kavsirApp.categorySemester.home.title'
+        },
+        canActivate: [UserRouteAccessService]
+    }
 ];
 
 export const categorySemesterPopupRoute: Routes = [
-  {
-    path: 'category-semester-new',
-    component: CategorySemesterPopupComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'kavsirApp.categorySemester.home.title'
+    {
+        path: 'category-semester-new',
+        component: CategorySemesterPopupComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'kavsirApp.categorySemester.home.title'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
-  },
-  {
-    path: 'category-semester/:id/edit',
-    component: CategorySemesterPopupComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'kavsirApp.categorySemester.home.title'
+    {
+        path: 'category-semester/:id/edit',
+        component: CategorySemesterPopupComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'kavsirApp.categorySemester.home.title'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
-  },
-  {
-    path: 'category-semester/:id/delete',
-    component: CategorySemesterDeletePopupComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'kavsirApp.categorySemester.home.title'
-    },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
-  }
+    {
+        path: 'category-semester/:id/delete',
+        component: CategorySemesterDeletePopupComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'kavsirApp.categorySemester.home.title'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
+    }
 ];

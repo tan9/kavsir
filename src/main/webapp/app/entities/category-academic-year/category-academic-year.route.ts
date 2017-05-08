@@ -11,56 +11,55 @@ import { CategoryAcademicYearDeletePopupComponent } from './category-academic-ye
 
 import { Principal } from '../../shared';
 
-
 export const categoryAcademicYearRoute: Routes = [
-  {
-    path: 'category-academic-year',
-    component: CategoryAcademicYearComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'kavsirApp.categoryAcademicYear.home.title'
-    },
-    canActivate: [UserRouteAccessService]
-  }, {
-    path: 'category-academic-year/:id',
-    component: CategoryAcademicYearDetailComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'kavsirApp.categoryAcademicYear.home.title'
-    },
-    canActivate: [UserRouteAccessService]
-  }
+    {
+        path: 'category-academic-year',
+        component: CategoryAcademicYearComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'kavsirApp.categoryAcademicYear.home.title'
+        },
+        canActivate: [UserRouteAccessService]
+    }, {
+        path: 'category-academic-year/:id',
+        component: CategoryAcademicYearDetailComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'kavsirApp.categoryAcademicYear.home.title'
+        },
+        canActivate: [UserRouteAccessService]
+    }
 ];
 
 export const categoryAcademicYearPopupRoute: Routes = [
-  {
-    path: 'category-academic-year-new',
-    component: CategoryAcademicYearPopupComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'kavsirApp.categoryAcademicYear.home.title'
+    {
+        path: 'category-academic-year-new',
+        component: CategoryAcademicYearPopupComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'kavsirApp.categoryAcademicYear.home.title'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
-  },
-  {
-    path: 'category-academic-year/:id/edit',
-    component: CategoryAcademicYearPopupComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'kavsirApp.categoryAcademicYear.home.title'
+    {
+        path: 'category-academic-year/:id/edit',
+        component: CategoryAcademicYearPopupComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'kavsirApp.categoryAcademicYear.home.title'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
-  },
-  {
-    path: 'category-academic-year/:id/delete',
-    component: CategoryAcademicYearDeletePopupComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'kavsirApp.categoryAcademicYear.home.title'
-    },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
-  }
+    {
+        path: 'category-academic-year/:id/delete',
+        component: CategoryAcademicYearDeletePopupComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'kavsirApp.categoryAcademicYear.home.title'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
+    }
 ];

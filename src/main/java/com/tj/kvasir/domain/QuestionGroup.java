@@ -210,23 +210,23 @@ public class QuestionGroup implements Serializable {
             return false;
         }
         QuestionGroup questionGroup = (QuestionGroup) o;
-        if (questionGroup.id == null || id == null) {
+        if (questionGroup.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(id, questionGroup.id);
+        return Objects.equals(getId(), questionGroup.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "QuestionGroup{" +
-            "id=" + id +
-            ", text='" + text + "'" +
-            ", memo='" + memo + "'" +
-            '}';
+            "id=" + getId() +
+            ", text='" + getText() + "'" +
+            ", memo='" + getMemo() + "'" +
+            "}";
     }
 }

@@ -3,6 +3,7 @@ import { Http, Response, URLSearchParams, BaseRequestOptions } from '@angular/ht
 import { Observable } from 'rxjs/Rx';
 
 import { CategoryAcademicYear } from './category-academic-year.model';
+
 @Injectable()
 export class CategoryAcademicYearService {
 
@@ -12,14 +13,14 @@ export class CategoryAcademicYearService {
     constructor(private http: Http) { }
 
     create(categoryAcademicYear: CategoryAcademicYear): Observable<CategoryAcademicYear> {
-        let copy: CategoryAcademicYear = Object.assign({}, categoryAcademicYear);
+        const copy = this.convert(categoryAcademicYear);
         return this.http.post(this.resourceUrl, copy).map((res: Response) => {
             return res.json();
         });
     }
 
     update(categoryAcademicYear: CategoryAcademicYear): Observable<CategoryAcademicYear> {
-        let copy: CategoryAcademicYear = Object.assign({}, categoryAcademicYear);
+        const copy = this.convert(categoryAcademicYear);
         return this.http.put(this.resourceUrl, copy).map((res: Response) => {
             return res.json();
         });
@@ -32,7 +33,7 @@ export class CategoryAcademicYearService {
     }
 
     query(req?: any): Observable<Response> {
-        let options = this.createRequestOption(req);
+        const options = this.createRequestOption(req);
         return this.http.get(this.resourceUrl, options)
         ;
     }
@@ -42,16 +43,14 @@ export class CategoryAcademicYearService {
     }
 
     search(req?: any): Observable<Response> {
-        let options = this.createRequestOption(req);
+        const options = this.createRequestOption(req);
         return this.http.get(this.resourceSearchUrl, options)
         ;
     }
-
-
     private createRequestOption(req?: any): BaseRequestOptions {
-        let options: BaseRequestOptions = new BaseRequestOptions();
+        const options: BaseRequestOptions = new BaseRequestOptions();
         if (req) {
-            let params: URLSearchParams = new URLSearchParams();
+            const params: URLSearchParams = new URLSearchParams();
             params.set('page', req.page);
             params.set('size', req.size);
             if (req.sort) {
@@ -62,5 +61,10 @@ export class CategoryAcademicYearService {
             options.search = params;
         }
         return options;
+    }
+
+    private convert(categoryAcademicYear: CategoryAcademicYear): CategoryAcademicYear {
+        const copy: CategoryAcademicYear = Object.assign({}, categoryAcademicYear);
+        return copy;
     }
 }

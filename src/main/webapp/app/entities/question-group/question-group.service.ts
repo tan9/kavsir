@@ -3,6 +3,7 @@ import { Http, Response, URLSearchParams, BaseRequestOptions } from '@angular/ht
 import { Observable } from 'rxjs/Rx';
 
 import { QuestionGroup } from './question-group.model';
+
 @Injectable()
 export class QuestionGroupService {
 
@@ -12,14 +13,14 @@ export class QuestionGroupService {
     constructor(private http: Http) { }
 
     create(questionGroup: QuestionGroup): Observable<QuestionGroup> {
-        let copy: QuestionGroup = Object.assign({}, questionGroup);
+        const copy = this.convert(questionGroup);
         return this.http.post(this.resourceUrl, copy).map((res: Response) => {
             return res.json();
         });
     }
 
     update(questionGroup: QuestionGroup): Observable<QuestionGroup> {
-        let copy: QuestionGroup = Object.assign({}, questionGroup);
+        const copy = this.convert(questionGroup);
         return this.http.put(this.resourceUrl, copy).map((res: Response) => {
             return res.json();
         });
@@ -32,7 +33,7 @@ export class QuestionGroupService {
     }
 
     query(req?: any): Observable<Response> {
-        let options = this.createRequestOption(req);
+        const options = this.createRequestOption(req);
         return this.http.get(this.resourceUrl, options)
         ;
     }
@@ -42,16 +43,14 @@ export class QuestionGroupService {
     }
 
     search(req?: any): Observable<Response> {
-        let options = this.createRequestOption(req);
+        const options = this.createRequestOption(req);
         return this.http.get(this.resourceSearchUrl, options)
         ;
     }
-
-
     private createRequestOption(req?: any): BaseRequestOptions {
-        let options: BaseRequestOptions = new BaseRequestOptions();
+        const options: BaseRequestOptions = new BaseRequestOptions();
         if (req) {
-            let params: URLSearchParams = new URLSearchParams();
+            const params: URLSearchParams = new URLSearchParams();
             params.set('page', req.page);
             params.set('size', req.size);
             if (req.sort) {
@@ -62,5 +61,10 @@ export class QuestionGroupService {
             options.search = params;
         }
         return options;
+    }
+
+    private convert(questionGroup: QuestionGroup): QuestionGroup {
+        const copy: QuestionGroup = Object.assign({}, questionGroup);
+        return copy;
     }
 }

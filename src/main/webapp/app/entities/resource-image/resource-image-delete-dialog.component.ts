@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { EventManager, JhiLanguageService } from 'ng-jhipster';
+import { EventManager } from 'ng-jhipster';
 
 import { ResourceImage } from './resource-image.model';
 import { ResourceImagePopupService } from './resource-image-popup.service';
@@ -17,20 +17,18 @@ export class ResourceImageDeleteDialogComponent {
     resourceImage: ResourceImage;
 
     constructor(
-        private jhiLanguageService: JhiLanguageService,
         private resourceImageService: ResourceImageService,
         public activeModal: NgbActiveModal,
         private eventManager: EventManager
     ) {
-        this.jhiLanguageService.setLocations(['resourceImage']);
     }
 
-    clear () {
+    clear() {
         this.activeModal.dismiss('cancel');
     }
 
-    confirmDelete (id: number) {
-        this.resourceImageService.delete(id).subscribe(response => {
+    confirmDelete(id: number) {
+        this.resourceImageService.delete(id).subscribe((response) => {
             this.eventManager.broadcast({
                 name: 'resourceImageListModification',
                 content: 'Deleted an resourceImage'
@@ -49,13 +47,13 @@ export class ResourceImageDeletePopupComponent implements OnInit, OnDestroy {
     modalRef: NgbModalRef;
     routeSub: any;
 
-    constructor (
+    constructor(
         private route: ActivatedRoute,
         private resourceImagePopupService: ResourceImagePopupService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe(params => {
+        this.routeSub = this.route.params.subscribe((params) => {
             this.modalRef = this.resourceImagePopupService
                 .open(ResourceImageDeleteDialogComponent, params['id']);
         });

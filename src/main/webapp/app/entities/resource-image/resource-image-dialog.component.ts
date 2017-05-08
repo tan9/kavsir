@@ -2,8 +2,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Response } from '@angular/http';
 
+import { Observable } from 'rxjs/Rx';
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { EventManager, AlertService, JhiLanguageService, DataUtils } from 'ng-jhipster';
+import { EventManager, AlertService, DataUtils } from 'ng-jhipster';
 
 import { ResourceImage } from './resource-image.model';
 import { ResourceImagePopupService } from './resource-image-popup.service';
@@ -30,9 +31,9 @@ export class ResourceImageDialogComponent implements OnInit {
     questiontruefalses: QuestionTrueFalse[];
 
     questionessays: QuestionEssay[];
+
     constructor(
         public activeModal: NgbActiveModal,
-        private jhiLanguageService: JhiLanguageService,
         private dataUtils: DataUtils,
         private alertService: AlertService,
         private resourceImageService: ResourceImageService,
@@ -42,7 +43,6 @@ export class ResourceImageDialogComponent implements OnInit {
         private questionEssayService: QuestionEssayService,
         private eventManager: EventManager
     ) {
-        this.jhiLanguageService.setLocations(['resourceImage']);
     }
 
     ngOnInit() {
@@ -65,42 +65,45 @@ export class ResourceImageDialogComponent implements OnInit {
         return this.dataUtils.openFile(contentType, field);
     }
 
-    setFileData($event, resourceImage, field, isImage) {
-        if ($event.target.files && $event.target.files[0]) {
-            let $file = $event.target.files[0];
-            if (isImage && !/^image\//.test($file.type)) {
+    setFileData(event, resourceImage, field, isImage) {
+        if (event.target.files && event.target.files[0]) {
+            const file = event.target.files[0];
+            if (isImage && !/^image\//.test(file.type)) {
                 return;
             }
-            this.dataUtils.toBase64($file, (base64Data) => {
+            this.dataUtils.toBase64(file, (base64Data) => {
                 resourceImage[field] = base64Data;
-                resourceImage[`${field}ContentType`] = $file.type;
+                resourceImage[`${field}ContentType`] = file.type;
             });
         }
     }
-    clear () {
+    clear() {
         this.activeModal.dismiss('cancel');
     }
 
-    save () {
+    save() {
         this.isSaving = true;
         if (this.resourceImage.id !== undefined) {
-            this.resourceImageService.update(this.resourceImage)
-                .subscribe((res: ResourceImage) =>
-                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
+            this.subscribeToSaveResponse(
+                this.resourceImageService.update(this.resourceImage));
         } else {
-            this.resourceImageService.create(this.resourceImage)
-                .subscribe((res: ResourceImage) =>
-                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
+            this.subscribeToSaveResponse(
+                this.resourceImageService.create(this.resourceImage));
         }
     }
 
-    private onSaveSuccess (result: ResourceImage) {
+    private subscribeToSaveResponse(result: Observable<ResourceImage>) {
+        result.subscribe((res: ResourceImage) =>
+            this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
+    }
+
+    private onSaveSuccess(result: ResourceImage) {
         this.eventManager.broadcast({ name: 'resourceImageListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
 
-    private onSaveError (error) {
+    private onSaveError(error) {
         try {
             error.json();
         } catch (exception) {
@@ -110,7 +113,7 @@ export class ResourceImageDialogComponent implements OnInit {
         this.onError(error);
     }
 
-    private onError (error) {
+    private onError(error) {
         this.alertService.error(error.message, null, null);
     }
 
@@ -151,13 +154,13 @@ export class ResourceImagePopupComponent implements OnInit, OnDestroy {
     modalRef: NgbModalRef;
     routeSub: any;
 
-    constructor (
+    constructor(
         private route: ActivatedRoute,
         private resourceImagePopupService: ResourceImagePopupService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe(params => {
+        this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
                 this.modalRef = this.resourceImagePopupService
                     .open(ResourceImageDialogComponent, params['id']);

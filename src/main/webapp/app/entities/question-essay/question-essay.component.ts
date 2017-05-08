@@ -20,7 +20,6 @@ questionEssays: QuestionEssay[];
     currentSearch: string;
 
     constructor(
-        private jhiLanguageService: JhiLanguageService,
         private questionEssayService: QuestionEssayService,
         private alertService: AlertService,
         private eventManager: EventManager,
@@ -28,7 +27,6 @@ questionEssays: QuestionEssay[];
         private principal: Principal
     ) {
         this.currentSearch = activatedRoute.snapshot.params['search'] ? activatedRoute.snapshot.params['search'] : '';
-        this.jhiLanguageService.setLocations(['questionEssay']);
     }
 
     loadAll() {
@@ -50,7 +48,7 @@ questionEssays: QuestionEssay[];
         );
     }
 
-    search (query) {
+    search(query) {
         if (!query) {
             return this.clear();
         }
@@ -74,18 +72,14 @@ questionEssays: QuestionEssay[];
         this.eventManager.destroy(this.eventSubscriber);
     }
 
-    trackId (index: number, item: QuestionEssay) {
+    trackId(index: number, item: QuestionEssay) {
         return item.id;
     }
-
-
-
     registerChangeInQuestionEssays() {
         this.eventSubscriber = this.eventManager.subscribe('questionEssayListModification', (response) => this.loadAll());
     }
 
-
-    private onError (error) {
+    private onError(error) {
         this.alertService.error(error.message, null, null);
     }
 }

@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { EventManager, JhiLanguageService } from 'ng-jhipster';
+import { EventManager } from 'ng-jhipster';
 
 import { QuestionGroup } from './question-group.model';
 import { QuestionGroupPopupService } from './question-group-popup.service';
@@ -17,20 +17,18 @@ export class QuestionGroupDeleteDialogComponent {
     questionGroup: QuestionGroup;
 
     constructor(
-        private jhiLanguageService: JhiLanguageService,
         private questionGroupService: QuestionGroupService,
         public activeModal: NgbActiveModal,
         private eventManager: EventManager
     ) {
-        this.jhiLanguageService.setLocations(['questionGroup']);
     }
 
-    clear () {
+    clear() {
         this.activeModal.dismiss('cancel');
     }
 
-    confirmDelete (id: number) {
-        this.questionGroupService.delete(id).subscribe(response => {
+    confirmDelete(id: number) {
+        this.questionGroupService.delete(id).subscribe((response) => {
             this.eventManager.broadcast({
                 name: 'questionGroupListModification',
                 content: 'Deleted an questionGroup'
@@ -49,13 +47,13 @@ export class QuestionGroupDeletePopupComponent implements OnInit, OnDestroy {
     modalRef: NgbModalRef;
     routeSub: any;
 
-    constructor (
+    constructor(
         private route: ActivatedRoute,
         private questionGroupPopupService: QuestionGroupPopupService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe(params => {
+        this.routeSub = this.route.params.subscribe((params) => {
             this.modalRef = this.questionGroupPopupService
                 .open(QuestionGroupDeleteDialogComponent, params['id']);
         });

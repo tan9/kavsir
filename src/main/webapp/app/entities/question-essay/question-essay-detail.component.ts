@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
-import { EventManager , JhiLanguageService  } from 'ng-jhipster';
+import { EventManager  } from 'ng-jhipster';
 
 import { QuestionEssay } from './question-essay.model';
 import { QuestionEssayService } from './question-essay.service';
@@ -13,27 +13,25 @@ import { QuestionEssayService } from './question-essay.service';
 export class QuestionEssayDetailComponent implements OnInit, OnDestroy {
 
     questionEssay: QuestionEssay;
-    private subscription: any;
+    private subscription: Subscription;
     private eventSubscriber: Subscription;
 
     constructor(
         private eventManager: EventManager,
-        private jhiLanguageService: JhiLanguageService,
         private questionEssayService: QuestionEssayService,
         private route: ActivatedRoute
     ) {
-        this.jhiLanguageService.setLocations(['questionEssay']);
     }
 
     ngOnInit() {
-        this.subscription = this.route.params.subscribe(params => {
+        this.subscription = this.route.params.subscribe((params) => {
             this.load(params['id']);
         });
         this.registerChangeInQuestionEssays();
     }
 
-    load (id) {
-        this.questionEssayService.find(id).subscribe(questionEssay => {
+    load(id) {
+        this.questionEssayService.find(id).subscribe((questionEssay) => {
             this.questionEssay = questionEssay;
         });
     }
@@ -47,7 +45,9 @@ export class QuestionEssayDetailComponent implements OnInit, OnDestroy {
     }
 
     registerChangeInQuestionEssays() {
-        this.eventSubscriber = this.eventManager.subscribe('questionEssayListModification', response => this.load(this.questionEssay.id));
+        this.eventSubscriber = this.eventManager.subscribe(
+            'questionEssayListModification',
+            (response) => this.load(this.questionEssay.id)
+        );
     }
-
 }

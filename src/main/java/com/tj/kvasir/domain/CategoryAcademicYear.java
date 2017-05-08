@@ -86,23 +86,23 @@ public class CategoryAcademicYear implements Serializable {
             return false;
         }
         CategoryAcademicYear categoryAcademicYear = (CategoryAcademicYear) o;
-        if (categoryAcademicYear.id == null || id == null) {
+        if (categoryAcademicYear.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(id, categoryAcademicYear.id);
+        return Objects.equals(getId(), categoryAcademicYear.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "CategoryAcademicYear{" +
-            "id=" + id +
-            ", position='" + position + "'" +
-            ", name='" + name + "'" +
-            '}';
+            "id=" + getId() +
+            ", position='" + getPosition() + "'" +
+            ", name='" + getName() + "'" +
+            "}";
     }
 }

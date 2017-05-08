@@ -2,7 +2,6 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { KavsirSharedModule } from '../../shared';
-
 import {
     QuestionTrueFalseService,
     QuestionTrueFalsePopupService,
@@ -16,7 +15,7 @@ import {
     questionTrueFalsePopupRoute,
 } from './';
 
-let ENTITY_STATES = [
+const ENTITY_STATES = [
     ...questionTrueFalseRoute,
     ...questionTrueFalsePopupRoute,
 ];

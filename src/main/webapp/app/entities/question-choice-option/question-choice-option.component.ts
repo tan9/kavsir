@@ -20,7 +20,6 @@ questionChoiceOptions: QuestionChoiceOption[];
     currentSearch: string;
 
     constructor(
-        private jhiLanguageService: JhiLanguageService,
         private questionChoiceOptionService: QuestionChoiceOptionService,
         private alertService: AlertService,
         private eventManager: EventManager,
@@ -28,7 +27,6 @@ questionChoiceOptions: QuestionChoiceOption[];
         private principal: Principal
     ) {
         this.currentSearch = activatedRoute.snapshot.params['search'] ? activatedRoute.snapshot.params['search'] : '';
-        this.jhiLanguageService.setLocations(['questionChoiceOption']);
     }
 
     loadAll() {
@@ -50,7 +48,7 @@ questionChoiceOptions: QuestionChoiceOption[];
         );
     }
 
-    search (query) {
+    search(query) {
         if (!query) {
             return this.clear();
         }
@@ -74,18 +72,14 @@ questionChoiceOptions: QuestionChoiceOption[];
         this.eventManager.destroy(this.eventSubscriber);
     }
 
-    trackId (index: number, item: QuestionChoiceOption) {
+    trackId(index: number, item: QuestionChoiceOption) {
         return item.id;
     }
-
-
-
     registerChangeInQuestionChoiceOptions() {
         this.eventSubscriber = this.eventManager.subscribe('questionChoiceOptionListModification', (response) => this.loadAll());
     }
 
-
-    private onError (error) {
+    private onError(error) {
         this.alertService.error(error.message, null, null);
     }
 }

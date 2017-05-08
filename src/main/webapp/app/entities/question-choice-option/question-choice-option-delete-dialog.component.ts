@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { EventManager, JhiLanguageService } from 'ng-jhipster';
+import { EventManager } from 'ng-jhipster';
 
 import { QuestionChoiceOption } from './question-choice-option.model';
 import { QuestionChoiceOptionPopupService } from './question-choice-option-popup.service';
@@ -17,20 +17,18 @@ export class QuestionChoiceOptionDeleteDialogComponent {
     questionChoiceOption: QuestionChoiceOption;
 
     constructor(
-        private jhiLanguageService: JhiLanguageService,
         private questionChoiceOptionService: QuestionChoiceOptionService,
         public activeModal: NgbActiveModal,
         private eventManager: EventManager
     ) {
-        this.jhiLanguageService.setLocations(['questionChoiceOption']);
     }
 
-    clear () {
+    clear() {
         this.activeModal.dismiss('cancel');
     }
 
-    confirmDelete (id: number) {
-        this.questionChoiceOptionService.delete(id).subscribe(response => {
+    confirmDelete(id: number) {
+        this.questionChoiceOptionService.delete(id).subscribe((response) => {
             this.eventManager.broadcast({
                 name: 'questionChoiceOptionListModification',
                 content: 'Deleted an questionChoiceOption'
@@ -49,13 +47,13 @@ export class QuestionChoiceOptionDeletePopupComponent implements OnInit, OnDestr
     modalRef: NgbModalRef;
     routeSub: any;
 
-    constructor (
+    constructor(
         private route: ActivatedRoute,
         private questionChoiceOptionPopupService: QuestionChoiceOptionPopupService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe(params => {
+        this.routeSub = this.route.params.subscribe((params) => {
             this.modalRef = this.questionChoiceOptionPopupService
                 .open(QuestionChoiceOptionDeleteDialogComponent, params['id']);
         });

@@ -5,6 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const StringReplacePlugin = require('string-replace-webpack-plugin');
 const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 const WebpackNotifierPlugin = require('webpack-notifier');
+const MergeJsonWebpackPlugin = require("merge-jsons-webpack-plugin")
 const path = require('path');
 
 module.exports = function (options) {
@@ -55,20 +56,8 @@ module.exports = function (options) {
                     loaders: ['style-loader', 'css-loader']
                 },
                 {
-                    test: /\.(jpe?g|png|gif|svg|woff|woff2|ttf|eot)$/i,
-                    loaders: [
-                        'file-loader?hash=sha512&digest=hex&name=[hash].[ext]', {
-                            loader: 'image-webpack-loader',
-                            query: {
-                                gifsicle: {
-                                    interlaced: false
-                                },
-                                optipng: {
-                                    optimizationLevel: 7
-                                }
-                            }
-                        }
-                    ]
+                    test: /\.(jpe?g|png|gif|svg|woff2?|ttf|eot)$/i,
+                    loaders: ['file-loader?hash=sha512&digest=hex&name=[hash].[ext]']
                 },
                 {
                     test: /app.constants.ts$/,
@@ -102,6 +91,15 @@ module.exports = function (options) {
             new webpack.ProvidePlugin({
                 $: "jquery",
                 jQuery: "jquery"
+            }),
+            new MergeJsonWebpackPlugin({
+                output: {
+                    groupBy: [
+                        { pattern: "./src/main/webapp/i18n/zh-tw/*.json", fileName: "./target/www/i18n/zh-tw/all.json" },
+                        { pattern: "./src/main/webapp/i18n/en/*.json", fileName: "./target/www/i18n/en/all.json" }
+                        // jhipster-needle-i18n-language-webpack - JHipster will add/remove languages in this array
+                 ]
+                }
             }),
             new HtmlWebpackPlugin({
                 template: './src/main/webapp/index.html',

@@ -312,5 +312,14 @@ public class QuestionChoiceOptionResourceIntTest {
     @Transactional
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(QuestionChoiceOption.class);
+        QuestionChoiceOption questionChoiceOption1 = new QuestionChoiceOption();
+        questionChoiceOption1.setId(1L);
+        QuestionChoiceOption questionChoiceOption2 = new QuestionChoiceOption();
+        questionChoiceOption2.setId(questionChoiceOption1.getId());
+        assertThat(questionChoiceOption1).isEqualTo(questionChoiceOption2);
+        questionChoiceOption2.setId(2L);
+        assertThat(questionChoiceOption1).isNotEqualTo(questionChoiceOption2);
+        questionChoiceOption1.setId(null);
+        assertThat(questionChoiceOption1).isNotEqualTo(questionChoiceOption2);
     }
 }

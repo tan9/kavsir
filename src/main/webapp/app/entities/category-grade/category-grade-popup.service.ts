@@ -6,21 +6,21 @@ import { CategoryGradeService } from './category-grade.service';
 @Injectable()
 export class CategoryGradePopupService {
     private isOpen = false;
-    constructor (
+    constructor(
         private modalService: NgbModal,
         private router: Router,
         private categoryGradeService: CategoryGradeService
 
     ) {}
 
-    open (component: Component, id?: number | any): NgbModalRef {
+    open(component: Component, id?: number | any): NgbModalRef {
         if (this.isOpen) {
             return;
         }
         this.isOpen = true;
 
         if (id) {
-            this.categoryGradeService.find(id).subscribe(categoryGrade => {
+            this.categoryGradeService.find(id).subscribe((categoryGrade) => {
                 this.categoryGradeModalRef(component, categoryGrade);
             });
         } else {
@@ -29,9 +29,9 @@ export class CategoryGradePopupService {
     }
 
     categoryGradeModalRef(component: Component, categoryGrade: CategoryGrade): NgbModalRef {
-        let modalRef = this.modalService.open(component, { size: 'lg', backdrop: 'static'});
+        const modalRef = this.modalService.open(component, { size: 'lg', backdrop: 'static'});
         modalRef.componentInstance.categoryGrade = categoryGrade;
-        modalRef.result.then(result => {
+        modalRef.result.then((result) => {
             this.router.navigate([{ outlets: { popup: null }}], { replaceUrl: true });
             this.isOpen = false;
         }, (reason) => {

@@ -20,7 +20,6 @@ categoryGrades: CategoryGrade[];
     currentSearch: string;
 
     constructor(
-        private jhiLanguageService: JhiLanguageService,
         private categoryGradeService: CategoryGradeService,
         private alertService: AlertService,
         private eventManager: EventManager,
@@ -28,7 +27,6 @@ categoryGrades: CategoryGrade[];
         private principal: Principal
     ) {
         this.currentSearch = activatedRoute.snapshot.params['search'] ? activatedRoute.snapshot.params['search'] : '';
-        this.jhiLanguageService.setLocations(['categoryGrade']);
     }
 
     loadAll() {
@@ -50,7 +48,7 @@ categoryGrades: CategoryGrade[];
         );
     }
 
-    search (query) {
+    search(query) {
         if (!query) {
             return this.clear();
         }
@@ -74,18 +72,14 @@ categoryGrades: CategoryGrade[];
         this.eventManager.destroy(this.eventSubscriber);
     }
 
-    trackId (index: number, item: CategoryGrade) {
+    trackId(index: number, item: CategoryGrade) {
         return item.id;
     }
-
-
-
     registerChangeInCategoryGrades() {
         this.eventSubscriber = this.eventManager.subscribe('categoryGradeListModification', (response) => this.loadAll());
     }
 
-
-    private onError (error) {
+    private onError(error) {
         this.alertService.error(error.message, null, null);
     }
 }

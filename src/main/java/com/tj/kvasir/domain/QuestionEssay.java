@@ -208,25 +208,25 @@ public class QuestionEssay implements Serializable {
             return false;
         }
         QuestionEssay questionEssay = (QuestionEssay) o;
-        if (questionEssay.id == null || id == null) {
+        if (questionEssay.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(id, questionEssay.id);
+        return Objects.equals(getId(), questionEssay.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "QuestionEssay{" +
-            "id=" + id +
-            ", text='" + text + "'" +
-            ", answer='" + answer + "'" +
-            ", memo='" + memo + "'" +
-            ", groupPosition='" + groupPosition + "'" +
-            '}';
+            "id=" + getId() +
+            ", text='" + getText() + "'" +
+            ", answer='" + getAnswer() + "'" +
+            ", memo='" + getMemo() + "'" +
+            ", groupPosition='" + getGroupPosition() + "'" +
+            "}";
     }
 }

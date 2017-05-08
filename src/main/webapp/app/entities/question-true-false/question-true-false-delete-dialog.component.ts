@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { EventManager, JhiLanguageService } from 'ng-jhipster';
+import { EventManager } from 'ng-jhipster';
 
 import { QuestionTrueFalse } from './question-true-false.model';
 import { QuestionTrueFalsePopupService } from './question-true-false-popup.service';
@@ -17,20 +17,18 @@ export class QuestionTrueFalseDeleteDialogComponent {
     questionTrueFalse: QuestionTrueFalse;
 
     constructor(
-        private jhiLanguageService: JhiLanguageService,
         private questionTrueFalseService: QuestionTrueFalseService,
         public activeModal: NgbActiveModal,
         private eventManager: EventManager
     ) {
-        this.jhiLanguageService.setLocations(['questionTrueFalse']);
     }
 
-    clear () {
+    clear() {
         this.activeModal.dismiss('cancel');
     }
 
-    confirmDelete (id: number) {
-        this.questionTrueFalseService.delete(id).subscribe(response => {
+    confirmDelete(id: number) {
+        this.questionTrueFalseService.delete(id).subscribe((response) => {
             this.eventManager.broadcast({
                 name: 'questionTrueFalseListModification',
                 content: 'Deleted an questionTrueFalse'
@@ -49,13 +47,13 @@ export class QuestionTrueFalseDeletePopupComponent implements OnInit, OnDestroy 
     modalRef: NgbModalRef;
     routeSub: any;
 
-    constructor (
+    constructor(
         private route: ActivatedRoute,
         private questionTrueFalsePopupService: QuestionTrueFalsePopupService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe(params => {
+        this.routeSub = this.route.params.subscribe((params) => {
             this.modalRef = this.questionTrueFalsePopupService
                 .open(QuestionTrueFalseDeleteDialogComponent, params['id']);
         });

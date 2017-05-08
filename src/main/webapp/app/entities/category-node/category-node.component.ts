@@ -20,7 +20,6 @@ categoryNodes: CategoryNode[];
     currentSearch: string;
 
     constructor(
-        private jhiLanguageService: JhiLanguageService,
         private categoryNodeService: CategoryNodeService,
         private alertService: AlertService,
         private eventManager: EventManager,
@@ -28,7 +27,6 @@ categoryNodes: CategoryNode[];
         private principal: Principal
     ) {
         this.currentSearch = activatedRoute.snapshot.params['search'] ? activatedRoute.snapshot.params['search'] : '';
-        this.jhiLanguageService.setLocations(['categoryNode', 'categoryType']);
     }
 
     loadAll() {
@@ -50,7 +48,7 @@ categoryNodes: CategoryNode[];
         );
     }
 
-    search (query) {
+    search(query) {
         if (!query) {
             return this.clear();
         }
@@ -74,18 +72,14 @@ categoryNodes: CategoryNode[];
         this.eventManager.destroy(this.eventSubscriber);
     }
 
-    trackId (index: number, item: CategoryNode) {
+    trackId(index: number, item: CategoryNode) {
         return item.id;
     }
-
-
-
     registerChangeInCategoryNodes() {
         this.eventSubscriber = this.eventManager.subscribe('categoryNodeListModification', (response) => this.loadAll());
     }
 
-
-    private onError (error) {
+    private onError(error) {
         this.alertService.error(error.message, null, null);
     }
 }

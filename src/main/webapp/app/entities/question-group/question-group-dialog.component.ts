@@ -2,8 +2,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Response } from '@angular/http';
 
+import { Observable } from 'rxjs/Rx';
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { EventManager, AlertService, JhiLanguageService } from 'ng-jhipster';
+import { EventManager, AlertService } from 'ng-jhipster';
 
 import { QuestionGroup } from './question-group.model';
 import { QuestionGroupPopupService } from './question-group-popup.service';
@@ -21,15 +22,14 @@ export class QuestionGroupDialogComponent implements OnInit {
     isSaving: boolean;
 
     categorynodes: CategoryNode[];
+
     constructor(
         public activeModal: NgbActiveModal,
-        private jhiLanguageService: JhiLanguageService,
         private alertService: AlertService,
         private questionGroupService: QuestionGroupService,
         private categoryNodeService: CategoryNodeService,
         private eventManager: EventManager
     ) {
-        this.jhiLanguageService.setLocations(['questionGroup']);
     }
 
     ngOnInit() {
@@ -38,30 +38,33 @@ export class QuestionGroupDialogComponent implements OnInit {
         this.categoryNodeService.query().subscribe(
             (res: Response) => { this.categorynodes = res.json(); }, (res: Response) => this.onError(res.json()));
     }
-    clear () {
+    clear() {
         this.activeModal.dismiss('cancel');
     }
 
-    save () {
+    save() {
         this.isSaving = true;
         if (this.questionGroup.id !== undefined) {
-            this.questionGroupService.update(this.questionGroup)
-                .subscribe((res: QuestionGroup) =>
-                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
+            this.subscribeToSaveResponse(
+                this.questionGroupService.update(this.questionGroup));
         } else {
-            this.questionGroupService.create(this.questionGroup)
-                .subscribe((res: QuestionGroup) =>
-                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
+            this.subscribeToSaveResponse(
+                this.questionGroupService.create(this.questionGroup));
         }
     }
 
-    private onSaveSuccess (result: QuestionGroup) {
+    private subscribeToSaveResponse(result: Observable<QuestionGroup>) {
+        result.subscribe((res: QuestionGroup) =>
+            this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
+    }
+
+    private onSaveSuccess(result: QuestionGroup) {
         this.eventManager.broadcast({ name: 'questionGroupListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
 
-    private onSaveError (error) {
+    private onSaveError(error) {
         try {
             error.json();
         } catch (exception) {
@@ -71,7 +74,7 @@ export class QuestionGroupDialogComponent implements OnInit {
         this.onError(error);
     }
 
-    private onError (error) {
+    private onError(error) {
         this.alertService.error(error.message, null, null);
     }
 
@@ -100,13 +103,13 @@ export class QuestionGroupPopupComponent implements OnInit, OnDestroy {
     modalRef: NgbModalRef;
     routeSub: any;
 
-    constructor (
+    constructor(
         private route: ActivatedRoute,
         private questionGroupPopupService: QuestionGroupPopupService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe(params => {
+        this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
                 this.modalRef = this.questionGroupPopupService
                     .open(QuestionGroupDialogComponent, params['id']);

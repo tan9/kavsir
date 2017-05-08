@@ -6,21 +6,21 @@ import { QuestionEssayService } from './question-essay.service';
 @Injectable()
 export class QuestionEssayPopupService {
     private isOpen = false;
-    constructor (
+    constructor(
         private modalService: NgbModal,
         private router: Router,
         private questionEssayService: QuestionEssayService
 
     ) {}
 
-    open (component: Component, id?: number | any): NgbModalRef {
+    open(component: Component, id?: number | any): NgbModalRef {
         if (this.isOpen) {
             return;
         }
         this.isOpen = true;
 
         if (id) {
-            this.questionEssayService.find(id).subscribe(questionEssay => {
+            this.questionEssayService.find(id).subscribe((questionEssay) => {
                 this.questionEssayModalRef(component, questionEssay);
             });
         } else {
@@ -29,9 +29,9 @@ export class QuestionEssayPopupService {
     }
 
     questionEssayModalRef(component: Component, questionEssay: QuestionEssay): NgbModalRef {
-        let modalRef = this.modalService.open(component, { size: 'lg', backdrop: 'static'});
+        const modalRef = this.modalService.open(component, { size: 'lg', backdrop: 'static'});
         modalRef.componentInstance.questionEssay = questionEssay;
-        modalRef.result.then(result => {
+        modalRef.result.then((result) => {
             this.router.navigate([{ outlets: { popup: null }}], { replaceUrl: true });
             this.isOpen = false;
         }, (reason) => {

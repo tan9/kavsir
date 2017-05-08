@@ -322,5 +322,14 @@ public class QuestionEssayResourceIntTest {
     @Transactional
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(QuestionEssay.class);
+        QuestionEssay questionEssay1 = new QuestionEssay();
+        questionEssay1.setId(1L);
+        QuestionEssay questionEssay2 = new QuestionEssay();
+        questionEssay2.setId(questionEssay1.getId());
+        assertThat(questionEssay1).isEqualTo(questionEssay2);
+        questionEssay2.setId(2L);
+        assertThat(questionEssay1).isNotEqualTo(questionEssay2);
+        questionEssay1.setId(null);
+        assertThat(questionEssay1).isNotEqualTo(questionEssay2);
     }
 }

@@ -11,56 +11,55 @@ import { QuestionTrueFalseDeletePopupComponent } from './question-true-false-del
 
 import { Principal } from '../../shared';
 
-
 export const questionTrueFalseRoute: Routes = [
-  {
-    path: 'question-true-false',
-    component: QuestionTrueFalseComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'kavsirApp.questionTrueFalse.home.title'
-    },
-    canActivate: [UserRouteAccessService]
-  }, {
-    path: 'question-true-false/:id',
-    component: QuestionTrueFalseDetailComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'kavsirApp.questionTrueFalse.home.title'
-    },
-    canActivate: [UserRouteAccessService]
-  }
+    {
+        path: 'question-true-false',
+        component: QuestionTrueFalseComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'kavsirApp.questionTrueFalse.home.title'
+        },
+        canActivate: [UserRouteAccessService]
+    }, {
+        path: 'question-true-false/:id',
+        component: QuestionTrueFalseDetailComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'kavsirApp.questionTrueFalse.home.title'
+        },
+        canActivate: [UserRouteAccessService]
+    }
 ];
 
 export const questionTrueFalsePopupRoute: Routes = [
-  {
-    path: 'question-true-false-new',
-    component: QuestionTrueFalsePopupComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'kavsirApp.questionTrueFalse.home.title'
+    {
+        path: 'question-true-false-new',
+        component: QuestionTrueFalsePopupComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'kavsirApp.questionTrueFalse.home.title'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
-  },
-  {
-    path: 'question-true-false/:id/edit',
-    component: QuestionTrueFalsePopupComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'kavsirApp.questionTrueFalse.home.title'
+    {
+        path: 'question-true-false/:id/edit',
+        component: QuestionTrueFalsePopupComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'kavsirApp.questionTrueFalse.home.title'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
-  },
-  {
-    path: 'question-true-false/:id/delete',
-    component: QuestionTrueFalseDeletePopupComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'kavsirApp.questionTrueFalse.home.title'
-    },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
-  }
+    {
+        path: 'question-true-false/:id/delete',
+        component: QuestionTrueFalseDeletePopupComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'kavsirApp.questionTrueFalse.home.title'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
+    }
 ];

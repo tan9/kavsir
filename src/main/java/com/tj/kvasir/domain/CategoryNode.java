@@ -270,26 +270,26 @@ public class CategoryNode implements Serializable {
             return false;
         }
         CategoryNode categoryNode = (CategoryNode) o;
-        if (categoryNode.id == null || id == null) {
+        if (categoryNode.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(id, categoryNode.id);
+        return Objects.equals(getId(), categoryNode.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "CategoryNode{" +
-            "id=" + id +
-            ", type='" + type + "'" +
-            ", typeId='" + typeId + "'" +
-            ", name='" + name + "'" +
-            ", lft='" + lft + "'" +
-            ", rgt='" + rgt + "'" +
-            '}';
+            "id=" + getId() +
+            ", type='" + getType() + "'" +
+            ", typeId='" + getTypeId() + "'" +
+            ", name='" + getName() + "'" +
+            ", lft='" + getLft() + "'" +
+            ", rgt='" + getRgt() + "'" +
+            "}";
     }
 }

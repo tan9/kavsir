@@ -2,8 +2,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Response } from '@angular/http';
 
+import { Observable } from 'rxjs/Rx';
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { EventManager, AlertService, JhiLanguageService } from 'ng-jhipster';
+import { EventManager, AlertService } from 'ng-jhipster';
 
 import { CategoryNode } from './category-node.model';
 import { CategoryNodePopupService } from './category-node-popup.service';
@@ -30,9 +31,9 @@ export class CategoryNodeDialogComponent implements OnInit {
     questionessays: QuestionEssay[];
 
     questiongroups: QuestionGroup[];
+
     constructor(
         public activeModal: NgbActiveModal,
-        private jhiLanguageService: JhiLanguageService,
         private alertService: AlertService,
         private categoryNodeService: CategoryNodeService,
         private questionTrueFalseService: QuestionTrueFalseService,
@@ -41,7 +42,6 @@ export class CategoryNodeDialogComponent implements OnInit {
         private questionGroupService: QuestionGroupService,
         private eventManager: EventManager
     ) {
-        this.jhiLanguageService.setLocations(['categoryNode', 'categoryType']);
     }
 
     ngOnInit() {
@@ -56,30 +56,33 @@ export class CategoryNodeDialogComponent implements OnInit {
         this.questionGroupService.query().subscribe(
             (res: Response) => { this.questiongroups = res.json(); }, (res: Response) => this.onError(res.json()));
     }
-    clear () {
+    clear() {
         this.activeModal.dismiss('cancel');
     }
 
-    save () {
+    save() {
         this.isSaving = true;
         if (this.categoryNode.id !== undefined) {
-            this.categoryNodeService.update(this.categoryNode)
-                .subscribe((res: CategoryNode) =>
-                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
+            this.subscribeToSaveResponse(
+                this.categoryNodeService.update(this.categoryNode));
         } else {
-            this.categoryNodeService.create(this.categoryNode)
-                .subscribe((res: CategoryNode) =>
-                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
+            this.subscribeToSaveResponse(
+                this.categoryNodeService.create(this.categoryNode));
         }
     }
 
-    private onSaveSuccess (result: CategoryNode) {
+    private subscribeToSaveResponse(result: Observable<CategoryNode>) {
+        result.subscribe((res: CategoryNode) =>
+            this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
+    }
+
+    private onSaveSuccess(result: CategoryNode) {
         this.eventManager.broadcast({ name: 'categoryNodeListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
 
-    private onSaveError (error) {
+    private onSaveError(error) {
         try {
             error.json();
         } catch (exception) {
@@ -89,7 +92,7 @@ export class CategoryNodeDialogComponent implements OnInit {
         this.onError(error);
     }
 
-    private onError (error) {
+    private onError(error) {
         this.alertService.error(error.message, null, null);
     }
 
@@ -130,13 +133,13 @@ export class CategoryNodePopupComponent implements OnInit, OnDestroy {
     modalRef: NgbModalRef;
     routeSub: any;
 
-    constructor (
+    constructor(
         private route: ActivatedRoute,
         private categoryNodePopupService: CategoryNodePopupService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe(params => {
+        this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
                 this.modalRef = this.categoryNodePopupService
                     .open(CategoryNodeDialogComponent, params['id']);

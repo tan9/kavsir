@@ -239,25 +239,25 @@ public class QuestionChoice implements Serializable {
             return false;
         }
         QuestionChoice questionChoice = (QuestionChoice) o;
-        if (questionChoice.id == null || id == null) {
+        if (questionChoice.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(id, questionChoice.id);
+        return Objects.equals(getId(), questionChoice.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "QuestionChoice{" +
-            "id=" + id +
-            ", multipleResponse='" + multipleResponse + "'" +
-            ", text='" + text + "'" +
-            ", memo='" + memo + "'" +
-            ", groupPosition='" + groupPosition + "'" +
-            '}';
+            "id=" + getId() +
+            ", multipleResponse='" + isMultipleResponse() + "'" +
+            ", text='" + getText() + "'" +
+            ", memo='" + getMemo() + "'" +
+            ", groupPosition='" + getGroupPosition() + "'" +
+            "}";
     }
 }

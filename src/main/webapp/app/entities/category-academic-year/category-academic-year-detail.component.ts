@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
-import { EventManager , JhiLanguageService  } from 'ng-jhipster';
+import { EventManager  } from 'ng-jhipster';
 
 import { CategoryAcademicYear } from './category-academic-year.model';
 import { CategoryAcademicYearService } from './category-academic-year.service';
@@ -13,27 +13,25 @@ import { CategoryAcademicYearService } from './category-academic-year.service';
 export class CategoryAcademicYearDetailComponent implements OnInit, OnDestroy {
 
     categoryAcademicYear: CategoryAcademicYear;
-    private subscription: any;
+    private subscription: Subscription;
     private eventSubscriber: Subscription;
 
     constructor(
         private eventManager: EventManager,
-        private jhiLanguageService: JhiLanguageService,
         private categoryAcademicYearService: CategoryAcademicYearService,
         private route: ActivatedRoute
     ) {
-        this.jhiLanguageService.setLocations(['categoryAcademicYear']);
     }
 
     ngOnInit() {
-        this.subscription = this.route.params.subscribe(params => {
+        this.subscription = this.route.params.subscribe((params) => {
             this.load(params['id']);
         });
         this.registerChangeInCategoryAcademicYears();
     }
 
-    load (id) {
-        this.categoryAcademicYearService.find(id).subscribe(categoryAcademicYear => {
+    load(id) {
+        this.categoryAcademicYearService.find(id).subscribe((categoryAcademicYear) => {
             this.categoryAcademicYear = categoryAcademicYear;
         });
     }
@@ -47,7 +45,9 @@ export class CategoryAcademicYearDetailComponent implements OnInit, OnDestroy {
     }
 
     registerChangeInCategoryAcademicYears() {
-        this.eventSubscriber = this.eventManager.subscribe('categoryAcademicYearListModification', response => this.load(this.categoryAcademicYear.id));
+        this.eventSubscriber = this.eventManager.subscribe(
+            'categoryAcademicYearListModification',
+            (response) => this.load(this.categoryAcademicYear.id)
+        );
     }
-
 }

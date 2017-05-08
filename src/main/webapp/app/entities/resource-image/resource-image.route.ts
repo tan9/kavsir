@@ -11,56 +11,55 @@ import { ResourceImageDeletePopupComponent } from './resource-image-delete-dialo
 
 import { Principal } from '../../shared';
 
-
 export const resourceImageRoute: Routes = [
-  {
-    path: 'resource-image',
-    component: ResourceImageComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'kavsirApp.resourceImage.home.title'
-    },
-    canActivate: [UserRouteAccessService]
-  }, {
-    path: 'resource-image/:id',
-    component: ResourceImageDetailComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'kavsirApp.resourceImage.home.title'
-    },
-    canActivate: [UserRouteAccessService]
-  }
+    {
+        path: 'resource-image',
+        component: ResourceImageComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'kavsirApp.resourceImage.home.title'
+        },
+        canActivate: [UserRouteAccessService]
+    }, {
+        path: 'resource-image/:id',
+        component: ResourceImageDetailComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'kavsirApp.resourceImage.home.title'
+        },
+        canActivate: [UserRouteAccessService]
+    }
 ];
 
 export const resourceImagePopupRoute: Routes = [
-  {
-    path: 'resource-image-new',
-    component: ResourceImagePopupComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'kavsirApp.resourceImage.home.title'
+    {
+        path: 'resource-image-new',
+        component: ResourceImagePopupComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'kavsirApp.resourceImage.home.title'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
-  },
-  {
-    path: 'resource-image/:id/edit',
-    component: ResourceImagePopupComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'kavsirApp.resourceImage.home.title'
+    {
+        path: 'resource-image/:id/edit',
+        component: ResourceImagePopupComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'kavsirApp.resourceImage.home.title'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
-  },
-  {
-    path: 'resource-image/:id/delete',
-    component: ResourceImageDeletePopupComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'kavsirApp.resourceImage.home.title'
-    },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
-  }
+    {
+        path: 'resource-image/:id/delete',
+        component: ResourceImageDeletePopupComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'kavsirApp.resourceImage.home.title'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
+    }
 ];

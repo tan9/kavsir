@@ -6,21 +6,21 @@ import { CategorySubjectService } from './category-subject.service';
 @Injectable()
 export class CategorySubjectPopupService {
     private isOpen = false;
-    constructor (
+    constructor(
         private modalService: NgbModal,
         private router: Router,
         private categorySubjectService: CategorySubjectService
 
     ) {}
 
-    open (component: Component, id?: number | any): NgbModalRef {
+    open(component: Component, id?: number | any): NgbModalRef {
         if (this.isOpen) {
             return;
         }
         this.isOpen = true;
 
         if (id) {
-            this.categorySubjectService.find(id).subscribe(categorySubject => {
+            this.categorySubjectService.find(id).subscribe((categorySubject) => {
                 this.categorySubjectModalRef(component, categorySubject);
             });
         } else {
@@ -29,9 +29,9 @@ export class CategorySubjectPopupService {
     }
 
     categorySubjectModalRef(component: Component, categorySubject: CategorySubject): NgbModalRef {
-        let modalRef = this.modalService.open(component, { size: 'lg', backdrop: 'static'});
+        const modalRef = this.modalService.open(component, { size: 'lg', backdrop: 'static'});
         modalRef.componentInstance.categorySubject = categorySubject;
-        modalRef.result.then(result => {
+        modalRef.result.then((result) => {
             this.router.navigate([{ outlets: { popup: null }}], { replaceUrl: true });
             this.isOpen = false;
         }, (reason) => {

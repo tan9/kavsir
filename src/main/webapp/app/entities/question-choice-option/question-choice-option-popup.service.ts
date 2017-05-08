@@ -6,21 +6,21 @@ import { QuestionChoiceOptionService } from './question-choice-option.service';
 @Injectable()
 export class QuestionChoiceOptionPopupService {
     private isOpen = false;
-    constructor (
+    constructor(
         private modalService: NgbModal,
         private router: Router,
         private questionChoiceOptionService: QuestionChoiceOptionService
 
     ) {}
 
-    open (component: Component, id?: number | any): NgbModalRef {
+    open(component: Component, id?: number | any): NgbModalRef {
         if (this.isOpen) {
             return;
         }
         this.isOpen = true;
 
         if (id) {
-            this.questionChoiceOptionService.find(id).subscribe(questionChoiceOption => {
+            this.questionChoiceOptionService.find(id).subscribe((questionChoiceOption) => {
                 this.questionChoiceOptionModalRef(component, questionChoiceOption);
             });
         } else {
@@ -29,9 +29,9 @@ export class QuestionChoiceOptionPopupService {
     }
 
     questionChoiceOptionModalRef(component: Component, questionChoiceOption: QuestionChoiceOption): NgbModalRef {
-        let modalRef = this.modalService.open(component, { size: 'lg', backdrop: 'static'});
+        const modalRef = this.modalService.open(component, { size: 'lg', backdrop: 'static'});
         modalRef.componentInstance.questionChoiceOption = questionChoiceOption;
-        modalRef.result.then(result => {
+        modalRef.result.then((result) => {
             this.router.navigate([{ outlets: { popup: null }}], { replaceUrl: true });
             this.isOpen = false;
         }, (reason) => {

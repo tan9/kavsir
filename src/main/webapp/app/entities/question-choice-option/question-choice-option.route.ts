@@ -11,56 +11,55 @@ import { QuestionChoiceOptionDeletePopupComponent } from './question-choice-opti
 
 import { Principal } from '../../shared';
 
-
 export const questionChoiceOptionRoute: Routes = [
-  {
-    path: 'question-choice-option',
-    component: QuestionChoiceOptionComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'kavsirApp.questionChoiceOption.home.title'
-    },
-    canActivate: [UserRouteAccessService]
-  }, {
-    path: 'question-choice-option/:id',
-    component: QuestionChoiceOptionDetailComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'kavsirApp.questionChoiceOption.home.title'
-    },
-    canActivate: [UserRouteAccessService]
-  }
+    {
+        path: 'question-choice-option',
+        component: QuestionChoiceOptionComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'kavsirApp.questionChoiceOption.home.title'
+        },
+        canActivate: [UserRouteAccessService]
+    }, {
+        path: 'question-choice-option/:id',
+        component: QuestionChoiceOptionDetailComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'kavsirApp.questionChoiceOption.home.title'
+        },
+        canActivate: [UserRouteAccessService]
+    }
 ];
 
 export const questionChoiceOptionPopupRoute: Routes = [
-  {
-    path: 'question-choice-option-new',
-    component: QuestionChoiceOptionPopupComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'kavsirApp.questionChoiceOption.home.title'
+    {
+        path: 'question-choice-option-new',
+        component: QuestionChoiceOptionPopupComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'kavsirApp.questionChoiceOption.home.title'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
-  },
-  {
-    path: 'question-choice-option/:id/edit',
-    component: QuestionChoiceOptionPopupComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'kavsirApp.questionChoiceOption.home.title'
+    {
+        path: 'question-choice-option/:id/edit',
+        component: QuestionChoiceOptionPopupComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'kavsirApp.questionChoiceOption.home.title'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
-  },
-  {
-    path: 'question-choice-option/:id/delete',
-    component: QuestionChoiceOptionDeletePopupComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'kavsirApp.questionChoiceOption.home.title'
-    },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
-  }
+    {
+        path: 'question-choice-option/:id/delete',
+        component: QuestionChoiceOptionDeletePopupComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'kavsirApp.questionChoiceOption.home.title'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
+    }
 ];

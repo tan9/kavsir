@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
-import { EventManager , JhiLanguageService  } from 'ng-jhipster';
+import { EventManager  } from 'ng-jhipster';
 
 import { CategoryGrade } from './category-grade.model';
 import { CategoryGradeService } from './category-grade.service';
@@ -13,27 +13,25 @@ import { CategoryGradeService } from './category-grade.service';
 export class CategoryGradeDetailComponent implements OnInit, OnDestroy {
 
     categoryGrade: CategoryGrade;
-    private subscription: any;
+    private subscription: Subscription;
     private eventSubscriber: Subscription;
 
     constructor(
         private eventManager: EventManager,
-        private jhiLanguageService: JhiLanguageService,
         private categoryGradeService: CategoryGradeService,
         private route: ActivatedRoute
     ) {
-        this.jhiLanguageService.setLocations(['categoryGrade']);
     }
 
     ngOnInit() {
-        this.subscription = this.route.params.subscribe(params => {
+        this.subscription = this.route.params.subscribe((params) => {
             this.load(params['id']);
         });
         this.registerChangeInCategoryGrades();
     }
 
-    load (id) {
-        this.categoryGradeService.find(id).subscribe(categoryGrade => {
+    load(id) {
+        this.categoryGradeService.find(id).subscribe((categoryGrade) => {
             this.categoryGrade = categoryGrade;
         });
     }
@@ -47,7 +45,9 @@ export class CategoryGradeDetailComponent implements OnInit, OnDestroy {
     }
 
     registerChangeInCategoryGrades() {
-        this.eventSubscriber = this.eventManager.subscribe('categoryGradeListModification', response => this.load(this.categoryGrade.id));
+        this.eventSubscriber = this.eventManager.subscribe(
+            'categoryGradeListModification',
+            (response) => this.load(this.categoryGrade.id)
+        );
     }
-
 }

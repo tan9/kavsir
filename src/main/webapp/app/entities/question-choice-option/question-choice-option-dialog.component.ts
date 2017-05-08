@@ -2,8 +2,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Response } from '@angular/http';
 
+import { Observable } from 'rxjs/Rx';
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { EventManager, AlertService, JhiLanguageService } from 'ng-jhipster';
+import { EventManager, AlertService } from 'ng-jhipster';
 
 import { QuestionChoiceOption } from './question-choice-option.model';
 import { QuestionChoiceOptionPopupService } from './question-choice-option-popup.service';
@@ -24,16 +25,15 @@ export class QuestionChoiceOptionDialogComponent implements OnInit {
     questionchoices: QuestionChoice[];
 
     resourceimages: ResourceImage[];
+
     constructor(
         public activeModal: NgbActiveModal,
-        private jhiLanguageService: JhiLanguageService,
         private alertService: AlertService,
         private questionChoiceOptionService: QuestionChoiceOptionService,
         private questionChoiceService: QuestionChoiceService,
         private resourceImageService: ResourceImageService,
         private eventManager: EventManager
     ) {
-        this.jhiLanguageService.setLocations(['questionChoiceOption']);
     }
 
     ngOnInit() {
@@ -44,30 +44,33 @@ export class QuestionChoiceOptionDialogComponent implements OnInit {
         this.resourceImageService.query().subscribe(
             (res: Response) => { this.resourceimages = res.json(); }, (res: Response) => this.onError(res.json()));
     }
-    clear () {
+    clear() {
         this.activeModal.dismiss('cancel');
     }
 
-    save () {
+    save() {
         this.isSaving = true;
         if (this.questionChoiceOption.id !== undefined) {
-            this.questionChoiceOptionService.update(this.questionChoiceOption)
-                .subscribe((res: QuestionChoiceOption) =>
-                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
+            this.subscribeToSaveResponse(
+                this.questionChoiceOptionService.update(this.questionChoiceOption));
         } else {
-            this.questionChoiceOptionService.create(this.questionChoiceOption)
-                .subscribe((res: QuestionChoiceOption) =>
-                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
+            this.subscribeToSaveResponse(
+                this.questionChoiceOptionService.create(this.questionChoiceOption));
         }
     }
 
-    private onSaveSuccess (result: QuestionChoiceOption) {
+    private subscribeToSaveResponse(result: Observable<QuestionChoiceOption>) {
+        result.subscribe((res: QuestionChoiceOption) =>
+            this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
+    }
+
+    private onSaveSuccess(result: QuestionChoiceOption) {
         this.eventManager.broadcast({ name: 'questionChoiceOptionListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
 
-    private onSaveError (error) {
+    private onSaveError(error) {
         try {
             error.json();
         } catch (exception) {
@@ -77,7 +80,7 @@ export class QuestionChoiceOptionDialogComponent implements OnInit {
         this.onError(error);
     }
 
-    private onError (error) {
+    private onError(error) {
         this.alertService.error(error.message, null, null);
     }
 
@@ -110,13 +113,13 @@ export class QuestionChoiceOptionPopupComponent implements OnInit, OnDestroy {
     modalRef: NgbModalRef;
     routeSub: any;
 
-    constructor (
+    constructor(
         private route: ActivatedRoute,
         private questionChoiceOptionPopupService: QuestionChoiceOptionPopupService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe(params => {
+        this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
                 this.modalRef = this.questionChoiceOptionPopupService
                     .open(QuestionChoiceOptionDialogComponent, params['id']);

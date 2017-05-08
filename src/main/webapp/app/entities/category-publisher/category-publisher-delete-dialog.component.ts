@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { EventManager, JhiLanguageService } from 'ng-jhipster';
+import { EventManager } from 'ng-jhipster';
 
 import { CategoryPublisher } from './category-publisher.model';
 import { CategoryPublisherPopupService } from './category-publisher-popup.service';
@@ -17,20 +17,18 @@ export class CategoryPublisherDeleteDialogComponent {
     categoryPublisher: CategoryPublisher;
 
     constructor(
-        private jhiLanguageService: JhiLanguageService,
         private categoryPublisherService: CategoryPublisherService,
         public activeModal: NgbActiveModal,
         private eventManager: EventManager
     ) {
-        this.jhiLanguageService.setLocations(['categoryPublisher']);
     }
 
-    clear () {
+    clear() {
         this.activeModal.dismiss('cancel');
     }
 
-    confirmDelete (id: number) {
-        this.categoryPublisherService.delete(id).subscribe(response => {
+    confirmDelete(id: number) {
+        this.categoryPublisherService.delete(id).subscribe((response) => {
             this.eventManager.broadcast({
                 name: 'categoryPublisherListModification',
                 content: 'Deleted an categoryPublisher'
@@ -49,13 +47,13 @@ export class CategoryPublisherDeletePopupComponent implements OnInit, OnDestroy 
     modalRef: NgbModalRef;
     routeSub: any;
 
-    constructor (
+    constructor(
         private route: ActivatedRoute,
         private categoryPublisherPopupService: CategoryPublisherPopupService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe(params => {
+        this.routeSub = this.route.params.subscribe((params) => {
             this.modalRef = this.categoryPublisherPopupService
                 .open(CategoryPublisherDeleteDialogComponent, params['id']);
         });

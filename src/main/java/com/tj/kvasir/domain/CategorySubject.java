@@ -86,23 +86,23 @@ public class CategorySubject implements Serializable {
             return false;
         }
         CategorySubject categorySubject = (CategorySubject) o;
-        if (categorySubject.id == null || id == null) {
+        if (categorySubject.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(id, categorySubject.id);
+        return Objects.equals(getId(), categorySubject.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "CategorySubject{" +
-            "id=" + id +
-            ", position='" + position + "'" +
-            ", name='" + name + "'" +
-            '}';
+            "id=" + getId() +
+            ", position='" + getPosition() + "'" +
+            ", name='" + getName() + "'" +
+            "}";
     }
 }

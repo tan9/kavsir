@@ -208,25 +208,25 @@ public class QuestionTrueFalse implements Serializable {
             return false;
         }
         QuestionTrueFalse questionTrueFalse = (QuestionTrueFalse) o;
-        if (questionTrueFalse.id == null || id == null) {
+        if (questionTrueFalse.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(id, questionTrueFalse.id);
+        return Objects.equals(getId(), questionTrueFalse.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "QuestionTrueFalse{" +
-            "id=" + id +
-            ", correct='" + correct + "'" +
-            ", text='" + text + "'" +
-            ", memo='" + memo + "'" +
-            ", groupPosition='" + groupPosition + "'" +
-            '}';
+            "id=" + getId() +
+            ", correct='" + isCorrect() + "'" +
+            ", text='" + getText() + "'" +
+            ", memo='" + getMemo() + "'" +
+            ", groupPosition='" + getGroupPosition() + "'" +
+            "}";
     }
 }

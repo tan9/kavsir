@@ -2,8 +2,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Response } from '@angular/http';
 
+import { Observable } from 'rxjs/Rx';
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { EventManager, AlertService, JhiLanguageService } from 'ng-jhipster';
+import { EventManager, AlertService } from 'ng-jhipster';
 
 import { CategoryGrade } from './category-grade.model';
 import { CategoryGradePopupService } from './category-grade-popup.service';
@@ -18,44 +19,46 @@ export class CategoryGradeDialogComponent implements OnInit {
     categoryGrade: CategoryGrade;
     authorities: any[];
     isSaving: boolean;
+
     constructor(
         public activeModal: NgbActiveModal,
-        private jhiLanguageService: JhiLanguageService,
         private alertService: AlertService,
         private categoryGradeService: CategoryGradeService,
         private eventManager: EventManager
     ) {
-        this.jhiLanguageService.setLocations(['categoryGrade']);
     }
 
     ngOnInit() {
         this.isSaving = false;
         this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
     }
-    clear () {
+    clear() {
         this.activeModal.dismiss('cancel');
     }
 
-    save () {
+    save() {
         this.isSaving = true;
         if (this.categoryGrade.id !== undefined) {
-            this.categoryGradeService.update(this.categoryGrade)
-                .subscribe((res: CategoryGrade) =>
-                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
+            this.subscribeToSaveResponse(
+                this.categoryGradeService.update(this.categoryGrade));
         } else {
-            this.categoryGradeService.create(this.categoryGrade)
-                .subscribe((res: CategoryGrade) =>
-                    this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
+            this.subscribeToSaveResponse(
+                this.categoryGradeService.create(this.categoryGrade));
         }
     }
 
-    private onSaveSuccess (result: CategoryGrade) {
+    private subscribeToSaveResponse(result: Observable<CategoryGrade>) {
+        result.subscribe((res: CategoryGrade) =>
+            this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
+    }
+
+    private onSaveSuccess(result: CategoryGrade) {
         this.eventManager.broadcast({ name: 'categoryGradeListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
 
-    private onSaveError (error) {
+    private onSaveError(error) {
         try {
             error.json();
         } catch (exception) {
@@ -65,7 +68,7 @@ export class CategoryGradeDialogComponent implements OnInit {
         this.onError(error);
     }
 
-    private onError (error) {
+    private onError(error) {
         this.alertService.error(error.message, null, null);
     }
 }
@@ -79,13 +82,13 @@ export class CategoryGradePopupComponent implements OnInit, OnDestroy {
     modalRef: NgbModalRef;
     routeSub: any;
 
-    constructor (
+    constructor(
         private route: ActivatedRoute,
         private categoryGradePopupService: CategoryGradePopupService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe(params => {
+        this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
                 this.modalRef = this.categoryGradePopupService
                     .open(CategoryGradeDialogComponent, params['id']);

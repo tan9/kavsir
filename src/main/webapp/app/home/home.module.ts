@@ -5,7 +5,6 @@ import { KavsirSharedModule } from '../shared';
 
 import { HOME_ROUTE, HomeComponent } from './';
 
-
 @NgModule({
     imports: [
         KavsirSharedModule,

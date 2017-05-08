@@ -11,56 +11,55 @@ import { CategoryPublisherDeletePopupComponent } from './category-publisher-dele
 
 import { Principal } from '../../shared';
 
-
 export const categoryPublisherRoute: Routes = [
-  {
-    path: 'category-publisher',
-    component: CategoryPublisherComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'kavsirApp.categoryPublisher.home.title'
-    },
-    canActivate: [UserRouteAccessService]
-  }, {
-    path: 'category-publisher/:id',
-    component: CategoryPublisherDetailComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'kavsirApp.categoryPublisher.home.title'
-    },
-    canActivate: [UserRouteAccessService]
-  }
+    {
+        path: 'category-publisher',
+        component: CategoryPublisherComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'kavsirApp.categoryPublisher.home.title'
+        },
+        canActivate: [UserRouteAccessService]
+    }, {
+        path: 'category-publisher/:id',
+        component: CategoryPublisherDetailComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'kavsirApp.categoryPublisher.home.title'
+        },
+        canActivate: [UserRouteAccessService]
+    }
 ];
 
 export const categoryPublisherPopupRoute: Routes = [
-  {
-    path: 'category-publisher-new',
-    component: CategoryPublisherPopupComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'kavsirApp.categoryPublisher.home.title'
+    {
+        path: 'category-publisher-new',
+        component: CategoryPublisherPopupComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'kavsirApp.categoryPublisher.home.title'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
-  },
-  {
-    path: 'category-publisher/:id/edit',
-    component: CategoryPublisherPopupComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'kavsirApp.categoryPublisher.home.title'
+    {
+        path: 'category-publisher/:id/edit',
+        component: CategoryPublisherPopupComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'kavsirApp.categoryPublisher.home.title'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
-  },
-  {
-    path: 'category-publisher/:id/delete',
-    component: CategoryPublisherDeletePopupComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'kavsirApp.categoryPublisher.home.title'
-    },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
-  }
+    {
+        path: 'category-publisher/:id/delete',
+        component: CategoryPublisherDeletePopupComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'kavsirApp.categoryPublisher.home.title'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
+    }
 ];

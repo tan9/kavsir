@@ -156,24 +156,24 @@ public class QuestionChoiceOption implements Serializable {
             return false;
         }
         QuestionChoiceOption questionChoiceOption = (QuestionChoiceOption) o;
-        if (questionChoiceOption.id == null || id == null) {
+        if (questionChoiceOption.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(id, questionChoiceOption.id);
+        return Objects.equals(getId(), questionChoiceOption.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "QuestionChoiceOption{" +
-            "id=" + id +
-            ", correct='" + correct + "'" +
-            ", text='" + text + "'" +
-            ", memo='" + memo + "'" +
-            '}';
+            "id=" + getId() +
+            ", correct='" + isCorrect() + "'" +
+            ", text='" + getText() + "'" +
+            ", memo='" + getMemo() + "'" +
+            "}";
     }
 }

@@ -11,56 +11,55 @@ import { QuestionEssayDeletePopupComponent } from './question-essay-delete-dialo
 
 import { Principal } from '../../shared';
 
-
 export const questionEssayRoute: Routes = [
-  {
-    path: 'question-essay',
-    component: QuestionEssayComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'kavsirApp.questionEssay.home.title'
-    },
-    canActivate: [UserRouteAccessService]
-  }, {
-    path: 'question-essay/:id',
-    component: QuestionEssayDetailComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'kavsirApp.questionEssay.home.title'
-    },
-    canActivate: [UserRouteAccessService]
-  }
+    {
+        path: 'question-essay',
+        component: QuestionEssayComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'kavsirApp.questionEssay.home.title'
+        },
+        canActivate: [UserRouteAccessService]
+    }, {
+        path: 'question-essay/:id',
+        component: QuestionEssayDetailComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'kavsirApp.questionEssay.home.title'
+        },
+        canActivate: [UserRouteAccessService]
+    }
 ];
 
 export const questionEssayPopupRoute: Routes = [
-  {
-    path: 'question-essay-new',
-    component: QuestionEssayPopupComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'kavsirApp.questionEssay.home.title'
+    {
+        path: 'question-essay-new',
+        component: QuestionEssayPopupComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'kavsirApp.questionEssay.home.title'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
-  },
-  {
-    path: 'question-essay/:id/edit',
-    component: QuestionEssayPopupComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'kavsirApp.questionEssay.home.title'
+    {
+        path: 'question-essay/:id/edit',
+        component: QuestionEssayPopupComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'kavsirApp.questionEssay.home.title'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
     },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
-  },
-  {
-    path: 'question-essay/:id/delete',
-    component: QuestionEssayDeletePopupComponent,
-    data: {
-        authorities: ['ROLE_USER'],
-        pageTitle: 'kavsirApp.questionEssay.home.title'
-    },
-    canActivate: [UserRouteAccessService],
-    outlet: 'popup'
-  }
+    {
+        path: 'question-essay/:id/delete',
+        component: QuestionEssayDeletePopupComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'kavsirApp.questionEssay.home.title'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
+    }
 ];

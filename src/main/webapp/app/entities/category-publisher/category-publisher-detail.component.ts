@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
-import { EventManager , JhiLanguageService  } from 'ng-jhipster';
+import { EventManager  } from 'ng-jhipster';
 
 import { CategoryPublisher } from './category-publisher.model';
 import { CategoryPublisherService } from './category-publisher.service';
@@ -13,27 +13,25 @@ import { CategoryPublisherService } from './category-publisher.service';
 export class CategoryPublisherDetailComponent implements OnInit, OnDestroy {
 
     categoryPublisher: CategoryPublisher;
-    private subscription: any;
+    private subscription: Subscription;
     private eventSubscriber: Subscription;
 
     constructor(
         private eventManager: EventManager,
-        private jhiLanguageService: JhiLanguageService,
         private categoryPublisherService: CategoryPublisherService,
         private route: ActivatedRoute
     ) {
-        this.jhiLanguageService.setLocations(['categoryPublisher']);
     }
 
     ngOnInit() {
-        this.subscription = this.route.params.subscribe(params => {
+        this.subscription = this.route.params.subscribe((params) => {
             this.load(params['id']);
         });
         this.registerChangeInCategoryPublishers();
     }
 
-    load (id) {
-        this.categoryPublisherService.find(id).subscribe(categoryPublisher => {
+    load(id) {
+        this.categoryPublisherService.find(id).subscribe((categoryPublisher) => {
             this.categoryPublisher = categoryPublisher;
         });
     }
@@ -47,7 +45,9 @@ export class CategoryPublisherDetailComponent implements OnInit, OnDestroy {
     }
 
     registerChangeInCategoryPublishers() {
-        this.eventSubscriber = this.eventManager.subscribe('categoryPublisherListModification', response => this.load(this.categoryPublisher.id));
+        this.eventSubscriber = this.eventManager.subscribe(
+            'categoryPublisherListModification',
+            (response) => this.load(this.categoryPublisher.id)
+        );
     }
-
 }

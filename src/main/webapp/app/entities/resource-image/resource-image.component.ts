@@ -20,7 +20,6 @@ resourceImages: ResourceImage[];
     currentSearch: string;
 
     constructor(
-        private jhiLanguageService: JhiLanguageService,
         private resourceImageService: ResourceImageService,
         private alertService: AlertService,
         private dataUtils: DataUtils,
@@ -29,7 +28,6 @@ resourceImages: ResourceImage[];
         private principal: Principal
     ) {
         this.currentSearch = activatedRoute.snapshot.params['search'] ? activatedRoute.snapshot.params['search'] : '';
-        this.jhiLanguageService.setLocations(['resourceImage']);
     }
 
     loadAll() {
@@ -51,7 +49,7 @@ resourceImages: ResourceImage[];
         );
     }
 
-    search (query) {
+    search(query) {
         if (!query) {
             return this.clear();
         }
@@ -75,11 +73,9 @@ resourceImages: ResourceImage[];
         this.eventManager.destroy(this.eventSubscriber);
     }
 
-    trackId (index: number, item: ResourceImage) {
+    trackId(index: number, item: ResourceImage) {
         return item.id;
     }
-
-
 
     byteSize(field) {
         return this.dataUtils.byteSize(field);
@@ -92,8 +88,7 @@ resourceImages: ResourceImage[];
         this.eventSubscriber = this.eventManager.subscribe('resourceImageListModification', (response) => this.loadAll());
     }
 
-
-    private onError (error) {
+    private onError(error) {
         this.alertService.error(error.message, null, null);
     }
 }

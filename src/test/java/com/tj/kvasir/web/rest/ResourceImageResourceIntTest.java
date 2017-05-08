@@ -312,5 +312,14 @@ public class ResourceImageResourceIntTest {
     @Transactional
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(ResourceImage.class);
+        ResourceImage resourceImage1 = new ResourceImage();
+        resourceImage1.setId(1L);
+        ResourceImage resourceImage2 = new ResourceImage();
+        resourceImage2.setId(resourceImage1.getId());
+        assertThat(resourceImage1).isEqualTo(resourceImage2);
+        resourceImage2.setId(2L);
+        assertThat(resourceImage1).isNotEqualTo(resourceImage2);
+        resourceImage1.setId(null);
+        assertThat(resourceImage1).isNotEqualTo(resourceImage2);
     }
 }

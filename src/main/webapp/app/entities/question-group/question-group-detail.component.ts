@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
-import { EventManager , JhiLanguageService  } from 'ng-jhipster';
+import { EventManager  } from 'ng-jhipster';
 
 import { QuestionGroup } from './question-group.model';
 import { QuestionGroupService } from './question-group.service';
@@ -13,27 +13,25 @@ import { QuestionGroupService } from './question-group.service';
 export class QuestionGroupDetailComponent implements OnInit, OnDestroy {
 
     questionGroup: QuestionGroup;
-    private subscription: any;
+    private subscription: Subscription;
     private eventSubscriber: Subscription;
 
     constructor(
         private eventManager: EventManager,
-        private jhiLanguageService: JhiLanguageService,
         private questionGroupService: QuestionGroupService,
         private route: ActivatedRoute
     ) {
-        this.jhiLanguageService.setLocations(['questionGroup']);
     }
 
     ngOnInit() {
-        this.subscription = this.route.params.subscribe(params => {
+        this.subscription = this.route.params.subscribe((params) => {
             this.load(params['id']);
         });
         this.registerChangeInQuestionGroups();
     }
 
-    load (id) {
-        this.questionGroupService.find(id).subscribe(questionGroup => {
+    load(id) {
+        this.questionGroupService.find(id).subscribe((questionGroup) => {
             this.questionGroup = questionGroup;
         });
     }
@@ -47,7 +45,9 @@ export class QuestionGroupDetailComponent implements OnInit, OnDestroy {
     }
 
     registerChangeInQuestionGroups() {
-        this.eventSubscriber = this.eventManager.subscribe('questionGroupListModification', response => this.load(this.questionGroup.id));
+        this.eventSubscriber = this.eventManager.subscribe(
+            'questionGroupListModification',
+            (response) => this.load(this.questionGroup.id)
+        );
     }
-
 }

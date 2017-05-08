@@ -20,7 +20,6 @@ questionTrueFalses: QuestionTrueFalse[];
     currentSearch: string;
 
     constructor(
-        private jhiLanguageService: JhiLanguageService,
         private questionTrueFalseService: QuestionTrueFalseService,
         private alertService: AlertService,
         private eventManager: EventManager,
@@ -28,7 +27,6 @@ questionTrueFalses: QuestionTrueFalse[];
         private principal: Principal
     ) {
         this.currentSearch = activatedRoute.snapshot.params['search'] ? activatedRoute.snapshot.params['search'] : '';
-        this.jhiLanguageService.setLocations(['questionTrueFalse']);
     }
 
     loadAll() {
@@ -50,7 +48,7 @@ questionTrueFalses: QuestionTrueFalse[];
         );
     }
 
-    search (query) {
+    search(query) {
         if (!query) {
             return this.clear();
         }
@@ -74,18 +72,14 @@ questionTrueFalses: QuestionTrueFalse[];
         this.eventManager.destroy(this.eventSubscriber);
     }
 
-    trackId (index: number, item: QuestionTrueFalse) {
+    trackId(index: number, item: QuestionTrueFalse) {
         return item.id;
     }
-
-
-
     registerChangeInQuestionTrueFalses() {
         this.eventSubscriber = this.eventManager.subscribe('questionTrueFalseListModification', (response) => this.loadAll());
     }
 
-
-    private onError (error) {
+    private onError(error) {
         this.alertService.error(error.message, null, null);
     }
 }

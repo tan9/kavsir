@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
-import { EventManager , JhiLanguageService  } from 'ng-jhipster';
+import { EventManager  } from 'ng-jhipster';
 
 import { QuestionTrueFalse } from './question-true-false.model';
 import { QuestionTrueFalseService } from './question-true-false.service';
@@ -13,27 +13,25 @@ import { QuestionTrueFalseService } from './question-true-false.service';
 export class QuestionTrueFalseDetailComponent implements OnInit, OnDestroy {
 
     questionTrueFalse: QuestionTrueFalse;
-    private subscription: any;
+    private subscription: Subscription;
     private eventSubscriber: Subscription;
 
     constructor(
         private eventManager: EventManager,
-        private jhiLanguageService: JhiLanguageService,
         private questionTrueFalseService: QuestionTrueFalseService,
         private route: ActivatedRoute
     ) {
-        this.jhiLanguageService.setLocations(['questionTrueFalse']);
     }
 
     ngOnInit() {
-        this.subscription = this.route.params.subscribe(params => {
+        this.subscription = this.route.params.subscribe((params) => {
             this.load(params['id']);
         });
         this.registerChangeInQuestionTrueFalses();
     }
 
-    load (id) {
-        this.questionTrueFalseService.find(id).subscribe(questionTrueFalse => {
+    load(id) {
+        this.questionTrueFalseService.find(id).subscribe((questionTrueFalse) => {
             this.questionTrueFalse = questionTrueFalse;
         });
     }
@@ -47,7 +45,9 @@ export class QuestionTrueFalseDetailComponent implements OnInit, OnDestroy {
     }
 
     registerChangeInQuestionTrueFalses() {
-        this.eventSubscriber = this.eventManager.subscribe('questionTrueFalseListModification', response => this.load(this.questionTrueFalse.id));
+        this.eventSubscriber = this.eventManager.subscribe(
+            'questionTrueFalseListModification',
+            (response) => this.load(this.questionTrueFalse.id)
+        );
     }
-
 }

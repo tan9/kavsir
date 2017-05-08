@@ -86,23 +86,23 @@ public class CategorySemester implements Serializable {
             return false;
         }
         CategorySemester categorySemester = (CategorySemester) o;
-        if (categorySemester.id == null || id == null) {
+        if (categorySemester.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(id, categorySemester.id);
+        return Objects.equals(getId(), categorySemester.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "CategorySemester{" +
-            "id=" + id +
-            ", position='" + position + "'" +
-            ", name='" + name + "'" +
-            '}';
+            "id=" + getId() +
+            ", position='" + getPosition() + "'" +
+            ", name='" + getName() + "'" +
+            "}";
     }
 }

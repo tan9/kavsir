@@ -369,5 +369,14 @@ public class CategoryNodeResourceIntTest {
     @Transactional
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(CategoryNode.class);
+        CategoryNode categoryNode1 = new CategoryNode();
+        categoryNode1.setId(1L);
+        CategoryNode categoryNode2 = new CategoryNode();
+        categoryNode2.setId(categoryNode1.getId());
+        assertThat(categoryNode1).isEqualTo(categoryNode2);
+        categoryNode2.setId(2L);
+        assertThat(categoryNode1).isNotEqualTo(categoryNode2);
+        categoryNode1.setId(null);
+        assertThat(categoryNode1).isNotEqualTo(categoryNode2);
     }
 }

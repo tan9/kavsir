@@ -3,6 +3,7 @@ import { Http, Response, URLSearchParams, BaseRequestOptions } from '@angular/ht
 import { Observable } from 'rxjs/Rx';
 
 import { CategoryPublisher } from './category-publisher.model';
+
 @Injectable()
 export class CategoryPublisherService {
 
@@ -12,14 +13,14 @@ export class CategoryPublisherService {
     constructor(private http: Http) { }
 
     create(categoryPublisher: CategoryPublisher): Observable<CategoryPublisher> {
-        let copy: CategoryPublisher = Object.assign({}, categoryPublisher);
+        const copy = this.convert(categoryPublisher);
         return this.http.post(this.resourceUrl, copy).map((res: Response) => {
             return res.json();
         });
     }
 
     update(categoryPublisher: CategoryPublisher): Observable<CategoryPublisher> {
-        let copy: CategoryPublisher = Object.assign({}, categoryPublisher);
+        const copy = this.convert(categoryPublisher);
         return this.http.put(this.resourceUrl, copy).map((res: Response) => {
             return res.json();
         });
@@ -32,7 +33,7 @@ export class CategoryPublisherService {
     }
 
     query(req?: any): Observable<Response> {
-        let options = this.createRequestOption(req);
+        const options = this.createRequestOption(req);
         return this.http.get(this.resourceUrl, options)
         ;
     }
@@ -42,16 +43,14 @@ export class CategoryPublisherService {
     }
 
     search(req?: any): Observable<Response> {
-        let options = this.createRequestOption(req);
+        const options = this.createRequestOption(req);
         return this.http.get(this.resourceSearchUrl, options)
         ;
     }
-
-
     private createRequestOption(req?: any): BaseRequestOptions {
-        let options: BaseRequestOptions = new BaseRequestOptions();
+        const options: BaseRequestOptions = new BaseRequestOptions();
         if (req) {
-            let params: URLSearchParams = new URLSearchParams();
+            const params: URLSearchParams = new URLSearchParams();
             params.set('page', req.page);
             params.set('size', req.size);
             if (req.sort) {
@@ -62,5 +61,10 @@ export class CategoryPublisherService {
             options.search = params;
         }
         return options;
+    }
+
+    private convert(categoryPublisher: CategoryPublisher): CategoryPublisher {
+        const copy: CategoryPublisher = Object.assign({}, categoryPublisher);
+        return copy;
     }
 }

@@ -6,21 +6,21 @@ import { QuestionTrueFalseService } from './question-true-false.service';
 @Injectable()
 export class QuestionTrueFalsePopupService {
     private isOpen = false;
-    constructor (
+    constructor(
         private modalService: NgbModal,
         private router: Router,
         private questionTrueFalseService: QuestionTrueFalseService
 
     ) {}
 
-    open (component: Component, id?: number | any): NgbModalRef {
+    open(component: Component, id?: number | any): NgbModalRef {
         if (this.isOpen) {
             return;
         }
         this.isOpen = true;
 
         if (id) {
-            this.questionTrueFalseService.find(id).subscribe(questionTrueFalse => {
+            this.questionTrueFalseService.find(id).subscribe((questionTrueFalse) => {
                 this.questionTrueFalseModalRef(component, questionTrueFalse);
             });
         } else {
@@ -29,9 +29,9 @@ export class QuestionTrueFalsePopupService {
     }
 
     questionTrueFalseModalRef(component: Component, questionTrueFalse: QuestionTrueFalse): NgbModalRef {
-        let modalRef = this.modalService.open(component, { size: 'lg', backdrop: 'static'});
+        const modalRef = this.modalService.open(component, { size: 'lg', backdrop: 'static'});
         modalRef.componentInstance.questionTrueFalse = questionTrueFalse;
-        modalRef.result.then(result => {
+        modalRef.result.then((result) => {
             this.router.navigate([{ outlets: { popup: null }}], { replaceUrl: true });
             this.isOpen = false;
         }, (reason) => {

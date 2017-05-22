@@ -11,6 +11,7 @@ import { QuestionChoiceOptionPopupService } from './question-choice-option-popup
 import { QuestionChoiceOptionService } from './question-choice-option.service';
 import { QuestionChoice, QuestionChoiceService } from '../question-choice';
 import { ResourceImage, ResourceImageService } from '../resource-image';
+import { ResponseWrapper } from '../../shared';
 
 @Component({
     selector: 'jhi-question-choice-option-dialog',
@@ -39,10 +40,10 @@ export class QuestionChoiceOptionDialogComponent implements OnInit {
     ngOnInit() {
         this.isSaving = false;
         this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
-        this.questionChoiceService.query().subscribe(
-            (res: Response) => { this.questionchoices = res.json(); }, (res: Response) => this.onError(res.json()));
-        this.resourceImageService.query().subscribe(
-            (res: Response) => { this.resourceimages = res.json(); }, (res: Response) => this.onError(res.json()));
+        this.questionChoiceService.query()
+            .subscribe((res: ResponseWrapper) => { this.questionchoices = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+        this.resourceImageService.query()
+            .subscribe((res: ResponseWrapper) => { this.resourceimages = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
     clear() {
         this.activeModal.dismiss('cancel');

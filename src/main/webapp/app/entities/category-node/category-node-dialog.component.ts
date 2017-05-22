@@ -13,6 +13,7 @@ import { QuestionTrueFalse, QuestionTrueFalseService } from '../question-true-fa
 import { QuestionChoice, QuestionChoiceService } from '../question-choice';
 import { QuestionEssay, QuestionEssayService } from '../question-essay';
 import { QuestionGroup, QuestionGroupService } from '../question-group';
+import { ResponseWrapper } from '../../shared';
 
 @Component({
     selector: 'jhi-category-node-dialog',
@@ -47,14 +48,14 @@ export class CategoryNodeDialogComponent implements OnInit {
     ngOnInit() {
         this.isSaving = false;
         this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
-        this.questionTrueFalseService.query().subscribe(
-            (res: Response) => { this.questiontruefalses = res.json(); }, (res: Response) => this.onError(res.json()));
-        this.questionChoiceService.query().subscribe(
-            (res: Response) => { this.questionchoices = res.json(); }, (res: Response) => this.onError(res.json()));
-        this.questionEssayService.query().subscribe(
-            (res: Response) => { this.questionessays = res.json(); }, (res: Response) => this.onError(res.json()));
-        this.questionGroupService.query().subscribe(
-            (res: Response) => { this.questiongroups = res.json(); }, (res: Response) => this.onError(res.json()));
+        this.questionTrueFalseService.query()
+            .subscribe((res: ResponseWrapper) => { this.questiontruefalses = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+        this.questionChoiceService.query()
+            .subscribe((res: ResponseWrapper) => { this.questionchoices = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+        this.questionEssayService.query()
+            .subscribe((res: ResponseWrapper) => { this.questionessays = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+        this.questionGroupService.query()
+            .subscribe((res: ResponseWrapper) => { this.questiongroups = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
     clear() {
         this.activeModal.dismiss('cancel');

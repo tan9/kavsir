@@ -1,0 +1,27 @@
+{
+    "kavsirApp": {
+        "questionGroup" : {
+            "home": {
+                "title": "Question Groups",
+                "createLabel": "Create a new Question Group",
+                "createOrEditLabel": "Create or edit a Question Group",
+                "search": "Search for Question Group"
+            },
+            "created": "A new Question Group is created with identifier {{ param }}",
+            "updated": "A Question Group is updated with identifier {{ param }}",
+            "deleted": "A Question Group is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Question Group {{ id }}?"
+            },
+            "detail": {
+                "title": "Question Group"
+            },
+            "text": "Text",
+            "memo": "Memo",
+            "choice": "Choice",
+            "trueFalse": "True False",
+            "essay": "Essay",
+            "category": "Category"
+        }
+    }
+}

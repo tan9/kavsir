@@ -10,6 +10,7 @@ import { QuestionGroup } from './question-group.model';
 import { QuestionGroupPopupService } from './question-group-popup.service';
 import { QuestionGroupService } from './question-group.service';
 import { CategoryNode, CategoryNodeService } from '../category-node';
+import { ResponseWrapper } from '../../shared';
 
 @Component({
     selector: 'jhi-question-group-dialog',
@@ -35,8 +36,8 @@ export class QuestionGroupDialogComponent implements OnInit {
     ngOnInit() {
         this.isSaving = false;
         this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
-        this.categoryNodeService.query().subscribe(
-            (res: Response) => { this.categorynodes = res.json(); }, (res: Response) => this.onError(res.json()));
+        this.categoryNodeService.query()
+            .subscribe((res: ResponseWrapper) => { this.categorynodes = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
     clear() {
         this.activeModal.dismiss('cancel');

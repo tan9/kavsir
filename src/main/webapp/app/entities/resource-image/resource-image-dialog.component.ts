@@ -13,6 +13,7 @@ import { QuestionChoice, QuestionChoiceService } from '../question-choice';
 import { QuestionChoiceOption, QuestionChoiceOptionService } from '../question-choice-option';
 import { QuestionTrueFalse, QuestionTrueFalseService } from '../question-true-false';
 import { QuestionEssay, QuestionEssayService } from '../question-essay';
+import { ResponseWrapper } from '../../shared';
 
 @Component({
     selector: 'jhi-resource-image-dialog',
@@ -48,14 +49,14 @@ export class ResourceImageDialogComponent implements OnInit {
     ngOnInit() {
         this.isSaving = false;
         this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
-        this.questionChoiceService.query().subscribe(
-            (res: Response) => { this.questionchoices = res.json(); }, (res: Response) => this.onError(res.json()));
-        this.questionChoiceOptionService.query().subscribe(
-            (res: Response) => { this.questionchoiceoptions = res.json(); }, (res: Response) => this.onError(res.json()));
-        this.questionTrueFalseService.query().subscribe(
-            (res: Response) => { this.questiontruefalses = res.json(); }, (res: Response) => this.onError(res.json()));
-        this.questionEssayService.query().subscribe(
-            (res: Response) => { this.questionessays = res.json(); }, (res: Response) => this.onError(res.json()));
+        this.questionChoiceService.query()
+            .subscribe((res: ResponseWrapper) => { this.questionchoices = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+        this.questionChoiceOptionService.query()
+            .subscribe((res: ResponseWrapper) => { this.questionchoiceoptions = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+        this.questionTrueFalseService.query()
+            .subscribe((res: ResponseWrapper) => { this.questiontruefalses = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+        this.questionEssayService.query()
+            .subscribe((res: ResponseWrapper) => { this.questionessays = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
     byteSize(field) {
         return this.dataUtils.byteSize(field);

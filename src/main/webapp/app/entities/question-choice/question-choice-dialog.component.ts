@@ -12,6 +12,7 @@ import { QuestionChoiceService } from './question-choice.service';
 import { CategoryNode, CategoryNodeService } from '../category-node';
 import { ResourceImage, ResourceImageService } from '../resource-image';
 import { QuestionGroup, QuestionGroupService } from '../question-group';
+import { ResponseWrapper } from '../../shared';
 
 @Component({
     selector: 'jhi-question-choice-dialog',
@@ -43,12 +44,12 @@ export class QuestionChoiceDialogComponent implements OnInit {
     ngOnInit() {
         this.isSaving = false;
         this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
-        this.categoryNodeService.query().subscribe(
-            (res: Response) => { this.categorynodes = res.json(); }, (res: Response) => this.onError(res.json()));
-        this.resourceImageService.query().subscribe(
-            (res: Response) => { this.resourceimages = res.json(); }, (res: Response) => this.onError(res.json()));
-        this.questionGroupService.query().subscribe(
-            (res: Response) => { this.questiongroups = res.json(); }, (res: Response) => this.onError(res.json()));
+        this.categoryNodeService.query()
+            .subscribe((res: ResponseWrapper) => { this.categorynodes = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+        this.resourceImageService.query()
+            .subscribe((res: ResponseWrapper) => { this.resourceimages = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+        this.questionGroupService.query()
+            .subscribe((res: ResponseWrapper) => { this.questiongroups = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
     clear() {
         this.activeModal.dismiss('cancel');

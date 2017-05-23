@@ -1,12 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Response } from '@angular/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { EventManager, ParseLinks, PaginationUtil, JhiLanguageService, AlertService } from 'ng-jhipster';
 
 import { QuestionGroup } from './question-group.model';
 import { QuestionGroupService } from './question-group.service';
-import { ITEMS_PER_PAGE, Principal } from '../../shared';
+import { ITEMS_PER_PAGE, Principal, ResponseWrapper } from '../../shared';
 import { PaginationConfig } from '../../blocks/config/uib-pagination.config';
 
 @Component({
@@ -34,17 +33,17 @@ questionGroups: QuestionGroup[];
             this.questionGroupService.search({
                 query: this.currentSearch,
                 }).subscribe(
-                    (res: Response) => this.questionGroups = res.json(),
-                    (res: Response) => this.onError(res.json())
+                    (res: ResponseWrapper) => this.questionGroups = res.json,
+                    (res: ResponseWrapper) => this.onError(res.json)
                 );
             return;
        }
         this.questionGroupService.query().subscribe(
-            (res: Response) => {
-                this.questionGroups = res.json();
+            (res: ResponseWrapper) => {
+                this.questionGroups = res.json;
                 this.currentSearch = '';
             },
-            (res: Response) => this.onError(res.json())
+            (res: ResponseWrapper) => this.onError(res.json)
         );
     }
 

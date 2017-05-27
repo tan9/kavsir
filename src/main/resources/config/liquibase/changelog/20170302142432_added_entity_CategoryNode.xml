@@ -33,12 +33,12 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="lft" type="integer">
-                <constraints nullable="false" />
+            <column name="parent_id" type="bigint">
+                <constraints nullable="true" />
             </column>
 
-            <column name="rgt" type="integer">
-                <constraints nullable="false" />
+            <column name="position" type="integer">
+                <constraints nullable="true" />
             </column>
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->

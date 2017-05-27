@@ -1,14 +1,14 @@
-/** 課程樹狀資料檔 */
+/** 類別樹狀資料檔 */
 entity CategoryNode {
   type CategoryType required,
   /** 參照名稱，在 type !== SEGMENT 時需指定到 type 對應表格資料 */
   typeId Long,
   /** 名稱 (章、課、篇、節)，只有在 type == SEGMENT 時有效 */
   name String required,
-  /** Nested Set Model 左值 */
-  lft Integer required,
-  /** Nested Set Model 右值 */
-  rgt Integer required
+  /** 父類別節點 ID */
+  parentId Long,
+  /** 順序 */
+  position Integer,
 }
 
 enum CategoryType {

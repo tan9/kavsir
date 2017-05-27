@@ -53,24 +53,18 @@
             ]
         },
         {
-            "fieldName": "lft",
-            "javadoc": "Nested Set Model 左值",
-            "fieldType": "Integer",
-            "fieldValidateRules": [
-                "required"
-            ]
+            "fieldName": "parentId",
+            "javadoc": "父類別節點 ID",
+            "fieldType": "Long"
         },
         {
-            "fieldName": "rgt",
-            "javadoc": "Nested Set Model 右值",
-            "fieldType": "Integer",
-            "fieldValidateRules": [
-                "required"
-            ]
+            "fieldName": "position",
+            "javadoc": "順序",
+            "fieldType": "Integer"
         }
     ],
     "changelogDate": "20170302142432",
-    "javadoc": "課程樹狀資料檔",
+    "javadoc": "類別樹狀資料檔",
     "entityTableName": "category_node",
     "dto": "no",
     "pagination": "no",

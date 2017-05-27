@@ -33,8 +33,8 @@
             <th><span jhiTranslate="kavsirApp.categoryNode.type">Type</span></th>
             <th><span jhiTranslate="kavsirApp.categoryNode.typeId">Type Id</span></th>
             <th><span jhiTranslate="kavsirApp.categoryNode.name">Name</span></th>
-            <th><span jhiTranslate="kavsirApp.categoryNode.lft">Lft</span></th>
-            <th><span jhiTranslate="kavsirApp.categoryNode.rgt">Rgt</span></th>
+            <th><span jhiTranslate="kavsirApp.categoryNode.parentId">Parent Id</span></th>
+            <th><span jhiTranslate="kavsirApp.categoryNode.position">Position</span></th>
             <th></th>
             </tr>
             </thead>
@@ -44,8 +44,8 @@
                 <td jhiTranslate="{{'kavsirApp.CategoryType.' + categoryNode.type}}">{{categoryNode.type}}</td>
                 <td>{{categoryNode.typeId}}</td>
                 <td>{{categoryNode.name}}</td>
-                <td>{{categoryNode.lft}}</td>
-                <td>{{categoryNode.rgt}}</td>
+                <td>{{categoryNode.parentId}}</td>
+                <td>{{categoryNode.position}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

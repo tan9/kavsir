@@ -48,36 +48,16 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="kavsirApp.categoryNode.lft" for="field_lft">Lft</label>
-            <input type="number" class="form-control" name="lft" id="field_lft"
-                [(ngModel)]="categoryNode.lft"
-            required />
-            <div [hidden]="!(editForm.controls.lft?.dirty && editForm.controls.lft?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.lft?.errors?.required" jhiTranslate="entity.validation.required">
-                   This field is required.
-                </small>
-                <small class="form-text text-danger"
-                    [hidden]="!editForm.controls.lft?.errors?.number" jhiTranslate="entity.validation.number">
-                    This field should be a number.
-                </small>
-            </div>
+            <label class="form-control-label" jhiTranslate="kavsirApp.categoryNode.parentId" for="field_parentId">Parent Id</label>
+            <input type="number" class="form-control" name="parentId" id="field_parentId"
+                [(ngModel)]="categoryNode.parentId"
+             />
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="kavsirApp.categoryNode.rgt" for="field_rgt">Rgt</label>
-            <input type="number" class="form-control" name="rgt" id="field_rgt"
-                [(ngModel)]="categoryNode.rgt"
-            required />
-            <div [hidden]="!(editForm.controls.rgt?.dirty && editForm.controls.rgt?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.rgt?.errors?.required" jhiTranslate="entity.validation.required">
-                   This field is required.
-                </small>
-                <small class="form-text text-danger"
-                    [hidden]="!editForm.controls.rgt?.errors?.number" jhiTranslate="entity.validation.number">
-                    This field should be a number.
-                </small>
-            </div>
+            <label class="form-control-label" jhiTranslate="kavsirApp.categoryNode.position" for="field_position">Position</label>
+            <input type="number" class="form-control" name="position" id="field_position"
+                [(ngModel)]="categoryNode.position"
+             />
         </div>
 
     </div>

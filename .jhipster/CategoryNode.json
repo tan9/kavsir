@@ -2,6 +2,12 @@
     "fluentMethods": true,
     "relationships": [
         {
+            "relationshipType": "many-to-one",
+            "relationshipName": "parent",
+            "otherEntityName": "categoryNode",
+            "otherEntityField": "id"
+        },
+        {
             "relationshipType": "many-to-many",
             "relationshipName": "trueOrFalse",
             "otherEntityName": "questionTrueFalse",
@@ -51,11 +57,6 @@
             "fieldValidateRules": [
                 "required"
             ]
-        },
-        {
-            "fieldName": "parentId",
-            "javadoc": "父類別節點 ID",
-            "fieldType": "Long"
         },
         {
             "fieldName": "position",

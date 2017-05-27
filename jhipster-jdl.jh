@@ -5,10 +5,12 @@ entity CategoryNode {
   typeId Long,
   /** 名稱 (章、課、篇、節)，只有在 type == SEGMENT 時有效 */
   name String required,
-  /** 父類別節點 ID */
-  parentId Long,
   /** 順序 */
   position Integer,
+}
+
+relationship ManyToOne {
+  CategoryNode{parent} to CategoryNode
 }
 
 enum CategoryType {

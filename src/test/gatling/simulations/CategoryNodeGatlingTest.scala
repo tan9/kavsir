@@ -67,7 +67,7 @@ class CategoryNodeGatlingTest extends Simulation {
             .exec(http("Create new categoryNode")
             .post("/api/category-nodes")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "type":null, "typeId":null, "name":"SAMPLE_TEXT", "lft":"0", "rgt":"0"}""")).asJSON
+            .body(StringBody("""{"id":null, "type":null, "typeId":null, "name":"SAMPLE_TEXT", "parentId":null, "position":"0"}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_categoryNode_url"))).exitHereIfFailed
             .pause(10)

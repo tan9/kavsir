@@ -17,9 +17,9 @@ import java.util.Objects;
 import com.tj.kvasir.domain.enumeration.CategoryType;
 
 /**
- * 課程樹狀資料檔
+ * 類別樹狀資料檔
  */
-@ApiModel(description = "課程樹狀資料檔")
+@ApiModel(description = "類別樹狀資料檔")
 @Entity
 @Table(name = "category_node")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -29,7 +29,8 @@ public class CategoryNode implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
     @NotNull
@@ -53,20 +54,18 @@ public class CategoryNode implements Serializable {
     private String name;
 
     /**
-     * Nested Set Model 左值
+     * 父類別節點 ID
      */
-    @NotNull
-    @ApiModelProperty(value = "Nested Set Model 左值", required = true)
-    @Column(name = "lft", nullable = false)
-    private Integer lft;
+    @ApiModelProperty(value = "父類別節點 ID")
+    @Column(name = "parent_id")
+    private Long parentId;
 
     /**
-     * Nested Set Model 右值
+     * 順序
      */
-    @NotNull
-    @ApiModelProperty(value = "Nested Set Model 右值", required = true)
-    @Column(name = "rgt", nullable = false)
-    private Integer rgt;
+    @ApiModelProperty(value = "順序")
+    @Column(name = "position")
+    private Integer position;
 
     @ManyToMany(mappedBy = "categories")
     @JsonIgnore
@@ -135,30 +134,30 @@ public class CategoryNode implements Serializable {
         this.name = name;
     }
 
-    public Integer getLft() {
-        return lft;
+    public Long getParentId() {
+        return parentId;
     }
 
-    public CategoryNode lft(Integer lft) {
-        this.lft = lft;
+    public CategoryNode parentId(Long parentId) {
+        this.parentId = parentId;
         return this;
     }
 
-    public void setLft(Integer lft) {
-        this.lft = lft;
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
     }
 
-    public Integer getRgt() {
-        return rgt;
+    public Integer getPosition() {
+        return position;
     }
 
-    public CategoryNode rgt(Integer rgt) {
-        this.rgt = rgt;
+    public CategoryNode position(Integer position) {
+        this.position = position;
         return this;
     }
 
-    public void setRgt(Integer rgt) {
-        this.rgt = rgt;
+    public void setPosition(Integer position) {
+        this.position = position;
     }
 
     public Set<QuestionTrueFalse> getTrueOrFalses() {
@@ -288,8 +287,8 @@ public class CategoryNode implements Serializable {
             ", type='" + getType() + "'" +
             ", typeId='" + getTypeId() + "'" +
             ", name='" + getName() + "'" +
-            ", lft='" + getLft() + "'" +
-            ", rgt='" + getRgt() + "'" +
+            ", parentId='" + getParentId() + "'" +
+            ", position='" + getPosition() + "'" +
             "}";
     }
 }

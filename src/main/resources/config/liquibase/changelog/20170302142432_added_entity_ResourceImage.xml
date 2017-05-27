@@ -8,8 +8,7 @@
 
     <property name="now" value="now()" dbms="h2"/>
 
-    <property name="now" value="now()" dbms="mysql"/>
-    <property name="autoIncrement" value="true"/>
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
 
     <property name="floatType" value="float4" dbms="postgresql, h2"/>
     <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
@@ -26,7 +25,7 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="content" type="blob">
+            <column name="content" type="longblob">
                 <constraints nullable="false" />
             </column>
             <column name="content_content_type" type="varchar(255)">

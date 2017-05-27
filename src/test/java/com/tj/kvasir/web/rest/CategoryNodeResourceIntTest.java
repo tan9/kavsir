@@ -48,11 +48,11 @@ public class CategoryNodeResourceIntTest {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
-    private static final Integer DEFAULT_LFT = 1;
-    private static final Integer UPDATED_LFT = 2;
+    private static final Long DEFAULT_PARENT_ID = 1L;
+    private static final Long UPDATED_PARENT_ID = 2L;
 
-    private static final Integer DEFAULT_RGT = 1;
-    private static final Integer UPDATED_RGT = 2;
+    private static final Integer DEFAULT_POSITION = 1;
+    private static final Integer UPDATED_POSITION = 2;
 
     @Autowired
     private CategoryNodeRepository categoryNodeRepository;
@@ -97,8 +97,8 @@ public class CategoryNodeResourceIntTest {
             .type(DEFAULT_TYPE)
             .typeId(DEFAULT_TYPE_ID)
             .name(DEFAULT_NAME)
-            .lft(DEFAULT_LFT)
-            .rgt(DEFAULT_RGT);
+            .parentId(DEFAULT_PARENT_ID)
+            .position(DEFAULT_POSITION);
         return categoryNode;
     }
 
@@ -126,8 +126,8 @@ public class CategoryNodeResourceIntTest {
         assertThat(testCategoryNode.getType()).isEqualTo(DEFAULT_TYPE);
         assertThat(testCategoryNode.getTypeId()).isEqualTo(DEFAULT_TYPE_ID);
         assertThat(testCategoryNode.getName()).isEqualTo(DEFAULT_NAME);
-        assertThat(testCategoryNode.getLft()).isEqualTo(DEFAULT_LFT);
-        assertThat(testCategoryNode.getRgt()).isEqualTo(DEFAULT_RGT);
+        assertThat(testCategoryNode.getParentId()).isEqualTo(DEFAULT_PARENT_ID);
+        assertThat(testCategoryNode.getPosition()).isEqualTo(DEFAULT_POSITION);
 
         // Validate the CategoryNode in Elasticsearch
         CategoryNode categoryNodeEs = categoryNodeSearchRepository.findOne(testCategoryNode.getId());
@@ -191,42 +191,6 @@ public class CategoryNodeResourceIntTest {
 
     @Test
     @Transactional
-    public void checkLftIsRequired() throws Exception {
-        int databaseSizeBeforeTest = categoryNodeRepository.findAll().size();
-        // set the field null
-        categoryNode.setLft(null);
-
-        // Create the CategoryNode, which fails.
-
-        restCategoryNodeMockMvc.perform(post("/api/category-nodes")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(categoryNode)))
-            .andExpect(status().isBadRequest());
-
-        List<CategoryNode> categoryNodeList = categoryNodeRepository.findAll();
-        assertThat(categoryNodeList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkRgtIsRequired() throws Exception {
-        int databaseSizeBeforeTest = categoryNodeRepository.findAll().size();
-        // set the field null
-        categoryNode.setRgt(null);
-
-        // Create the CategoryNode, which fails.
-
-        restCategoryNodeMockMvc.perform(post("/api/category-nodes")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(categoryNode)))
-            .andExpect(status().isBadRequest());
-
-        List<CategoryNode> categoryNodeList = categoryNodeRepository.findAll();
-        assertThat(categoryNodeList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void getAllCategoryNodes() throws Exception {
         // Initialize the database
         categoryNodeRepository.saveAndFlush(categoryNode);
@@ -239,8 +203,8 @@ public class CategoryNodeResourceIntTest {
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
             .andExpect(jsonPath("$.[*].typeId").value(hasItem(DEFAULT_TYPE_ID.intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].lft").value(hasItem(DEFAULT_LFT)))
-            .andExpect(jsonPath("$.[*].rgt").value(hasItem(DEFAULT_RGT)));
+            .andExpect(jsonPath("$.[*].parentId").value(hasItem(DEFAULT_PARENT_ID.intValue())))
+            .andExpect(jsonPath("$.[*].position").value(hasItem(DEFAULT_POSITION)));
     }
 
     @Test
@@ -257,8 +221,8 @@ public class CategoryNodeResourceIntTest {
             .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()))
             .andExpect(jsonPath("$.typeId").value(DEFAULT_TYPE_ID.intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
-            .andExpect(jsonPath("$.lft").value(DEFAULT_LFT))
-            .andExpect(jsonPath("$.rgt").value(DEFAULT_RGT));
+            .andExpect(jsonPath("$.parentId").value(DEFAULT_PARENT_ID.intValue()))
+            .andExpect(jsonPath("$.position").value(DEFAULT_POSITION));
     }
 
     @Test
@@ -283,8 +247,8 @@ public class CategoryNodeResourceIntTest {
             .type(UPDATED_TYPE)
             .typeId(UPDATED_TYPE_ID)
             .name(UPDATED_NAME)
-            .lft(UPDATED_LFT)
-            .rgt(UPDATED_RGT);
+            .parentId(UPDATED_PARENT_ID)
+            .position(UPDATED_POSITION);
 
         restCategoryNodeMockMvc.perform(put("/api/category-nodes")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -298,8 +262,8 @@ public class CategoryNodeResourceIntTest {
         assertThat(testCategoryNode.getType()).isEqualTo(UPDATED_TYPE);
         assertThat(testCategoryNode.getTypeId()).isEqualTo(UPDATED_TYPE_ID);
         assertThat(testCategoryNode.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testCategoryNode.getLft()).isEqualTo(UPDATED_LFT);
-        assertThat(testCategoryNode.getRgt()).isEqualTo(UPDATED_RGT);
+        assertThat(testCategoryNode.getParentId()).isEqualTo(UPDATED_PARENT_ID);
+        assertThat(testCategoryNode.getPosition()).isEqualTo(UPDATED_POSITION);
 
         // Validate the CategoryNode in Elasticsearch
         CategoryNode categoryNodeEs = categoryNodeSearchRepository.findOne(testCategoryNode.getId());
@@ -361,8 +325,8 @@ public class CategoryNodeResourceIntTest {
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
             .andExpect(jsonPath("$.[*].typeId").value(hasItem(DEFAULT_TYPE_ID.intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].lft").value(hasItem(DEFAULT_LFT)))
-            .andExpect(jsonPath("$.[*].rgt").value(hasItem(DEFAULT_RGT)));
+            .andExpect(jsonPath("$.[*].parentId").value(hasItem(DEFAULT_PARENT_ID.intValue())))
+            .andExpect(jsonPath("$.[*].position").value(hasItem(DEFAULT_POSITION)));
     }
 
     @Test

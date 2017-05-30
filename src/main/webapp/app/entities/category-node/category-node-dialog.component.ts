@@ -25,6 +25,8 @@ export class CategoryNodeDialogComponent implements OnInit {
     authorities: any[];
     isSaving: boolean;
 
+    categorynodes: CategoryNode[];
+
     questiontruefalses: QuestionTrueFalse[];
 
     questionchoices: QuestionChoice[];
@@ -48,6 +50,8 @@ export class CategoryNodeDialogComponent implements OnInit {
     ngOnInit() {
         this.isSaving = false;
         this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
+        this.categoryNodeService.query()
+            .subscribe((res: ResponseWrapper) => { this.categorynodes = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
         this.questionTrueFalseService.query()
             .subscribe((res: ResponseWrapper) => { this.questiontruefalses = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
         this.questionChoiceService.query()
@@ -95,6 +99,10 @@ export class CategoryNodeDialogComponent implements OnInit {
 
     private onError(error) {
         this.alertService.error(error.message, null, null);
+    }
+
+    trackCategoryNodeById(index: number, item: CategoryNode) {
+        return item.id;
     }
 
     trackQuestionTrueFalseById(index: number, item: QuestionTrueFalse) {

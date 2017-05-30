@@ -48,9 +48,6 @@ public class CategoryNodeResourceIntTest {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
-    private static final Long DEFAULT_PARENT_ID = 1L;
-    private static final Long UPDATED_PARENT_ID = 2L;
-
     private static final Integer DEFAULT_POSITION = 1;
     private static final Integer UPDATED_POSITION = 2;
 
@@ -97,7 +94,6 @@ public class CategoryNodeResourceIntTest {
             .type(DEFAULT_TYPE)
             .typeId(DEFAULT_TYPE_ID)
             .name(DEFAULT_NAME)
-            .parentId(DEFAULT_PARENT_ID)
             .position(DEFAULT_POSITION);
         return categoryNode;
     }
@@ -126,7 +122,6 @@ public class CategoryNodeResourceIntTest {
         assertThat(testCategoryNode.getType()).isEqualTo(DEFAULT_TYPE);
         assertThat(testCategoryNode.getTypeId()).isEqualTo(DEFAULT_TYPE_ID);
         assertThat(testCategoryNode.getName()).isEqualTo(DEFAULT_NAME);
-        assertThat(testCategoryNode.getParentId()).isEqualTo(DEFAULT_PARENT_ID);
         assertThat(testCategoryNode.getPosition()).isEqualTo(DEFAULT_POSITION);
 
         // Validate the CategoryNode in Elasticsearch
@@ -203,7 +198,6 @@ public class CategoryNodeResourceIntTest {
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
             .andExpect(jsonPath("$.[*].typeId").value(hasItem(DEFAULT_TYPE_ID.intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].parentId").value(hasItem(DEFAULT_PARENT_ID.intValue())))
             .andExpect(jsonPath("$.[*].position").value(hasItem(DEFAULT_POSITION)));
     }
 
@@ -221,7 +215,6 @@ public class CategoryNodeResourceIntTest {
             .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()))
             .andExpect(jsonPath("$.typeId").value(DEFAULT_TYPE_ID.intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
-            .andExpect(jsonPath("$.parentId").value(DEFAULT_PARENT_ID.intValue()))
             .andExpect(jsonPath("$.position").value(DEFAULT_POSITION));
     }
 
@@ -247,7 +240,6 @@ public class CategoryNodeResourceIntTest {
             .type(UPDATED_TYPE)
             .typeId(UPDATED_TYPE_ID)
             .name(UPDATED_NAME)
-            .parentId(UPDATED_PARENT_ID)
             .position(UPDATED_POSITION);
 
         restCategoryNodeMockMvc.perform(put("/api/category-nodes")
@@ -262,7 +254,6 @@ public class CategoryNodeResourceIntTest {
         assertThat(testCategoryNode.getType()).isEqualTo(UPDATED_TYPE);
         assertThat(testCategoryNode.getTypeId()).isEqualTo(UPDATED_TYPE_ID);
         assertThat(testCategoryNode.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testCategoryNode.getParentId()).isEqualTo(UPDATED_PARENT_ID);
         assertThat(testCategoryNode.getPosition()).isEqualTo(UPDATED_POSITION);
 
         // Validate the CategoryNode in Elasticsearch
@@ -325,7 +316,6 @@ public class CategoryNodeResourceIntTest {
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
             .andExpect(jsonPath("$.[*].typeId").value(hasItem(DEFAULT_TYPE_ID.intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].parentId").value(hasItem(DEFAULT_PARENT_ID.intValue())))
             .andExpect(jsonPath("$.[*].position").value(hasItem(DEFAULT_POSITION)));
     }
 

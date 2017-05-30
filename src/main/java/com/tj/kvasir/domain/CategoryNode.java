@@ -54,18 +54,14 @@ public class CategoryNode implements Serializable {
     private String name;
 
     /**
-     * 父類別節點 ID
-     */
-    @ApiModelProperty(value = "父類別節點 ID")
-    @Column(name = "parent_id")
-    private Long parentId;
-
-    /**
      * 順序
      */
     @ApiModelProperty(value = "順序")
     @Column(name = "position")
     private Integer position;
+
+    @ManyToOne
+    private CategoryNode parent;
 
     @ManyToMany(mappedBy = "categories")
     @JsonIgnore
@@ -134,19 +130,6 @@ public class CategoryNode implements Serializable {
         this.name = name;
     }
 
-    public Long getParentId() {
-        return parentId;
-    }
-
-    public CategoryNode parentId(Long parentId) {
-        this.parentId = parentId;
-        return this;
-    }
-
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
-    }
-
     public Integer getPosition() {
         return position;
     }
@@ -158,6 +141,19 @@ public class CategoryNode implements Serializable {
 
     public void setPosition(Integer position) {
         this.position = position;
+    }
+
+    public CategoryNode getParent() {
+        return parent;
+    }
+
+    public CategoryNode parent(CategoryNode categoryNode) {
+        this.parent = categoryNode;
+        return this;
+    }
+
+    public void setParent(CategoryNode categoryNode) {
+        this.parent = categoryNode;
     }
 
     public Set<QuestionTrueFalse> getTrueOrFalses() {
@@ -287,7 +283,6 @@ public class CategoryNode implements Serializable {
             ", type='" + getType() + "'" +
             ", typeId='" + getTypeId() + "'" +
             ", name='" + getName() + "'" +
-            ", parentId='" + getParentId() + "'" +
             ", position='" + getPosition() + "'" +
             "}";
     }

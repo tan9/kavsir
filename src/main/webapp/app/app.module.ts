@@ -9,6 +9,7 @@ import { KavsirHomeModule } from './home/home.module';
 import { KavsirAdminModule } from './admin/admin.module';
 import { KavsirAccountModule } from './account/account.module';
 import { KavsirEntityModule } from './entities/entity.module';
+import { KavsirPoolModule } from './pool/pool.module';
 
 import { customHttpProvider } from './blocks/interceptor/http.provider';
 import { PaginationConfig } from './blocks/config/uib-pagination.config';
@@ -33,7 +34,8 @@ import {
         KavsirHomeModule,
         KavsirAdminModule,
         KavsirAccountModule,
-        KavsirEntityModule
+        KavsirEntityModule,
+        KavsirPoolModule
     ],
     declarations: [
         JhiMainComponent,

@@ -33,11 +33,11 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="parent_id" type="bigint">
+            <column name="position" type="integer">
                 <constraints nullable="true" />
             </column>
 
-            <column name="position" type="integer">
+            <column name="parent_id" type="bigint">
                 <constraints nullable="true" />
             </column>
 

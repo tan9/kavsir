@@ -48,18 +48,19 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="kavsirApp.categoryNode.parentId" for="field_parentId">Parent Id</label>
-            <input type="number" class="form-control" name="parentId" id="field_parentId"
-                [(ngModel)]="categoryNode.parentId"
-             />
-        </div>
-        <div class="form-group">
             <label class="form-control-label" jhiTranslate="kavsirApp.categoryNode.position" for="field_position">Position</label>
             <input type="number" class="form-control" name="position" id="field_position"
                 [(ngModel)]="categoryNode.position"
              />
         </div>
 
+        <div class="form-group">
+            <label jhiTranslate="kavsirApp.categoryNode.parent" for="field_parent">Parent</label>
+            <select class="form-control" id="field_parent" name="parent" [(ngModel)]="categoryNode.parent" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="categoryNodeOption.id === categoryNode.parent?.id ? categoryNode.parent : categoryNodeOption" *ngFor="let categoryNodeOption of categorynodes; trackBy: trackCategoryNodeById">{{categoryNodeOption.id}}</option>
+            </select>
+        </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clear()">

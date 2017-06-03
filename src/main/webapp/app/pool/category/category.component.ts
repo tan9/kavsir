@@ -6,13 +6,15 @@ import { CategoryGrade, CategoryGradeService } from '../../entities/category-gra
 import { CategorySemester, CategorySemesterService } from '../../entities/category-semester';
 import { CategorySubject, CategorySubjectService } from '../../entities/category-subject';
 import { CategoryPublisher, CategoryPublisherService } from '../../entities/category-publisher';
+import { Category } from '../../entities/category.model';
 
 import { Subscription } from 'rxjs/Rx';
+import { ITreeOptions, TreeNode } from 'angular-tree-component/dist/angular-tree-component';
 
 @Component({
     selector: 'jhi-category',
     templateUrl: './category.component.html',
-    styles: []
+    styleUrls: ['./category.component.css']
 })
 export class CategoryComponent implements OnInit, OnDestroy {
 
@@ -27,6 +29,16 @@ export class CategoryComponent implements OnInit, OnDestroy {
     categorySemesters: CategorySemester[];
     categorySubjects: CategorySubject[];
     categoryPublishers: CategorySubject[];
+
+    nodes = [{
+        id: 'ROOT',
+        name: '類別目錄'
+    }];
+
+    options: ITreeOptions = {
+        allowDrag: (node) => false,
+        allowDrop: (element, {parent, index}) => false
+    };
 
     constructor(private eventManager: EventManager,
                 private alertService: AlertService,
@@ -142,6 +154,57 @@ export class CategoryComponent implements OnInit, OnDestroy {
 
     registerChangeInCategoryPublishers() {
         this.categoryPublishersEventSubscriber = this.eventManager.subscribe('categoryPublisherListModification', (response) => this.loadAllCategoryPublishers());
+    }
+
+    nodeAction(event: Event, index: number, node: TreeNode) {
+        event.stopPropagation();
+
+        console.log(event);
+        console.log(index);
+        console.log(node);
+    }
+
+    levelName(level: number) {
+        return {1: '學年', 2: '年級', 3: '學期', 4: '科目', 5: '出版社'}[level];
+    }
+
+    availableChildren(level: number): Category[] {
+        return {
+            1: this.categoryAcademicYears,
+            2: this.categoryGrades,
+            3: this.categorySemesters,
+            4: this.categorySubjects,
+            5: this.categoryPublishers
+        }[level] || [];
+    }
+
+    addNode(node: TreeNode, item: Category) {
+        const nodeData = node.data;
+        if (!nodeData.hasOwnProperty('children')) {
+            nodeData.children = [];
+        }
+
+        nodeData.children.push({
+            name: item.name,
+            typeId: item.id
+        });
+        node.treeModel.update();
+
+        if (!node.isExpanded) {
+            node.treeModel.setExpandedNode(node, true);
+        }
+    }
+
+    isItemExisted(children: TreeNode[], item: Category): boolean {
+        return children.some((child) => child.data.typeId === item.id);
+    }
+
+    childrenCount(node: TreeNode): number {
+        return node && node.children ? node.children.length : 0;
+    }
+
+    alert(message: string) {
+        this.alertService.error(message, null, null);
     }
 
     private onError(error) {

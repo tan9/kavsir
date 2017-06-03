@@ -1,0 +1,11 @@
+>>> .tree .tree-node .btn-group {
+    padding-left: 0.5em;
+}
+
+>>> tree-viewport {
+    overflow: visible !important;
+}
+
+>>> .tree-children {
+    overflow: visible !important;
+}

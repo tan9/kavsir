@@ -348,9 +348,40 @@
             <span><i class="fa fa-sitemap" aria-hidden="true"></i> 類別階層</span>
         </template>
         <template ngbPanelContent>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque debitis dolorem eaque enim eum ex excepturi
-            fugit iusto laborum nisi officia officiis provident quo ratione sequi unde veritatis, voluptatibus.
-            Laboriosam?
+            <tree-root id="categoryTree" [focused]="true" [nodes]="nodes" [options]="options">
+                <ng-template #treeNodeTemplate let-node let-index="index">
+                    <span *ngIf="node.level <= 5">{{ node.data.name }}</span>
+                    <span *ngIf="node.level > 5">
+                        {{ node.data.name }}
+                    </span>
+                    <div class="btn-group flex-btn-group-container pull-right">
+                        <button *ngIf="node.level <= 5" class="btn btn-info btn-sm"
+                                ngbDropdown [id]="'dropdownBasic' + index" ngbDropdownToggle #myDrop="ngbDropdown"
+                                (click)="$event.stopPropagation()"
+                                [disabled]="childrenCount(node) >= availableChildren(node.level).length">
+                            <span class="fa fa-plus"></span>
+                            <span class="hidden-sm-down">新增{{levelName(node.level)}}</span>
+                            <div class="dropdown-menu" [attr.aria-labelledby]="'dropdownBasic' + index">
+                                <button class="dropdown-item"
+                                        *ngFor="let item of availableChildren(node.level)"
+                                        (click)="addNode(node, item)"
+                                        [disabled]="isItemExisted(node.children || [], item)">
+                                    {{item.name}}
+                                </button>
+                            </div>
+                        </button>
+                        <button *ngIf="node.level > 5" class="btn btn-info btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="hidden-sm-down">新增子類別</span>
+                        </button>
+                    </div>
+                </ng-template>
+            </tree-root>
+
+            <button class="btn btn-primary float-right">
+                <span class="fa fa-save"></span>
+                <span class="hidden-sm-down" (click)="alert('還沒做好')">儲存</span>
+            </button>
         </template>
     </ngb-panel>
 </ngb-accordion>

@@ -1,11 +1,11 @@
->>> .tree .tree-node .btn-group {
+/deep/ .tab-content /deep/ .table.table-striped th {
+    border-top-width: 0;
+}
+
+/deep/ .tree .tree-node .btn-group {
     padding-left: 0.5em;
 }
 
->>> tree-viewport {
-    overflow: visible !important;
-}
-
->>> .tree-children {
+/deep/ tree-viewport, /deep/ .tree-children {
     overflow: visible !important;
 }

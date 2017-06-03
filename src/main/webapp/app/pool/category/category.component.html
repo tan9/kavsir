@@ -350,31 +350,44 @@
         <template ngbPanelContent>
             <tree-root id="categoryTree" [focused]="true" [nodes]="nodes" [options]="options">
                 <ng-template #treeNodeTemplate let-node let-index="index">
-                    <span *ngIf="node.level <= 5">{{ node.data.name }}</span>
-                    <span *ngIf="node.level > 5">
+                    <form class="form-inline" #categoryNodeForm="ngForm"
+                          #toolbar (mouseover)="toolbar.show = true" (mouseout)="toolbar.show = false">
+                    <span *ngIf="node.level <= 6 || !node.data.isEditing">
                         {{ node.data.name }}
                     </span>
-                    <div class="btn-group flex-btn-group-container pull-right">
-                        <button *ngIf="node.level <= 5" class="btn btn-info btn-sm"
-                                ngbDropdown [id]="'dropdownBasic' + index" ngbDropdownToggle #myDrop="ngbDropdown"
-                                (click)="$event.stopPropagation()"
-                                [disabled]="childrenCount(node) >= availableChildren(node.level).length">
-                            <span class="fa fa-plus"></span>
-                            <span class="hidden-sm-down">新增{{levelName(node.level)}}</span>
-                            <div class="dropdown-menu" [attr.aria-labelledby]="'dropdownBasic' + index">
-                                <button class="dropdown-item"
-                                        *ngFor="let item of availableChildren(node.level)"
-                                        (click)="addNode(node, item)"
-                                        [disabled]="isItemExisted(node.children || [], item)">
-                                    {{item.name}}
-                                </button>
-                            </div>
-                        </button>
-                        <button *ngIf="node.level > 5" class="btn btn-info btn-sm">
-                            <span class="fa fa-pencil"></span>
-                            <span class="hidden-sm-down">新增子類別</span>
-                        </button>
-                    </div>
+                        <input *ngIf="node.level > 6 && node.data.isEditing" name="name" type="text" class="form-control"
+                               [(ngModel)]="node.data.name" placeholder="輸入類別名稱" required/>
+                        <div class="btn-group flex-btn-group-container pull-right"
+                             [style.opacity]="node.isActive || toolbar.show ? 1 : 0.2">
+                            <button *ngIf="node.level <= 5" class="btn btn-info btn-sm"
+                                    ngbDropdown [id]="'dropdownBasic' + index" ngbDropdownToggle #myDrop="ngbDropdown"
+                                    (click)="$event.stopPropagation()"
+                                    [disabled]="childrenCount(node) >= availableCategoryChildren(node.level).length">
+                                <span class="fa fa-plus"></span>
+                                <span class="hidden-sm-down">新增{{categoryLevelName(node.level)}}</span>
+                                <div class="dropdown-menu" [attr.aria-labelledby]="'dropdownBasic' + index">
+                                    <button class="dropdown-item"
+                                            *ngFor="let item of availableCategoryChildren(node.level)"
+                                            (click)="addCategoryChild(node, item)"
+                                            [disabled]="isItemExisted(node.children || [], item)">
+                                        {{item.name}}
+                                    </button>
+                                </div>
+                            </button>
+                            <button *ngIf="node.level > 6" class="btn btn-primary btn-sm" type="submit"
+                                    (click)="node.data.isEditing = !node.data.isEditing"
+                                    [disabled]="!categoryNodeForm.valid">
+                                <span *ngIf="!node.data.isEditing" class="fa fa-pencil"></span>
+                                <span *ngIf="node.data.isEditing" class="fa fa-save"></span>
+                                <span *ngIf="!node.data.isEditing" class="hidden-sm-down">編輯</span>
+                                <span *ngIf="node.data.isEditing" class="hidden-sm-down">儲存</span>
+                            </button>
+                            <button *ngIf="node.level > 5" class="btn btn-info btn-sm" (click)="addSegmentChild(node)">
+                                <span class="fa fa-plus"></span>
+                                <span class="hidden-sm-down">新增子類別</span>
+                            </button>
+                        </div>
+                    </form>
                 </ng-template>
             </tree-root>
 

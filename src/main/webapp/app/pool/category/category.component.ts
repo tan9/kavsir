@@ -10,6 +10,7 @@ import { Category } from '../../entities/category.model';
 
 import { Subscription } from 'rxjs/Rx';
 import { ITreeOptions, TreeNode } from 'angular-tree-component/dist/angular-tree-component';
+import { CategoryType } from '../../entities/category-node/category-node.model';
 
 @Component({
     selector: 'jhi-category',
@@ -17,6 +18,15 @@ import { ITreeOptions, TreeNode } from 'angular-tree-component/dist/angular-tree
     styleUrls: ['./category.component.css']
 })
 export class CategoryComponent implements OnInit, OnDestroy {
+
+    private CATEGORY_LEVEL_MAP = {
+        1: {type: CategoryType.ACADEMIC_YEAR, name: '學年'},
+        2: {type: CategoryType.GRADE, name: '年級'},
+        3: {type: CategoryType.SEMESTER, name: '學期'},
+        4: {type: CategoryType.SUBJECT, name: '科目'},
+        5: {type: CategoryType.PUBLISHER, name: '出版社'},
+        6: {type: CategoryType.SEGMENT, name: '子類別'}
+    };
 
     categoryAcademicYearsEventSubscriber: Subscription;
     categoryGradesEventSubscriber: Subscription;
@@ -156,38 +166,47 @@ export class CategoryComponent implements OnInit, OnDestroy {
         this.categoryPublishersEventSubscriber = this.eventManager.subscribe('categoryPublisherListModification', (response) => this.loadAllCategoryPublishers());
     }
 
-    nodeAction(event: Event, index: number, node: TreeNode) {
-        event.stopPropagation();
-
-        console.log(event);
-        console.log(index);
-        console.log(node);
+    categoryLevelName(level: number) {
+        return this.categoryLevelData(level).name;
     }
 
-    levelName(level: number) {
-        return {1: '學年', 2: '年級', 3: '學期', 4: '科目', 5: '出版社'}[level];
+    categoryLevelData(level: number) {
+        return this.CATEGORY_LEVEL_MAP[level];
     }
 
-    availableChildren(level: number): Category[] {
+    availableCategoryChildren(level: number): Category[] {
         return {
-            1: this.categoryAcademicYears,
-            2: this.categoryGrades,
-            3: this.categorySemesters,
-            4: this.categorySubjects,
-            5: this.categoryPublishers
-        }[level] || [];
+                1: this.categoryAcademicYears,
+                2: this.categoryGrades,
+                3: this.categorySemesters,
+                4: this.categorySubjects,
+                5: this.categoryPublishers
+            }[level] || [];
     }
 
-    addNode(node: TreeNode, item: Category) {
+    addCategoryChild(node: TreeNode, item: Category) {
+        this.addChild(node, {
+            name: item.name,
+            type: this.categoryLevelData(node.level).type,
+            typeId: item.id
+        });
+    }
+
+    addSegmentChild(node: TreeNode) {
+        this.addChild(node, {
+            name: '',
+            type: CategoryType.SEGMENT,
+            isEditing: true
+        });
+    }
+
+    private addChild(node: TreeNode, child: any) {
         const nodeData = node.data;
         if (!nodeData.hasOwnProperty('children')) {
             nodeData.children = [];
         }
 
-        nodeData.children.push({
-            name: item.name,
-            typeId: item.id
-        });
+        nodeData.children.push(child);
         node.treeModel.update();
 
         if (!node.isExpanded) {

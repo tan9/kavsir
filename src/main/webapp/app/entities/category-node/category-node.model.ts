@@ -1,5 +1,5 @@
 
-const enum CategoryType {
+export const enum CategoryType {
     'ACADEMIC_YEAR',
     'GRADE',
     'SEMESTER',

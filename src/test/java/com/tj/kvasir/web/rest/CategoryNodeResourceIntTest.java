@@ -168,24 +168,6 @@ public class CategoryNodeResourceIntTest {
 
     @Test
     @Transactional
-    public void checkNameIsRequired() throws Exception {
-        int databaseSizeBeforeTest = categoryNodeRepository.findAll().size();
-        // set the field null
-        categoryNode.setName(null);
-
-        // Create the CategoryNode, which fails.
-
-        restCategoryNodeMockMvc.perform(post("/api/category-nodes")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(categoryNode)))
-            .andExpect(status().isBadRequest());
-
-        List<CategoryNode> categoryNodeList = categoryNodeRepository.findAll();
-        assertThat(categoryNodeList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void getAllCategoryNodes() throws Exception {
         // Initialize the database
         categoryNodeRepository.saveAndFlush(categoryNode);

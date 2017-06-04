@@ -53,10 +53,7 @@
         {
             "fieldName": "name",
             "javadoc": "名稱 (章、課、篇、節)，只有在 type == SEGMENT 時有效",
-            "fieldType": "String",
-            "fieldValidateRules": [
-                "required"
-            ]
+            "fieldType": "String"
         },
         {
             "fieldName": "position",

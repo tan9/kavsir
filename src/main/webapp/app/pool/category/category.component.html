@@ -351,11 +351,17 @@
             <tree-root id="categoryTree" [focused]="true" [nodes]="nodes" [options]="options">
                 <ng-template #treeNodeTemplate let-node let-index="index">
                     <form class="form-inline" #categoryNodeForm="ngForm">
-                    <span *ngIf="node.level <= 6 || !node.data.isEditing">
-                        {{ node.data.name }}
-                    </span>
-                        <input *ngIf="node.level > 6 && node.data.isEditing" name="name" type="text" class="form-control"
-                               [(ngModel)]="node.data.name" placeholder="輸入類別名稱" required/>
+                        <span>
+                            <span *ngIf="node.level > 1 && node.level <= 6">
+                                {{ categoryNodeDisplayName(node.data) }}
+                            </span>
+                            <span *ngIf="node.level == 1 || (node.level > 6 && !node.data.isEditing)">
+                                {{ node.data.name }}
+                            </span>
+                            <input *ngIf="node.level > 6 && node.data.isEditing"
+                                   name="name" type="text" class="form-control"
+                                   [(ngModel)]="node.data.name" placeholder="輸入類別名稱" required/>
+                        </span>
                         <div class="btn-group flex-btn-group-container pull-right">
                             <button *ngIf="node.level <= 5" class="btn btn-info btn-sm"
                                     ngbDropdown [id]="'dropdownBasic' + index" ngbDropdownToggle #myDrop="ngbDropdown"

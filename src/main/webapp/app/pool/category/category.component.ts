@@ -10,7 +10,7 @@ import { Category } from '../../entities/category.model';
 
 import { Subscription } from 'rxjs/Rx';
 import { ITreeOptions, TreeNode } from 'angular-tree-component/dist/angular-tree-component';
-import { CategoryType } from '../../entities/category-node/category-node.model';
+import { CategoryNode, CategoryType } from '../../entities/category-node/category-node.model';
 
 @Component({
     selector: 'jhi-category',
@@ -40,14 +40,15 @@ export class CategoryComponent implements OnInit, OnDestroy {
     categorySubjects: CategorySubject[];
     categoryPublishers: CategorySubject[];
 
-    nodes = [{
-        id: 'ROOT',
+    nodes: CategoryTreeNode[] = [{
+        treeNodeId: -1,
         name: '類別目錄'
     }];
 
     options: ITreeOptions = {
-        allowDrag: (node) => false,
-        allowDrop: (element, {parent, index}) => false
+        idField: 'treeNodeId',
+        allowDrag: false,
+        allowDrop: false
     };
 
     constructor(private eventManager: EventManager,
@@ -174,6 +175,12 @@ export class CategoryComponent implements OnInit, OnDestroy {
         return this.CATEGORY_LEVEL_MAP[level];
     }
 
+    categoryNodeDisplayName(node: CategoryTreeNode) {
+        return this.availableCategoryChildren(node.type + 1)
+            .find((item) => item.id === node.typeId)
+            .name;
+    }
+
     availableCategoryChildren(level: number): Category[] {
         return {
                 1: this.categoryAcademicYears,
@@ -186,7 +193,6 @@ export class CategoryComponent implements OnInit, OnDestroy {
 
     addCategoryChild(node: TreeNode, item: Category) {
         this.addChild(node, {
-            name: item.name,
             type: this.categoryLevelData(node.level).type,
             typeId: item.id
         });
@@ -229,5 +235,17 @@ export class CategoryComponent implements OnInit, OnDestroy {
     private onError(error) {
         this.alertService.error(error.message, null, null);
     }
+}
 
+class CategoryTreeNode extends CategoryNode {
+    constructor(public id?: number,
+                public type?: CategoryType,
+                public typeId?: number,
+                public name?: string,
+                public position?: number,
+                public treeNodeId?: number,
+                public children?: CategoryTreeNode[],
+                public isExpanded?: boolean) {
+        super(id, type, typeId, name, position);
+    }
 }

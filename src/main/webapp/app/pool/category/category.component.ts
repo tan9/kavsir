@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ResponseWrapper } from '../../shared/model/response-wrapper.model';
 import { EventManager, AlertService } from 'ng-jhipster';
 import { CategoryAcademicYear, CategoryAcademicYearService } from '../../entities/category-academic-year';
@@ -6,10 +6,11 @@ import { CategoryGrade, CategoryGradeService } from '../../entities/category-gra
 import { CategorySemester, CategorySemesterService } from '../../entities/category-semester';
 import { CategorySubject, CategorySubjectService } from '../../entities/category-subject';
 import { CategoryPublisher, CategoryPublisherService } from '../../entities/category-publisher';
+import { CategoryNodeService } from '../../entities/category-node/category-node.service';
 import { Category } from '../../entities/category.model';
 
 import { Subscription } from 'rxjs/Rx';
-import { ITreeOptions, TreeNode } from 'angular-tree-component/dist/angular-tree-component';
+import { ITreeOptions, TreeComponent, TreeNode } from 'angular-tree-component/dist/angular-tree-component';
 import { CategoryNode, CategoryType } from '../../entities/category-node/category-node.model';
 
 @Component({
@@ -40,16 +41,24 @@ export class CategoryComponent implements OnInit, OnDestroy {
     categorySubjects: CategorySubject[];
     categoryPublishers: CategorySubject[];
 
-    nodes: CategoryTreeNode[] = [{
+    @ViewChild(TreeComponent)
+    private tree: TreeComponent;
+
+    treeNodes: CategoryTreeNode[] = [{
         treeNodeId: -1,
-        name: '類別目錄'
+        name: '類別目錄',
+        isExpanded: true,
+        children: []
     }];
 
-    options: ITreeOptions = {
+    treeOptions: ITreeOptions = {
         idField: 'treeNodeId',
+        isHiddenField: 'isMarkedToBeDeleted',
         allowDrag: false,
         allowDrop: false
     };
+
+    isTreeSaving = false;
 
     constructor(private eventManager: EventManager,
                 private alertService: AlertService,
@@ -57,7 +66,8 @@ export class CategoryComponent implements OnInit, OnDestroy {
                 private categoryGradeService: CategoryGradeService,
                 private categorySemesterService: CategorySemesterService,
                 private categorySubjectService: CategorySubjectService,
-                private categoryPublisherService: CategoryPublisherService) {
+                private categoryPublisherService: CategoryPublisherService,
+                private categoryNodeService: CategoryNodeService) {
     }
 
     loadAllCategoryAcademicYears() {
@@ -137,6 +147,8 @@ export class CategoryComponent implements OnInit, OnDestroy {
         this.registerChangeInCategorySemesters();
         this.registerChangeInCategorySubjects();
         this.registerChangeInCategoryPublishers();
+
+        this.loadAllCategoryNodes();
     }
 
     ngOnDestroy() {
@@ -167,6 +179,40 @@ export class CategoryComponent implements OnInit, OnDestroy {
         this.categoryPublishersEventSubscriber = this.eventManager.subscribe('categoryPublisherListModification', (response) => this.loadAllCategoryPublishers());
     }
 
+    loadAllCategoryNodes() {
+        this.categoryNodeService.query().subscribe(
+            (res: ResponseWrapper) => {
+                const nodes = res.json;
+                // TODO enum order/literal conversion?
+                nodes.forEach((item) => item.type = CategoryType[item.type]);
+
+                const children = this.constructTreeRecursively(nodes);
+                this.treeNodes[0].children = children;
+                this.tree.treeModel.update();
+            },
+            (res: ResponseWrapper) => this.onError(res.json)
+        );
+    }
+
+    private constructTreeRecursively(nodes: CategoryNode[], parentId?: number): CategoryTreeNode[] {
+        const childrenOfTheParent = [];
+        nodes.forEach((node, index, object) => {
+            if ((!parentId && !node.parent) ||
+                (parentId && node.parent && node.parent.id === parentId)) {
+                childrenOfTheParent.push(node);
+                object.splice(index, 1);
+            }
+        });
+
+        if (nodes.length > 0) {
+            childrenOfTheParent.forEach((node) => {
+                node.children = this.constructTreeRecursively(nodes, node.id);
+            });
+        }
+
+        return childrenOfTheParent;
+    }
+
     categoryLevelName(level: number) {
         return this.categoryLevelData(level).name;
     }
@@ -176,9 +222,24 @@ export class CategoryComponent implements OnInit, OnDestroy {
     }
 
     categoryNodeDisplayName(node: CategoryTreeNode) {
-        return this.availableCategoryChildren(node.type + 1)
+        return this.availableCategories(node.type)
             .find((item) => item.id === node.typeId)
             .name;
+    }
+
+    availableCategories(type: CategoryType): Category[] {
+        switch (type) {
+            case CategoryType.ACADEMIC_YEAR:
+                return this.categoryAcademicYears;
+            case CategoryType.GRADE:
+                return this.categoryGrades;
+            case CategoryType.SEMESTER:
+                return this.categorySemesters;
+            case CategoryType.SUBJECT:
+                return this.categorySubjects;
+            case CategoryType.PUBLISHER:
+                return this.categoryPublishers;
+        }
     }
 
     availableCategoryChildren(level: number): Category[] {
@@ -228,8 +289,63 @@ export class CategoryComponent implements OnInit, OnDestroy {
         return node && node.children ? node.children.length : 0;
     }
 
-    alert(message: string) {
-        this.alertService.error(message, null, null);
+    saveTree() {
+        // TODO PERFORMANCE move to backend and perform batch update
+        this.isTreeSaving = true;
+        const treeNodes = this.treeNodes[0].children;
+        this.saveTreeRecursively(treeNodes).then(
+            () => {
+                this.isTreeSaving = false;
+                // this.loadAllCategoryNodes();
+            },
+            (error) => {
+                this.isTreeSaving = false;
+                this.onError(error);
+                this.loadAllCategoryNodes();
+            }
+        );
+    }
+
+    saveTreeRecursively(treeNodes: CategoryTreeNode[], parent?: CategoryTreeNode): Promise<CategoryNode> {
+        // TODO Observable?
+        const promises: Promise<CategoryNode>[] = [];
+
+        treeNodes.forEach(
+            (node) => {
+                node.parent = this.convert(parent);
+                if (node.id) {
+                    promises.push(this.categoryNodeService.update(this.convert(node)).toPromise().then(() => {
+                        if (node.children) {
+                            return this.saveTreeRecursively(node.children, node);
+                        } else {
+                            return Promise.resolve();
+                        }
+                    }));
+                } else {
+                    promises.push(this.categoryNodeService.create(this.convert(node)).toPromise().then((resultNode) => {
+                            node.id = resultNode.id;
+                            if (node.children) {
+                                return this.saveTreeRecursively(node.children, node);
+                            } else {
+                                return Promise.resolve();
+                            }
+                        })
+                    );
+                }
+            }
+        );
+
+        return Promise.all(promises);
+    }
+
+    private convert(categoryNode: CategoryNode): CategoryNode {
+        if (categoryNode === undefined) {
+            return undefined;
+        }
+
+        const copy: CategoryNode = Object.assign({}, categoryNode);
+        copy['children'] = undefined;
+        return copy;
     }
 
     private onError(error) {
@@ -245,6 +361,7 @@ class CategoryTreeNode extends CategoryNode {
                 public position?: number,
                 public treeNodeId?: number,
                 public children?: CategoryTreeNode[],
+                public isMarkedToBeDeleted?: boolean,
                 public isExpanded?: boolean) {
         super(id, type, typeId, name, position);
     }

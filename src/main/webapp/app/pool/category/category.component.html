@@ -1,3 +1,4 @@
+<jhi-alert></jhi-alert>
 <ngb-accordion #acc="ngbAccordion" activeIds="category, hierarchy">
     <ngb-panel id="category">
         <template ngbPanelTitle>
@@ -348,7 +349,7 @@
             <span><i class="fa fa-sitemap" aria-hidden="true"></i> 類別階層</span>
         </template>
         <template ngbPanelContent>
-            <tree-root id="categoryTree" [focused]="true" [nodes]="nodes" [options]="options">
+            <tree-root #treec id="categoryTree" [focused]="true" [nodes]="treeNodes" [options]="treeOptions">
                 <ng-template #treeNodeTemplate let-node let-index="index">
                     <form class="form-inline" #categoryNodeForm="ngForm">
                         <span>
@@ -395,9 +396,9 @@
                 </ng-template>
             </tree-root>
 
-            <button class="btn btn-primary float-right">
+            <button class="btn btn-primary float-right" (click)="saveTree()" [disabled]="isTreeSaving">
                 <span class="fa fa-save"></span>
-                <span class="hidden-sm-down" (click)="alert('還沒做好')">儲存</span>
+                <span class="hidden-sm-down">儲存</span>
             </button>
         </template>
     </ngb-panel>

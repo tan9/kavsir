@@ -48,9 +48,8 @@ public class CategoryNode implements Serializable {
     /**
      * 名稱 (章、課、篇、節)，只有在 type == SEGMENT 時有效
      */
-    @NotNull
-    @ApiModelProperty(value = "名稱 (章、課、篇、節)，只有在 type == SEGMENT 時有效", required = true)
-    @Column(name = "name", nullable = false)
+    @ApiModelProperty(value = "名稱 (章、課、篇、節)，只有在 type == SEGMENT 時有效")
+    @Column(name = "name")
     private String name;
 
     /**

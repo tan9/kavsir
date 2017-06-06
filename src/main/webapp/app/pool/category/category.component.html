@@ -397,8 +397,9 @@
             </tree-root>
 
             <button class="btn btn-primary float-right" (click)="saveTree()" [disabled]="isTreeSaving">
-                <span class="fa fa-save"></span>
-                <span class="hidden-sm-down">儲存</span>
+                <span *ngIf="!isTreeSaving" class="fa fa-save"></span>
+                <span *ngIf="isTreeSaving" class="fa fa-spinner fa-spin fa-fw"></span>
+                <span class="hidden-sm-down" jhiTranslate="entity.action.save">Save</span>
             </button>
         </template>
     </ngb-panel>

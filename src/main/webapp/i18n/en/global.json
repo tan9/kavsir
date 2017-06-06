@@ -8,6 +8,9 @@
                 "main": "Pool",
                 "category": {
                     "main": "Category"
+                },
+                "question": {
+                    "main": "Question"
                 }
             },
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
@@ -149,6 +152,15 @@
             "subject": "Subject",
             "publisher": "Publisher",
             "segment": "Segment"
+        }
+    },
+    "question": {
+        "title": "Question",
+        "type": {
+            "trueFalse": "True/False",
+            "choice": "Choice",
+            "multipleResponse": "Multiple Response",
+            "essay": "Essay"
         }
     },
     "error": {

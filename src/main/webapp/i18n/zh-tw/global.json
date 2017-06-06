@@ -8,6 +8,9 @@
                 "main": "題庫",
                 "category": {
                     "main": "類別"
+                },
+                "question": {
+                    "main": "題目"
                 }
             },
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
@@ -149,6 +152,15 @@
             "subject": "科目",
             "publisher": "出版社",
             "segment": "章、課、篇、節"
+        }
+    },
+    "question": {
+        "title": "題目",
+        "type": {
+            "trueFalse": "是非題",
+            "choice": "單選題",
+            "multipleResponse": "多選題",
+            "essay": "問答題"
         }
     },
     "error": {

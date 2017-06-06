@@ -139,6 +139,18 @@
             "datetimelocal": "此欄位應為日期和時間。"
         }
     },
+    "category": {
+        "title": "類別",
+        "hierarchy": "類別階層",
+        "type": {
+            "academicYear": "學年",
+            "grade": "年級",
+            "semester": "學期",
+            "subject": "科目",
+            "publisher": "出版社",
+            "segment": "章、課、篇、節"
+        }
+    },
     "error": {
         "internalServerError": "伺服器內部錯誤",
         "server.not.reachable": "無法連到伺服器",

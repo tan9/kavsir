@@ -139,6 +139,18 @@
             "datetimelocal": "This field should be a date and time."
         }
     },
+    "category": {
+        "title": "Category",
+        "hierarchy": "Category Hierarchy",
+        "type": {
+            "academicYear": "Academic Year",
+            "grade": "Grade",
+            "semester": "Semester",
+            "subject": "Subject",
+            "publisher": "Publisher",
+            "segment": "Segment"
+        }
+    },
     "error": {
         "internalServerError": "Internal server error",
         "server.not.reachable": "Server not reachable",

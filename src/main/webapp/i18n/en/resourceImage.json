@@ -1,0 +1,27 @@
+{
+    "kavsirApp": {
+        "resourceImage" : {
+            "home": {
+                "title": "Resource Images",
+                "createLabel": "Create a new Resource Image",
+                "createOrEditLabel": "Create or edit a Resource Image",
+                "search": "Search for Resource Image"
+            },
+            "created": "A new Resource Image is created with identifier {{ param }}",
+            "updated": "A Resource Image is updated with identifier {{ param }}",
+            "deleted": "A Resource Image is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Resource Image {{ id }}?"
+            },
+            "detail": {
+                "title": "Resource Image"
+            },
+            "name": "Name",
+            "content": "Content",
+            "choice": "Choice",
+            "choiceOption": "Choice Option",
+            "trueFalse": "True False",
+            "essay": "Essay"
+        }
+    }
+}

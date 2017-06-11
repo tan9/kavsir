@@ -1,0 +1,70 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "parent",
+            "otherEntityName": "categoryNode",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "trueOrFalse",
+            "otherEntityName": "questionTrueFalse",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "category"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "choice",
+            "otherEntityName": "questionChoice",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "category"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "essay",
+            "otherEntityName": "questionEssay",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "category"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "group",
+            "otherEntityName": "questionGroup",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "category"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "type",
+            "fieldType": "CategoryType",
+            "fieldValues": "ACADEMIC_YEAR,GRADE,SEMESTER,SUBJECT,PUBLISHER,SEGMENT",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "typeId",
+            "javadoc": "參照名稱，在 type !== SEGMENT 時需指定到 type 對應表格資料",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "name",
+            "javadoc": "名稱 (章、課、篇、節)，只有在 type == SEGMENT 時有效",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "position",
+            "javadoc": "順序",
+            "fieldType": "Integer"
+        }
+    ],
+    "changelogDate": "20170302142432",
+    "javadoc": "類別樹狀資料檔",
+    "entityTableName": "category_node",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no"
+}

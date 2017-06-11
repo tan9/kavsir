@@ -1,0 +1,52 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "choice",
+            "otherEntityName": "questionChoice",
+            "otherEntityRelationshipName": "questionGroup"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "trueFalse",
+            "otherEntityName": "questionTrueFalse",
+            "otherEntityRelationshipName": "questionGroup"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "essay",
+            "otherEntityName": "questionEssay",
+            "otherEntityRelationshipName": "questionGroup"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "group",
+            "relationshipName": "category",
+            "otherEntityName": "categoryNode",
+            "otherEntityField": "id",
+            "ownerSide": true
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "text",
+            "javadoc": "文字描述",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "memo",
+            "javadoc": "題目來源備註",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20170302142432",
+    "javadoc": "題組",
+    "entityTableName": "question_group",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no"
+}

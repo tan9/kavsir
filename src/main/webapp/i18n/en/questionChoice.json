@@ -1,0 +1,29 @@
+{
+    "kavsirApp": {
+        "questionChoice" : {
+            "home": {
+                "title": "Question Choices",
+                "createLabel": "Create a new Question Choice",
+                "createOrEditLabel": "Create or edit a Question Choice",
+                "search": "Search for Question Choice"
+            },
+            "created": "A new Question Choice is created with identifier {{ param }}",
+            "updated": "A Question Choice is updated with identifier {{ param }}",
+            "deleted": "A Question Choice is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Question Choice {{ id }}?"
+            },
+            "detail": {
+                "title": "Question Choice"
+            },
+            "multipleResponse": "Multiple Response",
+            "text": "Text",
+            "memo": "Memo",
+            "groupPosition": "Group Position",
+            "option": "Option",
+            "category": "Category",
+            "image": "Image",
+            "questionGroup": "Question Group"
+        }
+    }
+}

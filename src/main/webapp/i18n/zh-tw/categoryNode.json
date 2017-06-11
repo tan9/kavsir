@@ -1,0 +1,30 @@
+{
+    "kavsirApp": {
+        "categoryNode" : {
+            "home": {
+                "title": "Category Nodes",
+                "createLabel": "建立一筆新的 Category Node",
+                "createOrEditLabel": "建立或編輯 Category Node",
+                "search": "搜尋 Category Node"
+            },
+            "created": "新的 Category Node 建立成功，識別碼為 {{ param }}",
+            "updated": "識別碼為 {{ param }} 的 Category Node 更新成功",
+            "deleted": "識別碼為 {{ param }} 的 Category Node 刪除成功",
+            "delete": {
+                "question": "您確定要刪除 Category Node {{ id }} 嗎?"
+            },
+            "detail": {
+                "title": "Category Node"
+            },
+            "type": "Type",
+            "typeId": "Type Id",
+            "name": "Name",
+            "position": "Position",
+            "parent": "Parent",
+            "trueOrFalse": "True Or False",
+            "choice": "Choice",
+            "essay": "Essay",
+            "group": "Group"
+        }
+    }
+}

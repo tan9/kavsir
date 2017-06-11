@@ -1,0 +1,28 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "position",
+            "javadoc": "順序",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "name",
+            "javadoc": "名稱",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20170302142432",
+    "javadoc": "學期 (上學期、下學期、全學期...)",
+    "entityTableName": "category_semester",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no"
+}

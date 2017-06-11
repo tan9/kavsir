@@ -1,0 +1,28 @@
+{
+    "kavsirApp": {
+        "questionTrueFalse" : {
+            "home": {
+                "title": "Question True Falses",
+                "createLabel": "Create a new Question True False",
+                "createOrEditLabel": "Create or edit a Question True False",
+                "search": "Search for Question True False"
+            },
+            "created": "A new Question True False is created with identifier {{ param }}",
+            "updated": "A Question True False is updated with identifier {{ param }}",
+            "deleted": "A Question True False is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Question True False {{ id }}?"
+            },
+            "detail": {
+                "title": "Question True False"
+            },
+            "correct": "Correct",
+            "text": "Text",
+            "memo": "Memo",
+            "groupPosition": "Group Position",
+            "category": "Category",
+            "image": "Image",
+            "questionGroup": "Question Group"
+        }
+    }
+}

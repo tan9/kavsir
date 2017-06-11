@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { CategoryGrade } from './category-grade.model';
 import { CategoryGradeService } from './category-grade.service';
+
 @Injectable()
 export class CategoryGradePopupService {
     private isOpen = false;

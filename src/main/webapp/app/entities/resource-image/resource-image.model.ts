@@ -6,6 +6,7 @@ export class ResourceImage {
     constructor(
         public id?: number,
         public name?: string,
+        public contentContentType?: string,
         public content?: any,
         public choice?: QuestionChoice,
         public choiceOption?: QuestionChoiceOption,

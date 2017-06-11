@@ -32,11 +32,8 @@ describe('Component Tests', () => {
                     QuestionGroupService,
                     EventManager
                 ]
-            }).overrideComponent(QuestionGroupDetailComponent, {
-                set: {
-                    template: ''
-                }
-            }).compileComponents();
+            }).overrideTemplate(QuestionGroupDetailComponent, '')
+            .compileComponents();
         }));
 
         beforeEach(() => {

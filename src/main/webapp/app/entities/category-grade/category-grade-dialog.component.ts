@@ -32,6 +32,7 @@ export class CategoryGradeDialogComponent implements OnInit {
         this.isSaving = false;
         this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
     }
+
     clear() {
         this.activeModal.dismiss('cancel');
     }
@@ -40,19 +41,24 @@ export class CategoryGradeDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.categoryGrade.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.categoryGradeService.update(this.categoryGrade));
+                this.categoryGradeService.update(this.categoryGrade), false);
         } else {
             this.subscribeToSaveResponse(
-                this.categoryGradeService.create(this.categoryGrade));
+                this.categoryGradeService.create(this.categoryGrade), true);
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<CategoryGrade>) {
+    private subscribeToSaveResponse(result: Observable<CategoryGrade>, isCreated: boolean) {
         result.subscribe((res: CategoryGrade) =>
-            this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
+            this.onSaveSuccess(res, isCreated), (res: Response) => this.onSaveError(res));
     }
 
-    private onSaveSuccess(result: CategoryGrade) {
+    private onSaveSuccess(result: CategoryGrade, isCreated: boolean) {
+        this.alertService.success(
+            isCreated ? 'kavsirApp.categoryGrade.created'
+            : 'kavsirApp.categoryGrade.updated',
+            { param : result.id }, null);
+
         this.eventManager.broadcast({ name: 'categoryGradeListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);

@@ -32,6 +32,7 @@ export class CategorySubjectDialogComponent implements OnInit {
         this.isSaving = false;
         this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
     }
+
     clear() {
         this.activeModal.dismiss('cancel');
     }
@@ -40,19 +41,24 @@ export class CategorySubjectDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.categorySubject.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.categorySubjectService.update(this.categorySubject));
+                this.categorySubjectService.update(this.categorySubject), false);
         } else {
             this.subscribeToSaveResponse(
-                this.categorySubjectService.create(this.categorySubject));
+                this.categorySubjectService.create(this.categorySubject), true);
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<CategorySubject>) {
+    private subscribeToSaveResponse(result: Observable<CategorySubject>, isCreated: boolean) {
         result.subscribe((res: CategorySubject) =>
-            this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
+            this.onSaveSuccess(res, isCreated), (res: Response) => this.onSaveError(res));
     }
 
-    private onSaveSuccess(result: CategorySubject) {
+    private onSaveSuccess(result: CategorySubject, isCreated: boolean) {
+        this.alertService.success(
+            isCreated ? 'kavsirApp.categorySubject.created'
+            : 'kavsirApp.categorySubject.updated',
+            { param : result.id }, null);
+
         this.eventManager.broadcast({ name: 'categorySubjectListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);

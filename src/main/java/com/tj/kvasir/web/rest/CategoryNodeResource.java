@@ -33,7 +33,7 @@ public class CategoryNodeResource {
     private final Logger log = LoggerFactory.getLogger(CategoryNodeResource.class);
 
     private static final String ENTITY_NAME = "categoryNode";
-        
+
     private final CategoryNodeRepository categoryNodeRepository;
 
     private final CategoryNodeSearchRepository categoryNodeSearchRepository;
@@ -70,7 +70,7 @@ public class CategoryNodeResource {
      * @param categoryNode the categoryNode to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated categoryNode,
      * or with status 400 (Bad Request) if the categoryNode is not valid,
-     * or with status 500 (Internal Server Error) if the categoryNode couldnt be updated
+     * or with status 500 (Internal Server Error) if the categoryNode couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/category-nodes")
@@ -96,8 +96,7 @@ public class CategoryNodeResource {
     @Timed
     public List<CategoryNode> getAllCategoryNodes() {
         log.debug("REST request to get all CategoryNodes");
-        List<CategoryNode> categoryNodes = categoryNodeRepository.findAll();
-        return categoryNodes;
+        return categoryNodeRepository.findAll();
     }
 
     /**
@@ -133,7 +132,7 @@ public class CategoryNodeResource {
      * SEARCH  /_search/category-nodes?query=:query : search for the categoryNode corresponding
      * to the query.
      *
-     * @param query the query of the categoryNode search 
+     * @param query the query of the categoryNode search
      * @return the result of the search
      */
     @GetMapping("/_search/category-nodes")
@@ -144,6 +143,5 @@ public class CategoryNodeResource {
             .stream(categoryNodeSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
     }
-
 
 }

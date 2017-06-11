@@ -33,7 +33,7 @@ public class CategorySemesterResource {
     private final Logger log = LoggerFactory.getLogger(CategorySemesterResource.class);
 
     private static final String ENTITY_NAME = "categorySemester";
-        
+
     private final CategorySemesterRepository categorySemesterRepository;
 
     private final CategorySemesterSearchRepository categorySemesterSearchRepository;
@@ -70,7 +70,7 @@ public class CategorySemesterResource {
      * @param categorySemester the categorySemester to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated categorySemester,
      * or with status 400 (Bad Request) if the categorySemester is not valid,
-     * or with status 500 (Internal Server Error) if the categorySemester couldnt be updated
+     * or with status 500 (Internal Server Error) if the categorySemester couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/category-semesters")
@@ -96,8 +96,7 @@ public class CategorySemesterResource {
     @Timed
     public List<CategorySemester> getAllCategorySemesters() {
         log.debug("REST request to get all CategorySemesters");
-        List<CategorySemester> categorySemesters = categorySemesterRepository.findAll();
-        return categorySemesters;
+        return categorySemesterRepository.findAll();
     }
 
     /**
@@ -133,7 +132,7 @@ public class CategorySemesterResource {
      * SEARCH  /_search/category-semesters?query=:query : search for the categorySemester corresponding
      * to the query.
      *
-     * @param query the query of the categorySemester search 
+     * @param query the query of the categorySemester search
      * @return the result of the search
      */
     @GetMapping("/_search/category-semesters")
@@ -144,6 +143,5 @@ public class CategorySemesterResource {
             .stream(categorySemesterSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
     }
-
 
 }

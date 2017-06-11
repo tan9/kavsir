@@ -13,11 +13,11 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface QuestionEssayRepository extends JpaRepository<QuestionEssay,Long> {
-
+    
     @Query("select distinct question_essay from QuestionEssay question_essay left join fetch question_essay.categories left join fetch question_essay.images")
     List<QuestionEssay> findAllWithEagerRelationships();
 
     @Query("select question_essay from QuestionEssay question_essay left join fetch question_essay.categories left join fetch question_essay.images where question_essay.id =:id")
     QuestionEssay findOneWithEagerRelationships(@Param("id") Long id);
-
+    
 }

@@ -33,7 +33,7 @@ public class QuestionChoiceResource {
     private final Logger log = LoggerFactory.getLogger(QuestionChoiceResource.class);
 
     private static final String ENTITY_NAME = "questionChoice";
-        
+
     private final QuestionChoiceRepository questionChoiceRepository;
 
     private final QuestionChoiceSearchRepository questionChoiceSearchRepository;
@@ -70,7 +70,7 @@ public class QuestionChoiceResource {
      * @param questionChoice the questionChoice to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated questionChoice,
      * or with status 400 (Bad Request) if the questionChoice is not valid,
-     * or with status 500 (Internal Server Error) if the questionChoice couldnt be updated
+     * or with status 500 (Internal Server Error) if the questionChoice couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/question-choices")
@@ -96,8 +96,7 @@ public class QuestionChoiceResource {
     @Timed
     public List<QuestionChoice> getAllQuestionChoices() {
         log.debug("REST request to get all QuestionChoices");
-        List<QuestionChoice> questionChoices = questionChoiceRepository.findAllWithEagerRelationships();
-        return questionChoices;
+        return questionChoiceRepository.findAllWithEagerRelationships();
     }
 
     /**
@@ -133,7 +132,7 @@ public class QuestionChoiceResource {
      * SEARCH  /_search/question-choices?query=:query : search for the questionChoice corresponding
      * to the query.
      *
-     * @param query the query of the questionChoice search 
+     * @param query the query of the questionChoice search
      * @return the result of the search
      */
     @GetMapping("/_search/question-choices")
@@ -144,6 +143,5 @@ public class QuestionChoiceResource {
             .stream(questionChoiceSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
     }
-
 
 }

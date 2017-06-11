@@ -32,11 +32,8 @@ describe('Component Tests', () => {
                     ResourceImageService,
                     EventManager
                 ]
-            }).overrideComponent(ResourceImageDetailComponent, {
-                set: {
-                    template: ''
-                }
-            }).compileComponents();
+            }).overrideTemplate(ResourceImageDetailComponent, '')
+            .compileComponents();
         }));
 
         beforeEach(() => {

@@ -33,7 +33,7 @@ public class QuestionChoiceOptionResource {
     private final Logger log = LoggerFactory.getLogger(QuestionChoiceOptionResource.class);
 
     private static final String ENTITY_NAME = "questionChoiceOption";
-        
+
     private final QuestionChoiceOptionRepository questionChoiceOptionRepository;
 
     private final QuestionChoiceOptionSearchRepository questionChoiceOptionSearchRepository;
@@ -70,7 +70,7 @@ public class QuestionChoiceOptionResource {
      * @param questionChoiceOption the questionChoiceOption to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated questionChoiceOption,
      * or with status 400 (Bad Request) if the questionChoiceOption is not valid,
-     * or with status 500 (Internal Server Error) if the questionChoiceOption couldnt be updated
+     * or with status 500 (Internal Server Error) if the questionChoiceOption couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/question-choice-options")
@@ -96,8 +96,7 @@ public class QuestionChoiceOptionResource {
     @Timed
     public List<QuestionChoiceOption> getAllQuestionChoiceOptions() {
         log.debug("REST request to get all QuestionChoiceOptions");
-        List<QuestionChoiceOption> questionChoiceOptions = questionChoiceOptionRepository.findAllWithEagerRelationships();
-        return questionChoiceOptions;
+        return questionChoiceOptionRepository.findAllWithEagerRelationships();
     }
 
     /**
@@ -133,7 +132,7 @@ public class QuestionChoiceOptionResource {
      * SEARCH  /_search/question-choice-options?query=:query : search for the questionChoiceOption corresponding
      * to the query.
      *
-     * @param query the query of the questionChoiceOption search 
+     * @param query the query of the questionChoiceOption search
      * @return the result of the search
      */
     @GetMapping("/_search/question-choice-options")
@@ -144,6 +143,5 @@ public class QuestionChoiceOptionResource {
             .stream(questionChoiceOptionSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
     }
-
 
 }

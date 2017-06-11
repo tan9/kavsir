@@ -33,7 +33,7 @@ public class CategorySubjectResource {
     private final Logger log = LoggerFactory.getLogger(CategorySubjectResource.class);
 
     private static final String ENTITY_NAME = "categorySubject";
-        
+
     private final CategorySubjectRepository categorySubjectRepository;
 
     private final CategorySubjectSearchRepository categorySubjectSearchRepository;
@@ -70,7 +70,7 @@ public class CategorySubjectResource {
      * @param categorySubject the categorySubject to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated categorySubject,
      * or with status 400 (Bad Request) if the categorySubject is not valid,
-     * or with status 500 (Internal Server Error) if the categorySubject couldnt be updated
+     * or with status 500 (Internal Server Error) if the categorySubject couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/category-subjects")
@@ -96,8 +96,7 @@ public class CategorySubjectResource {
     @Timed
     public List<CategorySubject> getAllCategorySubjects() {
         log.debug("REST request to get all CategorySubjects");
-        List<CategorySubject> categorySubjects = categorySubjectRepository.findAll();
-        return categorySubjects;
+        return categorySubjectRepository.findAll();
     }
 
     /**
@@ -133,7 +132,7 @@ public class CategorySubjectResource {
      * SEARCH  /_search/category-subjects?query=:query : search for the categorySubject corresponding
      * to the query.
      *
-     * @param query the query of the categorySubject search 
+     * @param query the query of the categorySubject search
      * @return the result of the search
      */
     @GetMapping("/_search/category-subjects")
@@ -144,6 +143,5 @@ public class CategorySubjectResource {
             .stream(categorySubjectSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
     }
-
 
 }

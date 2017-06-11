@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { QuestionGroup } from './question-group.model';
 import { QuestionGroupService } from './question-group.service';
+
 @Injectable()
 export class QuestionGroupPopupService {
     private isOpen = false;

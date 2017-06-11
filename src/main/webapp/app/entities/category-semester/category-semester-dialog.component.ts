@@ -32,6 +32,7 @@ export class CategorySemesterDialogComponent implements OnInit {
         this.isSaving = false;
         this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
     }
+
     clear() {
         this.activeModal.dismiss('cancel');
     }
@@ -40,19 +41,24 @@ export class CategorySemesterDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.categorySemester.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.categorySemesterService.update(this.categorySemester));
+                this.categorySemesterService.update(this.categorySemester), false);
         } else {
             this.subscribeToSaveResponse(
-                this.categorySemesterService.create(this.categorySemester));
+                this.categorySemesterService.create(this.categorySemester), true);
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<CategorySemester>) {
+    private subscribeToSaveResponse(result: Observable<CategorySemester>, isCreated: boolean) {
         result.subscribe((res: CategorySemester) =>
-            this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
+            this.onSaveSuccess(res, isCreated), (res: Response) => this.onSaveError(res));
     }
 
-    private onSaveSuccess(result: CategorySemester) {
+    private onSaveSuccess(result: CategorySemester, isCreated: boolean) {
+        this.alertService.success(
+            isCreated ? 'kavsirApp.categorySemester.created'
+            : 'kavsirApp.categorySemester.updated',
+            { param : result.id }, null);
+
         this.eventManager.broadcast({ name: 'categorySemesterListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);

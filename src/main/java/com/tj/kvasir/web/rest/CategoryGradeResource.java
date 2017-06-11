@@ -33,7 +33,7 @@ public class CategoryGradeResource {
     private final Logger log = LoggerFactory.getLogger(CategoryGradeResource.class);
 
     private static final String ENTITY_NAME = "categoryGrade";
-        
+
     private final CategoryGradeRepository categoryGradeRepository;
 
     private final CategoryGradeSearchRepository categoryGradeSearchRepository;
@@ -70,7 +70,7 @@ public class CategoryGradeResource {
      * @param categoryGrade the categoryGrade to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated categoryGrade,
      * or with status 400 (Bad Request) if the categoryGrade is not valid,
-     * or with status 500 (Internal Server Error) if the categoryGrade couldnt be updated
+     * or with status 500 (Internal Server Error) if the categoryGrade couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/category-grades")
@@ -96,8 +96,7 @@ public class CategoryGradeResource {
     @Timed
     public List<CategoryGrade> getAllCategoryGrades() {
         log.debug("REST request to get all CategoryGrades");
-        List<CategoryGrade> categoryGrades = categoryGradeRepository.findAll();
-        return categoryGrades;
+        return categoryGradeRepository.findAll();
     }
 
     /**
@@ -133,7 +132,7 @@ public class CategoryGradeResource {
      * SEARCH  /_search/category-grades?query=:query : search for the categoryGrade corresponding
      * to the query.
      *
-     * @param query the query of the categoryGrade search 
+     * @param query the query of the categoryGrade search
      * @return the result of the search
      */
     @GetMapping("/_search/category-grades")
@@ -144,6 +143,5 @@ public class CategoryGradeResource {
             .stream(categoryGradeSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
     }
-
 
 }

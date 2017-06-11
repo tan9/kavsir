@@ -33,7 +33,7 @@ public class QuestionEssayResource {
     private final Logger log = LoggerFactory.getLogger(QuestionEssayResource.class);
 
     private static final String ENTITY_NAME = "questionEssay";
-        
+
     private final QuestionEssayRepository questionEssayRepository;
 
     private final QuestionEssaySearchRepository questionEssaySearchRepository;
@@ -70,7 +70,7 @@ public class QuestionEssayResource {
      * @param questionEssay the questionEssay to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated questionEssay,
      * or with status 400 (Bad Request) if the questionEssay is not valid,
-     * or with status 500 (Internal Server Error) if the questionEssay couldnt be updated
+     * or with status 500 (Internal Server Error) if the questionEssay couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/question-essays")
@@ -96,8 +96,7 @@ public class QuestionEssayResource {
     @Timed
     public List<QuestionEssay> getAllQuestionEssays() {
         log.debug("REST request to get all QuestionEssays");
-        List<QuestionEssay> questionEssays = questionEssayRepository.findAllWithEagerRelationships();
-        return questionEssays;
+        return questionEssayRepository.findAllWithEagerRelationships();
     }
 
     /**
@@ -133,7 +132,7 @@ public class QuestionEssayResource {
      * SEARCH  /_search/question-essays?query=:query : search for the questionEssay corresponding
      * to the query.
      *
-     * @param query the query of the questionEssay search 
+     * @param query the query of the questionEssay search
      * @return the result of the search
      */
     @GetMapping("/_search/question-essays")
@@ -144,6 +143,5 @@ public class QuestionEssayResource {
             .stream(questionEssaySearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
     }
-
 
 }

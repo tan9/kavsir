@@ -33,7 +33,7 @@ public class CategoryPublisherResource {
     private final Logger log = LoggerFactory.getLogger(CategoryPublisherResource.class);
 
     private static final String ENTITY_NAME = "categoryPublisher";
-        
+
     private final CategoryPublisherRepository categoryPublisherRepository;
 
     private final CategoryPublisherSearchRepository categoryPublisherSearchRepository;
@@ -70,7 +70,7 @@ public class CategoryPublisherResource {
      * @param categoryPublisher the categoryPublisher to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated categoryPublisher,
      * or with status 400 (Bad Request) if the categoryPublisher is not valid,
-     * or with status 500 (Internal Server Error) if the categoryPublisher couldnt be updated
+     * or with status 500 (Internal Server Error) if the categoryPublisher couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/category-publishers")
@@ -96,8 +96,7 @@ public class CategoryPublisherResource {
     @Timed
     public List<CategoryPublisher> getAllCategoryPublishers() {
         log.debug("REST request to get all CategoryPublishers");
-        List<CategoryPublisher> categoryPublishers = categoryPublisherRepository.findAll();
-        return categoryPublishers;
+        return categoryPublisherRepository.findAll();
     }
 
     /**
@@ -133,7 +132,7 @@ public class CategoryPublisherResource {
      * SEARCH  /_search/category-publishers?query=:query : search for the categoryPublisher corresponding
      * to the query.
      *
-     * @param query the query of the categoryPublisher search 
+     * @param query the query of the categoryPublisher search
      * @return the result of the search
      */
     @GetMapping("/_search/category-publishers")
@@ -144,6 +143,5 @@ public class CategoryPublisherResource {
             .stream(categoryPublisherSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
     }
-
 
 }

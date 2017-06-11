@@ -15,8 +15,7 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="kavsirApp.questionChoice.multipleResponse" for="field_multipleResponse">Multiple Response</label>
             <input type="checkbox" class="form-control" name="multipleResponse" id="field_multipleResponse"
-                [(ngModel)]="questionChoice.multipleResponse"
-             />
+                [(ngModel)]="questionChoice.multipleResponse"  />
             <div [hidden]="!(editForm.controls.multipleResponse?.dirty && editForm.controls.multipleResponse?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.multipleResponse?.errors?.required" jhiTranslate="entity.validation.required">
@@ -27,8 +26,7 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="kavsirApp.questionChoice.text" for="field_text">Text</label>
             <input type="text" class="form-control" name="text" id="field_text"
-                [(ngModel)]="questionChoice.text"
-            required />
+                [(ngModel)]="questionChoice.text" required />
             <div [hidden]="!(editForm.controls.text?.dirty && editForm.controls.text?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.text?.errors?.required" jhiTranslate="entity.validation.required">
@@ -39,14 +37,12 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="kavsirApp.questionChoice.memo" for="field_memo">Memo</label>
             <input type="text" class="form-control" name="memo" id="field_memo"
-                [(ngModel)]="questionChoice.memo"
-             />
+                [(ngModel)]="questionChoice.memo"  />
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="kavsirApp.questionChoice.groupPosition" for="field_groupPosition">Group Position</label>
             <input type="number" class="form-control" name="groupPosition" id="field_groupPosition"
-                [(ngModel)]="questionChoice.groupPosition"
-             />
+                [(ngModel)]="questionChoice.groupPosition"  />
         </div>
 
         <div class="form-group">

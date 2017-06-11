@@ -318,7 +318,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
                         if (node.children) {
                             return this.saveTreeRecursively(node.children, node);
                         } else {
-                            return Promise.resolve();
+                            return Promise.resolve<CategoryNode>(null);
                         }
                     }));
                 } else {
@@ -327,7 +327,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
                             if (node.children) {
                                 return this.saveTreeRecursively(node.children, node);
                             } else {
-                                return Promise.resolve();
+                                return Promise.resolve<CategoryNode>(null);
                             }
                         })
                     );

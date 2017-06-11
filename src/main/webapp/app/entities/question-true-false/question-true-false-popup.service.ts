@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { QuestionTrueFalse } from './question-true-false.model';
 import { QuestionTrueFalseService } from './question-true-false.service';
+
 @Injectable()
 export class QuestionTrueFalsePopupService {
     private isOpen = false;

@@ -51,6 +51,7 @@ export class QuestionTrueFalseDialogComponent implements OnInit {
         this.questionGroupService.query()
             .subscribe((res: ResponseWrapper) => { this.questiongroups = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
+
     clear() {
         this.activeModal.dismiss('cancel');
     }
@@ -59,19 +60,24 @@ export class QuestionTrueFalseDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.questionTrueFalse.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.questionTrueFalseService.update(this.questionTrueFalse));
+                this.questionTrueFalseService.update(this.questionTrueFalse), false);
         } else {
             this.subscribeToSaveResponse(
-                this.questionTrueFalseService.create(this.questionTrueFalse));
+                this.questionTrueFalseService.create(this.questionTrueFalse), true);
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<QuestionTrueFalse>) {
+    private subscribeToSaveResponse(result: Observable<QuestionTrueFalse>, isCreated: boolean) {
         result.subscribe((res: QuestionTrueFalse) =>
-            this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
+            this.onSaveSuccess(res, isCreated), (res: Response) => this.onSaveError(res));
     }
 
-    private onSaveSuccess(result: QuestionTrueFalse) {
+    private onSaveSuccess(result: QuestionTrueFalse, isCreated: boolean) {
+        this.alertService.success(
+            isCreated ? 'kavsirApp.questionTrueFalse.created'
+            : 'kavsirApp.questionTrueFalse.updated',
+            { param : result.id }, null);
+
         this.eventManager.broadcast({ name: 'questionTrueFalseListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);

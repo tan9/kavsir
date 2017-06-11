@@ -33,7 +33,7 @@ public class CategoryAcademicYearResource {
     private final Logger log = LoggerFactory.getLogger(CategoryAcademicYearResource.class);
 
     private static final String ENTITY_NAME = "categoryAcademicYear";
-        
+
     private final CategoryAcademicYearRepository categoryAcademicYearRepository;
 
     private final CategoryAcademicYearSearchRepository categoryAcademicYearSearchRepository;
@@ -70,7 +70,7 @@ public class CategoryAcademicYearResource {
      * @param categoryAcademicYear the categoryAcademicYear to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated categoryAcademicYear,
      * or with status 400 (Bad Request) if the categoryAcademicYear is not valid,
-     * or with status 500 (Internal Server Error) if the categoryAcademicYear couldnt be updated
+     * or with status 500 (Internal Server Error) if the categoryAcademicYear couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/category-academic-years")
@@ -96,8 +96,7 @@ public class CategoryAcademicYearResource {
     @Timed
     public List<CategoryAcademicYear> getAllCategoryAcademicYears() {
         log.debug("REST request to get all CategoryAcademicYears");
-        List<CategoryAcademicYear> categoryAcademicYears = categoryAcademicYearRepository.findAll();
-        return categoryAcademicYears;
+        return categoryAcademicYearRepository.findAll();
     }
 
     /**
@@ -133,7 +132,7 @@ public class CategoryAcademicYearResource {
      * SEARCH  /_search/category-academic-years?query=:query : search for the categoryAcademicYear corresponding
      * to the query.
      *
-     * @param query the query of the categoryAcademicYear search 
+     * @param query the query of the categoryAcademicYear search
      * @return the result of the search
      */
     @GetMapping("/_search/category-academic-years")
@@ -144,6 +143,5 @@ public class CategoryAcademicYearResource {
             .stream(categoryAcademicYearSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
     }
-
 
 }

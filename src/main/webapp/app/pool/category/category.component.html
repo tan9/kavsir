@@ -1,13 +1,13 @@
 <jhi-alert></jhi-alert>
 <ngb-accordion #acc="ngbAccordion" activeIds="category, hierarchy">
     <ngb-panel id="category">
-        <template ngbPanelTitle>
+        <ng-template ngbPanelTitle>
             <span><i class="fa fa-tags" aria-hidden="true"></i> 類別</span>
-        </template>
-        <template ngbPanelContent>
+        </ng-template>
+        <ng-template ngbPanelContent>
             <ngb-tabset>
                 <ngb-tab title="學年">
-                    <template ngbTabContent>
+                    <ng-template ngbTabContent>
                         <div class="table-responsive" *ngIf="categoryAcademicYears">
                             <table class="table table-striped">
                                 <thead>
@@ -71,10 +71,10 @@
                             Create new Category Academic Year
                         </span>
                         </button>
-                    </template>
+                    </ng-template>
                 </ngb-tab>
                 <ngb-tab title="年級">
-                    <template ngbTabContent>
+                    <ng-template ngbTabContent>
                         <div class="table-responsive" *ngIf="categoryGrades">
                             <table class="table table-striped">
                                 <thead>
@@ -138,10 +138,10 @@
                             Create new Category Grade
                         </span>
                         </button>
-                    </template>
+                    </ng-template>
                 </ngb-tab>
                 <ngb-tab title="學期">
-                    <template ngbTabContent>
+                    <ng-template ngbTabContent>
                         <div class="table-responsive" *ngIf="categorySemesters">
                             <table class="table table-striped">
                                 <thead>
@@ -205,10 +205,10 @@
                             Create new Category Semester
                         </span>
                         </button>
-                    </template>
+                    </ng-template>
                 </ngb-tab>
                 <ngb-tab title="科目">
-                    <template ngbTabContent>
+                    <ng-template ngbTabContent>
                         <div class="table-responsive" *ngIf="categorySubjects">
                             <table class="table table-striped">
                                 <thead>
@@ -272,10 +272,10 @@
                             Create new Category Subject
                         </span>
                         </button>
-                    </template>
+                    </ng-template>
                 </ngb-tab>
                 <ngb-tab title="出版社">
-                    <template ngbTabContent>
+                    <ng-template ngbTabContent>
                         <div class="table-responsive" *ngIf="categoryPublishers">
                             <table class="table table-striped">
                                 <thead>
@@ -339,16 +339,16 @@
                             Create new Category Publisher
                         </span>
                         </button>
-                    </template>
+                    </ng-template>
                 </ngb-tab>
             </ngb-tabset>
-        </template>
+        </ng-template>
     </ngb-panel>
     <ngb-panel id="hierarchy">
-        <template ngbPanelTitle>
+        <ng-template ngbPanelTitle>
             <span><i class="fa fa-sitemap" aria-hidden="true"></i> 類別階層</span>
-        </template>
-        <template ngbPanelContent>
+        </ng-template>
+        <ng-template ngbPanelContent>
             <tree-root #treec id="categoryTree" [focused]="true" [nodes]="treeNodes" [options]="treeOptions">
                 <ng-template #treeNodeTemplate let-node let-index="index">
                     <form class="form-inline" #categoryNodeForm="ngForm">
@@ -400,6 +400,6 @@
                 <span class="fa fa-save"></span>
                 <span class="hidden-sm-down">儲存</span>
             </button>
-        </template>
+        </ng-template>
     </ngb-panel>
 </ngb-accordion>

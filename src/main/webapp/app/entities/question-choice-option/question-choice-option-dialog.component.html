@@ -15,8 +15,7 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="kavsirApp.questionChoiceOption.correct" for="field_correct">Correct</label>
             <input type="checkbox" class="form-control" name="correct" id="field_correct"
-                [(ngModel)]="questionChoiceOption.correct"
-             />
+                [(ngModel)]="questionChoiceOption.correct"  />
             <div [hidden]="!(editForm.controls.correct?.dirty && editForm.controls.correct?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.correct?.errors?.required" jhiTranslate="entity.validation.required">
@@ -27,8 +26,7 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="kavsirApp.questionChoiceOption.text" for="field_text">Text</label>
             <input type="text" class="form-control" name="text" id="field_text"
-                [(ngModel)]="questionChoiceOption.text"
-            required />
+                [(ngModel)]="questionChoiceOption.text" required />
             <div [hidden]="!(editForm.controls.text?.dirty && editForm.controls.text?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.text?.errors?.required" jhiTranslate="entity.validation.required">
@@ -39,8 +37,7 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="kavsirApp.questionChoiceOption.memo" for="field_memo">Memo</label>
             <input type="text" class="form-control" name="memo" id="field_memo"
-                [(ngModel)]="questionChoiceOption.memo"
-             />
+                [(ngModel)]="questionChoiceOption.memo"  />
         </div>
 
         <div class="form-group">

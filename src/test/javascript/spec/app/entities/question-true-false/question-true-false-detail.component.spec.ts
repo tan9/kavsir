@@ -32,11 +32,8 @@ describe('Component Tests', () => {
                     QuestionTrueFalseService,
                     EventManager
                 ]
-            }).overrideComponent(QuestionTrueFalseDetailComponent, {
-                set: {
-                    template: ''
-                }
-            }).compileComponents();
+            }).overrideTemplate(QuestionTrueFalseDetailComponent, '')
+            .compileComponents();
         }));
 
         beforeEach(() => {

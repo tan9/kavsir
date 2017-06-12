@@ -45,6 +45,7 @@ export class QuestionChoiceOptionDialogComponent implements OnInit {
         this.resourceImageService.query()
             .subscribe((res: ResponseWrapper) => { this.resourceimages = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
+
     clear() {
         this.activeModal.dismiss('cancel');
     }
@@ -53,19 +54,24 @@ export class QuestionChoiceOptionDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.questionChoiceOption.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.questionChoiceOptionService.update(this.questionChoiceOption));
+                this.questionChoiceOptionService.update(this.questionChoiceOption), false);
         } else {
             this.subscribeToSaveResponse(
-                this.questionChoiceOptionService.create(this.questionChoiceOption));
+                this.questionChoiceOptionService.create(this.questionChoiceOption), true);
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<QuestionChoiceOption>) {
+    private subscribeToSaveResponse(result: Observable<QuestionChoiceOption>, isCreated: boolean) {
         result.subscribe((res: QuestionChoiceOption) =>
-            this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
+            this.onSaveSuccess(res, isCreated), (res: Response) => this.onSaveError(res));
     }
 
-    private onSaveSuccess(result: QuestionChoiceOption) {
+    private onSaveSuccess(result: QuestionChoiceOption, isCreated: boolean) {
+        this.alertService.success(
+            isCreated ? 'kavsirApp.questionChoiceOption.created'
+            : 'kavsirApp.questionChoiceOption.updated',
+            { param : result.id }, null);
+
         this.eventManager.broadcast({ name: 'questionChoiceOptionListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);

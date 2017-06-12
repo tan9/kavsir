@@ -33,7 +33,7 @@ public class QuestionTrueFalseResource {
     private final Logger log = LoggerFactory.getLogger(QuestionTrueFalseResource.class);
 
     private static final String ENTITY_NAME = "questionTrueFalse";
-        
+
     private final QuestionTrueFalseRepository questionTrueFalseRepository;
 
     private final QuestionTrueFalseSearchRepository questionTrueFalseSearchRepository;
@@ -70,7 +70,7 @@ public class QuestionTrueFalseResource {
      * @param questionTrueFalse the questionTrueFalse to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated questionTrueFalse,
      * or with status 400 (Bad Request) if the questionTrueFalse is not valid,
-     * or with status 500 (Internal Server Error) if the questionTrueFalse couldnt be updated
+     * or with status 500 (Internal Server Error) if the questionTrueFalse couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/question-true-falses")
@@ -96,8 +96,7 @@ public class QuestionTrueFalseResource {
     @Timed
     public List<QuestionTrueFalse> getAllQuestionTrueFalses() {
         log.debug("REST request to get all QuestionTrueFalses");
-        List<QuestionTrueFalse> questionTrueFalses = questionTrueFalseRepository.findAllWithEagerRelationships();
-        return questionTrueFalses;
+        return questionTrueFalseRepository.findAllWithEagerRelationships();
     }
 
     /**
@@ -133,7 +132,7 @@ public class QuestionTrueFalseResource {
      * SEARCH  /_search/question-true-falses?query=:query : search for the questionTrueFalse corresponding
      * to the query.
      *
-     * @param query the query of the questionTrueFalse search 
+     * @param query the query of the questionTrueFalse search
      * @return the result of the search
      */
     @GetMapping("/_search/question-true-falses")
@@ -144,6 +143,5 @@ public class QuestionTrueFalseResource {
             .stream(questionTrueFalseSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
     }
-
 
 }

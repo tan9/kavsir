@@ -51,6 +51,7 @@ export class QuestionChoiceDialogComponent implements OnInit {
         this.questionGroupService.query()
             .subscribe((res: ResponseWrapper) => { this.questiongroups = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
+
     clear() {
         this.activeModal.dismiss('cancel');
     }
@@ -59,19 +60,24 @@ export class QuestionChoiceDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.questionChoice.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.questionChoiceService.update(this.questionChoice));
+                this.questionChoiceService.update(this.questionChoice), false);
         } else {
             this.subscribeToSaveResponse(
-                this.questionChoiceService.create(this.questionChoice));
+                this.questionChoiceService.create(this.questionChoice), true);
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<QuestionChoice>) {
+    private subscribeToSaveResponse(result: Observable<QuestionChoice>, isCreated: boolean) {
         result.subscribe((res: QuestionChoice) =>
-            this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
+            this.onSaveSuccess(res, isCreated), (res: Response) => this.onSaveError(res));
     }
 
-    private onSaveSuccess(result: QuestionChoice) {
+    private onSaveSuccess(result: QuestionChoice, isCreated: boolean) {
+        this.alertService.success(
+            isCreated ? 'kavsirApp.questionChoice.created'
+            : 'kavsirApp.questionChoice.updated',
+            { param : result.id }, null);
+
         this.eventManager.broadcast({ name: 'questionChoiceListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);

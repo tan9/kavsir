@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Response } from '@angular/http';
 
@@ -42,6 +42,7 @@ export class ResourceImageDialogComponent implements OnInit {
         private questionChoiceOptionService: QuestionChoiceOptionService,
         private questionTrueFalseService: QuestionTrueFalseService,
         private questionEssayService: QuestionEssayService,
+        private elementRef: ElementRef,
         private eventManager: EventManager
     ) {
     }
@@ -58,6 +59,7 @@ export class ResourceImageDialogComponent implements OnInit {
         this.questionEssayService.query()
             .subscribe((res: ResponseWrapper) => { this.questionessays = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
+
     byteSize(field) {
         return this.dataUtils.byteSize(field);
     }
@@ -67,7 +69,7 @@ export class ResourceImageDialogComponent implements OnInit {
     }
 
     setFileData(event, resourceImage, field, isImage) {
-        if (event.target.files && event.target.files[0]) {
+        if (event && event.target.files && event.target.files[0]) {
             const file = event.target.files[0];
             if (isImage && !/^image\//.test(file.type)) {
                 return;
@@ -78,6 +80,11 @@ export class ResourceImageDialogComponent implements OnInit {
             });
         }
     }
+
+    clearInputImage(field: string, fieldContentType: string, idInput: string) {
+        this.dataUtils.clearInputImage(this.resourceImage, this.elementRef, field, fieldContentType, idInput);
+    }
+
     clear() {
         this.activeModal.dismiss('cancel');
     }
@@ -86,19 +93,24 @@ export class ResourceImageDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.resourceImage.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.resourceImageService.update(this.resourceImage));
+                this.resourceImageService.update(this.resourceImage), false);
         } else {
             this.subscribeToSaveResponse(
-                this.resourceImageService.create(this.resourceImage));
+                this.resourceImageService.create(this.resourceImage), true);
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<ResourceImage>) {
+    private subscribeToSaveResponse(result: Observable<ResourceImage>, isCreated: boolean) {
         result.subscribe((res: ResourceImage) =>
-            this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
+            this.onSaveSuccess(res, isCreated), (res: Response) => this.onSaveError(res));
     }
 
-    private onSaveSuccess(result: ResourceImage) {
+    private onSaveSuccess(result: ResourceImage, isCreated: boolean) {
+        this.alertService.success(
+            isCreated ? 'kavsirApp.resourceImage.created'
+            : 'kavsirApp.resourceImage.updated',
+            { param : result.id }, null);
+
         this.eventManager.broadcast({ name: 'resourceImageListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);

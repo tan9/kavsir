@@ -32,11 +32,8 @@ describe('Component Tests', () => {
                     CategoryNodeService,
                     EventManager
                 ]
-            }).overrideComponent(CategoryNodeDetailComponent, {
-                set: {
-                    template: ''
-                }
-            }).compileComponents();
+            }).overrideTemplate(CategoryNodeDetailComponent, '')
+            .compileComponents();
         }));
 
         beforeEach(() => {

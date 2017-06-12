@@ -32,6 +32,7 @@ export class CategoryPublisherDialogComponent implements OnInit {
         this.isSaving = false;
         this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
     }
+
     clear() {
         this.activeModal.dismiss('cancel');
     }
@@ -40,19 +41,24 @@ export class CategoryPublisherDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.categoryPublisher.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.categoryPublisherService.update(this.categoryPublisher));
+                this.categoryPublisherService.update(this.categoryPublisher), false);
         } else {
             this.subscribeToSaveResponse(
-                this.categoryPublisherService.create(this.categoryPublisher));
+                this.categoryPublisherService.create(this.categoryPublisher), true);
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<CategoryPublisher>) {
+    private subscribeToSaveResponse(result: Observable<CategoryPublisher>, isCreated: boolean) {
         result.subscribe((res: CategoryPublisher) =>
-            this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
+            this.onSaveSuccess(res, isCreated), (res: Response) => this.onSaveError(res));
     }
 
-    private onSaveSuccess(result: CategoryPublisher) {
+    private onSaveSuccess(result: CategoryPublisher, isCreated: boolean) {
+        this.alertService.success(
+            isCreated ? 'kavsirApp.categoryPublisher.created'
+            : 'kavsirApp.categoryPublisher.updated',
+            { param : result.id }, null);
+
         this.eventManager.broadcast({ name: 'categoryPublisherListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);

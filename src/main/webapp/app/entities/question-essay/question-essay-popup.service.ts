@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { QuestionEssay } from './question-essay.model';
 import { QuestionEssayService } from './question-essay.service';
+
 @Injectable()
 export class QuestionEssayPopupService {
     private isOpen = false;

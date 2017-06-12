@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ResourceImage } from './resource-image.model';
 import { ResourceImageService } from './resource-image.service';
+
 @Injectable()
 export class ResourceImagePopupService {
     private isOpen = false;

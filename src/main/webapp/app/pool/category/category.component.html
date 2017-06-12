@@ -1,16 +1,16 @@
 <jhi-alert></jhi-alert>
 <ngb-accordion #acc="ngbAccordion" activeIds="category, hierarchy">
     <ngb-panel id="category">
-        <template ngbPanelTitle>
+        <ng-template ngbPanelTitle>
             <span>
                 <i class="fa fa-tags" aria-hidden="true"></i>
                 <span jhiTranslate="category.title">Category</span>
             </span>
-        </template>
-        <template ngbPanelContent>
+        </ng-template>
+        <ng-template ngbPanelContent>
             <ngb-tabset>
                 <ngb-tab [title]="'category.type.academicYear' | translate">
-                    <template ngbTabContent>
+                    <ng-template ngbTabContent>
                         <div class="table-responsive" *ngIf="categoryAcademicYears">
                             <table class="table table-striped">
                                 <thead>
@@ -74,10 +74,10 @@
                             Create new Category Academic Year
                         </span>
                         </button>
-                    </template>
+                    </ng-template>
                 </ngb-tab>
                 <ngb-tab [title]="'category.type.grade' | translate">
-                    <template ngbTabContent>
+                    <ng-template ngbTabContent>
                         <div class="table-responsive" *ngIf="categoryGrades">
                             <table class="table table-striped">
                                 <thead>
@@ -141,10 +141,10 @@
                             Create new Category Grade
                         </span>
                         </button>
-                    </template>
+                    </ng-template>
                 </ngb-tab>
                 <ngb-tab [title]="'category.type.semester' | translate">
-                    <template ngbTabContent>
+                    <ng-template ngbTabContent>
                         <div class="table-responsive" *ngIf="categorySemesters">
                             <table class="table table-striped">
                                 <thead>
@@ -208,10 +208,10 @@
                             Create new Category Semester
                         </span>
                         </button>
-                    </template>
+                    </ng-template>
                 </ngb-tab>
                 <ngb-tab [title]="'category.type.subject' | translate">
-                    <template ngbTabContent>
+                    <ng-template ngbTabContent>
                         <div class="table-responsive" *ngIf="categorySubjects">
                             <table class="table table-striped">
                                 <thead>
@@ -275,10 +275,10 @@
                             Create new Category Subject
                         </span>
                         </button>
-                    </template>
+                    </ng-template>
                 </ngb-tab>
                 <ngb-tab [title]="'category.type.publisher' | translate">
-                    <template ngbTabContent>
+                    <ng-template ngbTabContent>
                         <div class="table-responsive" *ngIf="categoryPublishers">
                             <table class="table table-striped">
                                 <thead>
@@ -342,19 +342,19 @@
                             Create new Category Publisher
                         </span>
                         </button>
-                    </template>
+                    </ng-template>
                 </ngb-tab>
             </ngb-tabset>
-        </template>
+        </ng-template>
     </ngb-panel>
     <ngb-panel id="hierarchy">
-        <template ngbPanelTitle>
+        <ng-template ngbPanelTitle>
             <span>
                 <i class="fa fa-sitemap" aria-hidden="true"></i>
                 <span jhiTranslate="category.hierarchy">Category Hierarchy</span>
             </span>
-        </template>
-        <template ngbPanelContent>
+        </ng-template>
+        <ng-template ngbPanelContent>
             <tree-root #treec id="categoryTree" [focused]="true" [nodes]="treeNodes" [options]="treeOptions">
                 <ng-template #treeNodeTemplate let-node let-index="index">
                     <form class="form-inline" #categoryNodeForm="ngForm">
@@ -407,6 +407,6 @@
                 <span *ngIf="isTreeSaving" class="fa fa-spinner fa-spin fa-fw"></span>
                 <span class="hidden-sm-down" jhiTranslate="entity.action.save">Save</span>
             </button>
-        </template>
+        </ng-template>
     </ngb-panel>
 </ngb-accordion>

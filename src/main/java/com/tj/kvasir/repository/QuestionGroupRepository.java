@@ -13,11 +13,11 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface QuestionGroupRepository extends JpaRepository<QuestionGroup,Long> {
-
+    
     @Query("select distinct question_group from QuestionGroup question_group left join fetch question_group.categories")
     List<QuestionGroup> findAllWithEagerRelationships();
 
     @Query("select question_group from QuestionGroup question_group left join fetch question_group.categories where question_group.id =:id")
     QuestionGroup findOneWithEagerRelationships(@Param("id") Long id);
-
+    
 }

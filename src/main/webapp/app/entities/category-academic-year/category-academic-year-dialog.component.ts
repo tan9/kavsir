@@ -32,6 +32,7 @@ export class CategoryAcademicYearDialogComponent implements OnInit {
         this.isSaving = false;
         this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
     }
+
     clear() {
         this.activeModal.dismiss('cancel');
     }
@@ -40,19 +41,24 @@ export class CategoryAcademicYearDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.categoryAcademicYear.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.categoryAcademicYearService.update(this.categoryAcademicYear));
+                this.categoryAcademicYearService.update(this.categoryAcademicYear), false);
         } else {
             this.subscribeToSaveResponse(
-                this.categoryAcademicYearService.create(this.categoryAcademicYear));
+                this.categoryAcademicYearService.create(this.categoryAcademicYear), true);
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<CategoryAcademicYear>) {
+    private subscribeToSaveResponse(result: Observable<CategoryAcademicYear>, isCreated: boolean) {
         result.subscribe((res: CategoryAcademicYear) =>
-            this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
+            this.onSaveSuccess(res, isCreated), (res: Response) => this.onSaveError(res));
     }
 
-    private onSaveSuccess(result: CategoryAcademicYear) {
+    private onSaveSuccess(result: CategoryAcademicYear, isCreated: boolean) {
+        this.alertService.success(
+            isCreated ? 'kavsirApp.categoryAcademicYear.created'
+            : 'kavsirApp.categoryAcademicYear.updated',
+            { param : result.id }, null);
+
         this.eventManager.broadcast({ name: 'categoryAcademicYearListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);

@@ -33,7 +33,7 @@ public class QuestionGroupResource {
     private final Logger log = LoggerFactory.getLogger(QuestionGroupResource.class);
 
     private static final String ENTITY_NAME = "questionGroup";
-        
+
     private final QuestionGroupRepository questionGroupRepository;
 
     private final QuestionGroupSearchRepository questionGroupSearchRepository;
@@ -70,7 +70,7 @@ public class QuestionGroupResource {
      * @param questionGroup the questionGroup to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated questionGroup,
      * or with status 400 (Bad Request) if the questionGroup is not valid,
-     * or with status 500 (Internal Server Error) if the questionGroup couldnt be updated
+     * or with status 500 (Internal Server Error) if the questionGroup couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/question-groups")
@@ -96,8 +96,7 @@ public class QuestionGroupResource {
     @Timed
     public List<QuestionGroup> getAllQuestionGroups() {
         log.debug("REST request to get all QuestionGroups");
-        List<QuestionGroup> questionGroups = questionGroupRepository.findAllWithEagerRelationships();
-        return questionGroups;
+        return questionGroupRepository.findAllWithEagerRelationships();
     }
 
     /**
@@ -133,7 +132,7 @@ public class QuestionGroupResource {
      * SEARCH  /_search/question-groups?query=:query : search for the questionGroup corresponding
      * to the query.
      *
-     * @param query the query of the questionGroup search 
+     * @param query the query of the questionGroup search
      * @return the result of the search
      */
     @GetMapping("/_search/question-groups")
@@ -144,6 +143,5 @@ public class QuestionGroupResource {
             .stream(questionGroupSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
     }
-
 
 }

@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { EventManager } from 'ng-jhipster';
+import { AlertService, EventManager } from 'ng-jhipster';
 
 import { ResourceImage } from './resource-image.model';
 import { ResourceImagePopupService } from './resource-image-popup.service';
@@ -19,6 +19,7 @@ export class ResourceImageDeleteDialogComponent {
     constructor(
         private resourceImageService: ResourceImageService,
         public activeModal: NgbActiveModal,
+        private alertService: AlertService,
         private eventManager: EventManager
     ) {
     }
@@ -35,6 +36,7 @@ export class ResourceImageDeleteDialogComponent {
             });
             this.activeModal.dismiss(true);
         });
+        this.alertService.success('kavsirApp.resourceImage.deleted', { param : id }, null);
     }
 }
 

@@ -61,6 +61,7 @@ export class CategoryNodeDialogComponent implements OnInit {
         this.questionGroupService.query()
             .subscribe((res: ResponseWrapper) => { this.questiongroups = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
+
     clear() {
         this.activeModal.dismiss('cancel');
     }
@@ -69,19 +70,24 @@ export class CategoryNodeDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.categoryNode.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.categoryNodeService.update(this.categoryNode));
+                this.categoryNodeService.update(this.categoryNode), false);
         } else {
             this.subscribeToSaveResponse(
-                this.categoryNodeService.create(this.categoryNode));
+                this.categoryNodeService.create(this.categoryNode), true);
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<CategoryNode>) {
+    private subscribeToSaveResponse(result: Observable<CategoryNode>, isCreated: boolean) {
         result.subscribe((res: CategoryNode) =>
-            this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
+            this.onSaveSuccess(res, isCreated), (res: Response) => this.onSaveError(res));
     }
 
-    private onSaveSuccess(result: CategoryNode) {
+    private onSaveSuccess(result: CategoryNode, isCreated: boolean) {
+        this.alertService.success(
+            isCreated ? 'kavsirApp.categoryNode.created'
+            : 'kavsirApp.categoryNode.updated',
+            { param : result.id }, null);
+
         this.eventManager.broadcast({ name: 'categoryNodeListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);

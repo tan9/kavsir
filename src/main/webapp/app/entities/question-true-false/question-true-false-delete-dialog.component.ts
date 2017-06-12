@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { EventManager } from 'ng-jhipster';
+import { AlertService, EventManager } from 'ng-jhipster';
 
 import { QuestionTrueFalse } from './question-true-false.model';
 import { QuestionTrueFalsePopupService } from './question-true-false-popup.service';
@@ -19,6 +19,7 @@ export class QuestionTrueFalseDeleteDialogComponent {
     constructor(
         private questionTrueFalseService: QuestionTrueFalseService,
         public activeModal: NgbActiveModal,
+        private alertService: AlertService,
         private eventManager: EventManager
     ) {
     }
@@ -35,6 +36,7 @@ export class QuestionTrueFalseDeleteDialogComponent {
             });
             this.activeModal.dismiss(true);
         });
+        this.alertService.success('kavsirApp.questionTrueFalse.deleted', { param : id }, null);
     }
 }
 

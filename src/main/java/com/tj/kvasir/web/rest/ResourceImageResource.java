@@ -33,7 +33,7 @@ public class ResourceImageResource {
     private final Logger log = LoggerFactory.getLogger(ResourceImageResource.class);
 
     private static final String ENTITY_NAME = "resourceImage";
-        
+
     private final ResourceImageRepository resourceImageRepository;
 
     private final ResourceImageSearchRepository resourceImageSearchRepository;
@@ -70,7 +70,7 @@ public class ResourceImageResource {
      * @param resourceImage the resourceImage to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated resourceImage,
      * or with status 400 (Bad Request) if the resourceImage is not valid,
-     * or with status 500 (Internal Server Error) if the resourceImage couldnt be updated
+     * or with status 500 (Internal Server Error) if the resourceImage couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/resource-images")
@@ -96,8 +96,7 @@ public class ResourceImageResource {
     @Timed
     public List<ResourceImage> getAllResourceImages() {
         log.debug("REST request to get all ResourceImages");
-        List<ResourceImage> resourceImages = resourceImageRepository.findAll();
-        return resourceImages;
+        return resourceImageRepository.findAll();
     }
 
     /**
@@ -133,7 +132,7 @@ public class ResourceImageResource {
      * SEARCH  /_search/resource-images?query=:query : search for the resourceImage corresponding
      * to the query.
      *
-     * @param query the query of the resourceImage search 
+     * @param query the query of the resourceImage search
      * @return the result of the search
      */
     @GetMapping("/_search/resource-images")
@@ -144,6 +143,5 @@ public class ResourceImageResource {
             .stream(resourceImageSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
     }
-
 
 }

@@ -32,11 +32,8 @@ describe('Component Tests', () => {
                     QuestionEssayService,
                     EventManager
                 ]
-            }).overrideComponent(QuestionEssayDetailComponent, {
-                set: {
-                    template: ''
-                }
-            }).compileComponents();
+            }).overrideTemplate(QuestionEssayDetailComponent, '')
+            .compileComponents();
         }));
 
         beforeEach(() => {

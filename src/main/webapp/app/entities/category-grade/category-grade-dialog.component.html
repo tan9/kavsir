@@ -15,8 +15,7 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="kavsirApp.categoryGrade.position" for="field_position">Position</label>
             <input type="number" class="form-control" name="position" id="field_position"
-                [(ngModel)]="categoryGrade.position"
-            required />
+                [(ngModel)]="categoryGrade.position" required />
             <div [hidden]="!(editForm.controls.position?.dirty && editForm.controls.position?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.position?.errors?.required" jhiTranslate="entity.validation.required">
@@ -31,8 +30,7 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="kavsirApp.categoryGrade.name" for="field_name">Name</label>
             <input type="text" class="form-control" name="name" id="field_name"
-                [(ngModel)]="categoryGrade.name"
-            required />
+                [(ngModel)]="categoryGrade.name" required />
             <div [hidden]="!(editForm.controls.name?.dirty && editForm.controls.name?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.name?.errors?.required" jhiTranslate="entity.validation.required">

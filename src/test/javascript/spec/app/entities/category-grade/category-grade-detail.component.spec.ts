@@ -32,11 +32,8 @@ describe('Component Tests', () => {
                     CategoryGradeService,
                     EventManager
                 ]
-            }).overrideComponent(CategoryGradeDetailComponent, {
-                set: {
-                    template: ''
-                }
-            }).compileComponents();
+            }).overrideTemplate(CategoryGradeDetailComponent, '')
+            .compileComponents();
         }));
 
         beforeEach(() => {

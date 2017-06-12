@@ -13,11 +13,11 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface QuestionChoiceRepository extends JpaRepository<QuestionChoice,Long> {
-
+    
     @Query("select distinct question_choice from QuestionChoice question_choice left join fetch question_choice.categories left join fetch question_choice.images")
     List<QuestionChoice> findAllWithEagerRelationships();
 
     @Query("select question_choice from QuestionChoice question_choice left join fetch question_choice.categories left join fetch question_choice.images where question_choice.id =:id")
     QuestionChoice findOneWithEagerRelationships(@Param("id") Long id);
-
+    
 }

@@ -14,6 +14,8 @@ export class CategoryComponent implements OnInit, OnDestroy {
 
     eventSubscriber: Subscription;
 
+    isSaving = false;
+
     @Input() items: Category[];
 
     /** type name in CapitalizedCamelcase. */
@@ -60,7 +62,33 @@ export class CategoryComponent implements OnInit, OnDestroy {
     }
 
     move(index: number, direction: string) {
+        this.isSaving = true;
+        const target = index + ((direction === 'UP') ? -1 : 1);
 
+        const tmp = this.items[index];
+        this.items[index] = this.items[target];
+        this.items[target] = tmp;
+
+        // TODO Observable?
+        const promises: Promise<Category>[] = [];
+        this.items.forEach((item, i) => {
+            if (item.position !== i) {
+                item.position = i;
+                promises.push(this.service.update(item).toPromise());
+            }
+        });
+
+        Promise.all(promises).then(
+            () => {
+                this.loadAllCategoryItems();
+                this.isSaving = false;
+            },
+            (error) => {
+                this.onError(error);
+                this.loadAllCategoryItems();
+                this.isSaving = false;
+            }
+        );
     }
 
     private onError(error) {

@@ -4,7 +4,7 @@ import { Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Rx';
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { EventManager, AlertService } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
 import { CategoryAcademicYear } from './category-academic-year.model';
 import { CategoryAcademicYearPopupService } from './category-academic-year-popup.service';
@@ -22,9 +22,9 @@ export class CategoryAcademicYearDialogComponent implements OnInit {
 
     constructor(
         public activeModal: NgbActiveModal,
-        private alertService: AlertService,
+        private alertService: JhiAlertService,
         private categoryAcademicYearService: CategoryAcademicYearService,
-        private eventManager: EventManager
+        private eventManager: JhiEventManager
     ) {
     }
 

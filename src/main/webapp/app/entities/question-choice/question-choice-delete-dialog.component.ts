@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { AlertService, EventManager } from 'ng-jhipster';
+import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
 
 import { QuestionChoice } from './question-choice.model';
 import { QuestionChoicePopupService } from './question-choice-popup.service';
@@ -19,8 +19,8 @@ export class QuestionChoiceDeleteDialogComponent {
     constructor(
         private questionChoiceService: QuestionChoiceService,
         public activeModal: NgbActiveModal,
-        private alertService: AlertService,
-        private eventManager: EventManager
+        private alertService: JhiAlertService,
+        private eventManager: JhiEventManager
     ) {
     }
 

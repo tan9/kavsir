@@ -3,7 +3,7 @@ import { OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
-import { DateUtils, DataUtils, EventManager } from 'ng-jhipster';
+import { JhiDateUtils, JhiDataUtils, JhiEventManager } from 'ng-jhipster';
 import { KavsirTestModule } from '../../../test.module';
 import { MockActivatedRoute } from '../../../helpers/mock-route.service';
 import { CategoryNodeDetailComponent } from '../../../../../../main/webapp/app/entities/category-node/category-node-detail.component';
@@ -22,15 +22,15 @@ describe('Component Tests', () => {
                 imports: [KavsirTestModule],
                 declarations: [CategoryNodeDetailComponent],
                 providers: [
-                    DateUtils,
-                    DataUtils,
+                    JhiDateUtils,
+                    JhiDataUtils,
                     DatePipe,
                     {
                         provide: ActivatedRoute,
                         useValue: new MockActivatedRoute({id: 123})
                     },
                     CategoryNodeService,
-                    EventManager
+                    JhiEventManager
                 ]
             }).overrideTemplate(CategoryNodeDetailComponent, '')
             .compileComponents();

@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
-import { EventManager, ParseLinks, PaginationUtil, JhiLanguageService, AlertService, DataUtils } from 'ng-jhipster';
+import { JhiEventManager, JhiParseLinks, JhiPaginationUtil, JhiLanguageService, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
 
 import { ResourceImage } from './resource-image.model';
 import { ResourceImageService } from './resource-image.service';
@@ -20,9 +20,9 @@ resourceImages: ResourceImage[];
 
     constructor(
         private resourceImageService: ResourceImageService,
-        private alertService: AlertService,
-        private dataUtils: DataUtils,
-        private eventManager: EventManager,
+        private alertService: JhiAlertService,
+        private dataUtils: JhiDataUtils,
+        private eventManager: JhiEventManager,
         private activatedRoute: ActivatedRoute,
         private principal: Principal
     ) {

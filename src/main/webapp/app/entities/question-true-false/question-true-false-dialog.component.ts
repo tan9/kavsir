@@ -4,7 +4,7 @@ import { Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Rx';
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { EventManager, AlertService } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
 import { QuestionTrueFalse } from './question-true-false.model';
 import { QuestionTrueFalsePopupService } from './question-true-false-popup.service';
@@ -32,12 +32,12 @@ export class QuestionTrueFalseDialogComponent implements OnInit {
 
     constructor(
         public activeModal: NgbActiveModal,
-        private alertService: AlertService,
+        private alertService: JhiAlertService,
         private questionTrueFalseService: QuestionTrueFalseService,
         private categoryNodeService: CategoryNodeService,
         private resourceImageService: ResourceImageService,
         private questionGroupService: QuestionGroupService,
-        private eventManager: EventManager
+        private eventManager: JhiEventManager
     ) {
     }
 

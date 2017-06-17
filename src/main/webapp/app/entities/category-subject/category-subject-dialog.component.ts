@@ -4,7 +4,7 @@ import { Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Rx';
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { EventManager, AlertService } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
 import { CategorySubject } from './category-subject.model';
 import { CategorySubjectPopupService } from './category-subject-popup.service';
@@ -22,9 +22,9 @@ export class CategorySubjectDialogComponent implements OnInit {
 
     constructor(
         public activeModal: NgbActiveModal,
-        private alertService: AlertService,
+        private alertService: JhiAlertService,
         private categorySubjectService: CategorySubjectService,
-        private eventManager: EventManager
+        private eventManager: JhiEventManager
     ) {
     }
 

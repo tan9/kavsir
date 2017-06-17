@@ -4,7 +4,7 @@ import { Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Rx';
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { EventManager, AlertService } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
 import { QuestionChoiceOption } from './question-choice-option.model';
 import { QuestionChoiceOptionPopupService } from './question-choice-option-popup.service';
@@ -29,11 +29,11 @@ export class QuestionChoiceOptionDialogComponent implements OnInit {
 
     constructor(
         public activeModal: NgbActiveModal,
-        private alertService: AlertService,
+        private alertService: JhiAlertService,
         private questionChoiceOptionService: QuestionChoiceOptionService,
         private questionChoiceService: QuestionChoiceService,
         private resourceImageService: ResourceImageService,
-        private eventManager: EventManager
+        private eventManager: JhiEventManager
     ) {
     }
 

@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
-import { EventManager  } from 'ng-jhipster';
+import { JhiEventManager  } from 'ng-jhipster';
 
 import { QuestionEssay } from './question-essay.model';
 import { QuestionEssayService } from './question-essay.service';
@@ -17,7 +17,7 @@ export class QuestionEssayDetailComponent implements OnInit, OnDestroy {
     private eventSubscriber: Subscription;
 
     constructor(
-        private eventManager: EventManager,
+        private eventManager: JhiEventManager,
         private questionEssayService: QuestionEssayService,
         private route: ActivatedRoute
     ) {

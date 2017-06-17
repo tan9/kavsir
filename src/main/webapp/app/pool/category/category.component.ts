@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ResponseWrapper } from '../../shared/model/response-wrapper.model';
-import { EventManager, AlertService } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { CategoryAcademicYear, CategoryAcademicYearService } from '../../entities/category-academic-year';
 import { CategoryGrade, CategoryGradeService } from '../../entities/category-grade';
 import { CategorySemester, CategorySemesterService } from '../../entities/category-semester';
@@ -60,8 +60,8 @@ export class CategoryComponent implements OnInit, OnDestroy {
 
     isTreeSaving = false;
 
-    constructor(private eventManager: EventManager,
-                private alertService: AlertService,
+    constructor(private eventManager: JhiEventManager,
+                private alertService: JhiAlertService,
                 private categoryAcademicYearService: CategoryAcademicYearService,
                 private categoryGradeService: CategoryGradeService,
                 private categorySemesterService: CategorySemesterService,

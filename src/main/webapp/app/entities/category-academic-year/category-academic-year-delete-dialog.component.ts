@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { AlertService, EventManager } from 'ng-jhipster';
+import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
 
 import { CategoryAcademicYear } from './category-academic-year.model';
 import { CategoryAcademicYearPopupService } from './category-academic-year-popup.service';
@@ -19,8 +19,8 @@ export class CategoryAcademicYearDeleteDialogComponent {
     constructor(
         private categoryAcademicYearService: CategoryAcademicYearService,
         public activeModal: NgbActiveModal,
-        private alertService: AlertService,
-        private eventManager: EventManager
+        private alertService: JhiAlertService,
+        private eventManager: JhiEventManager
     ) {
     }
 

@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
-import { EventManager  } from 'ng-jhipster';
+import { JhiEventManager  } from 'ng-jhipster';
 
 import { CategoryAcademicYear } from './category-academic-year.model';
 import { CategoryAcademicYearService } from './category-academic-year.service';
@@ -17,7 +17,7 @@ export class CategoryAcademicYearDetailComponent implements OnInit, OnDestroy {
     private eventSubscriber: Subscription;
 
     constructor(
-        private eventManager: EventManager,
+        private eventManager: JhiEventManager,
         private categoryAcademicYearService: CategoryAcademicYearService,
         private route: ActivatedRoute
     ) {

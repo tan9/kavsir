@@ -4,7 +4,7 @@ import { Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Rx';
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { EventManager, AlertService, DataUtils } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
 
 import { ResourceImage } from './resource-image.model';
 import { ResourceImagePopupService } from './resource-image-popup.service';
@@ -35,15 +35,15 @@ export class ResourceImageDialogComponent implements OnInit {
 
     constructor(
         public activeModal: NgbActiveModal,
-        private dataUtils: DataUtils,
-        private alertService: AlertService,
+        private dataUtils: JhiDataUtils,
+        private alertService: JhiAlertService,
         private resourceImageService: ResourceImageService,
         private questionChoiceService: QuestionChoiceService,
         private questionChoiceOptionService: QuestionChoiceOptionService,
         private questionTrueFalseService: QuestionTrueFalseService,
         private questionEssayService: QuestionEssayService,
         private elementRef: ElementRef,
-        private eventManager: EventManager
+        private eventManager: JhiEventManager
     ) {
     }
 

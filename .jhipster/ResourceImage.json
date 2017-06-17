@@ -1,0 +1,58 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "choice",
+            "otherEntityName": "questionChoice",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "image"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "choiceOption",
+            "otherEntityName": "questionChoiceOption",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "image"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "trueFalse",
+            "otherEntityName": "questionTrueFalse",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "image"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "essay",
+            "otherEntityName": "questionEssay",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "image"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "name",
+            "javadoc": "名稱",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "content",
+            "javadoc": "圖檔",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "image",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20170302142432",
+    "javadoc": "題目或答案圖檔資源",
+    "entityTableName": "resource_image",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no"
+}

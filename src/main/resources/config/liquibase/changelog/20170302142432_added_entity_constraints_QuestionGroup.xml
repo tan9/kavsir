@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <!--
+        Added the constraints for entity QuestionGroup.
+    -->
+    <changeSet id="20170302142432-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="question_groups_id"
+                                 baseTableName="question_group_category"
+                                 constraintName="fk_question_group_category_question_groups_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="question_group"/>
+        <addForeignKeyConstraint baseColumnNames="categories_id"
+                                 baseTableName="question_group_category"
+                                 constraintName="fk_question_group_category_categories_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="category_node"/>
+        
+    </changeSet>
+</databaseChangeLog>

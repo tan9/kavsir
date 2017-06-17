@@ -1,0 +1,76 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myQuestionChoiceLabel" jhiTranslate="kavsirApp.questionChoice.home.createOrEditLabel">Create or edit a Question Choice</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!questionChoice.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="questionChoice.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="kavsirApp.questionChoice.multipleResponse" for="field_multipleResponse">Multiple Response</label>
+            <input type="checkbox" class="form-control" name="multipleResponse" id="field_multipleResponse"
+                [(ngModel)]="questionChoice.multipleResponse"  />
+            <div [hidden]="!(editForm.controls.multipleResponse?.dirty && editForm.controls.multipleResponse?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.multipleResponse?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="kavsirApp.questionChoice.text" for="field_text">Text</label>
+            <input type="text" class="form-control" name="text" id="field_text"
+                [(ngModel)]="questionChoice.text" required />
+            <div [hidden]="!(editForm.controls.text?.dirty && editForm.controls.text?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.text?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="kavsirApp.questionChoice.memo" for="field_memo">Memo</label>
+            <input type="text" class="form-control" name="memo" id="field_memo"
+                [(ngModel)]="questionChoice.memo"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="kavsirApp.questionChoice.groupPosition" for="field_groupPosition">Group Position</label>
+            <input type="number" class="form-control" name="groupPosition" id="field_groupPosition"
+                [(ngModel)]="questionChoice.groupPosition"  />
+        </div>
+
+        <div class="form-group">
+            <label jhiTranslate="kavsirApp.questionChoice.category" for="field_category">Category</label>
+            <select class="form-control" id="field_category" multiple name="category" [(ngModel)]="questionChoice.categories">
+                <option [ngValue]="getSelected(questionChoice.categories, categoryNodeOption)" *ngFor="let categoryNodeOption of categorynodes; trackBy: trackCategoryNodeById">{{categoryNodeOption.id}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label jhiTranslate="kavsirApp.questionChoice.image" for="field_image">Image</label>
+            <select class="form-control" id="field_image" multiple name="image" [(ngModel)]="questionChoice.images">
+                <option [ngValue]="getSelected(questionChoice.images, resourceImageOption)" *ngFor="let resourceImageOption of resourceimages; trackBy: trackResourceImageById">{{resourceImageOption.id}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label jhiTranslate="kavsirApp.questionChoice.questionGroup" for="field_questionGroup">Question Group</label>
+            <select class="form-control" id="field_questionGroup" name="questionGroup" [(ngModel)]="questionChoice.questionGroup" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="questionGroupOption.id === questionChoice.questionGroup?.id ? questionChoice.questionGroup : questionGroupOption" *ngFor="let questionGroupOption of questiongroups; trackBy: trackQuestionGroupById">{{questionGroupOption.id}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

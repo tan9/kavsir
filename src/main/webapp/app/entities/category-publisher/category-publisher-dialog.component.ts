@@ -4,7 +4,7 @@ import { Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Rx';
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { EventManager, AlertService } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
 import { CategoryPublisher } from './category-publisher.model';
 import { CategoryPublisherPopupService } from './category-publisher-popup.service';
@@ -22,9 +22,9 @@ export class CategoryPublisherDialogComponent implements OnInit {
 
     constructor(
         public activeModal: NgbActiveModal,
-        private alertService: AlertService,
+        private alertService: JhiAlertService,
         private categoryPublisherService: CategoryPublisherService,
-        private eventManager: EventManager
+        private eventManager: JhiEventManager
     ) {
     }
 

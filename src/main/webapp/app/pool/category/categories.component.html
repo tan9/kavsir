@@ -8,8 +8,8 @@
             </span>
         </ng-template>
         <ng-template ngbPanelContent>
-            <ngb-tabset>
-                <ngb-tab [title]="'category.type.academicYear' | translate">
+            <ngb-tabset [destroyOnHide]="false">
+                <ngb-tab id="tab-academic-years" [title]="'category.type.academicYear' | translate">
                     <ng-template ngbTabContent>
                         <jhi-category #academicYearCategory
                                       [typeName]="'AcademicYear'"
@@ -18,7 +18,7 @@
                         </jhi-category>
                     </ng-template>
                 </ngb-tab>
-                <ngb-tab [title]="'category.type.grade' | translate">
+                <ngb-tab id="tab-grades" [title]="'category.type.grade' | translate">
                     <ng-template ngbTabContent>
                         <jhi-category #gradeCategory
                                       [typeName]="'Grade'"
@@ -27,7 +27,7 @@
                         </jhi-category>
                     </ng-template>
                 </ngb-tab>
-                <ngb-tab [title]="'category.type.semester' | translate">
+                <ngb-tab id="tab-semesters" [title]="'category.type.semester' | translate">
                     <ng-template ngbTabContent>
                         <jhi-category #semesterCategory
                                       [typeName]="'Semester'"
@@ -36,7 +36,7 @@
                         </jhi-category>
                     </ng-template>
                 </ngb-tab>
-                <ngb-tab [title]="'category.type.subject' | translate">
+                <ngb-tab id="tab-subjects" [title]="'category.type.subject' | translate">
                     <ng-template ngbTabContent>
                         <jhi-category #subjectCategory
                                       [typeName]="'Subject'"
@@ -45,7 +45,7 @@
                         </jhi-category>
                     </ng-template>
                 </ngb-tab>
-                <ngb-tab [title]="'category.type.publisher' | translate">
+                <ngb-tab id="tab-publishers" [title]="'category.type.publisher' | translate">
                     <ng-template ngbTabContent>
                         <jhi-category #publisherCategory
                                       [typeName]="'Publisher'"

@@ -32,17 +32,17 @@ public class QuestionGroup implements Serializable {
     private Long id;
 
     /**
-     * 文字描述
+     * 題目
      */
     @NotNull
-    @ApiModelProperty(value = "文字描述", required = true)
+    @ApiModelProperty(value = "題目", required = true)
     @Column(name = "text", nullable = false)
     private String text;
 
     /**
-     * 題目來源備註
+     * 備註
      */
-    @ApiModelProperty(value = "題目來源備註")
+    @ApiModelProperty(value = "備註")
     @Column(name = "memo")
     private String memo;
 

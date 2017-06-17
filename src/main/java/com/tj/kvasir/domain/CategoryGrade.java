@@ -29,10 +29,10 @@ public class CategoryGrade implements Serializable {
     private Long id;
 
     /**
-     * 順序
+     * 序位
      */
     @NotNull
-    @ApiModelProperty(value = "順序", required = true)
+    @ApiModelProperty(value = "序位", required = true)
     @Column(name = "position", nullable = false)
     private Integer position;
 

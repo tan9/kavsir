@@ -14,9 +14,9 @@ import java.util.Set;
 import java.util.Objects;
 
 /**
- * 選擇題答案
+ * 選擇題選項
  */
-@ApiModel(description = "選擇題答案")
+@ApiModel(description = "選擇題選項")
 @Entity
 @Table(name = "question_choice_option")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -31,25 +31,25 @@ public class QuestionChoiceOption implements Serializable {
     private Long id;
 
     /**
-     * 是否正解
+     * 是否為正解
      */
     @NotNull
-    @ApiModelProperty(value = "是否正解", required = true)
+    @ApiModelProperty(value = "是否為正解", required = true)
     @Column(name = "correct", nullable = false)
     private Boolean correct;
 
     /**
-     * 答案文字描述
+     * 選項內容
      */
     @NotNull
-    @ApiModelProperty(value = "答案文字描述", required = true)
+    @ApiModelProperty(value = "選項內容", required = true)
     @Column(name = "text", nullable = false)
     private String text;
 
     /**
-     * 答案備註
+     * 備註
      */
-    @ApiModelProperty(value = "答案備註")
+    @ApiModelProperty(value = "備註")
     @Column(name = "memo")
     private String memo;
 

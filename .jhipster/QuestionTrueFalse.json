@@ -35,7 +35,7 @@
         },
         {
             "fieldName": "text",
-            "javadoc": "文字描述",
+            "javadoc": "題目",
             "fieldType": "String",
             "fieldValidateRules": [
                 "required"
@@ -43,12 +43,12 @@
         },
         {
             "fieldName": "memo",
-            "javadoc": "題目備註",
+            "javadoc": "備註",
             "fieldType": "String"
         },
         {
             "fieldName": "groupPosition",
-            "javadoc": "題組中題目序號",
+            "javadoc": "題組中序位",
             "fieldType": "Integer"
         }
     ],

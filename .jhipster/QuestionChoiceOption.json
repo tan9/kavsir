@@ -19,7 +19,7 @@
     "fields": [
         {
             "fieldName": "correct",
-            "javadoc": "是否正解",
+            "javadoc": "是否為正解",
             "fieldType": "Boolean",
             "fieldValidateRules": [
                 "required"
@@ -27,7 +27,7 @@
         },
         {
             "fieldName": "text",
-            "javadoc": "答案文字描述",
+            "javadoc": "選項內容",
             "fieldType": "String",
             "fieldValidateRules": [
                 "required"
@@ -35,12 +35,12 @@
         },
         {
             "fieldName": "memo",
-            "javadoc": "答案備註",
+            "javadoc": "備註",
             "fieldType": "String"
         }
     ],
     "changelogDate": "20170302142432",
-    "javadoc": "選擇題答案",
+    "javadoc": "選擇題選項",
     "entityTableName": "question_choice_option",
     "dto": "no",
     "pagination": "no",

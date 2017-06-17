@@ -17,9 +17,9 @@ import java.util.Objects;
 import com.tj.kvasir.domain.enumeration.CategoryType;
 
 /**
- * 類別樹狀資料檔
+ * 類別節點
  */
-@ApiModel(description = "類別樹狀資料檔")
+@ApiModel(description = "類別節點")
 @Entity
 @Table(name = "category_node")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -39,9 +39,9 @@ public class CategoryNode implements Serializable {
     private CategoryType type;
 
     /**
-     * 參照名稱，在 type !== SEGMENT 時需指定到 type 對應表格資料
+     * 類別 ID，在 type !== SEGMENT 時需指定到 type 對應表格資料
      */
-    @ApiModelProperty(value = "參照名稱，在 type !== SEGMENT 時需指定到 type 對應表格資料")
+    @ApiModelProperty(value = "類別 ID，在 type !== SEGMENT 時需指定到 type 對應表格資料")
     @Column(name = "type_id")
     private Long typeId;
 
@@ -53,9 +53,9 @@ public class CategoryNode implements Serializable {
     private String name;
 
     /**
-     * 順序
+     * 序位
      */
-    @ApiModelProperty(value = "順序")
+    @ApiModelProperty(value = "序位")
     @Column(name = "position")
     private Integer position;
 

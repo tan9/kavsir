@@ -1,11 +1,11 @@
-/** 類別樹狀資料檔 */
+/** 類別節點 */
 entity CategoryNode {
   type CategoryType required,
-  /** 參照名稱，在 type !== SEGMENT 時需指定到 type 對應表格資料 */
+  /** 類別 ID，在 type !== SEGMENT 時需指定到 type 對應表格資料 */
   typeId Long,
   /** 名稱 (章、課、篇、節)，只有在 type == SEGMENT 時有效 */
   name String,
-  /** 順序 */
+  /** 序位 */
   position Integer,
 }
 
@@ -24,7 +24,7 @@ enum CategoryType {
 
 /** 學年 */
 entity CategoryAcademicYear {
-  /** 順序 */
+  /** 序位 */
   position Integer required,
   /** 名稱 */
   name String required
@@ -32,7 +32,7 @@ entity CategoryAcademicYear {
 
 /** 年級 (一年級 ~ 十二年級) */
 entity CategoryGrade {
-  /** 順序 */
+  /** 序位 */
   position Integer required,
   /** 名稱 */
   name String required
@@ -40,7 +40,7 @@ entity CategoryGrade {
 
 /** 學期 (上學期、下學期、全學期...) */
 entity CategorySemester {
-  /** 順序 */
+  /** 序位 */
   position Integer required,
   /** 名稱 */
   name String required
@@ -48,7 +48,7 @@ entity CategorySemester {
 
 /** 科目 */
 entity CategorySubject {
-  /** 順序 */
+  /** 序位 */
   position Integer required,
   /** 名稱 */
   name String required
@@ -56,7 +56,7 @@ entity CategorySubject {
 
 /** 出版社 (康軒、翰林、三民...) */
 entity CategoryPublisher {
-  /** 順序 */
+  /** 序位 */
   position Integer required,
   /** 名稱 */
   name String required
@@ -66,33 +66,33 @@ entity CategoryPublisher {
 entity QuestionTrueFalse {
   /** 答案 */
   correct Boolean required,
-  /** 文字描述 */
+  /** 題目 */
   text String required,
-  /** 題目備註 */
+  /** 備註 */
   memo String,
-  /** 題組中題目序號 */
+  /** 題組中序位 */
   groupPosition Integer
 }
 
 /** 選擇題 */
 entity QuestionChoice {
-  /** 單選/複選 */
+  /** 是否為複選 */
   multipleResponse Boolean required,
-  /** 文字描述 */
+  /** 題目 */
   text String required,
-  /** 題目備註 */
+  /** 備註 */
   memo String,
-  /** 題組中題目序號 */
+  /** 題組中序位 */
   groupPosition Integer
 }
 
-/** 選擇題答案 */
+/** 選擇題選項 */
 entity QuestionChoiceOption {
-  /** 是否正解 */
+  /** 是否為正解 */
   correct Boolean required,
-  /** 答案文字描述 */
+  /** 選項內容 */
   text String required,
-  /** 答案備註 */
+  /** 備註 */
   memo String
 }
 
@@ -102,21 +102,21 @@ relationship OneToMany {
 
 /** 問答題 */
 entity QuestionEssay {
-  /** 問題描述 */
+  /** 題目 */
   text String required,
-  /** 解答文字 */
+  /** 答案 */
   answer String required,
-  /** 題目備註 */
+  /** 備註 */
   memo String,
-  /** 題組中題目序號 */
+  /** 題組中序位 */
   groupPosition Integer
 }
 
 /** 題組 */
 entity QuestionGroup {
-  /** 文字描述 */
+  /** 題目 */
   text String required,
-  /** 題目來源備註 */
+  /** 備註 */
   memo String
 }
 

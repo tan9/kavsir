@@ -47,7 +47,7 @@
         },
         {
             "fieldName": "typeId",
-            "javadoc": "參照名稱，在 type !== SEGMENT 時需指定到 type 對應表格資料",
+            "javadoc": "類別 ID，在 type !== SEGMENT 時需指定到 type 對應表格資料",
             "fieldType": "Long"
         },
         {
@@ -57,12 +57,12 @@
         },
         {
             "fieldName": "position",
-            "javadoc": "順序",
+            "javadoc": "序位",
             "fieldType": "Integer"
         }
     ],
     "changelogDate": "20170302142432",
-    "javadoc": "類別樹狀資料檔",
+    "javadoc": "類別節點",
     "entityTableName": "category_node",
     "dto": "no",
     "pagination": "no",

@@ -126,11 +126,11 @@ relationship OneToMany {
   QuestionGroup{essay} to QuestionEssay
 }
 
-/** 題目或答案圖檔資源 */
+/** 圖檔 */
 entity ResourceImage {
   /** 名稱 */
   name String required,
-  /** 圖檔 */
+  /** 內容 */
   content ImageBlob required
 }
 

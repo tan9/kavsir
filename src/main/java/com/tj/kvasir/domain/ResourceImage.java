@@ -15,9 +15,9 @@ import java.util.Set;
 import java.util.Objects;
 
 /**
- * 題目或答案圖檔資源
+ * 圖檔
  */
-@ApiModel(description = "題目或答案圖檔資源")
+@ApiModel(description = "圖檔")
 @Entity
 @Table(name = "resource_image")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -40,10 +40,10 @@ public class ResourceImage implements Serializable {
     private String name;
 
     /**
-     * 圖檔
+     * 內容
      */
     @NotNull
-    @ApiModelProperty(value = "圖檔", required = true)
+    @ApiModelProperty(value = "內容", required = true)
     @Lob
     @Column(name = "content", nullable = false)
     private byte[] content;

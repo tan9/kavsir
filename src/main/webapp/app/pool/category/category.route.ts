@@ -4,14 +4,14 @@ import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes, CanActiva
 import { UserRouteAccessService } from '../../shared';
 import { JhiPaginationUtil } from 'ng-jhipster';
 
-import { CategoryComponent } from './category.component';
+import { CategoriesComponent } from './categories.component';
 
 import { Principal } from '../../shared';
 
 export const categoryRoute: Routes = [
     {
-        path: 'category',
-        component: CategoryComponent,
+        path: 'categories',
+        component: CategoriesComponent,
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'global.menu.pool.category.main'

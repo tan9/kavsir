@@ -1,2 +1,2 @@
-export * from './category.component';
+export * from './categories.component';
 export * from './category.route';

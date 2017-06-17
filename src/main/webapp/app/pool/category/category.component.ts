@@ -1,147 +1,66 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ResponseWrapper } from '../../shared/model/response-wrapper.model';
 import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
-import { CategoryAcademicYear, CategoryAcademicYearService } from '../../entities/category-academic-year';
-import { CategoryGrade, CategoryGradeService } from '../../entities/category-grade';
-import { CategorySemester, CategorySemesterService } from '../../entities/category-semester';
-import { CategorySubject, CategorySubjectService } from '../../entities/category-subject';
-import { CategoryPublisher, CategoryPublisherService } from '../../entities/category-publisher';
 
 import { Subscription } from 'rxjs/Rx';
+import { Category } from '../../entities/category.model';
+import { CategoryService } from '../../entities/category.service';
 
 @Component({
     selector: 'jhi-category',
     templateUrl: './category.component.html',
-    styleUrls: ['./category.component.css']
 })
 export class CategoryComponent implements OnInit, OnDestroy {
 
-    categoryAcademicYearsEventSubscriber: Subscription;
-    categoryGradesEventSubscriber: Subscription;
-    categorySemestersEventSubscriber: Subscription;
-    categorySubjectsEventSubscriber: Subscription;
-    categoryPublishersEventSubscriber: Subscription;
+    eventSubscriber: Subscription;
 
-    categoryAcademicYears: CategoryAcademicYear[];
-    categoryGrades: CategoryGrade[];
-    categorySemesters: CategorySemester[];
-    categorySubjects: CategorySubject[];
-    categoryPublishers: CategoryPublisher[];
+    @Input() items: Category[];
+
+    /** type name in CapitalizedCamelcase. */
+    @Input() typeName: string;
+    @Input() service: CategoryService<Category>;
 
     constructor(private eventManager: JhiEventManager,
-                private alertService: JhiAlertService,
-                private categoryAcademicYearService: CategoryAcademicYearService,
-                private categoryGradeService: CategoryGradeService,
-                private categorySemesterService: CategorySemesterService,
-                private categorySubjectService: CategorySubjectService,
-                private categoryPublisherService: CategoryPublisherService) {
+                private alertService: JhiAlertService) {
     }
 
-    loadAllCategoryAcademicYears() {
-        this.categoryAcademicYearService.query().subscribe(
+    loadAllCategoryItems() {
+        this.service.query().subscribe(
             (res: ResponseWrapper) => {
-                this.categoryAcademicYears = res.json.sort(
-                    (a: CategoryAcademicYear, b: CategoryAcademicYear) => {
+                this.items.length = 0;
+                const newItems = res.json.sort(
+                    (a: Category, b: Category) => {
                         const position = a.position - b.position;
                         return position !== 0 ? position : a.id - b.id;
                     });
-            },
-            (res: ResponseWrapper) => this.onError(res.json)
-        );
-    }
-
-    loadAllCategoryGrades() {
-        this.categoryGradeService.query().subscribe(
-            (res: ResponseWrapper) => {
-                this.categoryGrades = res.json.sort(
-                    (a: CategoryGrade, b: CategoryGrade) => {
-                        const position = a.position - b.position;
-                        return position !== 0 ? position : a.id - b.id;
-                    });
-            },
-            (res: ResponseWrapper) => this.onError(res.json)
-        );
-    }
-
-    loadAllCategorySemesters() {
-        this.categorySemesterService.query().subscribe(
-            (res: ResponseWrapper) => {
-                this.categorySemesters = res.json.sort(
-                    (a: CategorySemester, b: CategorySemester) => {
-                        const position = a.position - b.position;
-                        return position !== 0 ? position : a.id - b.id;
-                    });
-            },
-            (res: ResponseWrapper) => this.onError(res.json)
-        );
-    }
-
-    loadAllCategorySubjects() {
-        this.categorySubjectService.query().subscribe(
-            (res: ResponseWrapper) => {
-                this.categorySubjects = res.json.sort(
-                    (a: CategorySubject, b: CategorySubject) => {
-                        const position = a.position - b.position;
-                        return position !== 0 ? position : a.id - b.id;
-                    });
-            },
-            (res: ResponseWrapper) => this.onError(res.json)
-        );
-    }
-
-    loadAllCategoryPublishers() {
-        this.categoryPublisherService.query().subscribe(
-            (res: ResponseWrapper) => {
-                this.categoryPublishers = res.json.sort(
-                    (a: CategoryPublisher, b: CategoryPublisher) => {
-                        const position = a.position - b.position;
-                        return position !== 0 ? position : a.id - b.id;
-                    });
+                Array.prototype.push.apply(this.items, newItems);
             },
             (res: ResponseWrapper) => this.onError(res.json)
         );
     }
 
     ngOnInit() {
-        this.loadAllCategoryAcademicYears();
-        this.loadAllCategoryGrades();
-        this.loadAllCategorySemesters();
-        this.loadAllCategorySubjects();
-        this.loadAllCategoryPublishers();
+        this.loadAllCategoryItems();
 
-        this.registerChangeInCategoryAcademicYears();
-        this.registerChangeInCategoryGrades();
-        this.registerChangeInCategorySemesters();
-        this.registerChangeInCategorySubjects();
-        this.registerChangeInCategoryPublishers();
+        this.registerChangeInCategoryItems();
     }
 
     ngOnDestroy() {
-        this.eventManager.destroy(this.categoryAcademicYearsEventSubscriber);
-        this.eventManager.destroy(this.categoryGradesEventSubscriber);
-        this.eventManager.destroy(this.categorySemestersEventSubscriber);
-        this.eventManager.destroy(this.categorySubjectsEventSubscriber);
-        this.eventManager.destroy(this.categoryPublishersEventSubscriber);
+        this.eventManager.destroy(this.eventSubscriber);
     }
 
-    registerChangeInCategoryAcademicYears() {
-        this.categoryAcademicYearsEventSubscriber = this.eventManager.subscribe('categoryAcademicYearListModification', (response) => this.loadAllCategoryAcademicYears());
+    registerChangeInCategoryItems() {
+        const eventName = 'category' + this.typeName + 'ListModification';
+        this.eventSubscriber = this.eventManager.subscribe(
+            eventName, (response) => this.loadAllCategoryItems());
     }
 
-    registerChangeInCategoryGrades() {
-        this.categoryGradesEventSubscriber = this.eventManager.subscribe('categoryGradeListModification', (response) => this.loadAllCategoryGrades());
+    hyphenSeparatedTypeName() {
+        return this.typeName.replace(/([A-Z])/g, (g) => `-${g[0].toLowerCase()}`).substring(1);
     }
 
-    registerChangeInCategorySemesters() {
-        this.categorySemestersEventSubscriber = this.eventManager.subscribe('categorySemesterListModification', (response) => this.loadAllCategorySemesters());
-    }
+    move(index: number, direction: string) {
 
-    registerChangeInCategorySubjects() {
-        this.categorySubjectsEventSubscriber = this.eventManager.subscribe('categorySubjectListModification', (response) => this.loadAllCategorySubjects());
-    }
-
-    registerChangeInCategoryPublishers() {
-        this.categoryPublishersEventSubscriber = this.eventManager.subscribe('categoryPublisherListModification', (response) => this.loadAllCategoryPublishers());
     }
 
     private onError(error) {

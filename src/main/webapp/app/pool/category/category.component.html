@@ -1,366 +1,65 @@
-<jhi-alert></jhi-alert>
-<ngb-accordion #acc="ngbAccordion" activeIds="category, hierarchy">
-    <ngb-panel id="category">
-        <ng-template ngbPanelTitle>
-            <span>
-                <i class="fa fa-tags" aria-hidden="true"></i>
-                <span jhiTranslate="category.title">Category</span>
-            </span>
-        </ng-template>
-        <ng-template ngbPanelContent>
-            <ngb-tabset>
-                <ngb-tab [title]="'category.type.academicYear' | translate">
-                    <ng-template ngbTabContent>
-                        <div class="table-responsive" *ngIf="categoryAcademicYears">
-                            <table class="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th><span jhiTranslate="kavsirApp.categoryAcademicYear.name">Name</span></th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr *ngFor="let categoryAcademicYear of categoryAcademicYears; let first = first; let last = last">
-                                    <td>{{categoryAcademicYear.name}}</td>
-                                    <td class="text-right">
-                                        <div class="btn-group flex-btn-group-container">
-                                            <button type="submit"
-                                                    [routerLink]="['../category-academic-year', categoryAcademicYear.id ]"
-                                                    class="btn btn-info btn-sm">
-                                                <span class="fa fa-eye"></span>
-                                                <span class="hidden-md-down"
-                                                      jhiTranslate="entity.action.view">View</span>
-                                            </button>
-                                            <button type="submit"
-                                                    [routerLink]="['/', { outlets: { popup: 'category-academic-year/'+ categoryAcademicYear.id + '/edit'} }]"
-                                                    replaceUrl="true"
-                                                    class="btn btn-primary btn-sm">
-                                                <span class="fa fa-pencil"></span>
-                                                <span class="hidden-md-down"
-                                                      jhiTranslate="entity.action.edit">Edit</span>
-                                            </button>
-                                            <button type="submit"
-                                                    [routerLink]="['/', { outlets: { popup: 'category-academic-year/'+ categoryAcademicYear.id + '/delete'} }]"
-                                                    replaceUrl="true"
-                                                    class="btn btn-danger btn-sm">
-                                                <span class="fa fa-remove"></span>
-                                                <span class="hidden-md-down"
-                                                      jhiTranslate="entity.action.delete">Delete</span>
-                                            </button>
-                                            <button type="submit"
-                                                    [disabled]="first"
-                                                    class="btn btn-info btn-sm">
-                                                <span class="fa fa-arrow-up"></span>
-                                                <span class="hidden-md-down"
-                                                      jhiTranslate="global.action.move.up">Move Up</span>
-                                            </button>
-                                            <button type="submit"
-                                                    [disabled]="last"
-                                                    class="btn btn-info btn-sm">
-                                                <span class="fa fa-arrow-down"></span>
-                                                <span class="hidden-md-down"
-                                                      jhiTranslate="global.action.move.down">Move Down</span>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <button class="btn btn-primary float-right create-category-academic-year"
-                                [routerLink]="['/', { outlets: { popup: ['category-academic-year-new'] } }]">
-                            <span class="fa fa-plus"></span>
-                            <span class="hidden-sm-down" jhiTranslate="kavsirApp.categoryAcademicYear.home.createLabel">
-                            Create new Category Academic Year
-                        </span>
-                        </button>
-                    </ng-template>
-                </ngb-tab>
-                <ngb-tab [title]="'category.type.grade' | translate">
-                    <ng-template ngbTabContent>
-                        <div class="table-responsive" *ngIf="categoryGrades">
-                            <table class="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th><span jhiTranslate="kavsirApp.categoryGrade.name">Name</span></th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr *ngFor="let categoryGrade of categoryGrades; let first = first; let last = last">
-                                    <td>{{categoryGrade.name}}</td>
-                                    <td class="text-right">
-                                        <div class="btn-group flex-btn-group-container">
-                                            <button type="submit"
-                                                    [routerLink]="['../category-grade', categoryGrade.id ]"
-                                                    class="btn btn-info btn-sm">
-                                                <span class="fa fa-eye"></span>
-                                                <span class="hidden-md-down"
-                                                      jhiTranslate="entity.action.view">View</span>
-                                            </button>
-                                            <button type="submit"
-                                                    [routerLink]="['/', { outlets: { popup: 'category-grade/'+ categoryGrade.id + '/edit'} }]"
-                                                    replaceUrl="true"
-                                                    class="btn btn-primary btn-sm">
-                                                <span class="fa fa-pencil"></span>
-                                                <span class="hidden-md-down"
-                                                      jhiTranslate="entity.action.edit">Edit</span>
-                                            </button>
-                                            <button type="submit"
-                                                    [routerLink]="['/', { outlets: { popup: 'category-grade/'+ categoryGrade.id + '/delete'} }]"
-                                                    replaceUrl="true"
-                                                    class="btn btn-danger btn-sm">
-                                                <span class="fa fa-remove"></span>
-                                                <span class="hidden-md-down"
-                                                      jhiTranslate="entity.action.delete">Delete</span>
-                                            </button>
-                                            <button type="submit"
-                                                    [disabled]="first"
-                                                    class="btn btn-info btn-sm">
-                                                <span class="fa fa-arrow-up"></span>
-                                                <span class="hidden-md-down"
-                                                      jhiTranslate="global.action.move.up">Move Up</span>
-                                            </button>
-                                            <button type="submit"
-                                                    [disabled]="last"
-                                                    class="btn btn-info btn-sm">
-                                                <span class="fa fa-arrow-down"></span>
-                                                <span class="hidden-md-down"
-                                                      jhiTranslate="global.action.move.down">Move Down</span>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <button class="btn btn-primary float-right create-category-grade"
-                                [routerLink]="['/', { outlets: { popup: ['category-grade-new'] } }]">
-                            <span class="fa fa-plus"></span>
-                            <span class="hidden-sm-down" jhiTranslate="kavsirApp.categoryGrade.home.createLabel">
-                            Create new Category Grade
-                        </span>
-                        </button>
-                    </ng-template>
-                </ngb-tab>
-                <ngb-tab [title]="'category.type.semester' | translate">
-                    <ng-template ngbTabContent>
-                        <div class="table-responsive" *ngIf="categorySemesters">
-                            <table class="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th><span jhiTranslate="kavsirApp.categorySemester.name">Name</span></th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr *ngFor="let categorySemester of categorySemesters; let first = first; let last = last">
-                                    <td>{{categorySemester.name}}</td>
-                                    <td class="text-right">
-                                        <div class="btn-group flex-btn-group-container">
-                                            <button type="submit"
-                                                    [routerLink]="['../category-semester', categorySemester.id ]"
-                                                    class="btn btn-info btn-sm">
-                                                <span class="fa fa-eye"></span>
-                                                <span class="hidden-md-down"
-                                                      jhiTranslate="entity.action.view">View</span>
-                                            </button>
-                                            <button type="submit"
-                                                    [routerLink]="['/', { outlets: { popup: 'category-semester/'+ categorySemester.id + '/edit'} }]"
-                                                    replaceUrl="true"
-                                                    class="btn btn-primary btn-sm">
-                                                <span class="fa fa-pencil"></span>
-                                                <span class="hidden-md-down"
-                                                      jhiTranslate="entity.action.edit">Edit</span>
-                                            </button>
-                                            <button type="submit"
-                                                    [routerLink]="['/', { outlets: { popup: 'category-semester/'+ categorySemester.id + '/delete'} }]"
-                                                    replaceUrl="true"
-                                                    class="btn btn-danger btn-sm">
-                                                <span class="fa fa-remove"></span>
-                                                <span class="hidden-md-down"
-                                                      jhiTranslate="entity.action.delete">Delete</span>
-                                            </button>
-                                            <button type="submit"
-                                                    [disabled]="first"
-                                                    class="btn btn-info btn-sm">
-                                                <span class="fa fa-arrow-up"></span>
-                                                <span class="hidden-md-down"
-                                                      jhiTranslate="global.action.move.up">Move Up</span>
-                                            </button>
-                                            <button type="submit"
-                                                    [disabled]="last"
-                                                    class="btn btn-info btn-sm">
-                                                <span class="fa fa-arrow-down"></span>
-                                                <span class="hidden-md-down"
-                                                      jhiTranslate="global.action.move.down">Move Down</span>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <button class="btn btn-primary float-right create-category-semester"
-                                [routerLink]="['/', { outlets: { popup: ['category-semester-new'] } }]">
-                            <span class="fa fa-plus"></span>
-                            <span class="hidden-sm-down" jhiTranslate="kavsirApp.categorySemester.home.createLabel">
-                            Create new Category Semester
-                        </span>
-                        </button>
-                    </ng-template>
-                </ngb-tab>
-                <ngb-tab [title]="'category.type.subject' | translate">
-                    <ng-template ngbTabContent>
-                        <div class="table-responsive" *ngIf="categorySubjects">
-                            <table class="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th><span jhiTranslate="kavsirApp.categorySubject.name">Name</span></th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr *ngFor="let categorySubject of categorySubjects; let first = first; let last = last">
-                                    <td>{{categorySubject.name}}</td>
-                                    <td class="text-right">
-                                        <div class="btn-group flex-btn-group-container">
-                                            <button type="submit"
-                                                    [routerLink]="['../category-subject', categorySubject.id ]"
-                                                    class="btn btn-info btn-sm">
-                                                <span class="fa fa-eye"></span>
-                                                <span class="hidden-md-down"
-                                                      jhiTranslate="entity.action.view">View</span>
-                                            </button>
-                                            <button type="submit"
-                                                    [routerLink]="['/', { outlets: { popup: 'category-subject/'+ categorySubject.id + '/edit'} }]"
-                                                    replaceUrl="true"
-                                                    class="btn btn-primary btn-sm">
-                                                <span class="fa fa-pencil"></span>
-                                                <span class="hidden-md-down"
-                                                      jhiTranslate="entity.action.edit">Edit</span>
-                                            </button>
-                                            <button type="submit"
-                                                    [routerLink]="['/', { outlets: { popup: 'category-subject/'+ categorySubject.id + '/delete'} }]"
-                                                    replaceUrl="true"
-                                                    class="btn btn-danger btn-sm">
-                                                <span class="fa fa-remove"></span>
-                                                <span class="hidden-md-down"
-                                                      jhiTranslate="entity.action.delete">Delete</span>
-                                            </button>
-                                            <button type="submit"
-                                                    [disabled]="first"
-                                                    class="btn btn-info btn-sm">
-                                                <span class="fa fa-arrow-up"></span>
-                                                <span class="hidden-md-down"
-                                                      jhiTranslate="global.action.move.up">Move Up</span>
-                                            </button>
-                                            <button type="submit"
-                                                    [disabled]="last"
-                                                    class="btn btn-info btn-sm">
-                                                <span class="fa fa-arrow-down"></span>
-                                                <span class="hidden-md-down"
-                                                      jhiTranslate="global.action.move.down">Move Down</span>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <button class="btn btn-primary float-right create-category-subject"
-                                [routerLink]="['/', { outlets: { popup: ['category-subject-new'] } }]">
-                            <span class="fa fa-plus"></span>
-                            <span class="hidden-sm-down" jhiTranslate="kavsirApp.categorySubject.home.createLabel">
-                            Create new Category Subject
-                        </span>
-                        </button>
-                    </ng-template>
-                </ngb-tab>
-                <ngb-tab [title]="'category.type.publisher' | translate">
-                    <ng-template ngbTabContent>
-                        <div class="table-responsive" *ngIf="categoryPublishers">
-                            <table class="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th><span jhiTranslate="kavsirApp.categoryPublisher.name">Name</span></th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr *ngFor="let categoryPublisher of categoryPublishers; let first = first; let last = last">
-                                    <td>{{categoryPublisher.name}}</td>
-                                    <td class="text-right">
-                                        <div class="btn-group flex-btn-group-container">
-                                            <button type="submit"
-                                                    [routerLink]="['../category-publisher', categoryPublisher.id ]"
-                                                    class="btn btn-info btn-sm">
-                                                <span class="fa fa-eye"></span>
-                                                <span class="hidden-md-down"
-                                                      jhiTranslate="entity.action.view">View</span>
-                                            </button>
-                                            <button type="submit"
-                                                    [routerLink]="['/', { outlets: { popup: 'category-publisher/'+ categoryPublisher.id + '/edit'} }]"
-                                                    replaceUrl="true"
-                                                    class="btn btn-primary btn-sm">
-                                                <span class="fa fa-pencil"></span>
-                                                <span class="hidden-md-down"
-                                                      jhiTranslate="entity.action.edit">Edit</span>
-                                            </button>
-                                            <button type="submit"
-                                                    [routerLink]="['/', { outlets: { popup: 'category-publisher/'+ categoryPublisher.id + '/delete'} }]"
-                                                    replaceUrl="true"
-                                                    class="btn btn-danger btn-sm">
-                                                <span class="fa fa-remove"></span>
-                                                <span class="hidden-md-down"
-                                                      jhiTranslate="entity.action.delete">Delete</span>
-                                            </button>
-                                            <button type="submit"
-                                                    [disabled]="first"
-                                                    class="btn btn-info btn-sm">
-                                                <span class="fa fa-arrow-up"></span>
-                                                <span class="hidden-md-down"
-                                                      jhiTranslate="global.action.move.up">Move Up</span>
-                                            </button>
-                                            <button type="submit"
-                                                    [disabled]="last"
-                                                    class="btn btn-info btn-sm">
-                                                <span class="fa fa-arrow-down"></span>
-                                                <span class="hidden-md-down"
-                                                      jhiTranslate="global.action.move.down">Move Down</span>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <button class="btn btn-primary float-right create-category-publisher"
-                                [routerLink]="['/', { outlets: { popup: ['category-publisher-new'] } }]">
-                            <span class="fa fa-plus"></span>
-                            <span class="hidden-sm-down" jhiTranslate="kavsirApp.categoryPublisher.home.createLabel">
-                            Create new Category Publisher
-                        </span>
-                        </button>
-                    </ng-template>
-                </ngb-tab>
-            </ngb-tabset>
-        </ng-template>
-    </ngb-panel>
-    <ngb-panel id="hierarchy">
-        <ng-template ngbPanelTitle>
-            <span>
-                <i class="fa fa-sitemap" aria-hidden="true"></i>
-                <span jhiTranslate="category.hierarchy">Category Hierarchy</span>
-            </span>
-        </ng-template>
-        <ng-template ngbPanelContent>
-            <jhi-category-hierarchy [categoryAcademicYears]="categoryAcademicYears"
-                                    [categoryGrades]="categoryGrades"
-                                    [categorySemesters]="categorySemesters"
-                                    [categorySubjects]="categorySubjects"
-                                    [categoryPublishers]="categoryPublishers">
-            </jhi-category-hierarchy>
-        </ng-template>
-    </ngb-panel>
-</ngb-accordion>
+<div class="table-responsive" *ngIf="items">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th><span [jhiTranslate]="'kavsirApp.category' +  typeName + '.name'">Name</span></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of items; let index = index; let first = first; let last = last">
+            <td>{{item.name}}</td>
+            <td class="text-right">
+                <div class="btn-group flex-btn-group-container">
+                    <button type="submit"
+                            [routerLink]="['../category-' + hyphenSeparatedTypeName(), item.id ]"
+                            class="btn btn-info btn-sm">
+                        <span class="fa fa-eye"></span>
+                        <span class="hidden-md-down"
+                              jhiTranslate="entity.action.view">View</span>
+                    </button>
+                    <button type="submit"
+                            [routerLink]="['/', { outlets: { popup: 'category-' + hyphenSeparatedTypeName() + '/'+ item.id + '/edit'} }]"
+                            replaceUrl="true"
+                            class="btn btn-primary btn-sm">
+                        <span class="fa fa-pencil"></span>
+                        <span class="hidden-md-down"
+                              jhiTranslate="entity.action.edit">Edit</span>
+                    </button>
+                    <button type="submit"
+                            [routerLink]="['/', { outlets: { popup: 'category-' + hyphenSeparatedTypeName() + '/'+ item.id + '/delete'} }]"
+                            replaceUrl="true"
+                            class="btn btn-danger btn-sm">
+                        <span class="fa fa-remove"></span>
+                        <span class="hidden-md-down"
+                              jhiTranslate="entity.action.delete">Delete</span>
+                    </button>
+                    <button type="submit"
+                            [disabled]="first"
+                            (click)="move(index, 'UP')"
+                            class="btn btn-info btn-sm">
+                        <span class="fa fa-arrow-up"></span>
+                        <span class="hidden-md-down"
+                              jhiTranslate="global.action.move.up">Move Up</span>
+                    </button>
+                    <button type="submit"
+                            [disabled]="last"
+                            (click)="move(index, 'DOWN')"
+                            class="btn btn-info btn-sm">
+                        <span class="fa fa-arrow-down"></span>
+                        <span class="hidden-md-down"
+                              jhiTranslate="global.action.move.down">Move Down</span>
+                    </button>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<button class="btn btn-primary float-right"
+        [routerLink]="['/', { outlets: { popup: ['category-' + hyphenSeparatedTypeName() + '-new'] } }]">
+    <span class="fa fa-plus"></span>
+    <span class="hidden-sm-down" [jhiTranslate]="'kavsirApp.category' + typeName + '.home.createLabel'">
+    Create new Category
+</span>
+</button>

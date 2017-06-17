@@ -1,0 +1,76 @@
+<jhi-alert></jhi-alert>
+<ngb-accordion #acc="ngbAccordion" activeIds="category, hierarchy">
+    <ngb-panel id="category">
+        <ng-template ngbPanelTitle>
+            <span>
+                <i class="fa fa-tags" aria-hidden="true"></i>
+                <span jhiTranslate="category.title">Category</span>
+            </span>
+        </ng-template>
+        <ng-template ngbPanelContent>
+            <ngb-tabset>
+                <ngb-tab [title]="'category.type.academicYear' | translate">
+                    <ng-template ngbTabContent>
+                        <jhi-category #academicYearCategory
+                                      [typeName]="'AcademicYear'"
+                                      [items]="categoryAcademicYears"
+                                      [service]="categoryAcademicYearService">
+                        </jhi-category>
+                    </ng-template>
+                </ngb-tab>
+                <ngb-tab [title]="'category.type.grade' | translate">
+                    <ng-template ngbTabContent>
+                        <jhi-category #gradeCategory
+                                      [typeName]="'Grade'"
+                                      [items]="categoryGrades"
+                                      [service]="categoryGradeService">
+                        </jhi-category>
+                    </ng-template>
+                </ngb-tab>
+                <ngb-tab [title]="'category.type.semester' | translate">
+                    <ng-template ngbTabContent>
+                        <jhi-category #semesterCategory
+                                      [typeName]="'Semester'"
+                                      [items]="categorySemesters"
+                                      [service]="categorySemesterService">
+                        </jhi-category>
+                    </ng-template>
+                </ngb-tab>
+                <ngb-tab [title]="'category.type.subject' | translate">
+                    <ng-template ngbTabContent>
+                        <jhi-category #subjectCategory
+                                      [typeName]="'Subject'"
+                                      [items]="categorySubjects"
+                                      [service]="categorySubjectService">
+                        </jhi-category>
+                    </ng-template>
+                </ngb-tab>
+                <ngb-tab [title]="'category.type.publisher' | translate">
+                    <ng-template ngbTabContent>
+                        <jhi-category #publisherCategory
+                                      [typeName]="'Publisher'"
+                                      [items]="categoryPublishers"
+                                      [service]="categoryPublisherService">
+                        </jhi-category>
+                    </ng-template>
+                </ngb-tab>
+            </ngb-tabset>
+        </ng-template>
+    </ngb-panel>
+    <ngb-panel id="hierarchy">
+        <ng-template ngbPanelTitle>
+            <span>
+                <i class="fa fa-sitemap" aria-hidden="true"></i>
+                <span jhiTranslate="category.hierarchy">Category Hierarchy</span>
+            </span>
+        </ng-template>
+        <ng-template ngbPanelContent>
+            <jhi-category-hierarchy [categoryAcademicYears]="categoryAcademicYears"
+                                    [categoryGrades]="categoryGrades"
+                                    [categorySemesters]="categorySemesters"
+                                    [categorySubjects]="categorySubjects"
+                                    [categoryPublishers]="categoryPublishers">
+            </jhi-category-hierarchy>
+        </ng-template>
+    </ngb-panel>
+</ngb-accordion>

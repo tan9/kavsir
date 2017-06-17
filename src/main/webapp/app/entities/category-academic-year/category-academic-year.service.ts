@@ -4,9 +4,10 @@ import { Observable } from 'rxjs/Rx';
 
 import { CategoryAcademicYear } from './category-academic-year.model';
 import { ResponseWrapper, createRequestOption } from '../../shared';
+import { CategoryService } from '../category.service';
 
 @Injectable()
-export class CategoryAcademicYearService {
+export class CategoryAcademicYearService implements CategoryService<CategoryAcademicYear> {
 
     private resourceUrl = 'api/category-academic-years';
     private resourceSearchUrl = 'api/_search/category-academic-years';

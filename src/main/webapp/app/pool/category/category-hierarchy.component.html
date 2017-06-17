@@ -1,0 +1,52 @@
+<tree-root #treec id="categoryTree" [focused]="true" [nodes]="treeNodes" [options]="treeOptions">
+    <ng-template #treeNodeTemplate let-node let-index="index">
+        <form class="form-inline" #categoryNodeForm="ngForm">
+                        <span>
+                            <span *ngIf="node.level > 1 && node.level <= 6">
+                                {{ categoryNodeDisplayName(node.data) }}
+                            </span>
+                            <span *ngIf="node.level == 1 || (node.level > 6 && !node.data.isEditing)">
+                                {{ node.data.name }}
+                            </span>
+                            <input *ngIf="node.level > 6 && node.data.isEditing"
+                                   name="name" type="text" class="form-control"
+                                   [(ngModel)]="node.data.name" placeholder="輸入類別名稱" required/>
+                        </span>
+            <div class="btn-group flex-btn-group-container pull-right">
+                <button *ngIf="node.level <= 5" class="btn btn-info btn-sm"
+                        ngbDropdown [id]="'dropdownBasic' + index" ngbDropdownToggle #myDrop="ngbDropdown"
+                        (click)="$event.stopPropagation()"
+                        [disabled]="childrenCount(node) >= availableCategoryChildren(node.level).length">
+                    <span class="fa fa-plus"></span>
+                    <span class="hidden-sm-down">新增{{categoryLevelName(node.level)}}</span>
+                    <div class="dropdown-menu" [attr.aria-labelledby]="'dropdownBasic' + index">
+                        <button class="dropdown-item"
+                                *ngFor="let item of availableCategoryChildren(node.level)"
+                                (click)="addCategoryChild(node, item)"
+                                [disabled]="isItemExisted(node.children || [], item)">
+                            {{item.name}}
+                        </button>
+                    </div>
+                </button>
+                <button *ngIf="node.level > 6" class="btn btn-primary btn-sm" type="submit"
+                        (click)="node.data.isEditing = !node.data.isEditing"
+                        [disabled]="!categoryNodeForm.valid">
+                    <span *ngIf="!node.data.isEditing" class="fa fa-pencil"></span>
+                    <span *ngIf="node.data.isEditing" class="fa fa-save"></span>
+                    <span *ngIf="!node.data.isEditing" class="hidden-sm-down" jhiTranslate="entity.action.edit">Edit</span>
+                    <span *ngIf="node.data.isEditing" class="hidden-sm-down" jhiTranslate="entity.action.save">Save</span>
+                </button>
+                <button *ngIf="node.level > 5" class="btn btn-info btn-sm" (click)="addSegmentChild(node)">
+                    <span class="fa fa-plus"></span>
+                    <span class="hidden-sm-down">新增子類別</span>
+                </button>
+            </div>
+        </form>
+    </ng-template>
+</tree-root>
+
+<button class="btn btn-primary float-right" (click)="saveTree()" [disabled]="isTreeSaving">
+    <span *ngIf="!isTreeSaving" class="fa fa-save"></span>
+    <span *ngIf="isTreeSaving" class="fa fa-spinner fa-spin fa-fw"></span>
+    <span class="hidden-sm-down" jhiTranslate="entity.action.save">Save</span>
+</button>

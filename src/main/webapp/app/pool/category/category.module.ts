@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 import { categoryRoute } from './category.route';
 
 import { TreeModule } from 'angular-tree-component';
-import { CategoryAcademicYearService } from '../../entities/category-academic-year/category-academic-year.service';
+import { CategoryHierarchyComponent } from './category-hierarchy.component';
 
 @NgModule({
     imports: [
@@ -13,10 +13,11 @@ import { CategoryAcademicYearService } from '../../entities/category-academic-ye
         TreeModule,
         RouterModule.forRoot(categoryRoute, {useHash: true}),
     ],
-    providers: [
-        CategoryAcademicYearService
-    ],
-    declarations: [CategoryComponent]
+    providers: [],
+    declarations: [
+        CategoryComponent,
+        CategoryHierarchyComponent
+    ]
 })
 export class CategoryModule {
 }

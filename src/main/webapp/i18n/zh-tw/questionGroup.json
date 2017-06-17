@@ -2,26 +2,26 @@
     "kavsirApp": {
         "questionGroup" : {
             "home": {
-                "title": "Question Groups",
-                "createLabel": "建立一筆新的 Question Group",
-                "createOrEditLabel": "建立或編輯 Question Group",
-                "search": "搜尋 Question Group"
+                "title": "題組",
+                "createLabel": "建立一筆新的「題組」",
+                "createOrEditLabel": "建立或編輯「題組」",
+                "search": "搜尋「題組」"
             },
-            "created": "新的 Question Group 建立成功，識別碼為 {{ param }}",
-            "updated": "識別碼為 {{ param }} 的 Question Group 更新成功",
-            "deleted": "識別碼為 {{ param }} 的 Question Group 刪除成功",
+            "created": "新的「題組」建立成功，識別碼為 {{ param }}",
+            "updated": "識別碼為 {{ param }} 的「題組」更新成功",
+            "deleted": "識別碼為 {{ param }} 的「題組」刪除成功",
             "delete": {
-                "question": "您確定要刪除 Question Group {{ id }} 嗎?"
+                "question": "您確定要刪除「題組」{{ id }} 嗎?"
             },
             "detail": {
-                "title": "Question Group"
+                "title": "題組"
             },
-            "text": "Text",
-            "memo": "Memo",
-            "choice": "Choice",
-            "trueFalse": "True False",
-            "essay": "Essay",
-            "category": "Category"
+            "text": "題目",
+            "memo": "備註",
+            "choice": "選擇題",
+            "trueFalse": "否非題",
+            "essay": "問答題",
+            "category": "類別"
         }
     }
 }

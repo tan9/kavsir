@@ -2,22 +2,22 @@
     "kavsirApp": {
         "categorySubject" : {
             "home": {
-                "title": "Category Subjects",
-                "createLabel": "建立一筆新的 Category Subject",
-                "createOrEditLabel": "建立或編輯 Category Subject",
-                "search": "搜尋 Category Subject"
+                "title": "科目別",
+                "createLabel": "建立一筆新的「科目別」",
+                "createOrEditLabel": "建立或編輯「科目別」",
+                "search": "搜尋「科目別」"
             },
-            "created": "新的 Category Subject 建立成功，識別碼為 {{ param }}",
-            "updated": "識別碼為 {{ param }} 的 Category Subject 更新成功",
-            "deleted": "識別碼為 {{ param }} 的 Category Subject 刪除成功",
+            "created": "新的「科目別」建立成功，識別碼為 {{ param }}",
+            "updated": "識別碼為 {{ param }} 的「科目別」更新成功",
+            "deleted": "識別碼為 {{ param }} 的「科目別」刪除成功",
             "delete": {
-                "question": "您確定要刪除 Category Subject {{ id }} 嗎?"
+                "question": "您確定要刪除「科目別」 {{ id }} 嗎?"
             },
             "detail": {
-                "title": "Category Subject"
+                "title": "科目別"
             },
-            "position": "Position",
-            "name": "Name"
+            "position": "序位",
+            "name": "名稱"
         }
     }
 }

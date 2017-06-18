@@ -65,7 +65,7 @@ export class CategoryHierarchyComponent implements OnInit, OnDestroy {
     }
 
     loadAllCategoryNodes() {
-        this.categoryNodeService.query().subscribe(
+        this.categoryNodeService.query({'page': 0, 'size': 50000}).subscribe(
             (res: ResponseWrapper) => {
                 const nodes = res.json;
                 // TODO enum order/literal conversion?
@@ -81,12 +81,18 @@ export class CategoryHierarchyComponent implements OnInit, OnDestroy {
 
     private constructTreeRecursively(nodes: CategoryNode[], parentId?: number): CategoryTreeNode[] {
         const childrenOfTheParent = [];
-        nodes.forEach((node, index, object) => {
-            if ((!parentId && !node.parent) ||
-                (parentId && node.parent && node.parent.id === parentId)) {
+        const elementsSelected: number[] = [];
+        nodes.forEach((node, index) => {
+            const isTopLevelNode = (!parentId && !node.parent);
+            const isChildOfTheParent = (parentId && node.parent && node.parent.id === parentId);
+            if (isTopLevelNode || isChildOfTheParent) {
                 childrenOfTheParent.push(node);
-                object.splice(index, 1);
+                elementsSelected.push(index);
             }
+        });
+
+        elementsSelected.reverse().forEach((index) => {
+           nodes.splice(index, 1);
         });
 
         if (nodes.length > 0) {
@@ -192,8 +198,8 @@ export class CategoryHierarchyComponent implements OnInit, OnDestroy {
         const treeNodes = this.treeNodes[0].children;
         this.saveTreeRecursively(treeNodes).then(
             () => {
+                this.loadAllCategoryNodes();
                 this.isTreeSaving = false;
-                // this.loadAllCategoryNodes();
             },
             (error) => {
                 this.isTreeSaving = false;
@@ -203,7 +209,7 @@ export class CategoryHierarchyComponent implements OnInit, OnDestroy {
         );
     }
 
-    saveTreeRecursively(treeNodes: CategoryTreeNode[], parent?: CategoryTreeNode): Promise<CategoryNode> {
+    private saveTreeRecursively(treeNodes: CategoryTreeNode[], parent?: CategoryTreeNode): Promise<CategoryNode> {
         // TODO Observable?
         const promises: Promise<CategoryNode>[] = [];
 
@@ -211,6 +217,7 @@ export class CategoryHierarchyComponent implements OnInit, OnDestroy {
             (node) => {
                 node.parent = this.convert(parent);
                 if (node.id) {
+                    // already persisted node, update content
                     promises.push(this.categoryNodeService.update(this.convert(node)).toPromise().then(() => {
                         if (node.children) {
                             return this.saveTreeRecursively(node.children, node);
@@ -219,6 +226,7 @@ export class CategoryHierarchyComponent implements OnInit, OnDestroy {
                         }
                     }));
                 } else {
+                    // newly created node, save it first
                     promises.push(this.categoryNodeService.create(this.convert(node)).toPromise().then((resultNode) => {
                             node.id = resultNode.id;
                             if (node.children) {

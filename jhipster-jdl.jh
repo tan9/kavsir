@@ -147,3 +147,5 @@ relationship ManyToMany {
   QuestionTrueFalse{image} to ResourceImage{trueFalse},
   QuestionEssay{image} to ResourceImage{essay}
 }
+
+paginate CategoryNode, QuestionTrueFalse, QuestionChoice, QuestionChoiceOption, QuestionEssay, QuestionGroup, ResourceImage with pagination

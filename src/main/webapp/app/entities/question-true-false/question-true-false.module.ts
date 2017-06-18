@@ -46,6 +46,9 @@ const ENTITY_STATES = [
         QuestionTrueFalsePopupService,
         QuestionTrueFalseResolvePagingParams,
     ],
+    exports: [
+        QuestionTrueFalseComponent
+    ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class KavsirQuestionTrueFalseModule {}

@@ -62,6 +62,6 @@
     "javadoc": "選擇題",
     "entityTableName": "question_choice",
     "dto": "no",
-    "pagination": "no",
+    "pagination": "pagination",
     "service": "no"
 }

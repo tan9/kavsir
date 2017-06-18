@@ -6,9 +6,15 @@ import com.tj.kvasir.domain.CategoryNode;
 import com.tj.kvasir.repository.CategoryNodeRepository;
 import com.tj.kvasir.repository.search.CategoryNodeSearchRepository;
 import com.tj.kvasir.web.rest.util.HeaderUtil;
+import com.tj.kvasir.web.rest.util.PaginationUtil;
+import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -90,13 +96,16 @@ public class CategoryNodeResource {
     /**
      * GET  /category-nodes : get all the categoryNodes.
      *
+     * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of categoryNodes in body
      */
     @GetMapping("/category-nodes")
     @Timed
-    public List<CategoryNode> getAllCategoryNodes() {
-        log.debug("REST request to get all CategoryNodes");
-        return categoryNodeRepository.findAll();
+    public ResponseEntity<List<CategoryNode>> getAllCategoryNodes(@ApiParam Pageable pageable) {
+        log.debug("REST request to get a page of CategoryNodes");
+        Page<CategoryNode> page = categoryNodeRepository.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/category-nodes");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     /**
@@ -133,15 +142,16 @@ public class CategoryNodeResource {
      * to the query.
      *
      * @param query the query of the categoryNode search
+     * @param pageable the pagination information
      * @return the result of the search
      */
     @GetMapping("/_search/category-nodes")
     @Timed
-    public List<CategoryNode> searchCategoryNodes(@RequestParam String query) {
-        log.debug("REST request to search CategoryNodes for query {}", query);
-        return StreamSupport
-            .stream(categoryNodeSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
+    public ResponseEntity<List<CategoryNode>> searchCategoryNodes(@RequestParam String query, @ApiParam Pageable pageable) {
+        log.debug("REST request to search for a page of CategoryNodes for query {}", query);
+        Page<CategoryNode> page = categoryNodeSearchRepository.search(queryStringQuery(query), pageable);
+        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/category-nodes");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
 }

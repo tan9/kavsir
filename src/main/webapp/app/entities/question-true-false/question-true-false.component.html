@@ -28,15 +28,13 @@
     <div class="table-responsive" *ngIf="questionTrueFalses">
         <table class="table table-striped">
             <thead>
-            <tr>
-            <th><span jhiTranslate="global.field.id">ID</span></th>
-            <th><span jhiTranslate="kavsirApp.questionTrueFalse.correct">Correct</span></th>
-            <th><span jhiTranslate="kavsirApp.questionTrueFalse.text">Text</span></th>
-            <th><span jhiTranslate="kavsirApp.questionTrueFalse.memo">Memo</span></th>
-            <th><span jhiTranslate="kavsirApp.questionTrueFalse.groupPosition">Group Position</span></th>
-            <th><span jhiTranslate="kavsirApp.questionTrueFalse.category">Category</span></th>
-            <th><span jhiTranslate="kavsirApp.questionTrueFalse.image">Image</span></th>
-            <th><span jhiTranslate="kavsirApp.questionTrueFalse.questionGroup">Question Group</span></th>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="correct"><span jhiTranslate="kavsirApp.questionTrueFalse.correct">Correct</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="text"><span jhiTranslate="kavsirApp.questionTrueFalse.text">Text</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="memo"><span jhiTranslate="kavsirApp.questionTrueFalse.memo">Memo</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="groupPosition"><span jhiTranslate="kavsirApp.questionTrueFalse.groupPosition">Group Position</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="questionGroup.id"><span jhiTranslate="kavsirApp.questionTrueFalse.questionGroup">Question Group</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
             </thead>
@@ -47,16 +45,6 @@
                 <td>{{questionTrueFalse.text}}</td>
                 <td>{{questionTrueFalse.memo}}</td>
                 <td>{{questionTrueFalse.groupPosition}}</td>
-                <td>
-                    <span *ngFor="let category of questionTrueFalse.categories; let last = last">
-                            <a class="form-control-static" [routerLink]="['../category-node', category?.id ]">{{category.id}}</a>{{last ? '' : ', '}}
-                        </span>
-                </td>
-                <td>
-                    <span *ngFor="let image of questionTrueFalse.images; let last = last">
-                            <a class="form-control-static" [routerLink]="['../resource-image', image?.id ]">{{image.id}}</a>{{last ? '' : ', '}}
-                        </span>
-                </td>
                 <td>
                     <div *ngIf="questionTrueFalse.questionGroup">
                         <a [routerLink]="['../question-group', questionTrueFalse.questionGroup?.id ]" >{{questionTrueFalse.questionGroup?.id}}</a>
@@ -90,4 +78,12 @@
             </tbody>
         </table>
     </div>
+        <div *ngIf="questionTrueFalses && questionTrueFalses.length">
+            <div class="row justify-content-center">
+                <jhi-item-count [page]="page" [total]="queryCount" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+            </div>
+            <div class="row justify-content-center">
+                <ngb-pagination [collectionSize]="totalItems" [(page)]="page" (pageChange)="loadPage(page)"></ngb-pagination>
+            </div>
+        </div>
 </div>

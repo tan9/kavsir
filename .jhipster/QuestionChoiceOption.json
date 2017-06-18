@@ -43,6 +43,6 @@
     "javadoc": "選擇題選項",
     "entityTableName": "question_choice_option",
     "dto": "no",
-    "pagination": "no",
+    "pagination": "pagination",
     "service": "no"
 }

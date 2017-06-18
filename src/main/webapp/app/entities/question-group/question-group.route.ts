@@ -11,10 +11,29 @@ import { QuestionGroupDeletePopupComponent } from './question-group-delete-dialo
 
 import { Principal } from '../../shared';
 
+@Injectable()
+export class QuestionGroupResolvePagingParams implements Resolve<any> {
+
+    constructor(private paginationUtil: JhiPaginationUtil) {}
+
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+        const page = route.queryParams['page'] ? route.queryParams['page'] : '1';
+        const sort = route.queryParams['sort'] ? route.queryParams['sort'] : 'id,asc';
+        return {
+            page: this.paginationUtil.parsePage(page),
+            predicate: this.paginationUtil.parsePredicate(sort),
+            ascending: this.paginationUtil.parseAscending(sort)
+      };
+    }
+}
+
 export const questionGroupRoute: Routes = [
     {
         path: 'question-group',
         component: QuestionGroupComponent,
+        resolve: {
+            'pagingParams': QuestionGroupResolvePagingParams
+        },
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'kavsirApp.questionGroup.home.title'

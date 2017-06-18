@@ -6,9 +6,15 @@ import com.tj.kvasir.domain.QuestionGroup;
 import com.tj.kvasir.repository.QuestionGroupRepository;
 import com.tj.kvasir.repository.search.QuestionGroupSearchRepository;
 import com.tj.kvasir.web.rest.util.HeaderUtil;
+import com.tj.kvasir.web.rest.util.PaginationUtil;
+import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -90,13 +96,16 @@ public class QuestionGroupResource {
     /**
      * GET  /question-groups : get all the questionGroups.
      *
+     * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of questionGroups in body
      */
     @GetMapping("/question-groups")
     @Timed
-    public List<QuestionGroup> getAllQuestionGroups() {
-        log.debug("REST request to get all QuestionGroups");
-        return questionGroupRepository.findAllWithEagerRelationships();
+    public ResponseEntity<List<QuestionGroup>> getAllQuestionGroups(@ApiParam Pageable pageable) {
+        log.debug("REST request to get a page of QuestionGroups");
+        Page<QuestionGroup> page = questionGroupRepository.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/question-groups");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     /**
@@ -133,15 +142,16 @@ public class QuestionGroupResource {
      * to the query.
      *
      * @param query the query of the questionGroup search
+     * @param pageable the pagination information
      * @return the result of the search
      */
     @GetMapping("/_search/question-groups")
     @Timed
-    public List<QuestionGroup> searchQuestionGroups(@RequestParam String query) {
-        log.debug("REST request to search QuestionGroups for query {}", query);
-        return StreamSupport
-            .stream(questionGroupSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
+    public ResponseEntity<List<QuestionGroup>> searchQuestionGroups(@RequestParam String query, @ApiParam Pageable pageable) {
+        log.debug("REST request to search for a page of QuestionGroups for query {}", query);
+        Page<QuestionGroup> page = questionGroupSearchRepository.search(queryStringQuery(query), pageable);
+        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/question-groups");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
 }

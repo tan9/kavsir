@@ -13,6 +13,7 @@ import {
     QuestionChoiceDeleteDialogComponent,
     questionChoiceRoute,
     questionChoicePopupRoute,
+    QuestionChoiceResolvePagingParams,
 } from './';
 
 const ENTITY_STATES = [
@@ -43,6 +44,7 @@ const ENTITY_STATES = [
     providers: [
         QuestionChoiceService,
         QuestionChoicePopupService,
+        QuestionChoiceResolvePagingParams,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

@@ -47,6 +47,6 @@
     "javadoc": "題組",
     "entityTableName": "question_group",
     "dto": "no",
-    "pagination": "no",
+    "pagination": "pagination",
     "service": "no"
 }

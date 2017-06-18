@@ -6,9 +6,15 @@ import com.tj.kvasir.domain.QuestionChoice;
 import com.tj.kvasir.repository.QuestionChoiceRepository;
 import com.tj.kvasir.repository.search.QuestionChoiceSearchRepository;
 import com.tj.kvasir.web.rest.util.HeaderUtil;
+import com.tj.kvasir.web.rest.util.PaginationUtil;
+import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -90,13 +96,16 @@ public class QuestionChoiceResource {
     /**
      * GET  /question-choices : get all the questionChoices.
      *
+     * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of questionChoices in body
      */
     @GetMapping("/question-choices")
     @Timed
-    public List<QuestionChoice> getAllQuestionChoices() {
-        log.debug("REST request to get all QuestionChoices");
-        return questionChoiceRepository.findAllWithEagerRelationships();
+    public ResponseEntity<List<QuestionChoice>> getAllQuestionChoices(@ApiParam Pageable pageable) {
+        log.debug("REST request to get a page of QuestionChoices");
+        Page<QuestionChoice> page = questionChoiceRepository.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/question-choices");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     /**
@@ -133,15 +142,16 @@ public class QuestionChoiceResource {
      * to the query.
      *
      * @param query the query of the questionChoice search
+     * @param pageable the pagination information
      * @return the result of the search
      */
     @GetMapping("/_search/question-choices")
     @Timed
-    public List<QuestionChoice> searchQuestionChoices(@RequestParam String query) {
-        log.debug("REST request to search QuestionChoices for query {}", query);
-        return StreamSupport
-            .stream(questionChoiceSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
+    public ResponseEntity<List<QuestionChoice>> searchQuestionChoices(@RequestParam String query, @ApiParam Pageable pageable) {
+        log.debug("REST request to search for a page of QuestionChoices for query {}", query);
+        Page<QuestionChoice> page = questionChoiceSearchRepository.search(queryStringQuery(query), pageable);
+        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/question-choices");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
 }

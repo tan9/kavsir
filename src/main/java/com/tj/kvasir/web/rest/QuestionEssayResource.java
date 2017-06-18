@@ -6,9 +6,15 @@ import com.tj.kvasir.domain.QuestionEssay;
 import com.tj.kvasir.repository.QuestionEssayRepository;
 import com.tj.kvasir.repository.search.QuestionEssaySearchRepository;
 import com.tj.kvasir.web.rest.util.HeaderUtil;
+import com.tj.kvasir.web.rest.util.PaginationUtil;
+import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -90,13 +96,16 @@ public class QuestionEssayResource {
     /**
      * GET  /question-essays : get all the questionEssays.
      *
+     * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of questionEssays in body
      */
     @GetMapping("/question-essays")
     @Timed
-    public List<QuestionEssay> getAllQuestionEssays() {
-        log.debug("REST request to get all QuestionEssays");
-        return questionEssayRepository.findAllWithEagerRelationships();
+    public ResponseEntity<List<QuestionEssay>> getAllQuestionEssays(@ApiParam Pageable pageable) {
+        log.debug("REST request to get a page of QuestionEssays");
+        Page<QuestionEssay> page = questionEssayRepository.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/question-essays");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     /**
@@ -133,15 +142,16 @@ public class QuestionEssayResource {
      * to the query.
      *
      * @param query the query of the questionEssay search
+     * @param pageable the pagination information
      * @return the result of the search
      */
     @GetMapping("/_search/question-essays")
     @Timed
-    public List<QuestionEssay> searchQuestionEssays(@RequestParam String query) {
-        log.debug("REST request to search QuestionEssays for query {}", query);
-        return StreamSupport
-            .stream(questionEssaySearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
+    public ResponseEntity<List<QuestionEssay>> searchQuestionEssays(@RequestParam String query, @ApiParam Pageable pageable) {
+        log.debug("REST request to search for a page of QuestionEssays for query {}", query);
+        Page<QuestionEssay> page = questionEssaySearchRepository.search(queryStringQuery(query), pageable);
+        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/question-essays");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
 }

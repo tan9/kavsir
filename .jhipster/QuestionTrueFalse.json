@@ -56,6 +56,6 @@
     "javadoc": "是非題",
     "entityTableName": "question_true_false",
     "dto": "no",
-    "pagination": "no",
+    "pagination": "pagination",
     "service": "no"
 }

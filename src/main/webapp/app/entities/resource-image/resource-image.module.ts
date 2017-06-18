@@ -13,6 +13,7 @@ import {
     ResourceImageDeleteDialogComponent,
     resourceImageRoute,
     resourceImagePopupRoute,
+    ResourceImageResolvePagingParams,
 } from './';
 
 const ENTITY_STATES = [
@@ -43,6 +44,7 @@ const ENTITY_STATES = [
     providers: [
         ResourceImageService,
         ResourceImagePopupService,
+        ResourceImageResolvePagingParams,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

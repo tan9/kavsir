@@ -65,6 +65,6 @@
     "javadoc": "類別節點",
     "entityTableName": "category_node",
     "dto": "no",
-    "pagination": "no",
+    "pagination": "pagination",
     "service": "no"
 }

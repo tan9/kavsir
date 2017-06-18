@@ -53,6 +53,6 @@
     "javadoc": "圖檔",
     "entityTableName": "resource_image",
     "dto": "no",
-    "pagination": "no",
+    "pagination": "pagination",
     "service": "no"
 }

@@ -11,10 +11,29 @@ import { QuestionEssayDeletePopupComponent } from './question-essay-delete-dialo
 
 import { Principal } from '../../shared';
 
+@Injectable()
+export class QuestionEssayResolvePagingParams implements Resolve<any> {
+
+    constructor(private paginationUtil: JhiPaginationUtil) {}
+
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+        const page = route.queryParams['page'] ? route.queryParams['page'] : '1';
+        const sort = route.queryParams['sort'] ? route.queryParams['sort'] : 'id,asc';
+        return {
+            page: this.paginationUtil.parsePage(page),
+            predicate: this.paginationUtil.parsePredicate(sort),
+            ascending: this.paginationUtil.parseAscending(sort)
+      };
+    }
+}
+
 export const questionEssayRoute: Routes = [
     {
         path: 'question-essay',
         component: QuestionEssayComponent,
+        resolve: {
+            'pagingParams': QuestionEssayResolvePagingParams
+        },
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'kavsirApp.questionEssay.home.title'

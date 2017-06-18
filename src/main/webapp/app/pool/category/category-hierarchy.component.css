@@ -1,7 +1,7 @@
-/deep/ .tree .tree-node .btn-group {
+>>> .tree .tree-node .btn-group {
     padding-left: 0.8em;
 }
 
-/deep/ tree-viewport, /deep/ .tree-children {
+>>> tree-viewport, >>> .tree-children {
     overflow: visible !important;
 }

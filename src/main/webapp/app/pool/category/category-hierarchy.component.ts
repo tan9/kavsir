@@ -34,8 +34,7 @@ export class CategoryHierarchyComponent implements OnInit, OnDestroy {
     @Input() categorySubjects: CategorySubject[];
     @Input() categoryPublishers: CategoryPublisher[];
 
-    @ViewChild(TreeComponent)
-    private tree: TreeComponent;
+    @ViewChild(TreeComponent) tree: TreeComponent;
 
     treeNodes: CategoryTreeNode[] = [{
         treeNodeId: -1,

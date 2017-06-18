@@ -153,6 +153,11 @@
             "subject": "Subject",
             "publisher": "Publisher",
             "segment": "Segment"
+        },
+        "action": {
+            "save": "Save",
+            "expand.all": "Expand All",
+            "collapse.all": "Collapse All"
         }
     },
     "question": {

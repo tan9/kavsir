@@ -1,4 +1,4 @@
-<tree-root #treec id="categoryTree" [focused]="true" [nodes]="treeNodes" [options]="treeOptions">
+<tree-root id="categoryTree" [focused]="true" [nodes]="treeNodes" [options]="treeOptions">
     <ng-template #treeNodeTemplate let-node let-index="index">
         <form class="form-inline" #categoryNodeForm="ngForm">
                         <span>
@@ -45,8 +45,32 @@
     </ng-template>
 </tree-root>
 
-<button class="btn btn-primary float-right" (click)="saveTree()" [disabled]="isTreeSaving">
-    <span *ngIf="!isTreeSaving" class="fa fa-save"></span>
-    <span *ngIf="isTreeSaving" class="fa fa-spinner fa-spin fa-fw"></span>
-    <span class="hidden-sm-down" jhiTranslate="entity.action.save">Save</span>
-</button>
+<div class="btn-toolbar pull-right" role="toolbar" aria-label="Tree Operations">
+    <div class="btn-group mr-2" role="group" aria-label="View Group">
+        <button class="btn btn-secondary float-right"
+                (click)="tree.treeModel.expandAll()" [disabled]="isTreeSaving">
+            <span class="fa fa-expand"></span>
+            <span class="hidden-sm-down" jhiTranslate="category.action.expand.all">
+                Expand All
+            </span>
+        </button>
+        <button class="btn btn-secondary float-right"
+                (click)="tree.treeModel.collapseAll()" [disabled]="isTreeSaving">
+            <span class="fa fa-compress"></span>
+            <span class="hidden-sm-down" jhiTranslate="category.action.collapse.all">
+                Collapse All
+            </span>
+        </button>
+    </div>
+
+    <div class="btn-group mr-2" role="group" aria-label="Manipulation Group">
+        <button class="btn btn-primary float-right"
+                (click)="saveTree()" [disabled]="isTreeSaving">
+            <span *ngIf="!isTreeSaving" class="fa fa-save"></span>
+            <span *ngIf="isTreeSaving" class="fa fa-spinner fa-spin fa-fw"></span>
+            <span class="hidden-sm-down" jhiTranslate="category.action.save">
+                Save
+            </span>
+        </button>
+    </div>
+</div>

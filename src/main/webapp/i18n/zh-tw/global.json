@@ -157,7 +157,8 @@
         "action": {
             "save": "儲存",
             "expand.all": "全部展開",
-            "collapse.all": "全部收合"
+            "collapse.all": "全部收合",
+            "search": "搜尋"
         }
     },
     "question": {

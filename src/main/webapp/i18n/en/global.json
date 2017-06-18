@@ -157,7 +157,8 @@
         "action": {
             "save": "Save",
             "expand.all": "Expand All",
-            "collapse.all": "Collapse All"
+            "collapse.all": "Collapse All",
+            "search": "Search"
         }
     },
     "question": {

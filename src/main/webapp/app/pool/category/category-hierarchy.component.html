@@ -1,12 +1,29 @@
+<div class="row">
+    <div class="col-sm-12">
+        <form name="searchForm" class="form-inline">
+            <div class="input-group w-100 mt-3">
+                <input #filter type="text" class="form-control" id="currentSearch" name="currentSearch"
+                       placeholder="{{ 'category.action.search' | translate }}">
+                <button class="input-group-addon btn btn-info"
+                        (click)="filterNodes(filter.value, tree)">
+                    <span class="fa fa-search"></span>
+                </button>
+                <button class="input-group-addon btn btn-danger"
+                        (click)="filter.value = ''"
+                        *ngIf="filter.value">
+                    <span class="fa fa-trash-o"></span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <tree-root id="categoryTree" [focused]="true" [nodes]="treeNodes" [options]="treeOptions">
     <ng-template #treeNodeTemplate let-node let-index="index">
         <form class="form-inline" #categoryNodeForm="ngForm">
                         <span>
-                            <span *ngIf="node.level > 1 && node.level <= 6">
-                                {{ categoryNodeDisplayName(node.data) }}
-                            </span>
-                            <span *ngIf="node.level == 1 || (node.level > 6 && !node.data.isEditing)">
-                                {{ node.data.name }}
+                            <span *ngIf="!node.data.isEditing">
+                                {{ nodeDisplayName(node) }}
                             </span>
                             <input *ngIf="node.level > 6 && node.data.isEditing"
                                    name="name" type="text" class="form-control"

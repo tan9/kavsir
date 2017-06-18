@@ -38,7 +38,6 @@ export class CategoryHierarchyComponent implements OnInit, OnDestroy {
 
     treeNodes: CategoryTreeNode[] = [{
         treeNodeId: -1,
-        name: '類別目錄',
         isExpanded: true,
         children: []
     }];
@@ -107,7 +106,19 @@ export class CategoryHierarchyComponent implements OnInit, OnDestroy {
         return this.CATEGORY_LEVEL_MAP[level];
     }
 
-    categoryNodeDisplayName(node: CategoryTreeNode) {
+    nodeDisplayName(node: TreeNode) {
+        if (node.level === 1) {
+            return '類別目錄';
+
+        } else if (node.level > 1 && node.level <= 6) {
+            return this.categoryNodeDisplayName(node.data);
+
+        } else {
+            return node.data.name;
+        }
+    }
+
+    private categoryNodeDisplayName(node: CategoryTreeNode) {
         return this.availableCategories(node.type)
             .find((item) => item.id === node.typeId)
             .name;
@@ -236,6 +247,12 @@ export class CategoryHierarchyComponent implements OnInit, OnDestroy {
 
     private onError(error) {
         this.alertService.error(error.message, null, null);
+    }
+
+    filterNodes(text: string, tree: TreeComponent) {
+        tree.treeModel.filterNodes((node) => {
+            return this.nodeDisplayName(node).toLowerCase().indexOf(text.toLowerCase()) !== -1;
+        });
     }
 }
 

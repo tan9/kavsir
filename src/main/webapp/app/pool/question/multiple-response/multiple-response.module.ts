@@ -6,10 +6,11 @@ import { MultipleResponseComponent } from './multiple-response.component';
 import { multipleResponseRoute } from './multiple-response.route';
 
 @NgModule({
-  imports: [
-      KavsirSharedModule,
-      RouterModule.forRoot(multipleResponseRoute, {useHash: true}),
-  ],
-  declarations: [MultipleResponseComponent]
+    imports: [
+        KavsirSharedModule,
+        RouterModule.forRoot(multipleResponseRoute, {useHash: true}),
+    ],
+    declarations: [MultipleResponseComponent]
 })
-export class MultipleResponseModule { }
+export class MultipleResponseModule {
+}

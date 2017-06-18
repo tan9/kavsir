@@ -6,10 +6,11 @@ import { EssayComponent } from './essay.component';
 import { essayRoute } from './essay.route';
 
 @NgModule({
-  imports: [
-      KavsirSharedModule,
-      RouterModule.forRoot(essayRoute, {useHash: true}),
-  ],
-  declarations: [EssayComponent]
+    imports: [
+        KavsirSharedModule,
+        RouterModule.forRoot(essayRoute, {useHash: true}),
+    ],
+    declarations: [EssayComponent]
 })
-export class EssayModule { }
+export class EssayModule {
+}

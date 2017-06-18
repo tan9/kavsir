@@ -8,14 +8,15 @@ import { KavsirQuestionTrueFalseModule } from '../../../entities/question-true-f
 import { QuestionTrueFalseComponent } from '../../../entities/question-true-false/question-true-false.component';
 
 @NgModule({
-  imports: [
-      KavsirSharedModule,
-      KavsirQuestionTrueFalseModule,
-      RouterModule.forRoot(trueFalseRoute, {useHash: true}),
-  ],
-  providers: [
-      QuestionTrueFalseComponent
-  ],
-  declarations: [TrueFalseComponent]
+    imports: [
+        KavsirSharedModule,
+        KavsirQuestionTrueFalseModule,
+        RouterModule.forRoot(trueFalseRoute, {useHash: true}),
+    ],
+    providers: [
+        QuestionTrueFalseComponent
+    ],
+    declarations: [TrueFalseComponent]
 })
-export class TrueFalseModule { }
+export class TrueFalseModule {
+}

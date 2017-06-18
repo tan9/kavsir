@@ -13,4 +13,5 @@ import { QuestionModule } from './question/question.module';
     providers: [],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class KavsirPoolModule {}
+export class KavsirPoolModule {
+}

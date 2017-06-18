@@ -50,8 +50,10 @@
                         [disabled]="!categoryNodeForm.valid">
                     <span *ngIf="!node.data.isEditing" class="fa fa-pencil"></span>
                     <span *ngIf="node.data.isEditing" class="fa fa-save"></span>
-                    <span *ngIf="!node.data.isEditing" class="hidden-sm-down" jhiTranslate="entity.action.edit">Edit</span>
-                    <span *ngIf="node.data.isEditing" class="hidden-sm-down" jhiTranslate="entity.action.save">Save</span>
+                    <span *ngIf="!node.data.isEditing" class="hidden-sm-down"
+                          jhiTranslate="entity.action.edit">Edit</span>
+                    <span *ngIf="node.data.isEditing" class="hidden-sm-down"
+                          jhiTranslate="entity.action.save">Save</span>
                 </button>
                 <button *ngIf="node.level > 5" class="btn btn-info btn-sm" (click)="addSegmentChild(node)">
                     <span class="fa fa-plus"></span>

@@ -6,10 +6,11 @@ import { ChoiceComponent } from './choice.component';
 import { choiceRoute } from './choice.route';
 
 @NgModule({
-  imports: [
-      KavsirSharedModule,
-      RouterModule.forRoot(choiceRoute, {useHash: true}),
-  ],
-  declarations: [ChoiceComponent]
+    imports: [
+        KavsirSharedModule,
+        RouterModule.forRoot(choiceRoute, {useHash: true}),
+    ],
+    declarations: [ChoiceComponent]
 })
-export class ChoiceModule { }
+export class ChoiceModule {
+}

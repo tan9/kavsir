@@ -228,7 +228,7 @@ amdefine@>=0.0.4, amdefine@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
 
-angular-tree-component@^3.7.3:
+angular-tree-component@3.7.3:
   version "3.7.3"
   resolved "https://registry.yarnpkg.com/angular-tree-component/-/angular-tree-component-3.7.3.tgz#4458bc7adaad5343dd89b3ead4ac9bf16d9bc505"
   dependencies:

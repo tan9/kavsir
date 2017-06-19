@@ -1,18 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { QuestionTrueFalseComponent } from '../../../entities/question-true-false/question-true-false.component';
 
 @Component({
-    selector: 'jhi-true-false',
     templateUrl: './true-false.component.html',
-    providers: [QuestionTrueFalseComponent],
-    styles: []
+    selector: 'jhi-true-false'
 })
-export class TrueFalseComponent implements OnInit {
+export class TrueFalseComponent extends QuestionTrueFalseComponent {
 
-    constructor() {
+    transition() {
+        this.router.navigate(['/question/true-false'], {
+            queryParams: {
+                page: this.page,
+                size: this.itemsPerPage,
+                search: this.currentSearch,
+                sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
+            }
+        });
+        super.loadAll();
     }
-
-    ngOnInit() {
-    }
-
 }

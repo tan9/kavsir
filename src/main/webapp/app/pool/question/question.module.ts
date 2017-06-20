@@ -20,5 +20,5 @@ import { EssayModule } from './essay/essay.module';
     ],
     declarations: [QuestionComponent]
 })
-export class QuestionModule {
+export class KavsirQuestionModule {
 }

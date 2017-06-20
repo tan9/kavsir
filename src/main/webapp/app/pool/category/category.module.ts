@@ -21,5 +21,5 @@ import { CategoryComponent } from './category.component';
         CategoryHierarchyComponent
     ]
 })
-export class CategoryModule {
+export class KavsirCategoryModule {
 }

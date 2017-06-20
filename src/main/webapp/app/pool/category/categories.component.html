@@ -13,8 +13,8 @@
                     <ng-template ngbTabContent>
                         <jhi-category #academicYearCategory
                                       [typeName]="'AcademicYear'"
-                                      [items]="categoryAcademicYears"
-                                      [service]="categoryAcademicYearService">
+                                      [items]="categoriesService.academicYears"
+                                      [service]="categoriesService.academicYearService">
                         </jhi-category>
                     </ng-template>
                 </ngb-tab>
@@ -22,8 +22,8 @@
                     <ng-template ngbTabContent>
                         <jhi-category #gradeCategory
                                       [typeName]="'Grade'"
-                                      [items]="categoryGrades"
-                                      [service]="categoryGradeService">
+                                      [items]="categoriesService.grades"
+                                      [service]="categoriesService.gradeService">
                         </jhi-category>
                     </ng-template>
                 </ngb-tab>
@@ -31,8 +31,8 @@
                     <ng-template ngbTabContent>
                         <jhi-category #semesterCategory
                                       [typeName]="'Semester'"
-                                      [items]="categorySemesters"
-                                      [service]="categorySemesterService">
+                                      [items]="categoriesService.semesters"
+                                      [service]="categoriesService.semesterService">
                         </jhi-category>
                     </ng-template>
                 </ngb-tab>
@@ -40,8 +40,8 @@
                     <ng-template ngbTabContent>
                         <jhi-category #subjectCategory
                                       [typeName]="'Subject'"
-                                      [items]="categorySubjects"
-                                      [service]="categorySubjectService">
+                                      [items]="categoriesService.subjects"
+                                      [service]="categoriesService.subjectService">
                         </jhi-category>
                     </ng-template>
                 </ngb-tab>
@@ -49,8 +49,8 @@
                     <ng-template ngbTabContent>
                         <jhi-category #publisherCategory
                                       [typeName]="'Publisher'"
-                                      [items]="categoryPublishers"
-                                      [service]="categoryPublisherService">
+                                      [items]="categoriesService.publishers"
+                                      [service]="categoriesService.publisherService">
                         </jhi-category>
                     </ng-template>
                 </ngb-tab>
@@ -65,12 +65,7 @@
             </span>
         </ng-template>
         <ng-template ngbPanelContent>
-            <jhi-category-hierarchy [categoryAcademicYears]="categoryAcademicYears"
-                                    [categoryGrades]="categoryGrades"
-                                    [categorySemesters]="categorySemesters"
-                                    [categorySubjects]="categorySubjects"
-                                    [categoryPublishers]="categoryPublishers">
-            </jhi-category-hierarchy>
+            <jhi-category-hierarchy></jhi-category-hierarchy>
         </ng-template>
     </ngb-panel>
 </ngb-accordion>

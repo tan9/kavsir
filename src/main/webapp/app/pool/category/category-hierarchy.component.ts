@@ -1,16 +1,12 @@
 import { Component, OnDestroy, OnInit, ViewChild, Input } from '@angular/core';
 import { ResponseWrapper } from '../../shared/model/response-wrapper.model';
-import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
-import { CategoryAcademicYear } from '../../entities/category-academic-year';
-import { CategoryGrade } from '../../entities/category-grade';
-import { CategorySemester } from '../../entities/category-semester';
-import { CategorySubject } from '../../entities/category-subject';
-import { CategoryPublisher } from '../../entities/category-publisher';
+import { JhiAlertService } from 'ng-jhipster';
 import { CategoryNodeService } from '../../entities/category-node/category-node.service';
 import { Category } from '../../entities/category.model';
 
 import { ITreeOptions, TreeComponent, TreeNode } from 'angular-tree-component/dist/angular-tree-component';
 import { CategoryNode, CategoryType } from '../../entities/category-node/category-node.model';
+import { CategoriesService } from '../../shared/category/categories.service';
 
 @Component({
     selector: 'jhi-category-hierarchy',
@@ -27,12 +23,6 @@ export class CategoryHierarchyComponent implements OnInit, OnDestroy {
         5: {type: CategoryType.PUBLISHER, name: '出版社'},
         6: {type: CategoryType.SEGMENT, name: '子類別'}
     };
-
-    @Input() categoryAcademicYears: CategoryAcademicYear[];
-    @Input() categoryGrades: CategoryGrade[];
-    @Input() categorySemesters: CategorySemester[];
-    @Input() categorySubjects: CategorySubject[];
-    @Input() categoryPublishers: CategoryPublisher[];
 
     @ViewChild(TreeComponent) tree: TreeComponent;
 
@@ -51,7 +41,7 @@ export class CategoryHierarchyComponent implements OnInit, OnDestroy {
 
     isTreeSaving = false;
 
-    constructor(private eventManager: JhiEventManager,
+    constructor(private categoriesService: CategoriesService,
                 private alertService: JhiAlertService,
                 private categoryNodeService: CategoryNodeService) {
     }
@@ -133,25 +123,25 @@ export class CategoryHierarchyComponent implements OnInit, OnDestroy {
     availableCategories(type: CategoryType): Category[] {
         switch (type) {
             case CategoryType.ACADEMIC_YEAR:
-                return this.categoryAcademicYears;
+                return this.categoriesService.academicYears;
             case CategoryType.GRADE:
-                return this.categoryGrades;
+                return this.categoriesService.grades;
             case CategoryType.SEMESTER:
-                return this.categorySemesters;
+                return this.categoriesService.semesters;
             case CategoryType.SUBJECT:
-                return this.categorySubjects;
+                return this.categoriesService.subjects;
             case CategoryType.PUBLISHER:
-                return this.categoryPublishers;
+                return this.categoriesService.publishers;
         }
     }
 
     availableCategoryChildren(level: number): Category[] {
         return {
-                1: this.categoryAcademicYears,
-                2: this.categoryGrades,
-                3: this.categorySemesters,
-                4: this.categorySubjects,
-                5: this.categoryPublishers
+                1: this.categoriesService.academicYears,
+                2: this.categoriesService.grades,
+                3: this.categoriesService.semesters,
+                4: this.categoriesService.subjects,
+                5: this.categoriesService.publishers
             }[level] || [];
     }
 

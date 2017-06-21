@@ -1,12 +1,9 @@
-import { Injectable } from '@angular/core';
-import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes, CanActivate } from '@angular/router';
+import { Routes } from '@angular/router';
 
 import { UserRouteAccessService } from '../../shared';
-import { JhiPaginationUtil } from 'ng-jhipster';
 
 import { CategoriesComponent } from './categories.component';
-
-import { Principal } from '../../shared';
+import { CategorySelectPopupComponent } from './category-select-dialog.component';
 
 export const categoryRoute: Routes = [
     {
@@ -17,5 +14,18 @@ export const categoryRoute: Routes = [
             pageTitle: 'global.menu.pool.category.main'
         },
         canActivate: [UserRouteAccessService]
+    }
+];
+
+export const categoryPopupRoute: Routes = [
+    {
+        path: 'category-select/:id',
+        component: CategorySelectPopupComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'kavsirApp.questionTrueFalse.home.title'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
     }
 ];

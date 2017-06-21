@@ -1,19 +1,40 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
-import { CategoriesComponent } from './categories.component';
-import { KavsirSharedModule } from '../../shared/shared.module';
 import { RouterModule } from '@angular/router';
-import { categoryRoute } from './category.route';
 
-import { CategoryComponent } from './category.component';
+import { KavsirSharedModule } from '../../shared/shared.module';
+import {
+    categoryRoute,
+    categoryPopupRoute,
+    CategoriesComponent,
+    CategoryComponent,
+    CategorySelectDialogComponent,
+    CategorySelectPopupComponent,
+    CategorySelectPopupService
+} from './';
+
+const CATEGORY_STATES = [
+    ...categoryRoute,
+    ...categoryPopupRoute,
+];
 
 @NgModule({
     imports: [
         KavsirSharedModule,
-        RouterModule.forRoot(categoryRoute, {useHash: true}),
+        RouterModule.forRoot(CATEGORY_STATES, {useHash: true}),
     ],
     declarations: [
         CategoriesComponent,
-        CategoryComponent
+        CategoryComponent,
+        CategorySelectDialogComponent,
+        CategorySelectPopupComponent
+    ],
+    entryComponents: [
+        CategoriesComponent,
+        CategorySelectDialogComponent,
+        CategorySelectPopupComponent
+    ],
+    providers: [
+        CategorySelectPopupService
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

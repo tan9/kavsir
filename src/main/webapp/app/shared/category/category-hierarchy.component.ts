@@ -24,6 +24,8 @@ export class CategoryHierarchyComponent implements OnInit, OnDestroy {
         6: {type: CategoryType.SEGMENT, name: '子類別'}
     };
 
+    @Input() editable = false;
+
     @ViewChild(TreeComponent) tree: TreeComponent;
 
     treeNodes: CategoryTreeNode[] = [{

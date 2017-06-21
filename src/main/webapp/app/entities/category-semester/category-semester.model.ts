@@ -1,4 +1,6 @@
-export class CategorySemester {
+import { BaseEntity } from './../../shared';
+
+export class CategorySemester implements BaseEntity {
     constructor(
         public id?: number,
         public position?: number,

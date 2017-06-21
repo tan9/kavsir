@@ -1,3 +1,4 @@
+import { BaseEntity } from './../../shared';
 
 const enum CategoryType {
     'ACADEMIC_YEAR',
@@ -6,24 +7,20 @@ const enum CategoryType {
     'SUBJECT',
     'PUBLISHER',
     'SEGMENT'
+}
 
-};
-import { QuestionTrueFalse } from '../question-true-false';
-import { QuestionChoice } from '../question-choice';
-import { QuestionEssay } from '../question-essay';
-import { QuestionGroup } from '../question-group';
-export class CategoryNode {
+export class CategoryNode implements BaseEntity {
     constructor(
         public id?: number,
         public type?: CategoryType,
         public typeId?: number,
         public name?: string,
         public position?: number,
-        public parent?: CategoryNode,
-        public trueOrFalse?: QuestionTrueFalse,
-        public choice?: QuestionChoice,
-        public essay?: QuestionEssay,
-        public group?: QuestionGroup,
+        public parent?: BaseEntity,
+        public trueOrFalses?: BaseEntity[],
+        public choices?: BaseEntity[],
+        public essays?: BaseEntity[],
+        public groups?: BaseEntity[],
     ) {
     }
 }

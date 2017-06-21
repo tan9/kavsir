@@ -1,18 +1,16 @@
-import { QuestionChoiceOption } from '../question-choice-option';
-import { CategoryNode } from '../category-node';
-import { ResourceImage } from '../resource-image';
-import { QuestionGroup } from '../question-group';
-export class QuestionChoice {
+import { BaseEntity } from './../../shared';
+
+export class QuestionChoice implements BaseEntity {
     constructor(
         public id?: number,
         public multipleResponse?: boolean,
         public text?: string,
         public memo?: string,
         public groupPosition?: number,
-        public option?: QuestionChoiceOption,
-        public category?: CategoryNode,
-        public image?: ResourceImage,
-        public questionGroup?: QuestionGroup,
+        public options?: BaseEntity[],
+        public categories?: BaseEntity[],
+        public images?: BaseEntity[],
+        public questionGroup?: BaseEntity,
     ) {
         this.multipleResponse = false;
     }

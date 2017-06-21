@@ -14,6 +14,8 @@ import { KavsirPoolModule } from './pool/pool.module';
 import { customHttpProvider } from './blocks/interceptor/http.provider';
 import { PaginationConfig } from './blocks/config/uib-pagination.config';
 
+// jhipster-needle-angular-add-module-import JHipster will add new module here
+
 import {
     JhiMainComponent,
     LayoutRoutingModule,
@@ -35,6 +37,7 @@ import {
         KavsirAdminModule,
         KavsirAccountModule,
         KavsirEntityModule,
+        // jhipster-needle-angular-add-module JHipster will add new module here
         KavsirPoolModule
     ],
     declarations: [

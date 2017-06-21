@@ -1,6 +1,7 @@
+import { BaseEntity } from './../../shared';
 import { Category } from '../category.model';
 
-export class CategorySemester extends Category {
+export class CategorySemester extends Category implements BaseEntity {
     constructor(
         public id?: number,
         public position?: number,

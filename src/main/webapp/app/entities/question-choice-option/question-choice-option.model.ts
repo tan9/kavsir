@@ -1,13 +1,13 @@
-import { QuestionChoice } from '../question-choice';
-import { ResourceImage } from '../resource-image';
-export class QuestionChoiceOption {
+import { BaseEntity } from './../../shared';
+
+export class QuestionChoiceOption implements BaseEntity {
     constructor(
         public id?: number,
         public correct?: boolean,
         public text?: string,
         public memo?: string,
-        public questionChoice?: QuestionChoice,
-        public image?: ResourceImage,
+        public questionChoice?: BaseEntity,
+        public images?: BaseEntity[],
     ) {
         this.correct = false;
     }

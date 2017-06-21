@@ -46,7 +46,6 @@ export class CategoryHierarchyComponent implements OnInit, OnDestroy {
     constructor(private categoriesService: CategoriesService,
                 private alertService: JhiAlertService,
                 private categoryNodeService: CategoryNodeService) {
-        categoriesService.ngOnInit();
     }
 
     ngOnInit() {
@@ -117,9 +116,9 @@ export class CategoryHierarchyComponent implements OnInit, OnDestroy {
     }
 
     private categoryNodeDisplayName(node: CategoryTreeNode) {
-        return this.availableCategories(node.type)
-            .find((item) => item.id === node.typeId)
-            .name;
+        const categoryNode = this.availableCategories(node.type).find(
+            (item) => item.id === node.typeId);
+        return categoryNode ? categoryNode.name : 'loading...';
     }
 
     availableCategories(type: CategoryType): Category[] {

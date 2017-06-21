@@ -158,7 +158,11 @@
             "save": "Save",
             "expand.all": "Expand All",
             "collapse.all": "Collapse All",
-            "search": "Search"
+            "search": "Search",
+            "select": "Select",
+            "select.nodeOnly": "Selected Categories Only",
+            "select.includeSubCategories": "Include Sub-categories"
+
         }
     },
     "question": {

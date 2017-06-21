@@ -1,0 +1,38 @@
+<jhi-category-hierarchy></jhi-category-hierarchy>
+
+<hr>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="btn-toolbar pull-right" role="toolbar" aria-label="Tree Operations">
+            <div class="btn-group mr-2" role="group" aria-label="Select Group">
+                <button class="btn btn-primary float-right"
+                        (click)="getSelected()" [disabled]="hierarchy.tree.treeModel.getActiveNodes().length == 0">
+                    <span class="fa fa-check"></span>
+                    <span class="hidden-sm-down" jhiTranslate="category.action.select">
+                        Select
+                    </span>
+                </button>
+                <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split"
+                        ngbDropdown id="dropdownSubCategories" ngbDropdownToggle
+                        [disabled]="hierarchy.tree.treeModel.getActiveNodes().length == 0">
+                    <span class="sr-only">Toggle Dropdown</span>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownSubCategories">
+                        <button class="dropdown-item" (click)="selectSubCategories = true">
+                            <span [class]="'fa fa-' + (selectSubCategories ? 'check-' : '') + 'square-o'"></span>
+                            <span jhiTranslate="category.action.select.includeSubCategories">
+                                Include Sub-categories
+                            </span>
+                        </button>
+                        <button class="dropdown-item" (click)="selectSubCategories = false">
+                            <span [class]="'fa fa-' + (!selectSubCategories ? 'check-' : '') + 'square-o'"></span>
+                            <span jhiTranslate="category.action.select.nodeOnly">
+                                Selected Categories Only
+                            </span>
+                        </button>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

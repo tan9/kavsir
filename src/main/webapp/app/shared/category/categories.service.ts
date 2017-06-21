@@ -32,6 +32,10 @@ export class CategoriesService implements OnInit, OnDestroy {
                 public publisherService: CategoryPublisherService,
                 private eventManager: JhiEventManager,
                 private alertService: JhiAlertService) {
+
+        // Service is not lifecycle-managed, we have to init it by ourselves.
+        // https://stackoverflow.com/a/35110798/3440376
+        this.ngOnInit();
     }
 
     ngOnInit() {

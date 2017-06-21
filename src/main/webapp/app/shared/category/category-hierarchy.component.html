@@ -33,12 +33,12 @@
                     </span>
                     <div class="btn-group flex-btn-group-container pull-right">
                         <button *ngIf="node.level <= 5 && editable" class="btn btn-info btn-sm"
-                                ngbDropdown [id]="'dropdownBasic' + index" ngbDropdownToggle #myDrop="ngbDropdown"
+                                ngbDropdown [id]="'dropdownAddChild' + index" ngbDropdownToggle
                                 (click)="$event.stopPropagation()"
                                 [disabled]="childrenCount(node) >= availableCategoryChildren(node.level).length">
                             <span class="fa fa-plus"></span>
                             <span class="hidden-sm-down">新增{{categoryLevelName(node.level)}}</span>
-                            <div class="dropdown-menu" [attr.aria-labelledby]="'dropdownBasic' + index">
+                            <div class="dropdown-menu" [attr.aria-labelledby]="'dropdownAddChild' + index">
                                 <button class="dropdown-item"
                                         *ngFor="let item of availableCategoryChildren(node.level)"
                                         (click)="addCategoryChild(node, item)"

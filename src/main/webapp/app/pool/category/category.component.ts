@@ -1,18 +1,14 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { ResponseWrapper } from '../../shared/model/response-wrapper.model';
-import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import { Component, Input, OnInit } from '@angular/core';
+import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
 
-import { Subscription } from 'rxjs/Rx';
 import { Category } from '../../entities/category.model';
 import { CategoryService } from '../../entities/category.service';
 
 @Component({
     selector: 'jhi-category',
-    templateUrl: './category.component.html',
+    templateUrl: './category.component.html'
 })
-export class CategoryComponent implements OnInit, OnDestroy {
-
-    eventSubscriber: Subscription;
+export class CategoryComponent implements OnInit {
 
     isSaving = false;
 
@@ -26,35 +22,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
                 private alertService: JhiAlertService) {
     }
 
-    loadAllCategoryItems() {
-        this.service.query().subscribe(
-            (res: ResponseWrapper) => {
-                this.items.length = 0;
-                const newItems = res.json.sort(
-                    (a: Category, b: Category) => {
-                        const position = a.position - b.position;
-                        return position !== 0 ? position : a.id - b.id;
-                    });
-                Array.prototype.push.apply(this.items, newItems);
-            },
-            (res: ResponseWrapper) => this.onError(res.json)
-        );
-    }
-
     ngOnInit() {
-        this.loadAllCategoryItems();
-
-        this.registerChangeInCategoryItems();
-    }
-
-    ngOnDestroy() {
-        this.eventManager.destroy(this.eventSubscriber);
-    }
-
-    registerChangeInCategoryItems() {
-        const eventName = 'category' + this.typeName + 'ListModification';
-        this.eventSubscriber = this.eventManager.subscribe(
-            eventName, (response) => this.loadAllCategoryItems());
     }
 
     hyphenSeparatedTypeName() {
@@ -78,14 +46,15 @@ export class CategoryComponent implements OnInit, OnDestroy {
             }
         });
 
+        const eventName = 'category' + this.typeName + 'ListModification';
         Promise.all(promises).then(
             () => {
-                this.loadAllCategoryItems();
+                this.eventManager.broadcast(eventName);
                 this.isSaving = false;
             },
             (error) => {
                 this.onError(error);
-                this.loadAllCategoryItems();
+                this.eventManager.broadcast(eventName);
                 this.isSaving = false;
             }
         );

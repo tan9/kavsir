@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit, ViewChild, Input } from '@angular/core';
-import { ResponseWrapper } from '../../shared/model/response-wrapper.model';
+import { ResponseWrapper } from '../model/response-wrapper.model';
 import { JhiAlertService } from 'ng-jhipster';
 import { CategoryNodeService } from '../../entities/category-node/category-node.service';
 import { Category } from '../../entities/category.model';
 
 import { ITreeOptions, TreeComponent, TreeNode } from 'angular-tree-component/dist/angular-tree-component';
 import { CategoryNode, CategoryType } from '../../entities/category-node/category-node.model';
-import { CategoriesService } from '../../shared/category/categories.service';
+import { CategoriesService } from './categories.service';
 
 @Component({
     selector: 'jhi-category-hierarchy',
@@ -44,10 +44,10 @@ export class CategoryHierarchyComponent implements OnInit, OnDestroy {
     constructor(private categoriesService: CategoriesService,
                 private alertService: JhiAlertService,
                 private categoryNodeService: CategoryNodeService) {
+        categoriesService.ngOnInit();
     }
 
     ngOnInit() {
-
         this.loadAllCategoryNodes();
     }
 

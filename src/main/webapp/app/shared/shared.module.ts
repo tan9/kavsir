@@ -14,7 +14,8 @@ import {
     Principal,
     HasAnyAuthorityDirective,
     JhiLoginModalComponent,
-    CategoriesService
+    CategoriesService,
+    CategoryHierarchyComponent
 } from './';
 
 @NgModule({
@@ -24,7 +25,8 @@ import {
     ],
     declarations: [
         JhiLoginModalComponent,
-        HasAnyAuthorityDirective
+        HasAnyAuthorityDirective,
+        CategoryHierarchyComponent
     ],
     providers: [
         LoginService,
@@ -43,7 +45,8 @@ import {
         KavsirSharedCommonModule,
         JhiLoginModalComponent,
         HasAnyAuthorityDirective,
-        DatePipe
+        DatePipe,
+        CategoryHierarchyComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 

@@ -1,16 +1,14 @@
-import { QuestionChoice } from '../question-choice';
-import { QuestionTrueFalse } from '../question-true-false';
-import { QuestionEssay } from '../question-essay';
-import { CategoryNode } from '../category-node';
-export class QuestionGroup {
+import { BaseEntity } from './../../shared';
+
+export class QuestionGroup implements BaseEntity {
     constructor(
         public id?: number,
         public text?: string,
         public memo?: string,
-        public choice?: QuestionChoice,
-        public trueFalse?: QuestionTrueFalse,
-        public essay?: QuestionEssay,
-        public category?: CategoryNode,
+        public choices?: BaseEntity[],
+        public trueFalses?: BaseEntity[],
+        public essays?: BaseEntity[],
+        public categories?: BaseEntity[],
     ) {
     }
 }

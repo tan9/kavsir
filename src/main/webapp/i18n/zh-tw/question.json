@@ -1,0 +1,11 @@
+{
+    "question": {
+        "title": "題目",
+        "type": {
+            "trueFalse": "是非題",
+            "choice": "單選題",
+            "multipleResponse": "多選題",
+            "essay": "問答題"
+        }
+    }
+}

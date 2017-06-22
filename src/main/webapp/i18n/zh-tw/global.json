@@ -143,36 +143,6 @@
             "datetimelocal": "此欄位應為日期和時間。"
         }
     },
-    "category": {
-        "title": "類別",
-        "hierarchy": "類別階層",
-        "type": {
-            "academicYear": "學年",
-            "grade": "年級",
-            "semester": "學期",
-            "subject": "科目",
-            "publisher": "出版社",
-            "segment": "章、課、篇、節"
-        },
-        "action": {
-            "save": "儲存",
-            "expand.all": "全部展開",
-            "collapse.all": "全部收合",
-            "search": "搜尋",
-            "select": "選取",
-            "select.nodeOnly": "只限選取的類別",
-            "select.includeSubCategories": "包含子類別"
-        }
-    },
-    "question": {
-        "title": "題目",
-        "type": {
-            "trueFalse": "是非題",
-            "choice": "單選題",
-            "multipleResponse": "多選題",
-            "essay": "問答題"
-        }
-    },
     "error": {
         "internalServerError": "伺服器內部錯誤",
         "server.not.reachable": "無法連到伺服器",

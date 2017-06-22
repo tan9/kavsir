@@ -1,0 +1,11 @@
+{
+    "question": {
+        "title": "Question",
+        "type": {
+            "trueFalse": "True/False",
+            "choice": "Choice",
+            "multipleResponse": "Multiple Response",
+            "essay": "Essay"
+        }
+    }
+}

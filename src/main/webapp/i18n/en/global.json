@@ -143,37 +143,6 @@
             "datetimelocal": "This field should be a date and time."
         }
     },
-    "category": {
-        "title": "Category",
-        "hierarchy": "Category Hierarchy",
-        "type": {
-            "academicYear": "Academic Year",
-            "grade": "Grade",
-            "semester": "Semester",
-            "subject": "Subject",
-            "publisher": "Publisher",
-            "segment": "Segment"
-        },
-        "action": {
-            "save": "Save",
-            "expand.all": "Expand All",
-            "collapse.all": "Collapse All",
-            "search": "Search",
-            "select": "Select",
-            "select.nodeOnly": "Selected Categories Only",
-            "select.includeSubCategories": "Include Sub-categories"
-
-        }
-    },
-    "question": {
-        "title": "Question",
-        "type": {
-            "trueFalse": "True/False",
-            "choice": "Choice",
-            "multipleResponse": "Multiple Response",
-            "essay": "Essay"
-        }
-    },
     "error": {
         "internalServerError": "Internal server error",
         "server.not.reachable": "Server not reachable",

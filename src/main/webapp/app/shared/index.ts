@@ -10,6 +10,7 @@ export * from './auth/has-any-authority.directive';
 export * from './auth/user-route-access-service';
 export * from './category/categories.service';
 export * from './category/category-hierarchy.component';
+export * from './category/category-hierarchy.service';
 export * from './category/category-select.component';
 export * from './language/language.constants';
 export * from './language/language.helper';

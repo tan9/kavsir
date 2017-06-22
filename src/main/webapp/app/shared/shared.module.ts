@@ -16,6 +16,7 @@ import {
     JhiLoginModalComponent,
     CategoriesService,
     CategoryHierarchyComponent,
+    CategoryHierarchyService,
     CategorySelectComponent
 } from './';
 
@@ -40,7 +41,8 @@ import {
         AuthServerProvider,
         UserService,
         DatePipe,
-        CategoriesService
+        CategoriesService,
+        CategoryHierarchyService
     ],
     entryComponents: [JhiLoginModalComponent],
     exports: [

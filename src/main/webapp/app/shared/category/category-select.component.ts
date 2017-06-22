@@ -14,7 +14,6 @@ export class CategorySelectComponent {
 
     public getSelected(): CategoryNode[] {
         const nodes = this.hierarchy.tree.treeModel.getActiveNodes();
-        console.log(nodes);
         return nodes;
     }
 }

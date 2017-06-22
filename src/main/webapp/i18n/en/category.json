@@ -21,6 +21,7 @@
         },
         "selector": {
             "label": "Select a Category"
-        }
+        },
+        "all": "All Categories"
     }
 }

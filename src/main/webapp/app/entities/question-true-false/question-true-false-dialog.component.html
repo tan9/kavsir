@@ -15,7 +15,19 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="kavsirApp.questionTrueFalse.correct" for="field_correct">Correct</label>
             <input type="checkbox" class="form-control" name="correct" id="field_correct"
-                [(ngModel)]="questionTrueFalse.correct"  />
+                [(ngModel)]="questionTrueFalse.correct" hidden />
+            <div class="form-check form-check-inline">
+                <label class="form-check-label" (click)="questionTrueFalse.correct = true">
+                    <input class="form-check-input" type="checkbox"
+                           [checked]="questionTrueFalse.correct"> ◯
+                </label>
+            </div>
+            <div class="form-check form-check-inline">
+                <label class="form-check-label" (click)="questionTrueFalse.correct = false">
+                    <input class="form-check-input" type="checkbox"
+                           [checked]="!questionTrueFalse.correct"> ╳
+                </label>
+            </div>
             <div [hidden]="!(editForm.controls.correct?.dirty && editForm.controls.correct?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.correct?.errors?.required" jhiTranslate="entity.validation.required">

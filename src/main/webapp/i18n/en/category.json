@@ -18,7 +18,9 @@
             "select": "Select",
             "select.nodeOnly": "Selected Categories Only",
             "select.includeSubCategories": "Include Sub-categories"
-
+        },
+        "selector": {
+            "label": "Select a Category"
         }
     }
 }

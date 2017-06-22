@@ -23,7 +23,7 @@ export const categoryPopupRoute: Routes = [
         component: CategorySelectPopupComponent,
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'kavsirApp.questionTrueFalse.home.title'
+            pageTitle: 'category.selector.label'
         },
         canActivate: [UserRouteAccessService],
         outlet: 'popup'

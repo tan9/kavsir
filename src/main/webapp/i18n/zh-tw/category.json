@@ -18,6 +18,9 @@
             "select": "選取",
             "select.nodeOnly": "只限選取的類別",
             "select.includeSubCategories": "包含子類別"
+        },
+        "selector": {
+            "label": "選取類別"
         }
     }
 }

@@ -253,6 +253,14 @@ export class CategoryHierarchyComponent implements OnInit, OnDestroy {
             return this.nodeDisplayName(node).toLowerCase().indexOf(text.toLowerCase()) !== -1;
         });
     }
+
+    collapseAll() {
+        this.tree.treeModel.collapseAll();
+    }
+
+    expandAll() {
+        this.tree.treeModel.expandAll();
+    }
 }
 
 class CategoryTreeNode extends CategoryNode {

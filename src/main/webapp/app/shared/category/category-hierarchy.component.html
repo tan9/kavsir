@@ -71,17 +71,17 @@
 
 <div class="row">
     <div class="col-sm-12">
-        <div class="btn-toolbar pull-right" role="toolbar" aria-label="Tree Operations">
+        <form name="toolbarForm" class="btn-toolbar pull-right" role="toolbar" aria-label="Tree Operations">
             <div class="btn-group mr-2" role="group" aria-label="View Group">
                 <button class="btn btn-secondary float-right"
-                        (click)="tree.treeModel.expandAll()" [disabled]="isTreeSaving">
+                        (click)="expandAll()" [disabled]="isTreeSaving">
                     <span class="fa fa-expand"></span>
                     <span class="hidden-sm-down" jhiTranslate="category.action.expand.all">
                         Expand All
                     </span>
                 </button>
                 <button class="btn btn-secondary float-right"
-                        (click)="tree.treeModel.collapseAll()" [disabled]="isTreeSaving">
+                        (click)="collapseAll()" [disabled]="isTreeSaving">
                     <span class="fa fa-compress"></span>
                     <span class="hidden-sm-down" jhiTranslate="category.action.collapse.all">
                         Collapse All
@@ -99,7 +99,6 @@
                     </span>
                 </button>
             </div>
-
-        </div>
+        </form>
     </div>
 </div>

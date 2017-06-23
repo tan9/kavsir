@@ -16,8 +16,8 @@
         <dd>
             <span>{{questionChoice.memo}}</span>
         </dd>
-        <dt><span jhiTranslate="kavsirApp.questionChoice.groupPosition">Group Position</span></dt>
-        <dd>
+        <dt *ngIf="inGroup"><span jhiTranslate="kavsirApp.questionChoice.groupPosition">Group Position</span></dt>
+        <dd *ngIf="inGroup">
             <span>{{questionChoice.groupPosition}}</span>
         </dd>
         <dt><span jhiTranslate="kavsirApp.questionChoice.category">Category</span></dt>
@@ -32,8 +32,8 @@
                 <a [routerLink]="['/resource-image', image?.id ]">{{image.id}}</a>{{last ? '' : ', '}}
             </span>
         </dd>
-        <dt><span jhiTranslate="kavsirApp.questionChoice.questionGroup">Question Group</span></dt>
-        <dd>
+        <dt *ngIf="inGroup"><span jhiTranslate="kavsirApp.questionChoice.questionGroup">Question Group</span></dt>
+        <dd *ngIf="inGroup">
             <div *ngIf="questionChoice.questionGroup">
                 <a [routerLink]="['/question-group', questionChoice.questionGroup?.id]">{{questionChoice.questionGroup?.id}}</a>
             </div>

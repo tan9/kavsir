@@ -12,8 +12,11 @@ import { QuestionChoiceService } from './question-choice.service';
 })
 export class QuestionChoiceDetailComponent implements OnInit, OnDestroy {
 
+    inGroup = false;
+
     questionChoice: QuestionChoice;
     private subscription: Subscription;
+    private queryParamsSubscription: Subscription;
     private eventSubscriber: Subscription;
 
     constructor(
@@ -27,6 +30,10 @@ export class QuestionChoiceDetailComponent implements OnInit, OnDestroy {
         this.subscription = this.route.params.subscribe((params) => {
             this.load(params['id']);
         });
+        this.queryParamsSubscription = this.route.queryParams.subscribe((queryParams) => {
+                this.inGroup = queryParams['group'] !== 'false';
+            }
+        );
         this.registerChangeInQuestionChoices();
     }
 
@@ -41,6 +48,7 @@ export class QuestionChoiceDetailComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
+        this.queryParamsSubscription.unsubscribe();
         this.eventManager.destroy(this.eventSubscriber);
     }
 

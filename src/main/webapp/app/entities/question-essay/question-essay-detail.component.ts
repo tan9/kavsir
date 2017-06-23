@@ -12,8 +12,11 @@ import { QuestionEssayService } from './question-essay.service';
 })
 export class QuestionEssayDetailComponent implements OnInit, OnDestroy {
 
+    inGroup = false;
+
     questionEssay: QuestionEssay;
     private subscription: Subscription;
+    private queryParamsSubscription: Subscription;
     private eventSubscriber: Subscription;
 
     constructor(
@@ -27,6 +30,10 @@ export class QuestionEssayDetailComponent implements OnInit, OnDestroy {
         this.subscription = this.route.params.subscribe((params) => {
             this.load(params['id']);
         });
+        this.queryParamsSubscription = this.route.queryParams.subscribe((queryParams) => {
+                this.inGroup = queryParams['group'] !== 'false';
+            }
+        );
         this.registerChangeInQuestionEssays();
     }
 
@@ -41,6 +48,7 @@ export class QuestionEssayDetailComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
+        this.queryParamsSubscription.unsubscribe();
         this.eventManager.destroy(this.eventSubscriber);
     }
 

@@ -39,7 +39,7 @@
             <input type="text" class="form-control" name="memo" id="field_memo"
                 [(ngModel)]="questionChoice.memo"  />
         </div>
-        <div class="form-group">
+        <div *ngIf="inGroup" class="form-group">
             <label class="form-control-label" jhiTranslate="kavsirApp.questionChoice.groupPosition" for="field_groupPosition">Group Position</label>
             <input type="number" class="form-control" name="groupPosition" id="field_groupPosition"
                 [(ngModel)]="questionChoice.groupPosition"  />
@@ -57,7 +57,7 @@
                 <option [ngValue]="getSelected(questionChoice.images, resourceImageOption)" *ngFor="let resourceImageOption of resourceimages; trackBy: trackResourceImageById">{{resourceImageOption.id}}</option>
             </select>
         </div>
-        <div class="form-group">
+        <div *ngIf="inGroup" class="form-group">
             <label jhiTranslate="kavsirApp.questionChoice.questionGroup" for="field_questionGroup">Question Group</label>
             <select class="form-control" id="field_questionGroup" name="questionGroup" [(ngModel)]="questionChoice.questionGroup" >
                 <option [ngValue]="null"></option>

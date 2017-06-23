@@ -45,7 +45,7 @@ export class QuestionTrueFalseDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
-        this.inGroup = this.route.snapshot.queryParams['group'] !== 'false'
+        this.inGroup = this.route.snapshot.queryParams['group'] !== 'false';
         this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
         this.categoryNodeService.query()
             .subscribe((res: ResponseWrapper) => { this.categorynodes = res.json; }, (res: ResponseWrapper) => this.onError(res.json));

@@ -37,13 +37,22 @@
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="kavsirApp.questionTrueFalse.text" for="field_text">Text</label>
-            <input type="text" class="form-control" name="text" id="field_text"
-                [(ngModel)]="questionTrueFalse.text" required />
+            <div class="input-group">
+                <input type="text" class="form-control" name="text" id="field_text"
+                    [(ngModel)]="questionTrueFalse.text" required />
+                <button type="button" class="input-group-addon btn btn-info" (click)="preview = !preview">
+                    <span [class]="'fa fa-eye' + (preview ? '-slash' : '')"></span>
+                </button>
+            </div>
             <div [hidden]="!(editForm.controls.text?.dirty && editForm.controls.text?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.text?.errors?.required" jhiTranslate="entity.validation.required">
                    This field is required.
                 </small>
+            </div>
+            <div *ngIf="preview" class="card"
+                 style="margin-top: 0.5em; padding: 0.5em; background-color: #eee">
+                <span [jhiMathJax]="questionTrueFalse.text"></span>
             </div>
         </div>
         <div class="form-group">

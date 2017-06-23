@@ -1,12 +1,16 @@
 import { Directive, ElementRef, Input, OnChanges } from '@angular/core';
 
+/**
+ * Directive for MathJax rendering.
+ *
+ * @see https://stackoverflow.com/a/36371349/3440376
+ */
 @Directive({
     selector: '[jhiMathJax]'
 })
 export class MathJaxDirective implements OnChanges {
 
-    @Input('jhiMathJax')
-    jhiMathJax: string;
+    @Input() jhiMathJax: string;
 
     constructor(private el: ElementRef) {
     }

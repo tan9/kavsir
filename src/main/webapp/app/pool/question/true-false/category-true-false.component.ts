@@ -1,7 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { QuestionTrueFalseComponent } from '../../../entities/question-true-false/index';
-import { CategoryNode } from '../../../entities/category-node/category-node.model';
-import { TreeNode } from 'angular-tree-component';
 
 @Component({
     selector: 'jhi-category-true-false',

@@ -17,7 +17,8 @@ import {
     CategoriesService,
     CategoryHierarchyComponent,
     CategoryHierarchyService,
-    CategorySelectComponent
+    CategorySelectComponent,
+    MathJaxDirective
 } from './';
 
 @NgModule({
@@ -29,7 +30,8 @@ import {
         JhiLoginModalComponent,
         HasAnyAuthorityDirective,
         CategoryHierarchyComponent,
-        CategorySelectComponent
+        CategorySelectComponent,
+        MathJaxDirective
     ],
     providers: [
         LoginService,
@@ -51,7 +53,8 @@ import {
         HasAnyAuthorityDirective,
         DatePipe,
         CategoryHierarchyComponent,
-        CategorySelectComponent
+        CategorySelectComponent,
+        MathJaxDirective
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 

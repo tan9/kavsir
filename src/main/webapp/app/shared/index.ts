@@ -18,6 +18,7 @@ export * from './language/find-language-from-key.pipe';
 export * from './login/login.component';
 export * from './login/login.service';
 export * from './login/login-modal.service';
+export * from './mathjax/math-jax.directive';
 export * from './user/account.model';
 export * from './user/user.model';
 export * from './user/user.service';

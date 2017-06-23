@@ -10,6 +10,8 @@ import { TreeNode } from 'angular-tree-component';
 })
 export class CategoryTrueFalseComponent extends QuestionTrueFalseComponent {
 
+    inGroup: false;
+
     transition() {
         this.router.navigate(['/question/true-false'], {
             queryParams: {

@@ -1,7 +1,9 @@
 <div>
     <h2>
         <span jhiTranslate="kavsirApp.questionTrueFalse.home.title">Question True Falses</span>
-        <button class="btn btn-primary float-right create-question-true-false" [routerLink]="['/', { outlets: { popup: ['question-true-false-new'] } }]">
+        <button class="btn btn-primary float-right create-question-true-false"
+                [routerLink]="['/', { outlets: { popup: ['question-true-false-new'] } } ]"
+                [queryParams]="{ group: false }">
             <span class="fa fa-plus"></span>
             <span class="hidden-sm-down"  jhiTranslate="kavsirApp.questionTrueFalse.home.createLabel">
             Create new Question True False
@@ -33,19 +35,22 @@
                 <th jhiSortBy="correct"><span jhiTranslate="kavsirApp.questionTrueFalse.correct">Correct</span> <span class="fa fa-sort"></span></th>
                 <th jhiSortBy="text"><span jhiTranslate="kavsirApp.questionTrueFalse.text">Text</span> <span class="fa fa-sort"></span></th>
                 <th jhiSortBy="memo"><span jhiTranslate="kavsirApp.questionTrueFalse.memo">Memo</span> <span class="fa fa-sort"></span></th>
-                <th jhiSortBy="groupPosition"><span jhiTranslate="kavsirApp.questionTrueFalse.groupPosition">Group Position</span> <span class="fa fa-sort"></span></th>
-                <th jhiSortBy="questionGroup.id"><span jhiTranslate="kavsirApp.questionTrueFalse.questionGroup">Question Group</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="groupPosition" *ngIf="inGroup"><span jhiTranslate="kavsirApp.questionTrueFalse.groupPosition">Group Position</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="questionGroup.id" *ngIf="inGroup"><span jhiTranslate="kavsirApp.questionTrueFalse.questionGroup">Question Group</span> <span class="fa fa-sort"></span></th>
                 <th></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let questionTrueFalse of questionTrueFalses ;trackBy: trackId">
-                <td><a [routerLink]="['../../question-true-false', questionTrueFalse.id ]">{{questionTrueFalse.id}}</a></td>
+                <td>
+                    <a [routerLink]="['../../question-true-false', questionTrueFalse.id ]"
+                       [queryParams]="{ group: false }">{{questionTrueFalse.id}}</a>
+                </td>
                 <td>{{questionTrueFalse.correct ? '◯' : '╳'}}</td>
                 <td>{{questionTrueFalse.text}}</td>
                 <td>{{questionTrueFalse.memo}}</td>
-                <td>{{questionTrueFalse.groupPosition}}</td>
-                <td>
+                <td *ngIf="inGroup">{{questionTrueFalse.groupPosition}}</td>
+                <td *ngIf="inGroup">
                     <div *ngIf="questionTrueFalse.questionGroup">
                         <a [routerLink]="['../question-group', questionTrueFalse.questionGroup?.id ]" >{{questionTrueFalse.questionGroup?.id}}</a>
                     </div>
@@ -54,12 +59,14 @@
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
                                 [routerLink]="['../../question-true-false', questionTrueFalse.id ]"
+                                [queryParams]="{ group: false }"
                                 class="btn btn-info btn-sm">
                             <span class="fa fa-eye"></span>
                             <span class="hidden-md-down" jhiTranslate="entity.action.view">View</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'question-true-false/'+ questionTrueFalse.id + '/edit'} }]"
+                                [routerLink]="['/', { outlets: { popup: 'question-true-false/'+ questionTrueFalse.id + '/edit' } }]"
+                                [queryParams]="{ group: false }"
                                 replaceUrl="true"
                                 class="btn btn-primary btn-sm">
                             <span class="fa fa-pencil"></span>
@@ -67,6 +74,7 @@
                         </button>
                         <button type="submit"
                                 [routerLink]="['/', { outlets: { popup: 'question-true-false/'+ questionTrueFalse.id + '/delete'} }]"
+                                [queryParams]="{ group: false }"
                                 replaceUrl="true"
                                 class="btn btn-danger btn-sm">
                             <span class="fa fa-remove"></span>

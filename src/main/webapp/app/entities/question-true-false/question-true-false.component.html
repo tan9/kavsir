@@ -42,7 +42,7 @@
             <tr *ngFor="let questionTrueFalse of questionTrueFalses ;trackBy: trackId">
                 <td><a [routerLink]="['../question-true-false', questionTrueFalse.id ]">{{questionTrueFalse.id}}</a></td>
                 <td>{{questionTrueFalse.correct ? '◯' : '╳'}}</td>
-                <td>{{questionTrueFalse.text}}</td>
+                <td><span [jhiMathJax]="questionTrueFalse.text"></span></td>
                 <td>{{questionTrueFalse.memo}}</td>
                 <td>{{questionTrueFalse.groupPosition}}</td>
                 <td>

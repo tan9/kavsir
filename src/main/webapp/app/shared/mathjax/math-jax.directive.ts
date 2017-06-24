@@ -16,7 +16,12 @@ export class MathJaxDirective implements OnChanges {
     }
 
     ngOnChanges() {
-        this.el.nativeElement.innerHTML = this.jhiMathJax;
-        MathJax.Hub.Queue(['Typeset', MathJax.Hub, this.el.nativeElement]);
+        if (this.jhiMathJax) {
+            this.el.nativeElement.innerHTML = this.jhiMathJax;
+            MathJax.Hub.Queue(['Typeset', MathJax.Hub, this.el.nativeElement]);
+
+        } else {
+            this.el.nativeElement.innerHtml = '';
+        }
     }
 }

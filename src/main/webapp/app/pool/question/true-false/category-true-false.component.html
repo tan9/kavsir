@@ -46,7 +46,7 @@
                     <a [routerLink]="['../../question-true-false', questionTrueFalse.id ]"
                        [queryParams]="{ group: false }">{{questionTrueFalse.id}}</a>
                 </td>
-                <td>{{questionTrueFalse.correct ? '◯' : '╳'}}</td>
+                <td>{{questionTrueFalse.correct | trueFalseSymbol}}</td>
                 <td><span [jhiMathJax]="questionTrueFalse.text"></span></td>
                 <td>{{questionTrueFalse.memo}}</td>
                 <td *ngIf="inGroup">{{questionTrueFalse.groupPosition}}</td>

@@ -18,7 +18,8 @@ import {
     CategoryHierarchyComponent,
     CategoryHierarchyService,
     CategorySelectComponent,
-    MathJaxDirective
+    MathJaxDirective,
+    TrueFalseSymbolPipe
 } from './';
 
 @NgModule({
@@ -31,7 +32,8 @@ import {
         HasAnyAuthorityDirective,
         CategoryHierarchyComponent,
         CategorySelectComponent,
-        MathJaxDirective
+        MathJaxDirective,
+        TrueFalseSymbolPipe
     ],
     providers: [
         LoginService,
@@ -54,7 +56,8 @@ import {
         DatePipe,
         CategoryHierarchyComponent,
         CategorySelectComponent,
-        MathJaxDirective
+        MathJaxDirective,
+        TrueFalseSymbolPipe
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 

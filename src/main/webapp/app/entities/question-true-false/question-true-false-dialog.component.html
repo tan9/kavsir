@@ -19,13 +19,13 @@
             <div class="form-check form-check-inline">
                 <label class="form-check-label" (click)="questionTrueFalse.correct = true">
                     <input class="form-check-input" type="checkbox"
-                           [checked]="questionTrueFalse.correct"> ◯
+                           [checked]="questionTrueFalse.correct"> {{true | trueFalseSymbol}}
                 </label>
             </div>
             <div class="form-check form-check-inline">
                 <label class="form-check-label" (click)="questionTrueFalse.correct = false">
                     <input class="form-check-input" type="checkbox"
-                           [checked]="!questionTrueFalse.correct"> ╳
+                           [checked]="!questionTrueFalse.correct"> {{false | trueFalseSymbol}}
                 </label>
             </div>
             <div [hidden]="!(editForm.controls.correct?.dirty && editForm.controls.correct?.invalid)">

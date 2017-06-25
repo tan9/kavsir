@@ -31,7 +31,7 @@ currentAccount: any;
     reverse: any;
 
     constructor(
-        private questionTrueFalseService: QuestionTrueFalseService,
+        protected questionTrueFalseService: QuestionTrueFalseService,
         private parseLinks: JhiParseLinks,
         private alertService: JhiAlertService,
         private principal: Principal,
@@ -137,14 +137,14 @@ currentAccount: any;
         return result;
     }
 
-    private onSuccess(data, headers) {
+    protected onSuccess(data, headers) {
         this.links = this.parseLinks.parse(headers.get('link'));
         this.totalItems = headers.get('X-Total-Count');
         this.queryCount = this.totalItems;
         // this.page = pagingParams.page;
         this.questionTrueFalses = data;
     }
-    private onError(error) {
+    protected onError(error) {
         this.alertService.error(error.message, null, null);
     }
 }

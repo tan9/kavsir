@@ -3,6 +3,7 @@ package com.tj.kvasir.web.rest;
 import com.tj.kvasir.KavsirApp;
 
 import com.tj.kvasir.domain.QuestionTrueFalse;
+import com.tj.kvasir.repository.CategoryNodeRepository;
 import com.tj.kvasir.repository.QuestionTrueFalseRepository;
 import com.tj.kvasir.repository.search.QuestionTrueFalseSearchRepository;
 import com.tj.kvasir.web.rest.errors.ExceptionTranslator;
@@ -57,6 +58,9 @@ public class QuestionTrueFalseResourceIntTest {
     private QuestionTrueFalseSearchRepository questionTrueFalseSearchRepository;
 
     @Autowired
+    private CategoryNodeRepository categoryNodeRepository;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -75,7 +79,7 @@ public class QuestionTrueFalseResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        QuestionTrueFalseResource questionTrueFalseResource = new QuestionTrueFalseResource(questionTrueFalseRepository, questionTrueFalseSearchRepository);
+        QuestionTrueFalseResource questionTrueFalseResource = new QuestionTrueFalseResource(questionTrueFalseRepository, questionTrueFalseSearchRepository, categoryNodeRepository);
         this.restQuestionTrueFalseMockMvc = MockMvcBuilders.standaloneSetup(questionTrueFalseResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

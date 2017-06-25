@@ -3,6 +3,7 @@ package com.tj.kvasir.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.tj.kvasir.domain.QuestionTrueFalse;
 
+import com.tj.kvasir.repository.CategoryNodeRepository;
 import com.tj.kvasir.repository.QuestionTrueFalseRepository;
 import com.tj.kvasir.repository.search.QuestionTrueFalseSearchRepository;
 import com.tj.kvasir.web.rest.util.HeaderUtil;
@@ -13,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,12 +24,13 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+import java.util.Set;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.search.aggregations.AggregationBuilders.terms;
 
 /**
  * REST controller for managing QuestionTrueFalse.
@@ -44,9 +47,12 @@ public class QuestionTrueFalseResource {
 
     private final QuestionTrueFalseSearchRepository questionTrueFalseSearchRepository;
 
-    public QuestionTrueFalseResource(QuestionTrueFalseRepository questionTrueFalseRepository, QuestionTrueFalseSearchRepository questionTrueFalseSearchRepository) {
+    private final CategoryNodeRepository categoryNodeRepository;
+
+    public QuestionTrueFalseResource(QuestionTrueFalseRepository questionTrueFalseRepository, QuestionTrueFalseSearchRepository questionTrueFalseSearchRepository, CategoryNodeRepository categoryNodeRepository) {
         this.questionTrueFalseRepository = questionTrueFalseRepository;
         this.questionTrueFalseSearchRepository = questionTrueFalseSearchRepository;
+        this.categoryNodeRepository = categoryNodeRepository;
     }
 
     /**
@@ -96,14 +102,22 @@ public class QuestionTrueFalseResource {
     /**
      * GET  /question-true-falses : get all the questionTrueFalses.
      *
+     * @param categories limiting result in categories
      * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of questionTrueFalses in body
      */
     @GetMapping("/question-true-falses")
     @Timed
-    public ResponseEntity<List<QuestionTrueFalse>> getAllQuestionTrueFalses(@ApiParam Pageable pageable) {
-        log.debug("REST request to get a page of QuestionTrueFalses");
-        Page<QuestionTrueFalse> page = questionTrueFalseRepository.findAll(pageable);
+    public ResponseEntity<List<QuestionTrueFalse>> getAllQuestionTrueFalses(@RequestParam Optional<Set<Long>> categories,
+                                                                            @ApiParam Pageable pageable) {
+        log.debug("REST request to get a page of QuestionTrueFalses in categories {}", categories);
+        Page<QuestionTrueFalse> page;
+        if (categories.isPresent()) {
+            Set<Long> categoriesIncludingChildren = categoryNodeRepository.findAllChildNodes(categories.get());
+            page = questionTrueFalseRepository.findByCategories(categoriesIncludingChildren, pageable);
+        } else {
+            page = questionTrueFalseRepository.findAll(pageable);
+        }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/question-true-falses");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -142,14 +156,33 @@ public class QuestionTrueFalseResource {
      * to the query.
      *
      * @param query the query of the questionTrueFalse search
+     * @param categories  limiting result in category
      * @param pageable the pagination information
      * @return the result of the search
      */
     @GetMapping("/_search/question-true-falses")
     @Timed
-    public ResponseEntity<List<QuestionTrueFalse>> searchQuestionTrueFalses(@RequestParam String query, @ApiParam Pageable pageable) {
-        log.debug("REST request to search for a page of QuestionTrueFalses for query {}", query);
-        Page<QuestionTrueFalse> page = questionTrueFalseSearchRepository.search(queryStringQuery(query), pageable);
+    public ResponseEntity<List<QuestionTrueFalse>> searchQuestionTrueFalses(@RequestParam String query,
+                                                                            @RequestParam Optional<Set<Long>> categories,
+                                                                            @ApiParam Pageable pageable) {
+        log.debug("REST request to search for a page of QuestionTrueFalses for query {} in categories {}", query, categories);
+        NativeSearchQueryBuilder builder = new NativeSearchQueryBuilder()
+            .withQuery(queryStringQuery(query))
+            .withPageable(pageable);
+        if (categories.isPresent()) {
+            // FIXME search within categories is broken
+            List<Long> longs = new ArrayList(categories.get());
+            long[] categoryIds = new long[longs.size()];
+            for (int i = 0, n = longs.size(); i < n; i++) {
+                categoryIds[i] = longs.get(i);
+            }
+            builder.addAggregation(
+                terms("categories")
+                    .field("category.id")
+                    .include(categoryIds)
+            );
+        }
+        Page<QuestionTrueFalse> page = questionTrueFalseSearchRepository.search(builder.build());
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/question-true-falses");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

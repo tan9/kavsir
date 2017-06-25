@@ -11,6 +11,7 @@ import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -136,6 +137,7 @@ public class ElasticsearchIndexService {
 
     @Async
     @Timed
+    @Scheduled(cron = "0 0 0 * * *")
     public void reindexAll() {
         reindexForClass(CategoryAcademicYear.class, categoryAcademicYearRepository, categoryAcademicYearSearchRepository);
         reindexForClass(CategoryGrade.class, categoryGradeRepository, categoryGradeSearchRepository);

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigInteger;
 import java.util.Set;
 
 /**
@@ -15,7 +16,8 @@ import java.util.Set;
 @Repository
 public interface CategoryNodeRepository extends JpaRepository<CategoryNode,Long> {
 
+    // TODO Shouldn't the id in type of Long?
     @Query(name = "CategoryNode.findAllChildNodes", nativeQuery = true)
-    Set<Long> findAllChildNodes(@Param("categoryIds") Set<Long> categoryIds);
+    Set<BigInteger> findAllChildNodes(@Param("categoryIds") Set<? extends Number> categoryIds);
 
 }

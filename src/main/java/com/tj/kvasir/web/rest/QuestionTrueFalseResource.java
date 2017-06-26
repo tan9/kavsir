@@ -10,6 +10,7 @@ import com.tj.kvasir.web.rest.util.HeaderUtil;
 import com.tj.kvasir.web.rest.util.PaginationUtil;
 import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -21,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.math.BigInteger;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -30,7 +32,6 @@ import java.util.Optional;
 import java.util.Set;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
-import static org.elasticsearch.search.aggregations.AggregationBuilders.terms;
 
 /**
  * REST controller for managing QuestionTrueFalse.
@@ -113,7 +114,7 @@ public class QuestionTrueFalseResource {
         log.debug("REST request to get a page of QuestionTrueFalses in categories {}", categories);
         Page<QuestionTrueFalse> page;
         if (categories.isPresent()) {
-            Set<Long> categoriesIncludingChildren = categoryNodeRepository.findAllChildNodes(categories.get());
+            Set<BigInteger> categoriesIncludingChildren = categoryNodeRepository.findAllChildNodes(categories.get());
             page = questionTrueFalseRepository.findByCategories(categoriesIncludingChildren, pageable);
         } else {
             page = questionTrueFalseRepository.findAll(pageable);
@@ -170,17 +171,15 @@ public class QuestionTrueFalseResource {
             .withQuery(queryStringQuery(query))
             .withPageable(pageable);
         if (categories.isPresent()) {
-            // FIXME search within categories is broken
-            List<Long> longs = new ArrayList(categories.get());
-            long[] categoryIds = new long[longs.size()];
-            for (int i = 0, n = longs.size(); i < n; i++) {
-                categoryIds[i] = longs.get(i);
+            Set<BigInteger> categoriesIncludingChildren = categoryNodeRepository.findAllChildNodes(categories.get());
+            List<BigInteger> ids = new ArrayList(categoriesIncludingChildren);
+            long[] categoryIds = new long[ids.size()];
+            for (int i = 0, n = ids.size(); i < n; i++) {
+                categoryIds[i] = ids.get(i).longValueExact();
             }
-            builder.addAggregation(
-                terms("categories")
-                    .field("category.id")
-                    .include(categoryIds)
-            );
+            builder.withFilter(
+                QueryBuilders
+                    .termsQuery("categories.id", categoryIds));
         }
         Page<QuestionTrueFalse> page = questionTrueFalseSearchRepository.search(builder.build());
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/question-true-falses");

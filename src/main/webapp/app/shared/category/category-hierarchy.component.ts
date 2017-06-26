@@ -1,7 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild, Input } from '@angular/core';
-import { ResponseWrapper } from '../model/response-wrapper.model';
-import { JhiAlertService } from 'ng-jhipster';
-import { CategoryNodeService } from '../../entities/category-node/category-node.service';
+import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
 import { Category } from '../../entities/category.model';
 
 import { ITreeOptions, TreeComponent, TreeNode } from 'angular-tree-component/dist/angular-tree-component';
@@ -32,33 +30,30 @@ export class CategoryHierarchyComponent implements OnInit, OnDestroy {
         allowDrop: false
     };
 
+    private subscription;
     isTreeSaving = false;
 
     constructor(private categoryHierarchyService: CategoryHierarchyService,
                 private alertService: JhiAlertService,
-                private categoryNodeService: CategoryNodeService) {
+                private eventManager: JhiEventManager) {
     }
 
     ngOnInit() {
-        this.loadAllCategoryNodes();
+        this.subscription = this.eventManager.subscribe(
+            'categoryNodeTreeModification',
+            () => this.updateTree()
+        );
+
+        this.updateTree();
     }
 
     ngOnDestroy() {
+        this.eventManager.destroy(this.subscription);
     }
 
-    loadAllCategoryNodes() {
-        this.categoryNodeService.query({'page': 0, 'size': 50000}).subscribe(
-            (res: ResponseWrapper) => {
-                const nodes = res.json;
-                // TODO enum order/literal conversion?
-                nodes.forEach((item) => item.type = CategoryType[item.type]);
-
-                const children = this.categoryHierarchyService.constructTreeRecursively(nodes);
-                this.treeNodes[0].children = children;
-                this.tree.treeModel.update();
-            },
-            (res: ResponseWrapper) => this.onError(res.json)
-        );
+    updateTree() {
+        this.treeNodes[0].children = this.categoryHierarchyService.getTree();
+        this.tree.treeModel.update();
     }
 
     addCategoryChild(node: TreeNode, item: Category) {
@@ -104,13 +99,19 @@ export class CategoryHierarchyComponent implements OnInit, OnDestroy {
         const treeNodes = this.treeNodes[0].children;
         this.categoryHierarchyService.saveTreeRecursively(treeNodes).then(
             () => {
-                this.loadAllCategoryNodes();
+                this.eventManager.broadcast({
+                    name: 'categoryNodeListModification',
+                    content: 'Tree save OK'
+                });
                 this.isTreeSaving = false;
             },
             (error) => {
                 this.isTreeSaving = false;
                 this.onError(error);
-                this.loadAllCategoryNodes();
+                this.eventManager.broadcast({
+                    name: 'categoryNodeListModification',
+                    content: 'Tree save failed'
+                });
             }
         );
     }

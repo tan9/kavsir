@@ -1,14 +1,15 @@
-import { Injectable } from '@angular/core';
-import { JhiAlertService } from 'ng-jhipster';
+import { Injectable, OnInit } from '@angular/core';
+import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
 import { CategoryNodeService } from '../../entities/category-node/category-node.service';
 import { Category } from '../../entities/category.model';
 
 import { TreeNode } from 'angular-tree-component/dist/angular-tree-component';
 import { CategoryNode, CategoryType } from '../../entities/category-node/category-node.model';
 import { CategoriesService } from './categories.service';
+import { ResponseWrapper } from '../model/response-wrapper.model';
 
 @Injectable()
-export class CategoryHierarchyService  {
+export class CategoryHierarchyService implements OnInit {
 
     private CATEGORY_LEVEL_MAP = {
         1: {type: CategoryType.ACADEMIC_YEAR, name: '學年'},
@@ -19,12 +20,51 @@ export class CategoryHierarchyService  {
         6: {type: CategoryType.SEGMENT, name: '子類別'}
     };
 
+    private subscription;
+    tree: CategoryTreeNode[] = [];
+
     constructor(private categoriesService: CategoriesService,
-                private alertService: JhiAlertService,
-                private categoryNodeService: CategoryNodeService) {
+                private categoryNodeService: CategoryNodeService,
+                private eventManager: JhiEventManager,
+                private alertService: JhiAlertService) {
+
+        // Service is not lifecycle-managed, we have to init it by ourselves.
+        // https://stackoverflow.com/a/35110798/3440376
+        this.ngOnInit();
     }
 
-    constructTreeRecursively(nodes: CategoryNode[], parentId?: number): CategoryTreeNode[] {
+    ngOnInit() {
+        this.subscription = this.eventManager.subscribe(
+            'categoryNodeListModification',
+            () => this.loadAllCategoryNodes()
+        );
+        this.loadAllCategoryNodes();
+    }
+
+    getTree(): CategoryTreeNode[] {
+        return this.tree;
+    }
+
+    private loadAllCategoryNodes() {
+        this.categoryNodeService.query({'page': 0, 'size': 50000}).subscribe(
+            (res: ResponseWrapper) => {
+                const nodes = res.json;
+                // TODO enum order/literal conversion?
+                nodes.forEach((item) => item.type = CategoryType[item.type]);
+
+                const children = this.constructTreeRecursively(nodes);
+                this.tree = children;
+
+                this.eventManager.broadcast({
+                    name: 'categoryNodeTreeModification',
+                    content: 'OK'
+                });
+            },
+            (res: ResponseWrapper) => this.onError(res.json)
+        );
+    }
+
+    private constructTreeRecursively(nodes: CategoryNode[], parentId?: number): CategoryTreeNode[] {
         const childrenOfTheParent = [];
         const elementsSelected: number[] = [];
         nodes.forEach((node, index) => {

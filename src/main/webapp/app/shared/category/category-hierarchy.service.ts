@@ -21,6 +21,7 @@ export class CategoryHierarchyService implements OnInit {
     };
 
     private subscription;
+    nodes: Map<number, CategoryNode> = new Map();
     tree: CategoryTreeNode[] = [];
 
     constructor(private categoriesService: CategoriesService,
@@ -50,7 +51,10 @@ export class CategoryHierarchyService implements OnInit {
             (res: ResponseWrapper) => {
                 const nodes = res.json;
                 // TODO enum order/literal conversion?
-                nodes.forEach((item) => item.type = CategoryType[item.type]);
+                nodes.forEach((item) => {
+                    item.type = CategoryType[item.type];
+                    this.nodes.set(item.id, item);
+                });
 
                 const children = this.constructTreeRecursively(nodes);
                 this.tree = children;
@@ -97,12 +101,33 @@ export class CategoryHierarchyService implements OnInit {
         return this.CATEGORY_LEVEL_MAP[level];
     }
 
-    pathDisplayName(node: TreeNode): string {
+    pathDisplayName(node: TreeNode | number): string {
         const displayNames: string[] = [];
+        if (typeof node === 'number') {
+            // categoryNode.id
+            let categoryNode = this.nodes.get(node);
+            if (categoryNode !== undefined) {
+                while (categoryNode) {
+                    displayNames.unshift(
+                        this.categoryNodeDisplayName(categoryNode)
+                    );
+                    if (categoryNode.parent) {
+                        categoryNode = this.nodes.get(categoryNode.parent.id);
+                    } else {
+                        break;
+                    }
+                }
 
-        while (node && node.level > 1) {
-            displayNames.unshift(this.nodeDisplayName(node));
-            node = node.parent;
+            } else {
+                return 'UNKNOWN NODE: ' + node;
+            }
+
+        } else {
+            // tree node
+            while (node && node.level > 1) {
+                displayNames.unshift(this.nodeDisplayName(node));
+                node = node.parent;
+            }
         }
 
         return displayNames.join(' / ');
@@ -113,7 +138,7 @@ export class CategoryHierarchyService implements OnInit {
             return '...';
 
         } else if (node.level === 1) {
-            return '類別目錄';
+            return '總類別';
 
         } else if (node.level > 1 && node.level <= 6) {
             return this.categoryNodeDisplayName(node.data);
@@ -123,10 +148,13 @@ export class CategoryHierarchyService implements OnInit {
         }
     }
 
-    private categoryNodeDisplayName(node: CategoryTreeNode) {
-        const categoryNode = this.availableCategories(node.type).find(
+    private categoryNodeDisplayName(node: CategoryNode) {
+        if (node.name) {
+            return node.name;
+        }
+        const category = this.availableCategories(node.type).find(
             (item) => item.id === node.typeId);
-        return categoryNode ? categoryNode.name : 'loading...';
+        return category ? category.name : 'loading...';
     }
 
     availableCategories(type: CategoryType): Category[] {

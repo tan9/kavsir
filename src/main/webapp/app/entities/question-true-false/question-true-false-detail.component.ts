@@ -8,7 +8,8 @@ import { QuestionTrueFalseService } from './question-true-false.service';
 
 @Component({
     selector: 'jhi-question-true-false-detail',
-    templateUrl: './question-true-false-detail.component.html'
+    templateUrl: './question-true-false-detail.component.html',
+    styleUrls: [ './question-true-false-detail.component.css' ]
 })
 export class QuestionTrueFalseDetailComponent implements OnInit, OnDestroy {
 

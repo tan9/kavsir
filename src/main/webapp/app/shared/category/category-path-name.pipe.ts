@@ -8,6 +8,6 @@ export class CategoryPathNamePipe implements PipeTransform {
     }
 
     transform(categoryId: number): string {
-        return 'category ' + categoryId;
+        return this.categoryHierarchyService.pathDisplayName(categoryId);
     }
 }

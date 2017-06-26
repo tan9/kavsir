@@ -26,7 +26,7 @@ export class TrueFalseComponent implements OnInit, OnDestroy {
                 this.categories = categories.content;
                 setTimeout(() =>
                     this.eventManager.broadcast({ name: 'questionTrueFalseListModification', content: 'Category Selected.'})
-                )
+                );
             }
         );
     }

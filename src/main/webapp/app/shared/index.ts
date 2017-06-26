@@ -11,6 +11,7 @@ export * from './auth/user-route-access-service';
 export * from './category/categories.service';
 export * from './category/category-hierarchy.component';
 export * from './category/category-hierarchy.service';
+export * from './category/category-path-name.pipe';
 export * from './category/category-select.component';
 export * from './language/language.constants';
 export * from './language/language.helper';

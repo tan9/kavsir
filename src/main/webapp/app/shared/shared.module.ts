@@ -17,6 +17,7 @@ import {
     CategoriesService,
     CategoryHierarchyComponent,
     CategoryHierarchyService,
+    CategoryPathNamePipe,
     CategorySelectComponent,
     MathJaxDirective,
     TrueFalseSymbolPipe
@@ -31,6 +32,7 @@ import {
         JhiLoginModalComponent,
         HasAnyAuthorityDirective,
         CategoryHierarchyComponent,
+        CategoryPathNamePipe,
         CategorySelectComponent,
         MathJaxDirective,
         TrueFalseSymbolPipe
@@ -55,6 +57,7 @@ import {
         HasAnyAuthorityDirective,
         DatePipe,
         CategoryHierarchyComponent,
+        CategoryPathNamePipe,
         CategorySelectComponent,
         MathJaxDirective,
         TrueFalseSymbolPipe

@@ -23,7 +23,7 @@
         <dt><span jhiTranslate="kavsirApp.questionTrueFalse.category">Category</span></dt>
         <dd>
             <span *ngFor="let category of questionTrueFalse.categories; let last = last">
-                <a [routerLink]="['/category-node', category?.id ]">{{category.id}}</a>{{last ? '' : ', '}}
+                <a [routerLink]="['/category-node', category?.id ]">{{category.id | categoryPathName}}</a>{{last ? '' : ', '}}
             </span>
         </dd>
         <dt><span jhiTranslate="kavsirApp.questionTrueFalse.image">Image</span></dt>

@@ -38,8 +38,9 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="kavsirApp.questionTrueFalse.text" for="field_text">Text</label>
             <div class="input-group">
-                <input type="text" class="form-control" name="text" id="field_text"
-                    [(ngModel)]="questionTrueFalse.text" required />
+                <textarea class="form-control" name="text" id="field_text"
+                    [(ngModel)]="questionTrueFalse.text" required>
+                </textarea>
                 <button type="button" class="input-group-addon btn btn-info" (click)="preview = !preview">
                     <span [class]="'fa fa-eye' + (preview ? '-slash' : '')"></span>
                 </button>

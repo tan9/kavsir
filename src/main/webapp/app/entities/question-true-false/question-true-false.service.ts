@@ -35,7 +35,7 @@ export class QuestionTrueFalseService {
 
     query(req?: any): Observable<ResponseWrapper> {
         const options = createRequestOption(req);
-        if (req.categories) {
+        if (req && req.categories) {
             options.params.append('categories', req.categories);
         }
         return this.http.get(this.resourceUrl, options)
@@ -48,7 +48,7 @@ export class QuestionTrueFalseService {
 
     search(req?: any): Observable<ResponseWrapper> {
         const options = createRequestOption(req);
-        if (req.categories) {
+        if (req && req.categories) {
             options.params.append('categories', req.categories);
         }
         return this.http.get(this.resourceSearchUrl, options)

@@ -3,6 +3,7 @@ package com.tj.kvasir.web.rest;
 import com.tj.kvasir.repository.CategoryNodeRepository;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.TermsQueryBuilder;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
@@ -24,10 +25,9 @@ public class ResourceHelper {
             .collect(Collectors.toSet());
     }
 
-    public QueryBuilder asCategoriesFilter(Set<Long> categoryIds) {
+    public TermsQueryBuilder asCategoriesFilter(Set<Long> categoryIds) {
         long[] targetCategoryIds = includeChildren(categoryIds).stream().mapToLong(id -> id).toArray();
         return QueryBuilders.termsQuery("categories.id", targetCategoryIds);
     }
-
 
 }

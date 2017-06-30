@@ -10,12 +10,21 @@ import { TreeNode } from 'angular-tree-component';
 export class CategoryChoiceComponent extends QuestionChoiceComponent {
 
     inGroup = false;
-    multipleResponse;
+    multipleResponse : boolean;
 
     @Input() categories: TreeNode[] = [];
 
+    ngOnInit() {
+        this.multipleResponse = 'multiple-response' === this.activatedRoute.snapshot.url[1].path;
+        super.ngOnInit();
+    }
+
+    private getPath() {
+        return this.multipleResponse ? '/question/multiple-response' : '/question/choice';
+    }
+
     transition() {
-        this.router.navigate(['/question/choice'], {
+        this.router.navigate([this.getPath()], {
             queryParams: {
                 page: this.page,
                 size: this.itemsPerPage,
@@ -29,7 +38,7 @@ export class CategoryChoiceComponent extends QuestionChoiceComponent {
     clear() {
         this.page = 0;
         this.currentSearch = '';
-        this.router.navigate(['/question/choice', {
+        this.router.navigate([this.getPath(), {
             page: this.page,
             sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
         }]);
@@ -42,7 +51,7 @@ export class CategoryChoiceComponent extends QuestionChoiceComponent {
         }
         this.page = 0;
         this.currentSearch = query;
-        this.router.navigate(['/question/choice', {
+        this.router.navigate([this.getPath(), {
             search: this.currentSearch,
             page: this.page,
             sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
@@ -55,7 +64,8 @@ export class CategoryChoiceComponent extends QuestionChoiceComponent {
             const searchReq = {
                 query: this.currentSearch,
                 size: this.itemsPerPage,
-                sort: this.sort()
+                sort: this.sort(),
+                multi: this.multipleResponse
             };
             if (this.categories.length > 0) {
                 searchReq['categories'] = this.categories.map((node) => node.data.id);
@@ -69,7 +79,8 @@ export class CategoryChoiceComponent extends QuestionChoiceComponent {
         const req = {
             page: this.page - 1,
             size: this.itemsPerPage,
-            sort: this.sort()};
+            sort: this.sort(),
+            multi: this.multipleResponse};
         if (this.categories.length > 0) {
             req['categories'] = this.categories.map((node) => node.data.id);
         }

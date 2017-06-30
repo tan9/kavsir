@@ -35,7 +35,7 @@ currentAccount: any;
         private parseLinks: JhiParseLinks,
         private alertService: JhiAlertService,
         private principal: Principal,
-        private activatedRoute: ActivatedRoute,
+        protected activatedRoute: ActivatedRoute,
         protected router: Router,
         private eventManager: JhiEventManager,
         private paginationUtil: JhiPaginationUtil,

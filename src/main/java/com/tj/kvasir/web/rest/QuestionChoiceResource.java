@@ -8,6 +8,10 @@ import com.tj.kvasir.web.rest.util.HeaderUtil;
 import com.tj.kvasir.web.rest.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import io.swagger.annotations.ApiParam;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.TermsQueryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -106,20 +110,30 @@ public class QuestionChoiceResource {
      * GET  /question-choices : get all the questionChoices.
      *
      * @param categories limiting result in categories
+     * @param multi limiting result to the type of multipleResponse
      * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of questionChoices in body
      */
     @GetMapping("/question-choices")
     @Timed
     public ResponseEntity<List<QuestionChoice>> getAllQuestionChoices(@RequestParam Optional<Set<Long>> categories,
+                                                                      @RequestParam Optional<Boolean> multi,
                                                                       @ApiParam Pageable pageable) {
         log.debug("REST request to get a page of QuestionChoices in categories {}", categories);
         Page<QuestionChoice> page;
         if (categories.isPresent()) {
             Set<Long> targetCategories = resourceHelper.includeChildren(categories.get());
-            page = questionChoiceRepository.findByCategories(targetCategories, pageable);
+            if (multi.isPresent()) {
+                page = questionChoiceRepository.findByCategoriesAndMultipleResponse(targetCategories, multi.get(), pageable);
+            } else {
+                page = questionChoiceRepository.findByCategories(targetCategories, pageable);
+            }
         } else {
-            page = questionChoiceRepository.findAll(pageable);
+            if (multi.isPresent()) {
+                page = questionChoiceRepository.findByMultipleResponse(multi.get(), pageable);
+            } else {
+                page = questionChoiceRepository.findAll(pageable);
+            }
         }
 
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/question-choices");
@@ -161,6 +175,7 @@ public class QuestionChoiceResource {
      *
      * @param query the query of the questionChoice search
      * @param categories  limiting result in category
+     * @param multi limiting result to the type of multipleResponse
      * @param pageable the pagination information
      * @return the result of the search
      */
@@ -168,14 +183,27 @@ public class QuestionChoiceResource {
     @Timed
     public ResponseEntity<List<QuestionChoice>> searchQuestionChoices(@RequestParam String query,
                                                                       @RequestParam Optional<Set<Long>> categories,
+                                                                      @RequestParam Optional<Boolean> multi,
                                                                       @ApiParam Pageable pageable) {
         log.debug("REST request to search for a page of QuestionChoices for query {} in categories {}", query, categories);
         NativeSearchQueryBuilder builder = new NativeSearchQueryBuilder()
             .withQuery(queryStringQuery(query))
             .withPageable(pageable);
-        if (categories.isPresent()) {
-            builder.withFilter(resourceHelper.asCategoriesFilter(categories.get()));
+
+        if (categories.isPresent() && multi.isPresent()) {
+            BoolQueryBuilder boolQuery = QueryBuilders.boolQuery()
+                .must(QueryBuilders.termQuery("multipleResponse", (boolean) multi.get()))
+                .filter(resourceHelper.asCategoriesFilter(categories.get()));
+            builder.withFilter(boolQuery);
+
+        } else if (categories.isPresent()) {
+            TermsQueryBuilder filterBuilder = resourceHelper.asCategoriesFilter(categories.get());
+            builder.withFilter(filterBuilder);
+
+        } else if (multi.isPresent()) {
+            builder.withFilter(QueryBuilders.termQuery("multipleResponse", (boolean) multi.get()));
         }
+
         Page<QuestionChoice> page = questionChoiceSearchRepository.search(builder.build());
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/question-choices");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);

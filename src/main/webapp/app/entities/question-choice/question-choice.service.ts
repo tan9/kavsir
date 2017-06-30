@@ -38,6 +38,9 @@ export class QuestionChoiceService {
         if (req && req.categories) {
             options.params.append('categories', req.categories);
         }
+        if (req && req.hasOwnProperty('multi')) {
+            options.params.append('multi', req.multi);
+        }
         return this.http.get(this.resourceUrl, options)
             .map((res: Response) => this.convertResponse(res));
     }
@@ -50,6 +53,9 @@ export class QuestionChoiceService {
         const options = createRequestOption(req);
         if (req && req.categories) {
             options.params.append('categories', req.categories);
+        }
+        if (req && req.hasOwnProperty('multi')) {
+            options.params.append('multi', req.multi);
         }
         return this.http.get(this.resourceSearchUrl, options)
             .map((res: any) => this.convertResponse(res));

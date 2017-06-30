@@ -1,6 +1,6 @@
 <div>
     <h2>
-        <span jhiTranslate="kavsirApp.questionChoice.home.title">Question Choices</span>
+        <span [jhiTranslate]="'question.type.' + (multipleResponse ? 'multipleResponse' : 'choice')">Question Choices</span>
         <button class="btn btn-primary float-right create-question-choice"
                 [routerLink]="['/', { outlets: { popup: ['question-choice-new'] } }]"
                 [queryParams]="{ group: false }">
@@ -32,7 +32,7 @@
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
                 <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
-                <th jhiSortBy="multipleResponse"><span jhiTranslate="kavsirApp.questionChoice.multipleResponse">Multiple Response</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="multipleResponse" *ngIf="multipleResponse === undefined"><span jhiTranslate="kavsirApp.questionChoice.multipleResponse">Multiple Response</span> <span class="fa fa-sort"></span></th>
                 <th jhiSortBy="text"><span jhiTranslate="kavsirApp.questionChoice.text">Text</span> <span class="fa fa-sort"></span></th>
                 <th jhiSortBy="memo"><span jhiTranslate="kavsirApp.questionChoice.memo">Memo</span> <span class="fa fa-sort"></span></th>
                 <th jhiSortBy="groupPosition" *ngIf="inGroup"><span jhiTranslate="kavsirApp.questionChoice.groupPosition">Group Position</span> <span class="fa fa-sort"></span></th>
@@ -45,7 +45,7 @@
                 <td>
                     <a [routerLink]="['../../question-choice', questionChoice.id ]"
                        [queryParams]="{ group: false }">{{questionChoice.id}}</a></td>
-                <td>{{questionChoice.multipleResponse}}</td>
+                <td *ngIf="multipleResponse === undefined">{{questionChoice.multipleResponse}}</td>
                 <td><span [jhiMathJax]="questionChoice.text"></span></td>
                 <td>{{questionChoice.memo}}</td>
                 <td *ngIf="inGroup">{{questionChoice.groupPosition}}</td>

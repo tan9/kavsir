@@ -27,7 +27,7 @@ public interface QuestionTrueFalseRepository extends JpaRepository<QuestionTrueF
     @Query(name = "QuestionTrueFalse.findByCategoriesTree", nativeQuery = true)
     Page<QuestionTrueFalse> findByCategoriesTree(@Param("categoryIds") Set<Long> categoryIds, Pageable pageable);
 
-    // TODO Shouldn't the id in type of Long?
-    @Query(name = "QuestionTrueFalse.findByCategories", nativeQuery = true)
-    Page<QuestionTrueFalse> findByCategories(@Param("categoryIds") Set<? extends Number> categoryIds, Pageable pageable);
+    @Query("SELECT DISTINCT question_true_false FROM QuestionTrueFalse question_true_false LEFT JOIN question_true_false.categories category WHERE category.id IN (:categoryIds)")
+    Page<QuestionTrueFalse> findByCategories(@Param("categoryIds") Set<Long> categoryIds, Pageable pageable);
+
 }

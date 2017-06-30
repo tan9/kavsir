@@ -2,15 +2,12 @@ package com.tj.kvasir.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.tj.kvasir.domain.QuestionTrueFalse;
-
-import com.tj.kvasir.repository.CategoryNodeRepository;
 import com.tj.kvasir.repository.QuestionTrueFalseRepository;
 import com.tj.kvasir.repository.search.QuestionTrueFalseSearchRepository;
 import com.tj.kvasir.web.rest.util.HeaderUtil;
 import com.tj.kvasir.web.rest.util.PaginationUtil;
-import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
-import org.elasticsearch.index.query.QueryBuilders;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -19,19 +16,24 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilde
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.math.BigInteger;
 import java.net.URI;
 import java.net.URISyntaxException;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * REST controller for managing QuestionTrueFalse.
@@ -48,12 +50,12 @@ public class QuestionTrueFalseResource {
 
     private final QuestionTrueFalseSearchRepository questionTrueFalseSearchRepository;
 
-    private final CategoryNodeRepository categoryNodeRepository;
+    private final ResourceHelper resourceHelper;
 
-    public QuestionTrueFalseResource(QuestionTrueFalseRepository questionTrueFalseRepository, QuestionTrueFalseSearchRepository questionTrueFalseSearchRepository, CategoryNodeRepository categoryNodeRepository) {
+    public QuestionTrueFalseResource(QuestionTrueFalseRepository questionTrueFalseRepository, QuestionTrueFalseSearchRepository questionTrueFalseSearchRepository, ResourceHelper resourceHelper) {
         this.questionTrueFalseRepository = questionTrueFalseRepository;
         this.questionTrueFalseSearchRepository = questionTrueFalseSearchRepository;
-        this.categoryNodeRepository = categoryNodeRepository;
+        this.resourceHelper = resourceHelper;
     }
 
     /**
@@ -114,8 +116,8 @@ public class QuestionTrueFalseResource {
         log.debug("REST request to get a page of QuestionTrueFalses in categories {}", categories);
         Page<QuestionTrueFalse> page;
         if (categories.isPresent()) {
-            Set<BigInteger> categoriesIncludingChildren = categoryNodeRepository.findAllChildNodes(categories.get());
-            page = questionTrueFalseRepository.findByCategories(categoriesIncludingChildren, pageable);
+            Set<Long> targetCategories = resourceHelper.includeChildren(categories.get());
+            page = questionTrueFalseRepository.findByCategories(targetCategories, pageable);
         } else {
             page = questionTrueFalseRepository.findAll(pageable);
         }
@@ -171,15 +173,7 @@ public class QuestionTrueFalseResource {
             .withQuery(queryStringQuery(query))
             .withPageable(pageable);
         if (categories.isPresent()) {
-            Set<BigInteger> categoriesIncludingChildren = categoryNodeRepository.findAllChildNodes(categories.get());
-            List<BigInteger> ids = new ArrayList(categoriesIncludingChildren);
-            long[] categoryIds = new long[ids.size()];
-            for (int i = 0, n = ids.size(); i < n; i++) {
-                categoryIds[i] = ids.get(i).longValueExact();
-            }
-            builder.withFilter(
-                QueryBuilders
-                    .termsQuery("categories.id", categoryIds));
+            builder.withFilter(resourceHelper.asCategoriesFilter(categories.get()));
         }
         Page<QuestionTrueFalse> page = questionTrueFalseSearchRepository.search(builder.build());
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/question-true-falses");

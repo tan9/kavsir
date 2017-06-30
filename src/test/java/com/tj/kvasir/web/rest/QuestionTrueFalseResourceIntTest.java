@@ -58,7 +58,7 @@ public class QuestionTrueFalseResourceIntTest {
     private QuestionTrueFalseSearchRepository questionTrueFalseSearchRepository;
 
     @Autowired
-    private CategoryNodeRepository categoryNodeRepository;
+    private ResourceHelper resourceHelper;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -79,7 +79,7 @@ public class QuestionTrueFalseResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        QuestionTrueFalseResource questionTrueFalseResource = new QuestionTrueFalseResource(questionTrueFalseRepository, questionTrueFalseSearchRepository, categoryNodeRepository);
+        QuestionTrueFalseResource questionTrueFalseResource = new QuestionTrueFalseResource(questionTrueFalseRepository, questionTrueFalseSearchRepository, resourceHelper);
         this.restQuestionTrueFalseMockMvc = MockMvcBuilders.standaloneSetup(questionTrueFalseResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

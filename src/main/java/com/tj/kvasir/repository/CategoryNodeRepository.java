@@ -16,8 +16,7 @@ import java.util.Set;
 @Repository
 public interface CategoryNodeRepository extends JpaRepository<CategoryNode,Long> {
 
-    // TODO Shouldn't the id in type of Long?
     @Query(name = "CategoryNode.findAllChildNodes", nativeQuery = true)
-    Set<BigInteger> findAllChildNodes(@Param("categoryIds") Set<? extends Number> categoryIds);
+    Set<CategoryNode> findAllChildNodes(@Param("categoryIds") Set<Long> categoryIds);
 
 }

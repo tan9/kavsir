@@ -10,7 +10,7 @@ import { TreeNode } from 'angular-tree-component';
 })
 export class CategoryTrueFalseComponent extends QuestionTrueFalseComponent {
 
-    inGroup: false;
+    inGroup = false;
 
     @Input() categories: TreeNode[] = [];
 

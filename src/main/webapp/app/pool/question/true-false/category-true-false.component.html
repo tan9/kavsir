@@ -52,7 +52,7 @@
                 <td *ngIf="inGroup">{{questionTrueFalse.groupPosition}}</td>
                 <td *ngIf="inGroup">
                     <div *ngIf="questionTrueFalse.questionGroup">
-                        <a [routerLink]="['../question-group', questionTrueFalse.questionGroup?.id ]" >{{questionTrueFalse.questionGroup?.id}}</a>
+                        <a [routerLink]="['../../question-group', questionTrueFalse.questionGroup?.id ]" >{{questionTrueFalse.questionGroup?.id}}</a>
                     </div>
                 </td>
                 <td class="text-right">

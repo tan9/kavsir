@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
 
 import { UserRouteAccessService } from '../../../shared';
+import { QuestionTrueFalseResolvePagingParams } from '../../../entities/question-true-false';
 import { TrueFalseComponent } from './true-false.component';
-import { QuestionTrueFalseResolvePagingParams } from '../../../entities/question-true-false/question-true-false.route';
 
 export const trueFalseRoute: Routes = [
     {

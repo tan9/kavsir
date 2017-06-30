@@ -1,20 +1,20 @@
 import { Component, Input } from '@angular/core';
-import { QuestionTrueFalseComponent } from '../../../entities/question-true-false/index';
+import { QuestionEssayComponent } from '../../../entities/question-essay/index';
 import { ResponseWrapper } from '../../../shared/model/response-wrapper.model';
 import { TreeNode } from 'angular-tree-component';
 
 @Component({
-    selector: 'jhi-category-true-false',
-    templateUrl: './category-true-false.component.html'
+    selector: 'jhi-category-essay',
+    templateUrl: './category-essay.component.html'
 })
-export class CategoryTrueFalseComponent extends QuestionTrueFalseComponent {
+export class CategoryEssayComponent extends QuestionEssayComponent {
 
     inGroup = false;
 
     @Input() categories: TreeNode[] = [];
 
     transition() {
-        this.router.navigate(['/question/true-false'], {
+        this.router.navigate(['/question/essay'], {
             queryParams: {
                 page: this.page,
                 size: this.itemsPerPage,
@@ -28,7 +28,7 @@ export class CategoryTrueFalseComponent extends QuestionTrueFalseComponent {
     clear() {
         this.page = 0;
         this.currentSearch = '';
-        this.router.navigate(['/question/true-false', {
+        this.router.navigate(['/question/essay', {
             page: this.page,
             sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
         }]);
@@ -41,7 +41,7 @@ export class CategoryTrueFalseComponent extends QuestionTrueFalseComponent {
         }
         this.page = 0;
         this.currentSearch = query;
-        this.router.navigate(['/question/true-false', {
+        this.router.navigate(['/question/essay', {
             search: this.currentSearch,
             page: this.page,
             sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
@@ -59,7 +59,7 @@ export class CategoryTrueFalseComponent extends QuestionTrueFalseComponent {
             if (this.categories.length > 0) {
                 searchReq['categories'] = this.categories.map((node) => node.data.id);
             }
-            this.questionTrueFalseService.search(searchReq).subscribe(
+            this.questionEssayService.search(searchReq).subscribe(
                 (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
                 (res: ResponseWrapper) => this.onError(res.json)
             );
@@ -72,7 +72,7 @@ export class CategoryTrueFalseComponent extends QuestionTrueFalseComponent {
         if (this.categories.length > 0) {
             req['categories'] = this.categories.map((node) => node.data.id);
         }
-        this.questionTrueFalseService.query(req).subscribe(
+        this.questionEssayService.query(req).subscribe(
             (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
             (res: ResponseWrapper) => this.onError(res.json)
         );

@@ -57,6 +57,9 @@ public class QuestionEssayResourceIntTest {
     private QuestionEssaySearchRepository questionEssaySearchRepository;
 
     @Autowired
+    private ResourceHelper resourceHelper;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -75,7 +78,7 @@ public class QuestionEssayResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        QuestionEssayResource questionEssayResource = new QuestionEssayResource(questionEssayRepository, questionEssaySearchRepository);
+        QuestionEssayResource questionEssayResource = new QuestionEssayResource(questionEssayRepository, questionEssaySearchRepository, resourceHelper);
         this.restQuestionEssayMockMvc = MockMvcBuilders.standaloneSetup(questionEssayResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

@@ -14,24 +14,44 @@
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="kavsirApp.questionEssay.text" for="field_text">Text</label>
-            <input type="text" class="form-control" name="text" id="field_text"
-                [(ngModel)]="questionEssay.text" required />
+            <div class="input-group">
+                <textarea class="form-control" name="text" id="field_text"
+                          [(ngModel)]="questionEssay.text" required>
+                </textarea>
+                <button type="button" class="input-group-addon btn btn-info" (click)="preview = !preview">
+                    <span [class]="'fa fa-eye' + (preview ? '-slash' : '')"></span>
+                </button>
+            </div>
             <div [hidden]="!(editForm.controls.text?.dirty && editForm.controls.text?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.text?.errors?.required" jhiTranslate="entity.validation.required">
                    This field is required.
                 </small>
             </div>
+            <div *ngIf="preview" class="card"
+                 style="margin-top: 0.5em; padding: 0.5em; background-color: #eee">
+                <span [jhiMathJax]="questionChoice.text"></span>
+            </div>
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="kavsirApp.questionEssay.answer" for="field_answer">Answer</label>
-            <input type="text" class="form-control" name="answer" id="field_answer"
-                [(ngModel)]="questionEssay.answer" required />
+            <div class="input-group">
+                <textarea class="form-control" name="answer" id="field_answer"
+                          [(ngModel)]="questionEssay.answer" required>
+                </textarea>
+                <button type="button" class="input-group-addon btn btn-info" (click)="preview = !preview">
+                    <span [class]="'fa fa-eye' + (preview ? '-slash' : '')"></span>
+                </button>
+            </div>
             <div [hidden]="!(editForm.controls.answer?.dirty && editForm.controls.answer?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.answer?.errors?.required" jhiTranslate="entity.validation.required">
                    This field is required.
                 </small>
+            </div>
+            <div *ngIf="preview" class="card"
+                 style="margin-top: 0.5em; padding: 0.5em; background-color: #eee">
+                <span [jhiMathJax]="questionChoice.text"></span>
             </div>
         </div>
         <div class="form-group">
@@ -48,7 +68,7 @@
         <div class="form-group">
             <label jhiTranslate="kavsirApp.questionEssay.category" for="field_category">Category</label>
             <select class="form-control" id="field_category" multiple name="category" [(ngModel)]="questionEssay.categories">
-                <option [ngValue]="getSelected(questionEssay.categories, categoryNodeOption)" *ngFor="let categoryNodeOption of categorynodes; trackBy: trackCategoryNodeById">{{categoryNodeOption.id}}</option>
+                <option [ngValue]="getSelected(questionEssay.categories, categoryNodeOption)" *ngFor="let categoryNodeOption of categorynodes; trackBy: trackCategoryNodeById">{{categoryNodeOption.id | categoryPathName}}</option>
             </select>
         </div>
         <div class="form-group">

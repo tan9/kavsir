@@ -31,12 +31,12 @@ currentAccount: any;
     reverse: any;
 
     constructor(
-        private questionEssayService: QuestionEssayService,
+        protected questionEssayService: QuestionEssayService,
         private parseLinks: JhiParseLinks,
         private alertService: JhiAlertService,
         private principal: Principal,
         private activatedRoute: ActivatedRoute,
-        private router: Router,
+        protected router: Router,
         private eventManager: JhiEventManager,
         private paginationUtil: JhiPaginationUtil,
         private paginationConfig: PaginationConfig
@@ -137,14 +137,14 @@ currentAccount: any;
         return result;
     }
 
-    private onSuccess(data, headers) {
+    protected onSuccess(data, headers) {
         this.links = this.parseLinks.parse(headers.get('link'));
         this.totalItems = headers.get('X-Total-Count');
         this.queryCount = this.totalItems;
         // this.page = pagingParams.page;
         this.questionEssays = data;
     }
-    private onError(error) {
+    protected onError(error) {
         this.alertService.error(error.message, null, null);
     }
 }

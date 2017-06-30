@@ -10,7 +10,7 @@
         </dd>
         <dt><span jhiTranslate="kavsirApp.questionChoice.text">Text</span></dt>
         <dd>
-            <span>{{questionChoice.text}}</span>
+            <span [jhiMathJax]="questionChoice.text"></span>
         </dd>
         <dt><span jhiTranslate="kavsirApp.questionChoice.memo">Memo</span></dt>
         <dd>
@@ -23,7 +23,7 @@
         <dt><span jhiTranslate="kavsirApp.questionChoice.category">Category</span></dt>
         <dd>
             <span *ngFor="let category of questionChoice.categories; let last = last">
-                <a [routerLink]="['/category-node', category?.id ]">{{category.id}}</a>{{last ? '' : ', '}}
+                <a [routerLink]="['/category-node', category?.id ]">{{category.id | categoryPathName}}<span class="category-id">{{category.id}}</span></a>{{last ? '' : ', '}}
             </span>
         </dd>
         <dt><span jhiTranslate="kavsirApp.questionChoice.image">Image</span></dt>

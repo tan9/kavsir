@@ -2,32 +2,38 @@ package com.tj.kvasir.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.tj.kvasir.domain.QuestionChoice;
-
 import com.tj.kvasir.repository.QuestionChoiceRepository;
 import com.tj.kvasir.repository.search.QuestionChoiceSearchRepository;
 import com.tj.kvasir.web.rest.util.HeaderUtil;
 import com.tj.kvasir.web.rest.util.PaginationUtil;
-import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+import java.util.Set;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * REST controller for managing QuestionChoice.
@@ -44,9 +50,12 @@ public class QuestionChoiceResource {
 
     private final QuestionChoiceSearchRepository questionChoiceSearchRepository;
 
-    public QuestionChoiceResource(QuestionChoiceRepository questionChoiceRepository, QuestionChoiceSearchRepository questionChoiceSearchRepository) {
+    private final ResourceHelper resourceHelper;
+
+    public QuestionChoiceResource(QuestionChoiceRepository questionChoiceRepository, QuestionChoiceSearchRepository questionChoiceSearchRepository, ResourceHelper resourceHelper) {
         this.questionChoiceRepository = questionChoiceRepository;
         this.questionChoiceSearchRepository = questionChoiceSearchRepository;
+        this.resourceHelper = resourceHelper;
     }
 
     /**
@@ -96,14 +105,23 @@ public class QuestionChoiceResource {
     /**
      * GET  /question-choices : get all the questionChoices.
      *
+     * @param categories limiting result in categories
      * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of questionChoices in body
      */
     @GetMapping("/question-choices")
     @Timed
-    public ResponseEntity<List<QuestionChoice>> getAllQuestionChoices(@ApiParam Pageable pageable) {
-        log.debug("REST request to get a page of QuestionChoices");
-        Page<QuestionChoice> page = questionChoiceRepository.findAll(pageable);
+    public ResponseEntity<List<QuestionChoice>> getAllQuestionChoices(@RequestParam Optional<Set<Long>> categories,
+                                                                      @ApiParam Pageable pageable) {
+        log.debug("REST request to get a page of QuestionChoices in categories {}", categories);
+        Page<QuestionChoice> page;
+        if (categories.isPresent()) {
+            Set<Long> targetCategories = resourceHelper.includeChildren(categories.get());
+            page = questionChoiceRepository.findByCategories(targetCategories, pageable);
+        } else {
+            page = questionChoiceRepository.findAll(pageable);
+        }
+
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/question-choices");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -142,14 +160,23 @@ public class QuestionChoiceResource {
      * to the query.
      *
      * @param query the query of the questionChoice search
+     * @param categories  limiting result in category
      * @param pageable the pagination information
      * @return the result of the search
      */
     @GetMapping("/_search/question-choices")
     @Timed
-    public ResponseEntity<List<QuestionChoice>> searchQuestionChoices(@RequestParam String query, @ApiParam Pageable pageable) {
-        log.debug("REST request to search for a page of QuestionChoices for query {}", query);
-        Page<QuestionChoice> page = questionChoiceSearchRepository.search(queryStringQuery(query), pageable);
+    public ResponseEntity<List<QuestionChoice>> searchQuestionChoices(@RequestParam String query,
+                                                                      @RequestParam Optional<Set<Long>> categories,
+                                                                      @ApiParam Pageable pageable) {
+        log.debug("REST request to search for a page of QuestionChoices for query {} in categories {}", query, categories);
+        NativeSearchQueryBuilder builder = new NativeSearchQueryBuilder()
+            .withQuery(queryStringQuery(query))
+            .withPageable(pageable);
+        if (categories.isPresent()) {
+            builder.withFilter(resourceHelper.asCategoriesFilter(categories.get()));
+        }
+        Page<QuestionChoice> page = questionChoiceSearchRepository.search(builder.build());
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/question-choices");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

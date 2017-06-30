@@ -8,7 +8,8 @@ import { QuestionChoiceService } from './question-choice.service';
 
 @Component({
     selector: 'jhi-question-choice-detail',
-    templateUrl: './question-choice-detail.component.html'
+    templateUrl: './question-choice-detail.component.html',
+    styleUrls: [ './question-choice-detail.component.css' ]
 })
 export class QuestionChoiceDetailComponent implements OnInit, OnDestroy {
 

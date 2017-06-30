@@ -1,3 +1,21 @@
-<p>
-    choice works!
-</p>
+<div class="row category-label">
+    <div class="col-sm-12">
+        <h2>
+            {{ categories.length > 0 ?
+            categoryHierarchyService.pathDisplayName(categories[0]) :
+            ( 'category.all' | translate) }}
+        </h2>
+        <button type="submit"
+                [routerLink]="['/', { outlets: { popup: 'category-select/' + ((categories && categories[0] && categories[0].data) ? categories[0].data.id : -1) } }]"
+                replaceUrl="true"
+                class="btn btn-primary btn-sm category-select-button" style="display: inline-block">
+            <span class="fa fa-tags"></span>
+            <span class="hidden-md-down" jhiTranslate="category.action.select">Select</span>
+        </button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <jhi-category-choice [categories]="categories"></jhi-category-choice>
+    </div>
+</div>

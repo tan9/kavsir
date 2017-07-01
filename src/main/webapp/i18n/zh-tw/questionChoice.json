@@ -5,6 +5,8 @@
                 "title": "選擇題",
                 "createLabel": "建立一筆新的「選擇題」",
                 "createOrEditLabel": "建立或編輯「選擇題」",
+                "createOrEditChoiceLabel": "建立或編輯「單選題」",
+                "createOrEditMultipleResponseLabel": "建立或編輯「多選題」",
                 "search": "搜尋「選擇題」"
             },
             "created": "新的「選擇題」建立成功，識別碼為 {{ param }}",

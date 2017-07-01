@@ -3,7 +3,7 @@
         <span [jhiTranslate]="'question.type.' + (multipleResponse ? 'multipleResponse' : 'choice')">Question Choices</span>
         <button class="btn btn-primary float-right create-question-choice"
                 [routerLink]="['/', { outlets: { popup: ['question-choice-new'] } }]"
-                [queryParams]="{ group: false }">
+                [queryParams]="{ group: false, multi: multipleResponse }">
             <span class="fa fa-plus"></span>
             <span class="hidden-sm-down"  jhiTranslate="kavsirApp.questionChoice.home.createLabel">
             Create new Question Choice
@@ -69,7 +69,7 @@
                         </button>
                         <button type="submit"
                                 [routerLink]="['/', { outlets: { popup: 'question-choice/'+ questionChoice.id + '/edit'} }]"
-                                [queryParams]="{ group: false }"
+                                [queryParams]="{ group: false, multi: multipleResponse }"
                                 replaceUrl="true"
                                 class="btn btn-primary btn-sm">
                             <span class="fa fa-pencil"></span>

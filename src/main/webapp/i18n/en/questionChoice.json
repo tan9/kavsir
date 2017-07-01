@@ -5,6 +5,8 @@
                 "title": "Question Choices",
                 "createLabel": "Create a new Question Choice",
                 "createOrEditLabel": "Create or edit a Question Choice",
+                "createOrEditChoiceLabel": "Create or edit a Question Choice with Single Response",
+                "createOrEditMultipleResponseLabel": "Create or edit a Question Choice with Multiple Response",
                 "search": "Search for Question Choice"
             },
             "created": "A new Question Choice is created with identifier {{ param }}",

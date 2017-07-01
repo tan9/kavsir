@@ -24,6 +24,7 @@ export class QuestionChoiceDialogComponent implements OnInit {
     authorities: any[];
     isSaving: boolean;
     inGroup = false;
+    multi: boolean; /* valid values: true, false, undefined (not specified) */
 
     categorynodes: CategoryNode[];
 
@@ -46,6 +47,11 @@ export class QuestionChoiceDialogComponent implements OnInit {
     ngOnInit() {
         this.isSaving = false;
         this.inGroup = this.route.snapshot.queryParams['group'] !== 'false';
+        let multi = this.route.snapshot.queryParams['multi'];
+        if (multi !== undefined) {
+            this.multi = ('true' === multi);
+            this.questionChoice.multipleResponse = this.multi;
+        }
         this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
         this.categoryNodeService.query()
             .subscribe((res: ResponseWrapper) => { this.categorynodes = res.json; }, (res: ResponseWrapper) => this.onError(res.json));

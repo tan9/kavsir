@@ -3,7 +3,7 @@ import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
 import { Category } from '../../entities/category.model';
 
 import { ITreeOptions, TreeComponent, TreeNode } from 'angular-tree-component/dist/angular-tree-component';
-import { CategoryType } from '../../entities/category-node/category-node.model';
+import { CategoryNode, CategoryType } from '../../entities/category-node/category-node.model';
 import { CategoryHierarchyService, CategoryTreeNode } from './category-hierarchy.service';
 
 @Component({
@@ -51,9 +51,37 @@ export class CategoryHierarchyComponent implements OnInit, OnDestroy {
         this.eventManager.destroy(this.subscription);
     }
 
+    select(categoryNode: CategoryNode) {
+        this.categoryHierarchyService.setWorkingCategory(categoryNode);
+        this.updateTreeActivatedNode();
+    }
+
+    private updateTreeActivatedNode() {
+        const category = this.categoryHierarchyService.getWorkingCategory();
+        if (category) {
+            const targetNode = this.tree.treeModel.getNodeBy((treeNode) => {
+                return (treeNode.data) && (treeNode.data.id === category.id);
+            });
+            if (targetNode) {
+                this.tree.treeModel.setActiveNode(targetNode, true, false);
+            }
+        }
+    }
+
+    public getSelected(): CategoryNode[] {
+        const nodes = this.tree.treeModel.getActiveNodes();
+        if (nodes.length === 1 && nodes[0].isRoot) {
+            // return empty nodes if the selected node is ROOT
+            return [];
+        } else {
+            return nodes.map((treeNode) => treeNode.data);
+        }
+    }
+
     updateTree() {
         this.treeNodes[0].children = this.categoryHierarchyService.getTree();
         this.tree.treeModel.update();
+        this.updateTreeActivatedNode();
     }
 
     addCategoryChild(node: TreeNode, item: Category) {

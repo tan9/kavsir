@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { QuestionEssayComponent } from '../../../entities/question-essay/index';
 import { ResponseWrapper } from '../../../shared/model/response-wrapper.model';
-import { CategoryNode } from '../../../entities/category-node/category-node.model';
+import { CategoryHierarchyService } from '../../../shared/category/category-hierarchy.service';
 
 @Component({
     selector: 'jhi-category-essay',
@@ -11,7 +11,8 @@ export class CategoryEssayComponent extends QuestionEssayComponent {
 
     inGroup = false;
 
-    @Input() categories: CategoryNode[] = [];
+    // not using normal inject because we do wanna to tight to the super constructor
+    @Input() categoryHierarchyService: CategoryHierarchyService;
 
     transition() {
         this.router.navigate(['/question/essay'], {
@@ -56,8 +57,8 @@ export class CategoryEssayComponent extends QuestionEssayComponent {
                 size: this.itemsPerPage,
                 sort: this.sort()
             };
-            if (this.categories.length > 0) {
-                searchReq['categories'] = this.categories.map((node) => node.id);
+            if (this.categoryHierarchyService.getWorkingCategory()) {
+                searchReq['categories'] = [this.categoryHierarchyService.getWorkingCategory().id];
             }
             this.questionEssayService.search(searchReq).subscribe(
                 (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
@@ -69,8 +70,8 @@ export class CategoryEssayComponent extends QuestionEssayComponent {
             page: this.page - 1,
             size: this.itemsPerPage,
             sort: this.sort()};
-        if (this.categories.length > 0) {
-            req['categories'] = this.categories.map((node) => node.id);
+        if (this.categoryHierarchyService.getWorkingCategory()) {
+            req['categories'] = [this.categoryHierarchyService.getWorkingCategory().id];
         }
         this.questionEssayService.query(req).subscribe(
             (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),

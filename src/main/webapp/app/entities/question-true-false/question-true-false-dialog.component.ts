@@ -48,6 +48,12 @@ export class QuestionTrueFalseDialogComponent implements OnInit {
         this.isSaving = false;
         this.inGroup = this.route.snapshot.queryParams['group'] !== 'false';
         this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
+
+        if (this.categoryHierarchyService.getWorkingCategory() &&
+            (!this.questionTrueFalse.categories || this.questionTrueFalse.categories.length === 0)) {
+            this.questionTrueFalse.categories = [this.categoryHierarchyService.getWorkingCategory()];
+        }
+
         this.categorynodes = this.categoryHierarchyService.getNodes();
         this.resourceImageService.query()
             .subscribe((res: ResponseWrapper) => { this.resourceimages = res.json; }, (res: ResponseWrapper) => this.onError(res.json));

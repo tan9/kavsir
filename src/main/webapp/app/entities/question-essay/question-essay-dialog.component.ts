@@ -47,6 +47,12 @@ export class QuestionEssayDialogComponent implements OnInit {
         this.isSaving = false;
         this.inGroup = this.route.snapshot.queryParams['group'] !== 'false';
         this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
+
+        if (this.categoryHierarchyService.getWorkingCategory() &&
+            (!this.questionEssay.categories || this.questionEssay.categories.length === 0)) {
+            this.questionEssay.categories = [this.categoryHierarchyService.getWorkingCategory()];
+        }
+
         this.categorynodes = this.categoryHierarchyService.getNodes();
         this.resourceImageService.query()
             .subscribe((res: ResponseWrapper) => { this.resourceimages = res.json; }, (res: ResponseWrapper) => this.onError(res.json));

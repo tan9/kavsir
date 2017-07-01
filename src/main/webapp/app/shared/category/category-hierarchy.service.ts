@@ -26,6 +26,8 @@ export class CategoryHierarchyService implements OnInit {
     private nodes: CategoryNode[] = [];
     tree: CategoryTreeNode[] = [];
 
+    private workingCategory?: CategoryNode;
+
     constructor(private categoriesService: CategoriesService,
                 private categoryNodeService: CategoryNodeService,
                 private eventManager: JhiEventManager,
@@ -50,6 +52,14 @@ export class CategoryHierarchyService implements OnInit {
 
     getNodes(): CategoryNode[] {
         return this.nodes;
+    }
+
+    getWorkingCategory(): CategoryNode {
+        return this.workingCategory;
+    }
+
+    setWorkingCategory(node: CategoryNode) {
+        this.workingCategory = node;
     }
 
     private loadAllCategoryNodes() {

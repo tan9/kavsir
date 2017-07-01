@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, forwardRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Response } from '@angular/http';
 
@@ -13,6 +13,8 @@ import { CategoryNode, CategoryNodeService } from '../category-node';
 import { ResourceImage, ResourceImageService } from '../resource-image';
 import { QuestionGroup, QuestionGroupService } from '../question-group';
 import { ResponseWrapper } from '../../shared';
+import { ChoiceOptionsComponent } from '../../shared/question/choice-options.component';
+import { QuestionChoiceOptionService } from '../question-choice-option/question-choice-option.service';
 
 @Component({
     selector: 'jhi-question-choice-dialog',
@@ -23,6 +25,8 @@ export class QuestionChoiceDialogComponent implements OnInit {
     questionChoice: QuestionChoice;
     authorities: any[];
     isSaving: boolean;
+    inGroup = false;
+    multi: boolean; /* valid values: true, false, undefined (not specified) */
 
     categorynodes: CategoryNode[];
 
@@ -30,19 +34,42 @@ export class QuestionChoiceDialogComponent implements OnInit {
 
     questiongroups: QuestionGroup[];
 
+    @ViewChild(forwardRef(() => ChoiceOptionsComponent)) options: ChoiceOptionsComponent;
+
     constructor(
         public activeModal: NgbActiveModal,
         private alertService: JhiAlertService,
         private questionChoiceService: QuestionChoiceService,
+        private questionChoiceOptionService: QuestionChoiceOptionService,
         private categoryNodeService: CategoryNodeService,
         private resourceImageService: ResourceImageService,
         private questionGroupService: QuestionGroupService,
-        private eventManager: JhiEventManager
+        private eventManager: JhiEventManager,
+        private route: ActivatedRoute
     ) {
+    }
+
+    optionAnswerValid() {
+        return !this.options || this.options.choiceOptions.some((option) => option.correct);
+    }
+
+    optionAnswerForSingleChoiceValid() {
+        return this.questionChoice.multipleResponse || this.options.choiceOptions.filter((option) => option.correct).length <= 1;
+    }
+
+    optionNumberValid() {
+        // FIXME avoid hard-coded threshold, and find out how to apply to i18n message
+        return !this.options || this.options.choiceOptions.length >= 4;
     }
 
     ngOnInit() {
         this.isSaving = false;
+        this.inGroup = this.route.snapshot.queryParams['group'] !== 'false';
+        let multi = this.route.snapshot.queryParams['multi'];
+        if (multi !== undefined) {
+            this.multi = ('true' === multi);
+            this.questionChoice.multipleResponse = this.multi;
+        }
         this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
         this.categoryNodeService.query()
             .subscribe((res: ResponseWrapper) => { this.categorynodes = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
@@ -58,18 +85,42 @@ export class QuestionChoiceDialogComponent implements OnInit {
 
     save() {
         this.isSaving = true;
+        this.options.editable = false;
         if (this.questionChoice.id !== undefined) {
-            this.subscribeToSaveResponse(
-                this.questionChoiceService.update(this.questionChoice), false);
+            const result = this.questionChoiceService.update(this.questionChoice);
+            this.subscribeToSaveResponse(result, false);
         } else {
-            this.subscribeToSaveResponse(
-                this.questionChoiceService.create(this.questionChoice), true);
+            const create = this.questionChoiceService.create(this.questionChoice);
+            this.subscribeToSaveResponse(create, true);
         }
+    }
+
+    private saveOptions(questionChoice: QuestionChoice) : Promise<any> {
+        const promises: Promise<any>[] = [];
+
+        this.options.choiceOptions.forEach((option) => {
+            option.questionChoice = questionChoice;
+            if (option.id) {
+                promises.push(this.questionChoiceOptionService.update(option).toPromise());
+            } else {
+                promises.push(this.questionChoiceOptionService.create(option).toPromise());
+            }
+        });
+        this.options.optionsDeleted.forEach((option) => {
+            if (option.id) {
+                promises.push(this.questionChoiceOptionService.delete(option.id).toPromise());
+            }
+        });
+
+        return Promise.all(promises);
     }
 
     private subscribeToSaveResponse(result: Observable<QuestionChoice>, isCreated: boolean) {
         result.subscribe((res: QuestionChoice) =>
-            this.onSaveSuccess(res, isCreated), (res: Response) => this.onSaveError(res));
+            this.saveOptions(res).then(
+                () => this.onSaveSuccess(res, isCreated),
+                () => this.onSaveError(res)
+            ), (res: Response) => this.onSaveError(res));
     }
 
     private onSaveSuccess(result: QuestionChoice, isCreated: boolean) {

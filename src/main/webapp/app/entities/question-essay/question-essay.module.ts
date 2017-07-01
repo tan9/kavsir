@@ -13,6 +13,7 @@ import {
     QuestionEssayDeleteDialogComponent,
     questionEssayRoute,
     questionEssayPopupRoute,
+    QuestionEssayResolvePagingParams,
 } from './';
 
 const ENTITY_STATES = [
@@ -43,6 +44,7 @@ const ENTITY_STATES = [
     providers: [
         QuestionEssayService,
         QuestionEssayPopupService,
+        QuestionEssayResolvePagingParams,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

@@ -13,6 +13,7 @@ import {
     QuestionTrueFalseDeleteDialogComponent,
     questionTrueFalseRoute,
     questionTrueFalsePopupRoute,
+    QuestionTrueFalseResolvePagingParams,
 } from './';
 
 const ENTITY_STATES = [
@@ -43,6 +44,7 @@ const ENTITY_STATES = [
     providers: [
         QuestionTrueFalseService,
         QuestionTrueFalsePopupService,
+        QuestionTrueFalseResolvePagingParams,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

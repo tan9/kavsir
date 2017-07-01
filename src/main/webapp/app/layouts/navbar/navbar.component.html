@@ -28,9 +28,39 @@
                 </a>
                 <ul class="dropdown-menu" ngbDropdownMenu>
                     <li>
-                        <a class="dropdown-item" routerLink="category" routerLinkActive="active" (click)="collapseNavbar()">
+                        <a class="dropdown-item" routerLink="categories" routerLinkActive="active" (click)="collapseNavbar()">
                             <i class="fa fa-tags" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.pool.category.main">Category</span>
+                        </a>
+                    </li>
+                    <li>
+                        <div class="dropdown-divider"></div>
+                    </li>
+                    <li>
+                        <h6 class="dropdown-header" jhiTranslate="global.menu.pool.question.main">Question</h6>
+                    </li>
+                     <li>
+                        <a class="dropdown-item" routerLink="question/true-false" routerLinkActive="active" (click)="collapseNavbar()">
+                            <i class="fa fa-check-circle-o" aria-hidden="true"></i>
+                            <span jhiTranslate="question.type.trueFalse">True/False</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="question/choice" routerLinkActive="active" (click)="collapseNavbar()">
+                            <i class="fa fa-list-ul" aria-hidden="true"></i>
+                            <span jhiTranslate="question.type.choice">Choice</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="question/multiple-response" routerLinkActive="active" (click)="collapseNavbar()">
+                            <i class="fa fa-list-ol" aria-hidden="true"></i>
+                            <span jhiTranslate="question.type.multipleResponse">Multiple Response</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="question/essay" routerLinkActive="active" (click)="collapseNavbar()">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            <span jhiTranslate="question.type.essay">Essay</span>
                         </a>
                     </li>
                 </ul>

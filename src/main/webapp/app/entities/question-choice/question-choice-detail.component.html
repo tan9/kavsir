@@ -10,20 +10,20 @@
         </dd>
         <dt><span jhiTranslate="kavsirApp.questionChoice.text">Text</span></dt>
         <dd>
-            <span>{{questionChoice.text}}</span>
+            <span [jhiMathJax]="questionChoice.text"></span>
         </dd>
         <dt><span jhiTranslate="kavsirApp.questionChoice.memo">Memo</span></dt>
         <dd>
             <span>{{questionChoice.memo}}</span>
         </dd>
-        <dt><span jhiTranslate="kavsirApp.questionChoice.groupPosition">Group Position</span></dt>
-        <dd>
+        <dt *ngIf="inGroup"><span jhiTranslate="kavsirApp.questionChoice.groupPosition">Group Position</span></dt>
+        <dd *ngIf="inGroup">
             <span>{{questionChoice.groupPosition}}</span>
         </dd>
         <dt><span jhiTranslate="kavsirApp.questionChoice.category">Category</span></dt>
         <dd>
             <span *ngFor="let category of questionChoice.categories; let last = last">
-                <a [routerLink]="['/category-node', category?.id ]">{{category.id}}</a>{{last ? '' : ', '}}
+                <a [routerLink]="['/category-node', category?.id ]">{{category.id | categoryPathName}}<span class="category-id">{{category.id}}</span></a>{{last ? '' : ', '}}
             </span>
         </dd>
         <dt><span jhiTranslate="kavsirApp.questionChoice.image">Image</span></dt>
@@ -32,8 +32,8 @@
                 <a [routerLink]="['/resource-image', image?.id ]">{{image.id}}</a>{{last ? '' : ', '}}
             </span>
         </dd>
-        <dt><span jhiTranslate="kavsirApp.questionChoice.questionGroup">Question Group</span></dt>
-        <dd>
+        <dt *ngIf="inGroup"><span jhiTranslate="kavsirApp.questionChoice.questionGroup">Question Group</span></dt>
+        <dd *ngIf="inGroup">
             <div *ngIf="questionChoice.questionGroup">
                 <a [routerLink]="['/question-group', questionChoice.questionGroup?.id]">{{questionChoice.questionGroup?.id}}</a>
             </div>

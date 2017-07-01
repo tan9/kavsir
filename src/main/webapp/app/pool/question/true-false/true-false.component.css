@@ -1,0 +1,12 @@
+h2 {
+    display: inline-block;
+}
+
+.category-label {
+    padding-bottom: 0.5em;
+}
+
+.category-select-button {
+    display: inline-block;
+    vertical-align: top;
+}

@@ -23,7 +23,8 @@ import javax.sql.DataSource;
 import java.sql.SQLException;
 
 @Configuration
-@EnableJpaRepositories("com.tj.kvasir.repository")
+@EnableJpaRepositories(basePackages = "com.tj.kvasir.repository",
+    namedQueriesLocation = "classpath:config/jpa-named-queries.properties")
 @EnableJpaAuditing(auditorAwareRef = "springSecurityAuditorAware")
 @EnableTransactionManagement
 @EnableElasticsearchRepositories("com.tj.kvasir.repository.search")

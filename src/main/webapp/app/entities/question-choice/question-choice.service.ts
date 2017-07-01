@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Rx';
 
 import { QuestionChoice } from './question-choice.model';
 import { ResponseWrapper, createRequestOption } from '../../shared';
+import { QuestionChoiceOptionService } from '../question-choice-option';
 
 @Injectable()
 export class QuestionChoiceService {
@@ -11,7 +12,8 @@ export class QuestionChoiceService {
     private resourceUrl = 'api/question-choices';
     private resourceSearchUrl = 'api/_search/question-choices';
 
-    constructor(private http: Http) { }
+    constructor(private http: Http,
+                private questionChoiceOptionService: QuestionChoiceOptionService) { }
 
     create(questionChoice: QuestionChoice): Observable<QuestionChoice> {
         const copy = this.convert(questionChoice);
@@ -35,6 +37,12 @@ export class QuestionChoiceService {
 
     query(req?: any): Observable<ResponseWrapper> {
         const options = createRequestOption(req);
+        if (req && req.categories) {
+            options.params.append('categories', req.categories);
+        }
+        if (req && req.hasOwnProperty('multi')) {
+            options.params.append('multi', req.multi);
+        }
         return this.http.get(this.resourceUrl, options)
             .map((res: Response) => this.convertResponse(res));
     }
@@ -45,6 +53,12 @@ export class QuestionChoiceService {
 
     search(req?: any): Observable<ResponseWrapper> {
         const options = createRequestOption(req);
+        if (req && req.categories) {
+            options.params.append('categories', req.categories);
+        }
+        if (req && req.hasOwnProperty('multi')) {
+            options.params.append('multi', req.multi);
+        }
         return this.http.get(this.resourceSearchUrl, options)
             .map((res: any) => this.convertResponse(res));
     }

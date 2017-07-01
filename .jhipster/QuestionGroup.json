@@ -31,7 +31,7 @@
     "fields": [
         {
             "fieldName": "text",
-            "javadoc": "文字描述",
+            "javadoc": "題目",
             "fieldType": "String",
             "fieldValidateRules": [
                 "required"
@@ -39,7 +39,7 @@
         },
         {
             "fieldName": "memo",
-            "javadoc": "題目來源備註",
+            "javadoc": "備註",
             "fieldType": "String"
         }
     ],
@@ -47,6 +47,6 @@
     "javadoc": "題組",
     "entityTableName": "question_group",
     "dto": "no",
-    "pagination": "no",
+    "pagination": "pagination",
     "service": "no"
 }

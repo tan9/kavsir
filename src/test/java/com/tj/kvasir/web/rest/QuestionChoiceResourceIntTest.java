@@ -57,6 +57,9 @@ public class QuestionChoiceResourceIntTest {
     private QuestionChoiceSearchRepository questionChoiceSearchRepository;
 
     @Autowired
+    private ResourceHelper resourceHelper;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -75,7 +78,7 @@ public class QuestionChoiceResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        QuestionChoiceResource questionChoiceResource = new QuestionChoiceResource(questionChoiceRepository, questionChoiceSearchRepository);
+        QuestionChoiceResource questionChoiceResource = new QuestionChoiceResource(questionChoiceRepository, questionChoiceSearchRepository, resourceHelper);
         this.restQuestionChoiceMockMvc = MockMvcBuilders.standaloneSetup(questionChoiceResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

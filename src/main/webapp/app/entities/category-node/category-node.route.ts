@@ -11,10 +11,29 @@ import { CategoryNodeDeletePopupComponent } from './category-node-delete-dialog.
 
 import { Principal } from '../../shared';
 
+@Injectable()
+export class CategoryNodeResolvePagingParams implements Resolve<any> {
+
+    constructor(private paginationUtil: JhiPaginationUtil) {}
+
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+        const page = route.queryParams['page'] ? route.queryParams['page'] : '1';
+        const sort = route.queryParams['sort'] ? route.queryParams['sort'] : 'id,asc';
+        return {
+            page: this.paginationUtil.parsePage(page),
+            predicate: this.paginationUtil.parsePredicate(sort),
+            ascending: this.paginationUtil.parseAscending(sort)
+      };
+    }
+}
+
 export const categoryNodeRoute: Routes = [
     {
         path: 'category-node',
         component: CategoryNodeComponent,
+        resolve: {
+            'pagingParams': CategoryNodeResolvePagingParams
+        },
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'kavsirApp.categoryNode.home.title'

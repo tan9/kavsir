@@ -39,24 +39,24 @@ public class QuestionTrueFalse implements Serializable {
     private Boolean correct;
 
     /**
-     * 文字描述
+     * 題目
      */
     @NotNull
-    @ApiModelProperty(value = "文字描述", required = true)
+    @ApiModelProperty(value = "題目", required = true)
     @Column(name = "text", nullable = false)
     private String text;
 
     /**
-     * 題目備註
+     * 備註
      */
-    @ApiModelProperty(value = "題目備註")
+    @ApiModelProperty(value = "備註")
     @Column(name = "memo")
     private String memo;
 
     /**
-     * 題組中題目序號
+     * 題組中序位
      */
-    @ApiModelProperty(value = "題組中題目序號")
+    @ApiModelProperty(value = "題組中序位")
     @Column(name = "group_position")
     private Integer groupPosition;
 

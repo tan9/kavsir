@@ -1,21 +1,31 @@
-import { Injectable } from '@angular/core';
-import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes, CanActivate } from '@angular/router';
+import { Routes } from '@angular/router';
 
 import { UserRouteAccessService } from '../../shared';
-import { JhiPaginationUtil } from 'ng-jhipster';
 
-import { CategoryComponent } from './category.component';
-
-import { Principal } from '../../shared';
+import { CategoriesComponent } from './categories.component';
+import { CategorySelectPopupComponent } from './category-select-dialog.component';
 
 export const categoryRoute: Routes = [
     {
-        path: 'category',
-        component: CategoryComponent,
+        path: 'categories',
+        component: CategoriesComponent,
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'global.menu.pool.category.main'
         },
         canActivate: [UserRouteAccessService]
+    }
+];
+
+export const categoryPopupRoute: Routes = [
+    {
+        path: 'category-select/:id',
+        component: CategorySelectPopupComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'category.selector.label'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
     }
 ];

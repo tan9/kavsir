@@ -32,32 +32,32 @@ public class QuestionChoice implements Serializable {
     private Long id;
 
     /**
-     * 單選/複選
+     * 是否為複選
      */
     @NotNull
-    @ApiModelProperty(value = "單選/複選", required = true)
+    @ApiModelProperty(value = "是否為複選", required = true)
     @Column(name = "multiple_response", nullable = false)
     private Boolean multipleResponse;
 
     /**
-     * 文字描述
+     * 題目
      */
     @NotNull
-    @ApiModelProperty(value = "文字描述", required = true)
+    @ApiModelProperty(value = "題目", required = true)
     @Column(name = "text", nullable = false)
     private String text;
 
     /**
-     * 題目備註
+     * 備註
      */
-    @ApiModelProperty(value = "題目備註")
+    @ApiModelProperty(value = "備註")
     @Column(name = "memo")
     private String memo;
 
     /**
-     * 題組中題目序號
+     * 題組中序位
      */
-    @ApiModelProperty(value = "題組中題目序號")
+    @ApiModelProperty(value = "題組中序位")
     @Column(name = "group_position")
     private Integer groupPosition;
 

@@ -13,7 +13,15 @@ import {
     LoginModalService,
     Principal,
     HasAnyAuthorityDirective,
-    JhiLoginModalComponent
+    JhiLoginModalComponent,
+    CategoriesService,
+    CategoryHierarchyComponent,
+    CategoryHierarchyService,
+    CategoryPathNamePipe,
+    CategorySelectComponent,
+    MathJaxDirective,
+    ChoiceOptionsComponent,
+    TrueFalseSymbolPipe
 } from './';
 
 @NgModule({
@@ -23,7 +31,13 @@ import {
     ],
     declarations: [
         JhiLoginModalComponent,
-        HasAnyAuthorityDirective
+        HasAnyAuthorityDirective,
+        CategoryHierarchyComponent,
+        CategoryPathNamePipe,
+        CategorySelectComponent,
+        MathJaxDirective,
+        ChoiceOptionsComponent,
+        TrueFalseSymbolPipe
     ],
     providers: [
         LoginService,
@@ -34,14 +48,22 @@ import {
         CSRFService,
         AuthServerProvider,
         UserService,
-        DatePipe
+        DatePipe,
+        CategoriesService,
+        CategoryHierarchyService
     ],
     entryComponents: [JhiLoginModalComponent],
     exports: [
         KavsirSharedCommonModule,
         JhiLoginModalComponent,
         HasAnyAuthorityDirective,
-        DatePipe
+        DatePipe,
+        CategoryHierarchyComponent,
+        CategoryPathNamePipe,
+        CategorySelectComponent,
+        MathJaxDirective,
+        ChoiceOptionsComponent,
+        TrueFalseSymbolPipe
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 

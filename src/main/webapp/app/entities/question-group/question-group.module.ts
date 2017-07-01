@@ -13,6 +13,7 @@ import {
     QuestionGroupDeleteDialogComponent,
     questionGroupRoute,
     questionGroupPopupRoute,
+    QuestionGroupResolvePagingParams,
 } from './';
 
 const ENTITY_STATES = [
@@ -43,6 +44,7 @@ const ENTITY_STATES = [
     providers: [
         QuestionGroupService,
         QuestionGroupPopupService,
+        QuestionGroupResolvePagingParams,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

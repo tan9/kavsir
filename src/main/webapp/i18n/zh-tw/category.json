@@ -1,0 +1,27 @@
+{
+    "category": {
+        "title": "類別",
+        "hierarchy": "類別階層",
+        "type": {
+            "academicYear": "學年",
+            "grade": "年級",
+            "semester": "學期",
+            "subject": "科目",
+            "publisher": "出版社",
+            "segment": "章、課、篇、節"
+        },
+        "action": {
+            "save": "儲存",
+            "expand.all": "全部展開",
+            "collapse.all": "全部收合",
+            "search": "搜尋",
+            "select": "選取",
+            "select.nodeOnly": "只限選取的類別",
+            "select.includeSubCategories": "包含子類別"
+        },
+        "selector": {
+            "label": "選取類別"
+        },
+        "all": "全部類別"
+    }
+}

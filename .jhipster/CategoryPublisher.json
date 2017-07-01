@@ -4,7 +4,7 @@
     "fields": [
         {
             "fieldName": "position",
-            "javadoc": "順序",
+            "javadoc": "序位",
             "fieldType": "Integer",
             "fieldValidateRules": [
                 "required"

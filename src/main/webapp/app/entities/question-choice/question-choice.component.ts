@@ -7,24 +7,49 @@ import { QuestionChoice } from './question-choice.model';
 import { QuestionChoiceService } from './question-choice.service';
 import { ITEMS_PER_PAGE, Principal, ResponseWrapper } from '../../shared';
 import { PaginationConfig } from '../../blocks/config/uib-pagination.config';
+import { QuestionChoiceOptionService } from '../question-choice-option/question-choice-option.service';
 
 @Component({
     selector: 'jhi-question-choice',
     templateUrl: './question-choice.component.html'
 })
 export class QuestionChoiceComponent implements OnInit, OnDestroy {
-questionChoices: QuestionChoice[];
-    currentAccount: any;
+
+currentAccount: any;
+    questionChoices: QuestionChoice[];
+    error: any;
+    success: any;
     eventSubscriber: Subscription;
     currentSearch: string;
+    routeData: any;
+    links: any;
+    totalItems: any;
+    queryCount: any;
+    itemsPerPage: any;
+    page: any;
+    predicate: any;
+    previousPage: any;
+    reverse: any;
 
     constructor(
-        private questionChoiceService: QuestionChoiceService,
+        protected questionChoiceService: QuestionChoiceService,
+        protected questionChoiceOptionService: QuestionChoiceOptionService,
+        private parseLinks: JhiParseLinks,
         private alertService: JhiAlertService,
+        private principal: Principal,
+        protected activatedRoute: ActivatedRoute,
+        protected router: Router,
         private eventManager: JhiEventManager,
-        private activatedRoute: ActivatedRoute,
-        private principal: Principal
+        private paginationUtil: JhiPaginationUtil,
+        private paginationConfig: PaginationConfig
     ) {
+        this.itemsPerPage = ITEMS_PER_PAGE;
+        this.routeData = this.activatedRoute.data.subscribe((data) => {
+            this.page = data['pagingParams'].page;
+            this.previousPage = data['pagingParams'].page;
+            this.reverse = data['pagingParams'].ascending;
+            this.predicate = data['pagingParams'].predicate;
+        });
         this.currentSearch = activatedRoute.snapshot.params['search'] ? activatedRoute.snapshot.params['search'] : '';
     }
 
@@ -32,31 +57,59 @@ questionChoices: QuestionChoice[];
         if (this.currentSearch) {
             this.questionChoiceService.search({
                 query: this.currentSearch,
-                }).subscribe(
-                    (res: ResponseWrapper) => this.questionChoices = res.json,
+                size: this.itemsPerPage,
+                sort: this.sort()}).subscribe(
+                    (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
                     (res: ResponseWrapper) => this.onError(res.json)
                 );
             return;
-       }
-        this.questionChoiceService.query().subscribe(
-            (res: ResponseWrapper) => {
-                this.questionChoices = res.json;
-                this.currentSearch = '';
-            },
+        }
+        this.questionChoiceService.query({
+            page: this.page - 1,
+            size: this.itemsPerPage,
+            sort: this.sort()}).subscribe(
+            (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
             (res: ResponseWrapper) => this.onError(res.json)
         );
     }
-
-    search(query) {
-        if (!query) {
-            return this.clear();
+    loadPage(page: number) {
+        if (page !== this.previousPage) {
+            this.previousPage = page;
+            this.transition();
         }
-        this.currentSearch = query;
+    }
+    transition() {
+        this.router.navigate(['/question-choice'], {queryParams:
+            {
+                page: this.page,
+                size: this.itemsPerPage,
+                search: this.currentSearch,
+                sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
+            }
+        });
         this.loadAll();
     }
 
     clear() {
+        this.page = 0;
         this.currentSearch = '';
+        this.router.navigate(['/question-choice', {
+            page: this.page,
+            sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
+        }]);
+        this.loadAll();
+    }
+    search(query) {
+        if (!query) {
+            return this.clear();
+        }
+        this.page = 0;
+        this.currentSearch = query;
+        this.router.navigate(['/question-choice', {
+            search: this.currentSearch,
+            page: this.page,
+            sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
+        }]);
         this.loadAll();
     }
     ngOnInit() {
@@ -78,7 +131,22 @@ questionChoices: QuestionChoice[];
         this.eventSubscriber = this.eventManager.subscribe('questionChoiceListModification', (response) => this.loadAll());
     }
 
-    private onError(error) {
+    sort() {
+        const result = [this.predicate + ',' + (this.reverse ? 'asc' : 'desc')];
+        if (this.predicate !== 'id') {
+            result.push('id');
+        }
+        return result;
+    }
+
+    protected onSuccess(data, headers) {
+        this.links = this.parseLinks.parse(headers.get('link'));
+        this.totalItems = headers.get('X-Total-Count');
+        this.queryCount = this.totalItems;
+        // this.page = pagingParams.page;
+        this.questionChoices = data;
+    }
+    protected onError(error) {
         this.alertService.error(error.message, null, null);
     }
 }

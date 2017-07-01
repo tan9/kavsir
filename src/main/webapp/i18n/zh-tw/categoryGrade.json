@@ -2,22 +2,22 @@
     "kavsirApp": {
         "categoryGrade" : {
             "home": {
-                "title": "Category Grades",
-                "createLabel": "建立一筆新的 Category Grade",
-                "createOrEditLabel": "建立或編輯 Category Grade",
-                "search": "搜尋 Category Grade"
+                "title": "年級別",
+                "createLabel": "建立一筆新的「年級別」",
+                "createOrEditLabel": "建立或編輯「年級別」",
+                "search": "搜尋「年級別」"
             },
-            "created": "新的 Category Grade 建立成功，識別碼為 {{ param }}",
-            "updated": "識別碼為 {{ param }} 的 Category Grade 更新成功",
-            "deleted": "識別碼為 {{ param }} 的 Category Grade 刪除成功",
+            "created": "新的「年級別」建立成功，識別碼為 {{ param }}",
+            "updated": "識別碼為 {{ param }} 的「年級別」更新成功",
+            "deleted": "識別碼為 {{ param }} 的「年級別」刪除成功",
             "delete": {
-                "question": "您確定要刪除 Category Grade {{ id }} 嗎?"
+                "question": "您確定要刪除「年級別」 {{ id }} 嗎?"
             },
             "detail": {
-                "title": "Category Grade"
+                "title": "年級別"
             },
-            "position": "Position",
-            "name": "Name"
+            "position": "序位",
+            "name": "名稱"
         }
     }
 }

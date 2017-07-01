@@ -5,6 +5,8 @@
                 "title": "Question Choices",
                 "createLabel": "Create a new Question Choice",
                 "createOrEditLabel": "Create or edit a Question Choice",
+                "createOrEditChoiceLabel": "Create or edit a Question Choice with Single Response",
+                "createOrEditMultipleResponseLabel": "Create or edit a Question Choice with Multiple Response",
                 "search": "Search for Question Choice"
             },
             "created": "A new Question Choice is created with identifier {{ param }}",
@@ -23,7 +25,12 @@
             "option": "Option",
             "category": "Category",
             "image": "Image",
-            "questionGroup": "Question Group"
+            "questionGroup": "Question Group",
+            "validation": {
+                "minoptions": "Not less than 4 options.",
+                "hasanswer": "Mark at least one option as correct.",
+                "exactoneanswer": "Specify exact one answer for choice question."
+            }
         }
     }
 }

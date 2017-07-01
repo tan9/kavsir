@@ -142,6 +142,10 @@
   version "2.5.47"
   resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-2.5.47.tgz#bbba9bcf0e95e7890c6f4a47394e8bacaa960eb6"
 
+"@types/mathjax@0.0.31":
+  version "0.0.31"
+  resolved "https://registry.yarnpkg.com/@types/mathjax/-/mathjax-0.0.31.tgz#6618b6555082311edbe0ad34cd93408eb43370da"
+
 "@types/node@7.0.22":
   version "7.0.22"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.22.tgz#4593f4d828bdd612929478ea40c67b4f403ca255"
@@ -228,7 +232,7 @@ amdefine@>=0.0.4, amdefine@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
 
-angular-tree-component@^3.7.3:
+angular-tree-component@3.7.3:
   version "3.7.3"
   resolved "https://registry.yarnpkg.com/angular-tree-component/-/angular-tree-component-3.7.3.tgz#4458bc7adaad5343dd89b3ead4ac9bf16d9bc505"
   dependencies:
@@ -4497,6 +4501,10 @@ math-expression-evaluator@^1.2.14:
   version "1.2.17"
   resolved "https://registry.yarnpkg.com/math-expression-evaluator/-/math-expression-evaluator-1.2.17.tgz#de819fdbcd84dccd8fae59c6aeb79615b9d266ac"
 
+mathjax@2.7.1:
+  version "2.7.1"
+  resolved "https://registry.yarnpkg.com/mathjax/-/mathjax-2.7.1.tgz#c82d2f853b2f58f738e3355329adf0b2d8f8face"
+
 media-typer@0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/media-typer/-/media-typer-0.3.0.tgz#8710d7af0aa626f8fffa1ce00168545263255748"
@@ -6093,7 +6101,7 @@ request-progress@~2.0.1:
   dependencies:
     throttleit "^1.0.0"
 
-request@2, request@^2.72.0, request@^2.79.0, request@~2.79.0:
+request@2, request@^2.40.0, request@^2.72.0, request@^2.74.0, request@^2.79.0, request@~2.79.0:
   version "2.79.0"
   resolved "https://registry.yarnpkg.com/request/-/request-2.79.0.tgz#4dfe5bf6be8b8cdc37fcf93e04b65577722710de"
   dependencies:
@@ -6143,7 +6151,7 @@ request@2.78.0:
     tough-cookie "~2.3.0"
     tunnel-agent "~0.4.1"
 
-request@^2.40.0, request@^2.74.0, request@^2.81.0:
+request@^2.81.0:
   version "2.81.0"
   resolved "https://registry.yarnpkg.com/request/-/request-2.81.0.tgz#c6928946a0e06c5f8d6f8a9333469ffda46298a0"
   dependencies:

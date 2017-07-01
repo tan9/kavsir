@@ -78,6 +78,9 @@ export class ResourceImageDialogComponent implements OnInit {
                 resourceImage[field] = base64Data;
                 resourceImage[`${field}ContentType`] = file.type;
             });
+            if (!resourceImage.name) {
+                resourceImage.name = file.name;
+            }
         }
     }
 

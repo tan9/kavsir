@@ -8,23 +8,26 @@
                 "main": "題庫",
                 "category": {
                     "main": "類別"
+                },
+                "question": {
+                    "main": "題目"
                 }
             },
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "實體",
-                "questionChoice": "Question Choice",
-                "categoryAcademicYear": "Category Academic Year",
-                "categoryNode": "Category Node",
-                "categoryPublisher": "Category Publisher",
-                "categorySemester": "Category Semester",
-                "categorySubject": "Category Subject",
-                "categoryGrade": "Category Grade",
-                "questionChoiceOption": "Question Choice Option",
-                "questionEssay": "Question Essay",
-                "questionGroup": "Question Group",
-                "questionTrueFalse": "Question True False",
-                "resourceImage": "Resource Image",
+                "questionChoice": "選擇題",
+                "categoryAcademicYear": "學年別",
+                "categoryNode": "類別節點",
+                "categoryPublisher": "出版社別",
+                "categorySemester": "學期別",
+                "categorySubject": "科目別",
+                "categoryGrade": "年級別",
+                "questionChoiceOption": "選擇題選項",
+                "questionEssay": "問答題",
+                "questionGroup": "題組",
+                "questionTrueFalse": "是非題",
+                "resourceImage": "圖檔",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

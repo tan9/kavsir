@@ -23,6 +23,7 @@ export class QuestionTrueFalseDialogComponent implements OnInit {
     questionTrueFalse: QuestionTrueFalse;
     authorities: any[];
     isSaving: boolean;
+    inGroup = true;
 
     categorynodes: CategoryNode[];
 
@@ -37,12 +38,14 @@ export class QuestionTrueFalseDialogComponent implements OnInit {
         private categoryNodeService: CategoryNodeService,
         private resourceImageService: ResourceImageService,
         private questionGroupService: QuestionGroupService,
-        private eventManager: JhiEventManager
+        private eventManager: JhiEventManager,
+        private route: ActivatedRoute
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
+        this.inGroup = this.route.snapshot.queryParams['group'] !== 'false';
         this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
         this.categoryNodeService.query()
             .subscribe((res: ResponseWrapper) => { this.categorynodes = res.json; }, (res: ResponseWrapper) => this.onError(res.json));

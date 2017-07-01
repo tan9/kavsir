@@ -1,0 +1,30 @@
+ul {
+    list-style: none;
+    padding: 0.2em;
+    margin: 0;
+}
+
+li:before {
+    content: "•";
+    padding-right: 0;
+    color: navy;
+}
+
+.editing {
+    background-color: lemonchiffon;
+}
+
+.correct {
+    padding-right: 0.5em;
+}
+
+.correct:after {
+    content: "|";
+    padding-left: 0.5em;
+    color: darkgray;
+}
+
+.memo {
+    font-size: smaller;
+    color: firebrick;
+}

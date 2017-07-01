@@ -6,9 +6,16 @@ import com.tj.kvasir.domain.QuestionChoiceOption;
 import com.tj.kvasir.repository.QuestionChoiceOptionRepository;
 import com.tj.kvasir.repository.search.QuestionChoiceOptionSearchRepository;
 import com.tj.kvasir.web.rest.util.HeaderUtil;
+import com.tj.kvasir.web.rest.util.PaginationUtil;
+import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,8 +25,6 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -90,13 +95,25 @@ public class QuestionChoiceOptionResource {
     /**
      * GET  /question-choice-options : get all the questionChoiceOptions.
      *
+     * @param questionChoiceId limited to the question
+     * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of questionChoiceOptions in body
      */
     @GetMapping("/question-choice-options")
     @Timed
-    public List<QuestionChoiceOption> getAllQuestionChoiceOptions() {
-        log.debug("REST request to get all QuestionChoiceOptions");
-        return questionChoiceOptionRepository.findAllWithEagerRelationships();
+    public ResponseEntity<List<QuestionChoiceOption>> getAllQuestionChoiceOptions(@RequestParam Optional<Long> questionChoiceId,
+                                                                                  @ApiParam Pageable pageable) {
+        log.debug("REST request to get a page of QuestionChoiceOptions with questionChoiceId : {}", questionChoiceId);
+        Page<QuestionChoiceOption> page;
+        if (questionChoiceId.isPresent()) {
+            List<QuestionChoiceOption> questionOptions = questionChoiceOptionRepository.findAllByQuestionChoice(questionChoiceId.get());
+            page = new PageImpl<>(questionOptions);
+
+        } else {
+            page = questionChoiceOptionRepository.findAll(pageable);
+        }
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/question-choice-options");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     /**
@@ -133,15 +150,16 @@ public class QuestionChoiceOptionResource {
      * to the query.
      *
      * @param query the query of the questionChoiceOption search
+     * @param pageable the pagination information
      * @return the result of the search
      */
     @GetMapping("/_search/question-choice-options")
     @Timed
-    public List<QuestionChoiceOption> searchQuestionChoiceOptions(@RequestParam String query) {
-        log.debug("REST request to search QuestionChoiceOptions for query {}", query);
-        return StreamSupport
-            .stream(questionChoiceOptionSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
+    public ResponseEntity<List<QuestionChoiceOption>> searchQuestionChoiceOptions(@RequestParam String query, @ApiParam Pageable pageable) {
+        log.debug("REST request to search for a page of QuestionChoiceOptions for query {}", query);
+        Page<QuestionChoiceOption> page = questionChoiceOptionSearchRepository.search(queryStringQuery(query), pageable);
+        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/question-choice-options");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
 }

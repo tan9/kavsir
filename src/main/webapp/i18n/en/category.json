@@ -1,0 +1,27 @@
+{
+    "category": {
+        "title": "Category",
+        "hierarchy": "Category Hierarchy",
+        "type": {
+            "academicYear": "Academic Year",
+            "grade": "Grade",
+            "semester": "Semester",
+            "subject": "Subject",
+            "publisher": "Publisher",
+            "segment": "Segment"
+        },
+        "action": {
+            "save": "Save",
+            "expand.all": "Expand All",
+            "collapse.all": "Collapse All",
+            "search": "Search",
+            "select": "Select",
+            "select.nodeOnly": "Selected Categories Only",
+            "select.includeSubCategories": "Include Sub-categories"
+        },
+        "selector": {
+            "label": "Select a Category"
+        },
+        "all": "All Categories"
+    }
+}

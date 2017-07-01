@@ -6,6 +6,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgJhipsterModule } from 'ng-jhipster';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { CookieModule } from 'ngx-cookie';
+import { TreeModule } from 'angular-tree-component';
 
 @NgModule({
     imports: [
@@ -17,7 +18,8 @@ import { CookieModule } from 'ngx-cookie';
             defaultI18nLang: 'zh-tw'
         }),
         InfiniteScrollModule,
-        CookieModule.forRoot()
+        CookieModule.forRoot(),
+        TreeModule
     ],
     exports: [
         FormsModule,
@@ -25,7 +27,8 @@ import { CookieModule } from 'ngx-cookie';
         CommonModule,
         NgbModule,
         NgJhipsterModule,
-        InfiniteScrollModule
+        InfiniteScrollModule,
+        TreeModule
     ]
 })
 export class KavsirSharedLibsModule {}

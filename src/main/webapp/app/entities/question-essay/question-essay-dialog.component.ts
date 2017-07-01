@@ -9,10 +9,10 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { QuestionEssay } from './question-essay.model';
 import { QuestionEssayPopupService } from './question-essay-popup.service';
 import { QuestionEssayService } from './question-essay.service';
-import { CategoryNode, CategoryNodeService } from '../category-node';
+import { CategoryNode } from '../category-node';
 import { ResourceImage, ResourceImageService } from '../resource-image';
 import { QuestionGroup, QuestionGroupService } from '../question-group';
-import { ResponseWrapper } from '../../shared';
+import { ResponseWrapper, CategoryHierarchyService } from '../../shared';
 
 @Component({
     selector: 'jhi-question-essay-dialog',
@@ -35,7 +35,7 @@ export class QuestionEssayDialogComponent implements OnInit {
         public activeModal: NgbActiveModal,
         private alertService: JhiAlertService,
         private questionEssayService: QuestionEssayService,
-        private categoryNodeService: CategoryNodeService,
+        private categoryHierarchyService: CategoryHierarchyService,
         private resourceImageService: ResourceImageService,
         private questionGroupService: QuestionGroupService,
         private eventManager: JhiEventManager,
@@ -47,8 +47,13 @@ export class QuestionEssayDialogComponent implements OnInit {
         this.isSaving = false;
         this.inGroup = this.route.snapshot.queryParams['group'] !== 'false';
         this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
-        this.categoryNodeService.query()
-            .subscribe((res: ResponseWrapper) => { this.categorynodes = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+
+        if (this.categoryHierarchyService.getWorkingCategory() &&
+            (!this.questionEssay.categories || this.questionEssay.categories.length === 0)) {
+            this.questionEssay.categories = [this.categoryHierarchyService.getWorkingCategory()];
+        }
+
+        this.categorynodes = this.categoryHierarchyService.getNodes();
         this.resourceImageService.query()
             .subscribe((res: ResponseWrapper) => { this.resourceimages = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
         this.questionGroupService.query()

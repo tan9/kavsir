@@ -9,10 +9,11 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { QuestionTrueFalse } from './question-true-false.model';
 import { QuestionTrueFalsePopupService } from './question-true-false-popup.service';
 import { QuestionTrueFalseService } from './question-true-false.service';
-import { CategoryNode, CategoryNodeService } from '../category-node';
+import { CategoryNode } from '../category-node';
 import { ResourceImage, ResourceImageService } from '../resource-image';
 import { QuestionGroup, QuestionGroupService } from '../question-group';
 import { ResponseWrapper } from '../../shared';
+import { CategoryHierarchyService } from '../../shared/category/category-hierarchy.service';
 
 @Component({
     selector: 'jhi-question-true-false-dialog',
@@ -35,7 +36,7 @@ export class QuestionTrueFalseDialogComponent implements OnInit {
         public activeModal: NgbActiveModal,
         private alertService: JhiAlertService,
         private questionTrueFalseService: QuestionTrueFalseService,
-        private categoryNodeService: CategoryNodeService,
+        private categoryHierarchyService: CategoryHierarchyService,
         private resourceImageService: ResourceImageService,
         private questionGroupService: QuestionGroupService,
         private eventManager: JhiEventManager,
@@ -47,8 +48,13 @@ export class QuestionTrueFalseDialogComponent implements OnInit {
         this.isSaving = false;
         this.inGroup = this.route.snapshot.queryParams['group'] !== 'false';
         this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
-        this.categoryNodeService.query()
-            .subscribe((res: ResponseWrapper) => { this.categorynodes = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+
+        if (this.categoryHierarchyService.getWorkingCategory() &&
+            (!this.questionTrueFalse.categories || this.questionTrueFalse.categories.length === 0)) {
+            this.questionTrueFalse.categories = [this.categoryHierarchyService.getWorkingCategory()];
+        }
+
+        this.categorynodes = this.categoryHierarchyService.getNodes();
         this.resourceImageService.query()
             .subscribe((res: ResponseWrapper) => { this.resourceimages = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
         this.questionGroupService.query()

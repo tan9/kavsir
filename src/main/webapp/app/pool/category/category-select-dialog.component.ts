@@ -30,19 +30,16 @@ export class CategorySelectDialogComponent implements OnInit {
     }
 
     public getSelected(): CategoryNode[] {
-        const nodes = this.hierarchy.tree.treeModel.getActiveNodes();
-        if (nodes.length === 1 && nodes[0].isRoot) {
-            // return empty nodes if the selected node is ROOT
-            return [];
-        } else {
-            return nodes;
-        }
+        return this.hierarchy.getSelected();
     }
 
     select() {
+        const selected = this.getSelected()[0];
+        this.hierarchy.select(selected);
+
         this.eventManager.broadcast({
-            name: 'categoriesSelected',
-            content: this.getSelected()
+            name: 'categorySelected',
+            content: selected
         });
         this.activeModal.dismiss(true);
     }

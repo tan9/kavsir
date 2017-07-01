@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { QuestionTrueFalseComponent } from '../../../entities/question-true-false/index';
 import { ResponseWrapper } from '../../../shared/model/response-wrapper.model';
-import { TreeNode } from 'angular-tree-component';
+import { CategoryHierarchyService } from '../../../shared/category/category-hierarchy.service';
 
 @Component({
     selector: 'jhi-category-true-false',
@@ -11,7 +11,8 @@ export class CategoryTrueFalseComponent extends QuestionTrueFalseComponent {
 
     inGroup = false;
 
-    @Input() categories: TreeNode[] = [];
+    // not using normal inject because we do wanna to tight to the super constructor
+    @Input() categoryHierarchyService: CategoryHierarchyService;
 
     transition() {
         this.router.navigate(['/question/true-false'], {
@@ -56,8 +57,8 @@ export class CategoryTrueFalseComponent extends QuestionTrueFalseComponent {
                 size: this.itemsPerPage,
                 sort: this.sort()
             };
-            if (this.categories.length > 0) {
-                searchReq['categories'] = this.categories.map((node) => node.data.id);
+            if (this.categoryHierarchyService.getWorkingCategory()) {
+                searchReq['categories'] = [this.categoryHierarchyService.getWorkingCategory().id];
             }
             this.questionTrueFalseService.search(searchReq).subscribe(
                 (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
@@ -69,8 +70,8 @@ export class CategoryTrueFalseComponent extends QuestionTrueFalseComponent {
             page: this.page - 1,
             size: this.itemsPerPage,
             sort: this.sort()};
-        if (this.categories.length > 0) {
-            req['categories'] = this.categories.map((node) => node.data.id);
+        if (this.categoryHierarchyService.getWorkingCategory()) {
+            req['categories'] = [this.categoryHierarchyService.getWorkingCategory().id];
         }
         this.questionTrueFalseService.query(req).subscribe(
             (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),

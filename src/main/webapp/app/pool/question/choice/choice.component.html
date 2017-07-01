@@ -1,8 +1,8 @@
 <div class="row category-label">
     <div class="col-sm-12">
         <h2>
-            {{ categories.length > 0 ?
-            categoryHierarchyService.pathDisplayName(categories[0]) :
+            {{ categoryHierarchyService.getWorkingCategory() ?
+            categoryHierarchyService.pathDisplayName(categoryHierarchyService.getWorkingCategory().id) :
             ( 'category.all' | translate) }}
         </h2>
         <button type="submit"
@@ -16,6 +16,6 @@
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <jhi-category-choice [categories]="categories"></jhi-category-choice>
+        <jhi-category-choice [categoryHierarchyService]="categoryHierarchyService"></jhi-category-choice>
     </div>
 </div>

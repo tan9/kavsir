@@ -9,12 +9,13 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { QuestionChoice } from './question-choice.model';
 import { QuestionChoicePopupService } from './question-choice-popup.service';
 import { QuestionChoiceService } from './question-choice.service';
-import { CategoryNode, CategoryNodeService } from '../category-node';
+import { CategoryNode } from '../category-node';
 import { ResourceImage, ResourceImageService } from '../resource-image';
 import { QuestionGroup, QuestionGroupService } from '../question-group';
 import { ResponseWrapper } from '../../shared';
 import { ChoiceOptionsComponent } from '../../shared/question/choice-options.component';
 import { QuestionChoiceOptionService } from '../question-choice-option/question-choice-option.service';
+import { CategoryHierarchyService } from '../../shared/category/category-hierarchy.service';
 
 @Component({
     selector: 'jhi-question-choice-dialog',
@@ -41,7 +42,7 @@ export class QuestionChoiceDialogComponent implements OnInit {
         private alertService: JhiAlertService,
         private questionChoiceService: QuestionChoiceService,
         private questionChoiceOptionService: QuestionChoiceOptionService,
-        private categoryNodeService: CategoryNodeService,
+        private categoryHierarchyService: CategoryHierarchyService,
         private resourceImageService: ResourceImageService,
         private questionGroupService: QuestionGroupService,
         private eventManager: JhiEventManager,
@@ -50,29 +51,37 @@ export class QuestionChoiceDialogComponent implements OnInit {
     }
 
     optionAnswerValid() {
-        return !this.options || this.options.choiceOptions.some((option) => option.correct);
+        return !this.options ||
+            (this.options.choiceOptions && this.options.choiceOptions.some((option) => option.correct));
     }
 
     optionAnswerForSingleChoiceValid() {
-        return this.questionChoice.multipleResponse || this.options.choiceOptions.filter((option) => option.correct).length <= 1;
+        return this.questionChoice.multipleResponse ||
+            (this.options.choiceOptions && this.options.choiceOptions.filter((option) => option.correct).length <= 1);
     }
 
     optionNumberValid() {
         // FIXME avoid hard-coded threshold, and find out how to apply to i18n message
-        return !this.options || this.options.choiceOptions.length >= 4;
+        return !this.options ||
+            (this.options.choiceOptions && this.options.choiceOptions.length >= 4);
     }
 
     ngOnInit() {
         this.isSaving = false;
         this.inGroup = this.route.snapshot.queryParams['group'] !== 'false';
         let multi = this.route.snapshot.queryParams['multi'];
+
         if (multi !== undefined) {
             this.multi = ('true' === multi);
             this.questionChoice.multipleResponse = this.multi;
         }
+        if (this.categoryHierarchyService.getWorkingCategory() &&
+            (!this.questionChoice.categories || this.questionChoice.categories.length === 0)) {
+            this.questionChoice.categories = [this.categoryHierarchyService.getWorkingCategory()];
+        }
+
         this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
-        this.categoryNodeService.query()
-            .subscribe((res: ResponseWrapper) => { this.categorynodes = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+        this.categorynodes = this.categoryHierarchyService.getNodes();
         this.resourceImageService.query()
             .subscribe((res: ResponseWrapper) => { this.resourceimages = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
         this.questionGroupService.query()

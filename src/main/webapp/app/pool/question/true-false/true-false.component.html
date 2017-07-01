@@ -2,7 +2,7 @@
     <div class="col-sm-12">
         <h2>
             {{ categories.length > 0 ?
-               categoryHierarchyService.pathDisplayName(categories[0]) :
+               categoryHierarchyService.pathDisplayName(categories[0].id) :
                ( 'category.all' | translate) }}
         </h2>
         <button type="submit"

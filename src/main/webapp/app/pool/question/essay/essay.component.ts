@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { TreeNode } from 'angular-tree-component';
 import { JhiEventManager } from 'ng-jhipster';
 import { Subscription } from 'rxjs/Subscription';
 import { CategoryHierarchyService } from '../../../shared/category/category-hierarchy.service';
+import { CategoryNode } from '../../../entities/category-node/category-node.model';
 
 @Component({
     selector: 'jhi-essay',
@@ -13,7 +13,7 @@ export class EssayComponent implements OnInit, OnDestroy {
 
     private subscription: Subscription;
 
-    categories: TreeNode[] = [];
+    categories: CategoryNode[] = [];
 
     constructor(public categoryHierarchyService: CategoryHierarchyService,
                 private eventManager: JhiEventManager) {

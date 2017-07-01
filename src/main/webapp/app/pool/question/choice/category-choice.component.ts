@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { QuestionChoiceComponent } from '../../../entities/question-choice/index';
 import { ResponseWrapper } from '../../../shared/model/response-wrapper.model';
-import { TreeNode } from 'angular-tree-component';
+import { CategoryNode } from '../../../entities/category-node/category-node.model';
 
 @Component({
     selector: 'jhi-category-choice',
@@ -12,7 +12,7 @@ export class CategoryChoiceComponent extends QuestionChoiceComponent {
     inGroup = false;
     multipleResponse : boolean;
 
-    @Input() categories: TreeNode[] = [];
+    @Input() categories: CategoryNode[] = [];
 
     ngOnInit() {
         this.multipleResponse = 'multiple-response' === this.activatedRoute.snapshot.url[1].path;
@@ -68,7 +68,7 @@ export class CategoryChoiceComponent extends QuestionChoiceComponent {
                 multi: this.multipleResponse
             };
             if (this.categories.length > 0) {
-                searchReq['categories'] = this.categories.map((node) => node.data.id);
+                searchReq['categories'] = this.categories.map((node) => node.id);
             }
             this.questionChoiceService.search(searchReq).subscribe(
                 (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
@@ -82,7 +82,7 @@ export class CategoryChoiceComponent extends QuestionChoiceComponent {
             sort: this.sort(),
             multi: this.multipleResponse};
         if (this.categories.length > 0) {
-            req['categories'] = this.categories.map((node) => node.data.id);
+            req['categories'] = this.categories.map((node) => node.id);
         }
         this.questionChoiceService.query(req).subscribe(
             (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),

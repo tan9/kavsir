@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { QuestionEssayComponent } from '../../../entities/question-essay/index';
 import { ResponseWrapper } from '../../../shared/model/response-wrapper.model';
-import { TreeNode } from 'angular-tree-component';
+import { CategoryNode } from '../../../entities/category-node/category-node.model';
 
 @Component({
     selector: 'jhi-category-essay',
@@ -11,7 +11,7 @@ export class CategoryEssayComponent extends QuestionEssayComponent {
 
     inGroup = false;
 
-    @Input() categories: TreeNode[] = [];
+    @Input() categories: CategoryNode[] = [];
 
     transition() {
         this.router.navigate(['/question/essay'], {
@@ -57,7 +57,7 @@ export class CategoryEssayComponent extends QuestionEssayComponent {
                 sort: this.sort()
             };
             if (this.categories.length > 0) {
-                searchReq['categories'] = this.categories.map((node) => node.data.id);
+                searchReq['categories'] = this.categories.map((node) => node.id);
             }
             this.questionEssayService.search(searchReq).subscribe(
                 (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
@@ -70,7 +70,7 @@ export class CategoryEssayComponent extends QuestionEssayComponent {
             size: this.itemsPerPage,
             sort: this.sort()};
         if (this.categories.length > 0) {
-            req['categories'] = this.categories.map((node) => node.data.id);
+            req['categories'] = this.categories.map((node) => node.id);
         }
         this.questionEssayService.query(req).subscribe(
             (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),

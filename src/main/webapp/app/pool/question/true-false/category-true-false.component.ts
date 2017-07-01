@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { QuestionTrueFalseComponent } from '../../../entities/question-true-false/index';
 import { ResponseWrapper } from '../../../shared/model/response-wrapper.model';
-import { TreeNode } from 'angular-tree-component';
+import { CategoryNode } from '../../../entities/category-node/category-node.model';
 
 @Component({
     selector: 'jhi-category-true-false',
@@ -11,7 +11,7 @@ export class CategoryTrueFalseComponent extends QuestionTrueFalseComponent {
 
     inGroup = false;
 
-    @Input() categories: TreeNode[] = [];
+    @Input() categories: CategoryNode[] = [];
 
     transition() {
         this.router.navigate(['/question/true-false'], {
@@ -57,7 +57,7 @@ export class CategoryTrueFalseComponent extends QuestionTrueFalseComponent {
                 sort: this.sort()
             };
             if (this.categories.length > 0) {
-                searchReq['categories'] = this.categories.map((node) => node.data.id);
+                searchReq['categories'] = this.categories.map((node) => node.id);
             }
             this.questionTrueFalseService.search(searchReq).subscribe(
                 (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
@@ -70,7 +70,7 @@ export class CategoryTrueFalseComponent extends QuestionTrueFalseComponent {
             size: this.itemsPerPage,
             sort: this.sort()};
         if (this.categories.length > 0) {
-            req['categories'] = this.categories.map((node) => node.data.id);
+            req['categories'] = this.categories.map((node) => node.id);
         }
         this.questionTrueFalseService.query(req).subscribe(
             (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),

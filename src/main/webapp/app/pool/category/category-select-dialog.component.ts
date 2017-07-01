@@ -35,7 +35,7 @@ export class CategorySelectDialogComponent implements OnInit {
             // return empty nodes if the selected node is ROOT
             return [];
         } else {
-            return nodes;
+            return nodes.map((treeNode) => treeNode.data);
         }
     }
 

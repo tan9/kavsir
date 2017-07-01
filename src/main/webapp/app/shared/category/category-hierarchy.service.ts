@@ -21,7 +21,9 @@ export class CategoryHierarchyService implements OnInit {
     };
 
     private subscription;
-    nodes: Map<number, CategoryNode> = new Map();
+
+    nodeMap: Map<number, CategoryNode> = new Map();
+    private nodes: CategoryNode[] = [];
     tree: CategoryTreeNode[] = [];
 
     constructor(private categoriesService: CategoriesService,
@@ -46,14 +48,22 @@ export class CategoryHierarchyService implements OnInit {
         return this.tree;
     }
 
+    getNodes(): CategoryNode[] {
+        return this.nodes;
+    }
+
     private loadAllCategoryNodes() {
-        this.categoryNodeService.query({'page': 0, 'size': 50000}).subscribe(
+        this.categoryNodeService.query({'page': 0, 'size': 10240}).subscribe(
             (res: ResponseWrapper) => {
                 const nodes = res.json;
+
+                this.nodes.length = 0;
+                Array.prototype.push.apply(this.nodes, nodes);
+
                 // TODO enum order/literal conversion?
                 nodes.forEach((item) => {
                     item.type = CategoryType[item.type];
-                    this.nodes.set(item.id, item);
+                    this.nodeMap.set(item.id, item);
                 });
 
                 const children = this.constructTreeRecursively(nodes);
@@ -105,14 +115,14 @@ export class CategoryHierarchyService implements OnInit {
         const displayNames: string[] = [];
         if (typeof node === 'number') {
             // categoryNode.id
-            let categoryNode = this.nodes.get(node);
+            let categoryNode = this.nodeMap.get(node);
             if (categoryNode !== undefined) {
                 while (categoryNode) {
                     displayNames.unshift(
                         this.categoryNodeDisplayName(categoryNode)
                     );
                     if (categoryNode.parent) {
-                        categoryNode = this.nodes.get(categoryNode.parent.id);
+                        categoryNode = this.nodeMap.get(categoryNode.parent.id);
                     } else {
                         break;
                     }

@@ -9,12 +9,13 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { QuestionChoice } from './question-choice.model';
 import { QuestionChoicePopupService } from './question-choice-popup.service';
 import { QuestionChoiceService } from './question-choice.service';
-import { CategoryNode, CategoryNodeService } from '../category-node';
+import { CategoryNode } from '../category-node';
 import { ResourceImage, ResourceImageService } from '../resource-image';
 import { QuestionGroup, QuestionGroupService } from '../question-group';
 import { ResponseWrapper } from '../../shared';
 import { ChoiceOptionsComponent } from '../../shared/question/choice-options.component';
 import { QuestionChoiceOptionService } from '../question-choice-option/question-choice-option.service';
+import { CategoryHierarchyService } from '../../shared/category/category-hierarchy.service';
 
 @Component({
     selector: 'jhi-question-choice-dialog',
@@ -41,7 +42,7 @@ export class QuestionChoiceDialogComponent implements OnInit {
         private alertService: JhiAlertService,
         private questionChoiceService: QuestionChoiceService,
         private questionChoiceOptionService: QuestionChoiceOptionService,
-        private categoryNodeService: CategoryNodeService,
+        private categoryHierarchyService: CategoryHierarchyService,
         private resourceImageService: ResourceImageService,
         private questionGroupService: QuestionGroupService,
         private eventManager: JhiEventManager,
@@ -71,8 +72,7 @@ export class QuestionChoiceDialogComponent implements OnInit {
             this.questionChoice.multipleResponse = this.multi;
         }
         this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
-        this.categoryNodeService.query()
-            .subscribe((res: ResponseWrapper) => { this.categorynodes = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+        this.categorynodes = this.categoryHierarchyService.getNodes();
         this.resourceImageService.query()
             .subscribe((res: ResponseWrapper) => { this.resourceimages = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
         this.questionGroupService.query()

@@ -20,12 +20,15 @@ export class ChoiceOptionsComponent {
     }
 
     isEditing() {
-        return this.choiceOptions.some((option) => option['isEditing']);
+        return this.choiceOptions && this.choiceOptions.some((option) => option['isEditing']);
     }
 
     addOption() {
         const option = new QuestionChoiceOption();
         option['isEditing'] = true;
+        if (!this.choiceOptions) {
+            this.choiceOptions = [];
+        }
         this.choiceOptions.push(option);
     }
 }

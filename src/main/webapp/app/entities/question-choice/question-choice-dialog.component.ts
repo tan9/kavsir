@@ -51,26 +51,35 @@ export class QuestionChoiceDialogComponent implements OnInit {
     }
 
     optionAnswerValid() {
-        return !this.options || this.options.choiceOptions.some((option) => option.correct);
+        return !this.options ||
+            (this.options.choiceOptions && this.options.choiceOptions.some((option) => option.correct));
     }
 
     optionAnswerForSingleChoiceValid() {
-        return this.questionChoice.multipleResponse || this.options.choiceOptions.filter((option) => option.correct).length <= 1;
+        return this.questionChoice.multipleResponse ||
+            (this.options.choiceOptions && this.options.choiceOptions.filter((option) => option.correct).length <= 1);
     }
 
     optionNumberValid() {
         // FIXME avoid hard-coded threshold, and find out how to apply to i18n message
-        return !this.options || this.options.choiceOptions.length >= 4;
+        return !this.options ||
+            (this.options.choiceOptions && this.options.choiceOptions.length >= 4);
     }
 
     ngOnInit() {
         this.isSaving = false;
         this.inGroup = this.route.snapshot.queryParams['group'] !== 'false';
         let multi = this.route.snapshot.queryParams['multi'];
+
         if (multi !== undefined) {
             this.multi = ('true' === multi);
             this.questionChoice.multipleResponse = this.multi;
         }
+        if (this.categoryHierarchyService.getWorkingCategory() &&
+            (!this.questionChoice.categories || this.questionChoice.categories.length === 0)) {
+            this.questionChoice.categories = [this.categoryHierarchyService.getWorkingCategory()];
+        }
+
         this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
         this.categorynodes = this.categoryHierarchyService.getNodes();
         this.resourceImageService.query()

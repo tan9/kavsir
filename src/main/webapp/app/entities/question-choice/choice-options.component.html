@@ -1,4 +1,4 @@
-<div *ngIf="choiceOptions" class="choice-options">
+<div *ngIf="choiceOptions && choiceOptions.length > 0" class="card">
     <ul>
         <li *ngFor="let questionChoiceOption of choiceOptions">
             <span class="correct">{{questionChoiceOption.correct | trueFalseSymbol}}</span>

@@ -12,6 +12,7 @@ import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -24,8 +25,6 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -96,14 +95,23 @@ public class QuestionChoiceOptionResource {
     /**
      * GET  /question-choice-options : get all the questionChoiceOptions.
      *
+     * @param questionChoiceId limited to the question
      * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of questionChoiceOptions in body
      */
     @GetMapping("/question-choice-options")
     @Timed
-    public ResponseEntity<List<QuestionChoiceOption>> getAllQuestionChoiceOptions(@ApiParam Pageable pageable) {
-        log.debug("REST request to get a page of QuestionChoiceOptions");
-        Page<QuestionChoiceOption> page = questionChoiceOptionRepository.findAll(pageable);
+    public ResponseEntity<List<QuestionChoiceOption>> getAllQuestionChoiceOptions(@RequestParam Optional<Long> questionChoiceId,
+                                                                                  @ApiParam Pageable pageable) {
+        log.debug("REST request to get a page of QuestionChoiceOptions with questionChoiceId : {}", questionChoiceId);
+        Page<QuestionChoiceOption> page;
+        if (questionChoiceId.isPresent()) {
+            List<QuestionChoiceOption> questionOptions = questionChoiceOptionRepository.findAllByQuestionChoice(questionChoiceId.get());
+            page = new PageImpl<>(questionOptions);
+
+        } else {
+            page = questionChoiceOptionRepository.findAll(pageable);
+        }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/question-choice-options");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

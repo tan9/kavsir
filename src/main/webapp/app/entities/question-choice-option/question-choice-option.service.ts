@@ -35,6 +35,9 @@ export class QuestionChoiceOptionService {
 
     query(req?: any): Observable<ResponseWrapper> {
         const options = createRequestOption(req);
+        if (req && req.questionChoiceId) {
+            options.params.append('questionChoiceId', req.questionChoiceId);
+        }
         return this.http.get(this.resourceUrl, options)
             .map((res: Response) => this.convertResponse(res));
     }

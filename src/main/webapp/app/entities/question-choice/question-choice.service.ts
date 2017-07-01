@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Rx';
 
 import { QuestionChoice } from './question-choice.model';
 import { ResponseWrapper, createRequestOption } from '../../shared';
+import { QuestionChoiceOptionService } from '../question-choice-option/question-choice-option.service';
 
 @Injectable()
 export class QuestionChoiceService {
@@ -11,7 +12,8 @@ export class QuestionChoiceService {
     private resourceUrl = 'api/question-choices';
     private resourceSearchUrl = 'api/_search/question-choices';
 
-    constructor(private http: Http) { }
+    constructor(private http: Http,
+                private questionChoiceOptionService: QuestionChoiceOptionService) { }
 
     create(questionChoice: QuestionChoice): Observable<QuestionChoice> {
         const copy = this.convert(questionChoice);

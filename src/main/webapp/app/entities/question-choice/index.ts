@@ -1,3 +1,4 @@
+export * from './choice-options.component';
 export * from './question-choice.model';
 export * from './question-choice-popup.service';
 export * from './question-choice.service';

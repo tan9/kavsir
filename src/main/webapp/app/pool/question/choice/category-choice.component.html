@@ -46,7 +46,10 @@
                     <a [routerLink]="['../../question-choice', questionChoice.id ]"
                        [queryParams]="{ group: false }">{{questionChoice.id}}</a></td>
                 <td *ngIf="multipleResponse === undefined">{{questionChoice.multipleResponse}}</td>
-                <td><span [jhiMathJax]="questionChoice.text"></span></td>
+                <td>
+                    <span [jhiMathJax]="questionChoice.text"></span>
+                    <jhi-choice-options *ngIf="questionChoice.options" [choiceOptions]="questionChoice.options"></jhi-choice-options>
+                </td>
                 <td>{{questionChoice.memo}}</td>
                 <td *ngIf="inGroup">{{questionChoice.groupPosition}}</td>
                 <td *ngIf="inGroup">

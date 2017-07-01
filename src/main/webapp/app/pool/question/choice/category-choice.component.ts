@@ -90,4 +90,15 @@ export class CategoryChoiceComponent extends QuestionChoiceComponent {
         );
     }
 
+    protected onSuccess(data, headers) {
+        super.onSuccess(data, headers);
+
+        this.questionChoices.forEach((questionChoice) => {
+            // FIXME performance??
+            this.questionChoiceOptionService
+                .query({questionChoiceId: questionChoice.id})
+                .subscribe((res) => questionChoice.options = res.json);
+        });
+    }
+
 }

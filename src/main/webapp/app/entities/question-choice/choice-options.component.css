@@ -1,0 +1,33 @@
+.choice-options {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+ul {
+    list-style: none;
+    padding-left: 0.5em;
+}
+
+li {
+    padding-left: 1em;
+}
+
+li:before {
+    content: "•";
+    padding-right: 0;
+    color: navy;
+}
+
+.correct {
+    padding-right: 0.5em;
+}
+
+.correct:after {
+    content: "|";
+    padding-left: 0.5em;
+    color: darkgray;
+}
+
+.memo {
+    font-size: smaller;
+    color: firebrick;
+}

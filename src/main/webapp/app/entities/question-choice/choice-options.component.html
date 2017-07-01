@@ -1,9 +1,0 @@
-<div *ngIf="choiceOptions && choiceOptions.length > 0" class="card">
-    <ul>
-        <li *ngFor="let questionChoiceOption of choiceOptions">
-            <span class="correct">{{questionChoiceOption.correct | trueFalseSymbol}}</span>
-            <span class="option">{{questionChoiceOption.text}}</span>
-            <span class="memo" *ngIf="questionChoiceOption.memo">{{questionChoiceOption.memo}}</span>
-        </li>
-    </ul>
-</div>

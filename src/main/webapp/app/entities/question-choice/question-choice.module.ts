@@ -3,7 +3,6 @@ import { RouterModule } from '@angular/router';
 
 import { KavsirSharedModule } from '../../shared';
 import {
-    ChoiceOptionsComponent,
     QuestionChoiceService,
     QuestionChoicePopupService,
     QuestionChoiceComponent,
@@ -28,7 +27,6 @@ const ENTITY_STATES = [
         RouterModule.forRoot(ENTITY_STATES, { useHash: true })
     ],
     declarations: [
-        ChoiceOptionsComponent,
         QuestionChoiceComponent,
         QuestionChoiceDetailComponent,
         QuestionChoiceDialogComponent,
@@ -47,9 +45,6 @@ const ENTITY_STATES = [
         QuestionChoiceService,
         QuestionChoicePopupService,
         QuestionChoiceResolvePagingParams,
-    ],
-    exports: [
-        ChoiceOptionsComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

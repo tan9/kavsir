@@ -26,6 +26,7 @@ export * from './user/user.service';
 export * from './model/response-wrapper.model';
 export * from './model/request-util';
 export * from './model/base-entity';
+export * from './question/choice-options.component';
 export * from './question/true-false-symbol.pipe';
 export * from './shared-libs.module';
 export * from './shared-common.module';

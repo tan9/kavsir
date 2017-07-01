@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Rx';
 
 import { QuestionChoice } from './question-choice.model';
 import { ResponseWrapper, createRequestOption } from '../../shared';
-import { QuestionChoiceOptionService } from '../question-choice-option/question-choice-option.service';
+import { QuestionChoiceOptionService } from '../question-choice-option';
 
 @Injectable()
 export class QuestionChoiceService {

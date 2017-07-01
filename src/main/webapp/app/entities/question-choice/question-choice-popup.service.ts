@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { QuestionChoice } from './question-choice.model';
 import { QuestionChoiceService } from './question-choice.service';
+import { QuestionChoiceOptionService } from '../question-choice-option';
 
 @Injectable()
 export class QuestionChoicePopupService {
@@ -10,8 +11,8 @@ export class QuestionChoicePopupService {
     constructor(
         private modalService: NgbModal,
         private router: Router,
-        private questionChoiceService: QuestionChoiceService
-
+        private questionChoiceService: QuestionChoiceService,
+        private questionChoiceOptionService: QuestionChoiceOptionService
     ) {}
 
     open(component: Component, id?: number | any): NgbModalRef {
@@ -22,7 +23,12 @@ export class QuestionChoicePopupService {
 
         if (id) {
             this.questionChoiceService.find(id).subscribe((questionChoice) => {
-                this.questionChoiceModalRef(component, questionChoice);
+                this.questionChoiceOptionService
+                    .query({questionChoiceId: questionChoice.id})
+                    .subscribe((res) => {
+                        questionChoice.options = res.json;
+                        this.questionChoiceModalRef(component, questionChoice);
+                    });
             });
         } else {
             return this.questionChoiceModalRef(component, new QuestionChoice());

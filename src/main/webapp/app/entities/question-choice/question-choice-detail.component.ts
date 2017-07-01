@@ -1,10 +1,11 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { JhiEventManager  } from 'ng-jhipster';
 
 import { QuestionChoice } from './question-choice.model';
 import { QuestionChoiceService } from './question-choice.service';
+import { ChoiceOptionsComponent } from '../../shared/question/choice-options.component';
 
 @Component({
     selector: 'jhi-question-choice-detail',

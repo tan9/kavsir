@@ -25,7 +25,12 @@
             "option": "Option",
             "category": "Category",
             "image": "Image",
-            "questionGroup": "Question Group"
+            "questionGroup": "Question Group",
+            "validation": {
+                "minoptions": "Not less than 4 options.",
+                "hasanswer": "Mark at least one option as correct.",
+                "exactoneanswer": "Specify exact one answer for choice question."
+            }
         }
     }
 }

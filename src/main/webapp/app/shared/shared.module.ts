@@ -20,6 +20,7 @@ import {
     CategoryPathNamePipe,
     CategorySelectComponent,
     MathJaxDirective,
+    ChoiceOptionsComponent,
     TrueFalseSymbolPipe
 } from './';
 
@@ -35,6 +36,7 @@ import {
         CategoryPathNamePipe,
         CategorySelectComponent,
         MathJaxDirective,
+        ChoiceOptionsComponent,
         TrueFalseSymbolPipe
     ],
     providers: [
@@ -60,6 +62,7 @@ import {
         CategoryPathNamePipe,
         CategorySelectComponent,
         MathJaxDirective,
+        ChoiceOptionsComponent,
         TrueFalseSymbolPipe
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]

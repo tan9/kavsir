@@ -49,6 +49,27 @@
             </div>
         </div>
         <div class="form-group">
+            <label class="form-control-label" jhiTranslate="kavsirApp.questionChoice.option" for="field_option">Option</label>
+            <jhi-choice-options [choiceOptions]="questionChoice.options" [editable]="true" id="field_option"></jhi-choice-options>
+            <div [hidden]="optionNumberValid() && optionAnswerValid() && optionAnswerForSingleChoiceValid()">
+                <!-- TODO validation through validator. -->
+                <small class="form-text text-danger"
+                       [hidden]="optionNumberValid()" jhiTranslate="kavsirApp.questionChoice.validation.minoptions">
+                    Not less than {{min}} options.
+                </small>
+                <small class="form-text text-danger"
+                       [hidden]="optionAnswerValid()" jhiTranslate="kavsirApp.questionChoice.validation.hasanswer">
+                    Mark at least one option as correct.
+                </small>
+                <small class="form-text text-danger"
+                       [hidden]="optionAnswerForSingleChoiceValid()" jhiTranslate="kavsirApp.questionChoice.validation.exactoneanswer">
+                    Specify exact one answer for choice question.
+                </small>
+
+            </div>
+        </div>
+
+        <div class="form-group">
             <label class="form-control-label" jhiTranslate="kavsirApp.questionChoice.memo" for="field_memo">Memo</label>
             <input type="text" class="form-control" name="memo" id="field_memo"
                 [(ngModel)]="questionChoice.memo"  />
@@ -83,7 +104,7 @@
         <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clear()">
             <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
         </button>
-        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving || options.isEditing() || !optionNumberValid() || !optionAnswerValid() || !optionAnswerForSingleChoiceValid()" class="btn btn-primary">
             <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
         </button>
     </div>

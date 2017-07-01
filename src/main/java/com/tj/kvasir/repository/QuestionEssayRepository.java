@@ -24,6 +24,6 @@ public interface QuestionEssayRepository extends JpaRepository<QuestionEssay,Lon
     QuestionEssay findOneWithEagerRelationships(@Param("id") Long id);
 
     @Query("SELECT DISTINCT question_essay FROM QuestionEssay question_essay LEFT JOIN question_essay.categories category WHERE category.id IN (:categoryIds)")
-    Page<QuestionEssay> findByCategories(@Param("categoryIds") Set<Long> categoryIds, Pageable pageable);
+    Page<QuestionEssay> findAllByCategories(@Param("categoryIds") Set<Long> categoryIds, Pageable pageable);
 
 }

@@ -9,7 +9,6 @@ import com.tj.kvasir.web.rest.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import io.swagger.annotations.ApiParam;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.TermsQueryBuilder;
 import org.slf4j.Logger;
@@ -124,13 +123,13 @@ public class QuestionChoiceResource {
         if (categories.isPresent()) {
             Set<Long> targetCategories = resourceHelper.includeChildren(categories.get());
             if (multi.isPresent()) {
-                page = questionChoiceRepository.findByCategoriesAndMultipleResponse(targetCategories, multi.get(), pageable);
+                page = questionChoiceRepository.findAllByCategoriesAndMultipleResponse(targetCategories, multi.get(), pageable);
             } else {
-                page = questionChoiceRepository.findByCategories(targetCategories, pageable);
+                page = questionChoiceRepository.findAllByCategories(targetCategories, pageable);
             }
         } else {
             if (multi.isPresent()) {
-                page = questionChoiceRepository.findByMultipleResponse(multi.get(), pageable);
+                page = questionChoiceRepository.findAllByMultipleResponse(multi.get(), pageable);
             } else {
                 page = questionChoiceRepository.findAll(pageable);
             }

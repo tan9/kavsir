@@ -117,7 +117,7 @@ public class QuestionEssayResource {
         Page<QuestionEssay> page;
         if (categories.isPresent()) {
             Set<Long> targetCategories = resourceHelper.includeChildren(categories.get());
-            page = questionEssayRepository.findByCategories(targetCategories, pageable);
+            page = questionEssayRepository.findAllByCategories(targetCategories, pageable);
         } else {
             page = questionEssayRepository.findAll(pageable);
         }

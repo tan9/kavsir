@@ -24,10 +24,10 @@ public interface QuestionTrueFalseRepository extends JpaRepository<QuestionTrueF
     QuestionTrueFalse findOneWithEagerRelationships(@Param("id") Long id);
 
     // FIXME Count not working due to the bug in QueryUtils
-    @Query(name = "QuestionTrueFalse.findByCategoriesTree", nativeQuery = true)
-    Page<QuestionTrueFalse> findByCategoriesTree(@Param("categoryIds") Set<Long> categoryIds, Pageable pageable);
+    @Query(name = "QuestionTrueFalse.findAllByCategoriesTree", nativeQuery = true)
+    Page<QuestionTrueFalse> findAllByCategoriesTree(@Param("categoryIds") Set<Long> categoryIds, Pageable pageable);
 
     @Query("SELECT DISTINCT question_true_false FROM QuestionTrueFalse question_true_false LEFT JOIN question_true_false.categories category WHERE category.id IN (:categoryIds)")
-    Page<QuestionTrueFalse> findByCategories(@Param("categoryIds") Set<Long> categoryIds, Pageable pageable);
+    Page<QuestionTrueFalse> findAllByCategories(@Param("categoryIds") Set<Long> categoryIds, Pageable pageable);
 
 }

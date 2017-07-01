@@ -117,7 +117,7 @@ public class QuestionTrueFalseResource {
         Page<QuestionTrueFalse> page;
         if (categories.isPresent()) {
             Set<Long> targetCategories = resourceHelper.includeChildren(categories.get());
-            page = questionTrueFalseRepository.findByCategories(targetCategories, pageable);
+            page = questionTrueFalseRepository.findAllByCategories(targetCategories, pageable);
         } else {
             page = questionTrueFalseRepository.findAll(pageable);
         }

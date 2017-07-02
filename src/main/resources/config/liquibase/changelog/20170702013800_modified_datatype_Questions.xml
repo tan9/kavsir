@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <property name="now" value="now()" dbms="h2"/>
+
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+
+    <property name="floatType" value="float4" dbms="postgresql, h2"/>
+    <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
+
+    <!-- https://github.com/jhipster/generator-jhipster/issues/5995 -->
+    <property name="clobType" value="text" dbms="postgresql"/>
+    <property name="clobType" value="varchar(8192)" dbms="h2"/>
+
+    <!--
+        Change question and answer text form varchar to clob-like datatype.
+    -->
+    <changeSet author="tang" id="modify-question-text-datatype">
+        <modifyDataType tableName="question_choice"
+                        columnName="text"
+                        newDataType="${clobType}"/>
+
+        <modifyDataType tableName="question_choice_option"
+                        columnName="text"
+                        newDataType="${clobType}"/>
+
+        <modifyDataType tableName="question_essay"
+                        columnName="text"
+                        newDataType="${clobType}"/>
+
+        <modifyDataType tableName="question_essay"
+                        columnName="answer"
+                        newDataType="${clobType}"/>
+
+        <modifyDataType tableName="question_group"
+                        columnName="text"
+                        newDataType="${clobType}"/>
+
+        <modifyDataType tableName="question_true_false"
+                        columnName="text"
+                        newDataType="${clobType}"/>
+    </changeSet>
+</databaseChangeLog>

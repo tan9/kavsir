@@ -36,8 +36,7 @@ public class QuestionGroup implements Serializable {
      */
     @NotNull
     @ApiModelProperty(value = "題目", required = true)
-    @Lob
-    @Column(name = "text", nullable = false)
+    @Column(name = "text", columnDefinition = "text", nullable = false)
     private String text;
 
     /**

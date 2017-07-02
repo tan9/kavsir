@@ -43,6 +43,7 @@ public class QuestionChoiceOption implements Serializable {
      */
     @NotNull
     @ApiModelProperty(value = "選項內容", required = true)
+    @Lob
     @Column(name = "text", nullable = false)
     private String text;
 

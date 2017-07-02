@@ -28,7 +28,8 @@
         {
             "fieldName": "text",
             "javadoc": "選項內容",
-            "fieldType": "String",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text",
             "fieldValidateRules": [
                 "required"
             ]

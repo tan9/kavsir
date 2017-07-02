@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
-import { JhiEventManager, JhiParseLinks, JhiPaginationUtil, JhiLanguageService, JhiAlertService } from 'ng-jhipster';
+import { JhiEventManager, JhiParseLinks, JhiPaginationUtil, JhiLanguageService, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
 
 import { QuestionEssay } from './question-essay.model';
 import { QuestionEssayService } from './question-essay.service';
@@ -36,6 +36,7 @@ currentAccount: any;
         private alertService: JhiAlertService,
         private principal: Principal,
         private activatedRoute: ActivatedRoute,
+        private dataUtils: JhiDataUtils,
         protected router: Router,
         private eventManager: JhiEventManager,
         private paginationUtil: JhiPaginationUtil,
@@ -124,6 +125,14 @@ currentAccount: any;
 
     trackId(index: number, item: QuestionEssay) {
         return item.id;
+    }
+
+    byteSize(field) {
+        return this.dataUtils.byteSize(field);
+    }
+
+    openFile(contentType, field) {
+        return this.dataUtils.openFile(contentType, field);
     }
     registerChangeInQuestionEssays() {
         this.eventSubscriber = this.eventManager.subscribe('questionEssayListModification', (response) => this.loadAll());

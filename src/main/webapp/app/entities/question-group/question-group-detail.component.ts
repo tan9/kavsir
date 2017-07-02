@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
-import { JhiEventManager  } from 'ng-jhipster';
+import { JhiEventManager , JhiDataUtils } from 'ng-jhipster';
 
 import { QuestionGroup } from './question-group.model';
 import { QuestionGroupService } from './question-group.service';
@@ -18,6 +18,7 @@ export class QuestionGroupDetailComponent implements OnInit, OnDestroy {
 
     constructor(
         private eventManager: JhiEventManager,
+        private dataUtils: JhiDataUtils,
         private questionGroupService: QuestionGroupService,
         private route: ActivatedRoute
     ) {
@@ -34,6 +35,13 @@ export class QuestionGroupDetailComponent implements OnInit, OnDestroy {
         this.questionGroupService.find(id).subscribe((questionGroup) => {
             this.questionGroup = questionGroup;
         });
+    }
+    byteSize(field) {
+        return this.dataUtils.byteSize(field);
+    }
+
+    openFile(contentType, field) {
+        return this.dataUtils.openFile(contentType, field);
     }
     previousState() {
         window.history.back();

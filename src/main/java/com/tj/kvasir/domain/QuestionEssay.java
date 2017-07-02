@@ -35,6 +35,7 @@ public class QuestionEssay implements Serializable {
      */
     @NotNull
     @ApiModelProperty(value = "題目", required = true)
+    @Lob
     @Column(name = "text", nullable = false)
     private String text;
 
@@ -43,6 +44,7 @@ public class QuestionEssay implements Serializable {
      */
     @NotNull
     @ApiModelProperty(value = "答案", required = true)
+    @Lob
     @Column(name = "answer", nullable = false)
     private String answer;
 

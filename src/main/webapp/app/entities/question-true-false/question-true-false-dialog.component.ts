@@ -4,7 +4,7 @@ import { Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Rx';
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
 
 import { QuestionTrueFalse } from './question-true-false.model';
 import { QuestionTrueFalsePopupService } from './question-true-false-popup.service';
@@ -34,6 +34,7 @@ export class QuestionTrueFalseDialogComponent implements OnInit {
 
     constructor(
         public activeModal: NgbActiveModal,
+        private dataUtils: JhiDataUtils,
         private alertService: JhiAlertService,
         private questionTrueFalseService: QuestionTrueFalseService,
         private categoryHierarchyService: CategoryHierarchyService,
@@ -59,6 +60,27 @@ export class QuestionTrueFalseDialogComponent implements OnInit {
             .subscribe((res: ResponseWrapper) => { this.resourceimages = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
         this.questionGroupService.query()
             .subscribe((res: ResponseWrapper) => { this.questiongroups = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+    }
+
+    byteSize(field) {
+        return this.dataUtils.byteSize(field);
+    }
+
+    openFile(contentType, field) {
+        return this.dataUtils.openFile(contentType, field);
+    }
+
+    setFileData(event, questionTrueFalse, field, isImage) {
+        if (event && event.target.files && event.target.files[0]) {
+            const file = event.target.files[0];
+            if (isImage && !/^image\//.test(file.type)) {
+                return;
+            }
+            this.dataUtils.toBase64(file, (base64Data) => {
+                questionTrueFalse[field] = base64Data;
+                questionTrueFalse[`${field}ContentType`] = file.type;
+            });
+        }
     }
 
     clear() {

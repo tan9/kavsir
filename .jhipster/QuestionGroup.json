@@ -32,7 +32,8 @@
         {
             "fieldName": "text",
             "javadoc": "題目",
-            "fieldType": "String",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text",
             "fieldValidateRules": [
                 "required"
             ]

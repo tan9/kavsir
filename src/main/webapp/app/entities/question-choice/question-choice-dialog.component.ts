@@ -4,7 +4,7 @@ import { Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Rx';
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
 
 import { QuestionChoice } from './question-choice.model';
 import { QuestionChoicePopupService } from './question-choice-popup.service';
@@ -39,6 +39,7 @@ export class QuestionChoiceDialogComponent implements OnInit {
 
     constructor(
         public activeModal: NgbActiveModal,
+        private dataUtils: JhiDataUtils,
         private alertService: JhiAlertService,
         private questionChoiceService: QuestionChoiceService,
         private questionChoiceOptionService: QuestionChoiceOptionService,
@@ -86,6 +87,27 @@ export class QuestionChoiceDialogComponent implements OnInit {
             .subscribe((res: ResponseWrapper) => { this.resourceimages = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
         this.questionGroupService.query()
             .subscribe((res: ResponseWrapper) => { this.questiongroups = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+    }
+
+    byteSize(field) {
+        return this.dataUtils.byteSize(field);
+    }
+
+    openFile(contentType, field) {
+        return this.dataUtils.openFile(contentType, field);
+    }
+
+    setFileData(event, questionChoice, field, isImage) {
+        if (event && event.target.files && event.target.files[0]) {
+            const file = event.target.files[0];
+            if (isImage && !/^image\//.test(file.type)) {
+                return;
+            }
+            this.dataUtils.toBase64(file, (base64Data) => {
+                questionChoice[field] = base64Data;
+                questionChoice[`${field}ContentType`] = file.type;
+            });
+        }
     }
 
     clear() {

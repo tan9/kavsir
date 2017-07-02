@@ -67,7 +67,7 @@ class QuestionChoiceOptionGatlingTest extends Simulation {
             .exec(http("Create new questionChoiceOption")
             .post("/api/question-choice-options")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "correct":null, "text":"SAMPLE_TEXT", "memo":"SAMPLE_TEXT"}""")).asJSON
+            .body(StringBody("""{"id":null, "correct":null, "text":null, "memo":"SAMPLE_TEXT"}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_questionChoiceOption_url"))).exitHereIfFailed
             .pause(10)

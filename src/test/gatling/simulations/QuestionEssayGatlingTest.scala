@@ -67,7 +67,7 @@ class QuestionEssayGatlingTest extends Simulation {
             .exec(http("Create new questionEssay")
             .post("/api/question-essays")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "text":"SAMPLE_TEXT", "answer":"SAMPLE_TEXT", "memo":"SAMPLE_TEXT", "groupPosition":"0"}""")).asJSON
+            .body(StringBody("""{"id":null, "text":null, "answer":null, "memo":"SAMPLE_TEXT", "groupPosition":"0"}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_questionEssay_url"))).exitHereIfFailed
             .pause(10)

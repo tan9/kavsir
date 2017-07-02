@@ -67,7 +67,7 @@ class QuestionChoiceGatlingTest extends Simulation {
             .exec(http("Create new questionChoice")
             .post("/api/question-choices")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "multipleResponse":null, "text":"SAMPLE_TEXT", "memo":"SAMPLE_TEXT", "groupPosition":"0"}""")).asJSON
+            .body(StringBody("""{"id":null, "multipleResponse":null, "text":null, "memo":"SAMPLE_TEXT", "groupPosition":"0"}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_questionChoice_url"))).exitHereIfFailed
             .pause(10)

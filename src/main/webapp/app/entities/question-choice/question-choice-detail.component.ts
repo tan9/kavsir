@@ -1,11 +1,10 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
-import { JhiEventManager  } from 'ng-jhipster';
+import { JhiEventManager, JhiDataUtils } from 'ng-jhipster';
 
 import { QuestionChoice } from './question-choice.model';
 import { QuestionChoiceService } from './question-choice.service';
-import { ChoiceOptionsComponent } from '../../shared/question/choice-options.component';
 
 @Component({
     selector: 'jhi-question-choice-detail',
@@ -23,6 +22,7 @@ export class QuestionChoiceDetailComponent implements OnInit, OnDestroy {
 
     constructor(
         private eventManager: JhiEventManager,
+        private dataUtils: JhiDataUtils,
         private questionChoiceService: QuestionChoiceService,
         private route: ActivatedRoute
     ) {
@@ -43,6 +43,13 @@ export class QuestionChoiceDetailComponent implements OnInit, OnDestroy {
         this.questionChoiceService.find(id).subscribe((questionChoice) => {
             this.questionChoice = questionChoice;
         });
+    }
+    byteSize(field) {
+        return this.dataUtils.byteSize(field);
+    }
+
+    openFile(contentType, field) {
+        return this.dataUtils.openFile(contentType, field);
     }
     previousState() {
         window.history.back();

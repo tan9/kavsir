@@ -67,7 +67,7 @@ class QuestionGroupGatlingTest extends Simulation {
             .exec(http("Create new questionGroup")
             .post("/api/question-groups")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "text":"SAMPLE_TEXT", "memo":"SAMPLE_TEXT"}""")).asJSON
+            .body(StringBody("""{"id":null, "text":null, "memo":"SAMPLE_TEXT"}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_questionGroup_url"))).exitHereIfFailed
             .pause(10)

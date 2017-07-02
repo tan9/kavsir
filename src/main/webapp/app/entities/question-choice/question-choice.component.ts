@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
-import { JhiEventManager, JhiParseLinks, JhiPaginationUtil, JhiLanguageService, JhiAlertService } from 'ng-jhipster';
+import { JhiEventManager, JhiParseLinks, JhiPaginationUtil, JhiLanguageService, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
 
 import { QuestionChoice } from './question-choice.model';
 import { QuestionChoiceService } from './question-choice.service';
@@ -38,6 +38,7 @@ currentAccount: any;
         private alertService: JhiAlertService,
         private principal: Principal,
         protected activatedRoute: ActivatedRoute,
+        private dataUtils: JhiDataUtils,
         protected router: Router,
         private eventManager: JhiEventManager,
         private paginationUtil: JhiPaginationUtil,
@@ -126,6 +127,14 @@ currentAccount: any;
 
     trackId(index: number, item: QuestionChoice) {
         return item.id;
+    }
+
+    byteSize(field) {
+        return this.dataUtils.byteSize(field);
+    }
+
+    openFile(contentType, field) {
+        return this.dataUtils.openFile(contentType, field);
     }
     registerChangeInQuestionChoices() {
         this.eventSubscriber = this.eventManager.subscribe('questionChoiceListModification', (response) => this.loadAll());

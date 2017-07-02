@@ -67,7 +67,7 @@ entity QuestionTrueFalse {
   /** 答案 */
   correct Boolean required,
   /** 題目 */
-  text String required,
+  text TextBlob required,
   /** 備註 */
   memo String,
   /** 題組中序位 */
@@ -79,7 +79,7 @@ entity QuestionChoice {
   /** 是否為複選 */
   multipleResponse Boolean required,
   /** 題目 */
-  text String required,
+  text TextBlob required,
   /** 備註 */
   memo String,
   /** 題組中序位 */
@@ -91,7 +91,7 @@ entity QuestionChoiceOption {
   /** 是否為正解 */
   correct Boolean required,
   /** 選項內容 */
-  text String required,
+  text TextBlob required,
   /** 備註 */
   memo String
 }
@@ -103,9 +103,9 @@ relationship OneToMany {
 /** 問答題 */
 entity QuestionEssay {
   /** 題目 */
-  text String required,
+  text TextBlob required,
   /** 答案 */
-  answer String required,
+  answer TextBlob required,
   /** 備註 */
   memo String,
   /** 題組中序位 */
@@ -115,7 +115,7 @@ entity QuestionEssay {
 /** 題組 */
 entity QuestionGroup {
   /** 題目 */
-  text String required,
+  text TextBlob required,
   /** 備註 */
   memo String
 }

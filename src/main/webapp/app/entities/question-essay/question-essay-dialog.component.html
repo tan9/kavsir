@@ -73,9 +73,7 @@
         </div>
         <div class="form-group">
             <label jhiTranslate="kavsirApp.questionEssay.image" for="field_image">Image</label>
-            <select class="form-control" id="field_image" multiple name="image" [(ngModel)]="questionEssay.images">
-                <option [ngValue]="getSelected(questionEssay.images, resourceImageOption)" *ngFor="let resourceImageOption of resourceimages; trackBy: trackResourceImageById">{{resourceImageOption.id}}</option>
-            </select>
+            <jhi-images [images]="questionEssay.images" id="field_image"></jhi-images>
         </div>
         <div *ngIf="inGroup" class="form-group">
             <label jhiTranslate="kavsirApp.questionEssay.questionGroup" for="field_questionGroup">Question Group</label>

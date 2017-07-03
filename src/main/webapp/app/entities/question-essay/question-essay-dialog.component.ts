@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, forwardRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Response } from '@angular/http';
 
@@ -10,9 +10,10 @@ import { QuestionEssay } from './question-essay.model';
 import { QuestionEssayPopupService } from './question-essay-popup.service';
 import { QuestionEssayService } from './question-essay.service';
 import { CategoryNode } from '../category-node';
-import { ResourceImage, ResourceImageService } from '../resource-image';
+import { ResourceImage } from '../resource-image';
 import { QuestionGroup, QuestionGroupService } from '../question-group';
 import { ResponseWrapper, CategoryHierarchyService } from '../../shared';
+import { ImagesComponent } from '../../shared/image/images.component';
 
 @Component({
     selector: 'jhi-question-essay-dialog',
@@ -27,9 +28,9 @@ export class QuestionEssayDialogComponent implements OnInit {
 
     categorynodes: CategoryNode[];
 
-    resourceimages: ResourceImage[];
-
     questiongroups: QuestionGroup[];
+
+    @ViewChild(forwardRef(() => ImagesComponent)) images: ImagesComponent;
 
     constructor(
         public activeModal: NgbActiveModal,
@@ -37,7 +38,6 @@ export class QuestionEssayDialogComponent implements OnInit {
         private alertService: JhiAlertService,
         private questionEssayService: QuestionEssayService,
         private categoryHierarchyService: CategoryHierarchyService,
-        private resourceImageService: ResourceImageService,
         private questionGroupService: QuestionGroupService,
         private eventManager: JhiEventManager,
         private route: ActivatedRoute
@@ -55,8 +55,6 @@ export class QuestionEssayDialogComponent implements OnInit {
         }
 
         this.categorynodes = this.categoryHierarchyService.getNodes();
-        this.resourceImageService.query()
-            .subscribe((res: ResponseWrapper) => { this.resourceimages = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
         this.questionGroupService.query()
             .subscribe((res: ResponseWrapper) => { this.questiongroups = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
@@ -90,10 +88,14 @@ export class QuestionEssayDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.questionEssay.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.questionEssayService.update(this.questionEssay), false);
+                this.images.save(this.questionEssay, 'essays').flatMap(
+                    () => this.questionEssayService.update(this.questionEssay)),
+                false);
         } else {
             this.subscribeToSaveResponse(
-                this.questionEssayService.create(this.questionEssay), true);
+                this.images.save(this.questionEssay, 'essays').flatMap(
+                    () => this.questionEssayService.create(this.questionEssay)),
+                true);
         }
     }
 

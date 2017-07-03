@@ -10,12 +10,13 @@ import { QuestionChoice } from './question-choice.model';
 import { QuestionChoicePopupService } from './question-choice-popup.service';
 import { QuestionChoiceService } from './question-choice.service';
 import { CategoryNode } from '../category-node';
-import { ResourceImage, ResourceImageService } from '../resource-image';
+import { ResourceImage } from '../resource-image';
 import { QuestionGroup, QuestionGroupService } from '../question-group';
 import { ResponseWrapper } from '../../shared';
 import { ChoiceOptionsComponent } from '../../shared/question/choice-options.component';
 import { QuestionChoiceOptionService } from '../question-choice-option/question-choice-option.service';
 import { CategoryHierarchyService } from '../../shared/category/category-hierarchy.service';
+import { ImagesComponent } from '../../shared/image/images.component';
 
 @Component({
     selector: 'jhi-question-choice-dialog',
@@ -31,11 +32,11 @@ export class QuestionChoiceDialogComponent implements OnInit {
 
     categorynodes: CategoryNode[];
 
-    resourceimages: ResourceImage[];
-
     questiongroups: QuestionGroup[];
 
     @ViewChild(forwardRef(() => ChoiceOptionsComponent)) options: ChoiceOptionsComponent;
+
+    @ViewChild(forwardRef(() => ImagesComponent)) images: ImagesComponent;
 
     constructor(
         public activeModal: NgbActiveModal,
@@ -44,7 +45,6 @@ export class QuestionChoiceDialogComponent implements OnInit {
         private questionChoiceService: QuestionChoiceService,
         private questionChoiceOptionService: QuestionChoiceOptionService,
         private categoryHierarchyService: CategoryHierarchyService,
-        private resourceImageService: ResourceImageService,
         private questionGroupService: QuestionGroupService,
         private eventManager: JhiEventManager,
         private route: ActivatedRoute
@@ -83,8 +83,6 @@ export class QuestionChoiceDialogComponent implements OnInit {
 
         this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
         this.categorynodes = this.categoryHierarchyService.getNodes();
-        this.resourceImageService.query()
-            .subscribe((res: ResponseWrapper) => { this.resourceimages = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
         this.questionGroupService.query()
             .subscribe((res: ResponseWrapper) => { this.questiongroups = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
@@ -118,15 +116,18 @@ export class QuestionChoiceDialogComponent implements OnInit {
         this.isSaving = true;
         this.options.editable = false;
         if (this.questionChoice.id !== undefined) {
-            const result = this.questionChoiceService.update(this.questionChoice);
+            const result = this.images.save(this.questionChoice, 'choices').flatMap(
+                () => this.questionChoiceService.update(this.questionChoice));
             this.subscribeToSaveResponse(result, false);
         } else {
-            const create = this.questionChoiceService.create(this.questionChoice);
+            const create = this.images.save(this.questionChoice, 'choices').flatMap(
+                () => this.questionChoiceService.create(this.questionChoice));
             this.subscribeToSaveResponse(create, true);
         }
     }
 
     private saveOptions(questionChoice: QuestionChoice) : Promise<any> {
+        // TODO use Observable instead?
         const promises: Promise<any>[] = [];
 
         this.options.choiceOptions.forEach((option) => {

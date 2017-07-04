@@ -1,0 +1,62 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "trueOrFalse",
+            "relationshipName": "category",
+            "otherEntityName": "categoryNode",
+            "otherEntityField": "id",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "trueFalse",
+            "relationshipName": "image",
+            "otherEntityName": "resourceImage",
+            "otherEntityField": "id",
+            "ownerSide": true
+        },
+        {
+            "relationshipName": "questionGroup",
+            "otherEntityName": "questionGroup",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "correct",
+            "javadoc": "答案",
+            "fieldType": "Boolean",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "text",
+            "javadoc": "題目",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "memo",
+            "javadoc": "備註",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "groupPosition",
+            "javadoc": "題組中序位",
+            "fieldType": "Integer"
+        }
+    ],
+    "changelogDate": "20170704141351",
+    "javadoc": "是非題",
+    "entityTableName": "question_true_false",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "no"
+}

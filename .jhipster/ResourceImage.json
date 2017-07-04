@@ -1,0 +1,58 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "choice",
+            "otherEntityName": "questionChoice",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "image"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "choiceOption",
+            "otherEntityName": "questionChoiceOption",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "image"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "trueFalse",
+            "otherEntityName": "questionTrueFalse",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "image"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "essay",
+            "otherEntityName": "questionEssay",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "image"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "name",
+            "javadoc": "名稱",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "content",
+            "javadoc": "內容",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "image",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20170704141356",
+    "javadoc": "圖檔",
+    "entityTableName": "resource_image",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "no"
+}

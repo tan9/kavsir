@@ -1,0 +1,30 @@
+{
+    "kavsirApp": {
+        "categoryNode" : {
+            "home": {
+                "title": "Category Nodes",
+                "createLabel": "Create a new Category Node",
+                "createOrEditLabel": "Create or edit a Category Node",
+                "search": "Search for Category Node"
+            },
+            "created": "A new Category Node is created with identifier {{ param }}",
+            "updated": "A Category Node is updated with identifier {{ param }}",
+            "deleted": "A Category Node is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Category Node {{ id }}?"
+            },
+            "detail": {
+                "title": "Category Node"
+            },
+            "type": "Type",
+            "typeId": "Type Id",
+            "name": "Name",
+            "position": "Position",
+            "parent": "Parent",
+            "trueOrFalse": "True Or False",
+            "choice": "Choice",
+            "essay": "Essay",
+            "group": "Group"
+        }
+    }
+}

@@ -1,0 +1,49 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "questionChoice",
+            "otherEntityName": "questionChoice",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "choiceOption",
+            "relationshipName": "image",
+            "otherEntityName": "resourceImage",
+            "otherEntityField": "id",
+            "ownerSide": true
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "correct",
+            "javadoc": "是否為正解",
+            "fieldType": "Boolean",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "text",
+            "javadoc": "選項內容",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "memo",
+            "javadoc": "備註",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20170704141353",
+    "javadoc": "選擇題選項",
+    "entityTableName": "question_choice_option",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "no"
+}

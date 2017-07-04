@@ -1,0 +1,23 @@
+{
+    "kavsirApp": {
+        "categoryAcademicYear" : {
+            "home": {
+                "title": "Category Academic Years",
+                "createLabel": "Create a new Category Academic Year",
+                "createOrEditLabel": "Create or edit a Category Academic Year",
+                "search": "Search for Category Academic Year"
+            },
+            "created": "A new Category Academic Year is created with identifier {{ param }}",
+            "updated": "A Category Academic Year is updated with identifier {{ param }}",
+            "deleted": "A Category Academic Year is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Category Academic Year {{ id }}?"
+            },
+            "detail": {
+                "title": "Category Academic Year"
+            },
+            "position": "Position",
+            "name": "Name"
+        }
+    }
+}

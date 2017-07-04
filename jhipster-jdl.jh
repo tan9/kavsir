@@ -1,0 +1,151 @@
+/** 類別節點 */
+entity CategoryNode {
+  type CategoryType required,
+  /** 類別 ID，在 type !== SEGMENT 時需指定到 type 對應表格資料 */
+  typeId Long,
+  /** 名稱 (章、課、篇、節)，只有在 type == SEGMENT 時有效 */
+  name String,
+  /** 序位 */
+  position Integer,
+}
+
+relationship ManyToOne {
+  CategoryNode{parent} to CategoryNode
+}
+
+enum CategoryType {
+  ACADEMIC_YEAR,
+  GRADE,
+  SEMESTER,
+  SUBJECT,
+  PUBLISHER,
+  SEGMENT
+}
+
+/** 學年 */
+entity CategoryAcademicYear {
+  /** 序位 */
+  position Integer required,
+  /** 名稱 */
+  name String required
+}
+
+/** 年級 (一年級 ~ 十二年級) */
+entity CategoryGrade {
+  /** 序位 */
+  position Integer required,
+  /** 名稱 */
+  name String required
+}
+
+/** 學期 (上學期、下學期、全學期...) */
+entity CategorySemester {
+  /** 序位 */
+  position Integer required,
+  /** 名稱 */
+  name String required
+}
+
+/** 科目 */
+entity CategorySubject {
+  /** 序位 */
+  position Integer required,
+  /** 名稱 */
+  name String required
+}
+
+/** 出版社 (康軒、翰林、三民...) */
+entity CategoryPublisher {
+  /** 序位 */
+  position Integer required,
+  /** 名稱 */
+  name String required
+}
+
+/** 是非題 */
+entity QuestionTrueFalse {
+  /** 答案 */
+  correct Boolean required,
+  /** 題目 */
+  text TextBlob required,
+  /** 備註 */
+  memo String,
+  /** 題組中序位 */
+  groupPosition Integer
+}
+
+/** 選擇題 */
+entity QuestionChoice {
+  /** 是否為複選 */
+  multipleResponse Boolean required,
+  /** 題目 */
+  text TextBlob required,
+  /** 備註 */
+  memo String,
+  /** 題組中序位 */
+  groupPosition Integer
+}
+
+/** 選擇題選項 */
+entity QuestionChoiceOption {
+  /** 是否為正解 */
+  correct Boolean required,
+  /** 選項內容 */
+  text TextBlob required,
+  /** 備註 */
+  memo String
+}
+
+relationship OneToMany {
+  QuestionChoice{option} to QuestionChoiceOption
+}
+
+/** 問答題 */
+entity QuestionEssay {
+  /** 題目 */
+  text TextBlob required,
+  /** 答案 */
+  answer TextBlob required,
+  /** 備註 */
+  memo String,
+  /** 題組中序位 */
+  groupPosition Integer
+}
+
+/** 題組 */
+entity QuestionGroup {
+  /** 題目 */
+  text TextBlob required,
+  /** 備註 */
+  memo String
+}
+
+relationship OneToMany {
+  QuestionGroup{choice} to QuestionChoice,
+  QuestionGroup{trueFalse} to QuestionTrueFalse,
+  QuestionGroup{essay} to QuestionEssay
+}
+
+/** 圖檔 */
+entity ResourceImage {
+  /** 名稱 */
+  name String required,
+  /** 內容 */
+  content ImageBlob required
+}
+
+relationship ManyToMany {
+  QuestionTrueFalse{category} to CategoryNode{trueOrFalse},
+  QuestionChoice{category} to CategoryNode{choice},
+  QuestionEssay{category} to CategoryNode{essay},
+  QuestionGroup{category} to CategoryNode{group}
+}
+
+relationship ManyToMany {
+  QuestionChoice{image} to ResourceImage{choice},
+  QuestionChoiceOption{image} to ResourceImage{choiceOption},
+  QuestionTrueFalse{image} to ResourceImage{trueFalse},
+  QuestionEssay{image} to ResourceImage{essay}
+}
+
+paginate CategoryNode, QuestionTrueFalse, QuestionChoice, QuestionChoiceOption, QuestionEssay, QuestionGroup, ResourceImage with pagination

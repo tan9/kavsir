@@ -1,0 +1,34 @@
+
+<div *ngIf="resourceImage">
+    <h2><span jhiTranslate="kavsirApp.resourceImage.detail.title">Resource Image</span> {{resourceImage.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="kavsirApp.resourceImage.name">Name</span></dt>
+        <dd>
+            <span>{{resourceImage.name}}</span>
+        </dd>
+        <dt><span jhiTranslate="kavsirApp.resourceImage.content">Content</span></dt>
+        <dd>
+            <div *ngIf="resourceImage.content">
+                <a (click)="openFile(resourceImage.contentContentType, resourceImage.content)">
+                    <img [src]="'data:' + resourceImage.contentContentType + ';base64,' + resourceImage.content" style="max-width: 100%;" alt="resourceImage image"/>
+                </a>
+                {{resourceImage.contentContentType}}, {{byteSize(resourceImage.content)}}
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'resource-image/'+ resourceImage.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

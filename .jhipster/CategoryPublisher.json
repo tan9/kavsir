@@ -1,0 +1,28 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "position",
+            "javadoc": "序位",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "name",
+            "javadoc": "名稱",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20170704141350",
+    "javadoc": "出版社 (康軒、翰林、三民...)",
+    "entityTableName": "category_publisher",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no"
+}

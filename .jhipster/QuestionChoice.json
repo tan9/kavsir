@@ -62,7 +62,7 @@
     "changelogDate": "20170704141352",
     "javadoc": "選擇題",
     "entityTableName": "question_choice",
-    "dto": "no",
+    "dto": "mapstruct",
     "pagination": "pagination",
-    "service": "no"
+    "service": "serviceClass"
 }

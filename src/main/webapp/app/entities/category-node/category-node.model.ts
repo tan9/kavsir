@@ -16,7 +16,7 @@ export class CategoryNode implements BaseEntity {
         public typeId?: number,
         public name?: string,
         public position?: number,
-        public parent?: BaseEntity,
+        public parentId?: number,
         public trueOrFalses?: BaseEntity[],
         public choices?: BaseEntity[],
         public essays?: BaseEntity[],

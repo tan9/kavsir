@@ -1,12 +1,10 @@
 package com.tj.kvasir.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.tj.kvasir.domain.QuestionEssay;
-
-import com.tj.kvasir.repository.QuestionEssayRepository;
-import com.tj.kvasir.repository.search.QuestionEssaySearchRepository;
+import com.tj.kvasir.service.QuestionEssayService;
 import com.tj.kvasir.web.rest.util.HeaderUtil;
 import com.tj.kvasir.web.rest.util.PaginationUtil;
+import com.tj.kvasir.service.dto.QuestionEssayDTO;
 import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -24,7 +22,6 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
@@ -40,31 +37,27 @@ public class QuestionEssayResource {
 
     private static final String ENTITY_NAME = "questionEssay";
 
-    private final QuestionEssayRepository questionEssayRepository;
+    private final QuestionEssayService questionEssayService;
 
-    private final QuestionEssaySearchRepository questionEssaySearchRepository;
-
-    public QuestionEssayResource(QuestionEssayRepository questionEssayRepository, QuestionEssaySearchRepository questionEssaySearchRepository) {
-        this.questionEssayRepository = questionEssayRepository;
-        this.questionEssaySearchRepository = questionEssaySearchRepository;
+    public QuestionEssayResource(QuestionEssayService questionEssayService) {
+        this.questionEssayService = questionEssayService;
     }
 
     /**
      * POST  /question-essays : Create a new questionEssay.
      *
-     * @param questionEssay the questionEssay to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new questionEssay, or with status 400 (Bad Request) if the questionEssay has already an ID
+     * @param questionEssayDTO the questionEssayDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new questionEssayDTO, or with status 400 (Bad Request) if the questionEssay has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/question-essays")
     @Timed
-    public ResponseEntity<QuestionEssay> createQuestionEssay(@Valid @RequestBody QuestionEssay questionEssay) throws URISyntaxException {
-        log.debug("REST request to save QuestionEssay : {}", questionEssay);
-        if (questionEssay.getId() != null) {
+    public ResponseEntity<QuestionEssayDTO> createQuestionEssay(@Valid @RequestBody QuestionEssayDTO questionEssayDTO) throws URISyntaxException {
+        log.debug("REST request to save QuestionEssay : {}", questionEssayDTO);
+        if (questionEssayDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new questionEssay cannot already have an ID")).body(null);
         }
-        QuestionEssay result = questionEssayRepository.save(questionEssay);
-        questionEssaySearchRepository.save(result);
+        QuestionEssayDTO result = questionEssayService.save(questionEssayDTO);
         return ResponseEntity.created(new URI("/api/question-essays/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -73,23 +66,22 @@ public class QuestionEssayResource {
     /**
      * PUT  /question-essays : Updates an existing questionEssay.
      *
-     * @param questionEssay the questionEssay to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated questionEssay,
-     * or with status 400 (Bad Request) if the questionEssay is not valid,
-     * or with status 500 (Internal Server Error) if the questionEssay couldn't be updated
+     * @param questionEssayDTO the questionEssayDTO to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated questionEssayDTO,
+     * or with status 400 (Bad Request) if the questionEssayDTO is not valid,
+     * or with status 500 (Internal Server Error) if the questionEssayDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/question-essays")
     @Timed
-    public ResponseEntity<QuestionEssay> updateQuestionEssay(@Valid @RequestBody QuestionEssay questionEssay) throws URISyntaxException {
-        log.debug("REST request to update QuestionEssay : {}", questionEssay);
-        if (questionEssay.getId() == null) {
-            return createQuestionEssay(questionEssay);
+    public ResponseEntity<QuestionEssayDTO> updateQuestionEssay(@Valid @RequestBody QuestionEssayDTO questionEssayDTO) throws URISyntaxException {
+        log.debug("REST request to update QuestionEssay : {}", questionEssayDTO);
+        if (questionEssayDTO.getId() == null) {
+            return createQuestionEssay(questionEssayDTO);
         }
-        QuestionEssay result = questionEssayRepository.save(questionEssay);
-        questionEssaySearchRepository.save(result);
+        QuestionEssayDTO result = questionEssayService.save(questionEssayDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, questionEssay.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, questionEssayDTO.getId().toString()))
             .body(result);
     }
 
@@ -101,9 +93,9 @@ public class QuestionEssayResource {
      */
     @GetMapping("/question-essays")
     @Timed
-    public ResponseEntity<List<QuestionEssay>> getAllQuestionEssays(@ApiParam Pageable pageable) {
+    public ResponseEntity<List<QuestionEssayDTO>> getAllQuestionEssays(@ApiParam Pageable pageable) {
         log.debug("REST request to get a page of QuestionEssays");
-        Page<QuestionEssay> page = questionEssayRepository.findAll(pageable);
+        Page<QuestionEssayDTO> page = questionEssayService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/question-essays");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -111,29 +103,28 @@ public class QuestionEssayResource {
     /**
      * GET  /question-essays/:id : get the "id" questionEssay.
      *
-     * @param id the id of the questionEssay to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the questionEssay, or with status 404 (Not Found)
+     * @param id the id of the questionEssayDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the questionEssayDTO, or with status 404 (Not Found)
      */
     @GetMapping("/question-essays/{id}")
     @Timed
-    public ResponseEntity<QuestionEssay> getQuestionEssay(@PathVariable Long id) {
+    public ResponseEntity<QuestionEssayDTO> getQuestionEssay(@PathVariable Long id) {
         log.debug("REST request to get QuestionEssay : {}", id);
-        QuestionEssay questionEssay = questionEssayRepository.findOneWithEagerRelationships(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(questionEssay));
+        QuestionEssayDTO questionEssayDTO = questionEssayService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(questionEssayDTO));
     }
 
     /**
      * DELETE  /question-essays/:id : delete the "id" questionEssay.
      *
-     * @param id the id of the questionEssay to delete
+     * @param id the id of the questionEssayDTO to delete
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/question-essays/{id}")
     @Timed
     public ResponseEntity<Void> deleteQuestionEssay(@PathVariable Long id) {
         log.debug("REST request to delete QuestionEssay : {}", id);
-        questionEssayRepository.delete(id);
-        questionEssaySearchRepository.delete(id);
+        questionEssayService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
@@ -147,9 +138,9 @@ public class QuestionEssayResource {
      */
     @GetMapping("/_search/question-essays")
     @Timed
-    public ResponseEntity<List<QuestionEssay>> searchQuestionEssays(@RequestParam String query, @ApiParam Pageable pageable) {
+    public ResponseEntity<List<QuestionEssayDTO>> searchQuestionEssays(@RequestParam String query, @ApiParam Pageable pageable) {
         log.debug("REST request to search for a page of QuestionEssays for query {}", query);
-        Page<QuestionEssay> page = questionEssaySearchRepository.search(queryStringQuery(query), pageable);
+        Page<QuestionEssayDTO> page = questionEssayService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/question-essays");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

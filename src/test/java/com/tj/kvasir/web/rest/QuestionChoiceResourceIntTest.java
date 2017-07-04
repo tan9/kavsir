@@ -4,7 +4,10 @@ import com.tj.kvasir.KavsirApp;
 
 import com.tj.kvasir.domain.QuestionChoice;
 import com.tj.kvasir.repository.QuestionChoiceRepository;
+import com.tj.kvasir.service.QuestionChoiceService;
 import com.tj.kvasir.repository.search.QuestionChoiceSearchRepository;
+import com.tj.kvasir.service.dto.QuestionChoiceDTO;
+import com.tj.kvasir.service.mapper.QuestionChoiceMapper;
 import com.tj.kvasir.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -55,6 +58,12 @@ public class QuestionChoiceResourceIntTest {
     private QuestionChoiceRepository questionChoiceRepository;
 
     @Autowired
+    private QuestionChoiceMapper questionChoiceMapper;
+
+    @Autowired
+    private QuestionChoiceService questionChoiceService;
+
+    @Autowired
     private QuestionChoiceSearchRepository questionChoiceSearchRepository;
 
     @Autowired
@@ -76,7 +85,7 @@ public class QuestionChoiceResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        QuestionChoiceResource questionChoiceResource = new QuestionChoiceResource(questionChoiceRepository, questionChoiceSearchRepository);
+        QuestionChoiceResource questionChoiceResource = new QuestionChoiceResource(questionChoiceService);
         this.restQuestionChoiceMockMvc = MockMvcBuilders.standaloneSetup(questionChoiceResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -110,9 +119,10 @@ public class QuestionChoiceResourceIntTest {
         int databaseSizeBeforeCreate = questionChoiceRepository.findAll().size();
 
         // Create the QuestionChoice
+        QuestionChoiceDTO questionChoiceDTO = questionChoiceMapper.toDto(questionChoice);
         restQuestionChoiceMockMvc.perform(post("/api/question-choices")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(questionChoice)))
+            .content(TestUtil.convertObjectToJsonBytes(questionChoiceDTO)))
             .andExpect(status().isCreated());
 
         // Validate the QuestionChoice in the database
@@ -136,11 +146,12 @@ public class QuestionChoiceResourceIntTest {
 
         // Create the QuestionChoice with an existing ID
         questionChoice.setId(1L);
+        QuestionChoiceDTO questionChoiceDTO = questionChoiceMapper.toDto(questionChoice);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restQuestionChoiceMockMvc.perform(post("/api/question-choices")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(questionChoice)))
+            .content(TestUtil.convertObjectToJsonBytes(questionChoiceDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
@@ -156,10 +167,11 @@ public class QuestionChoiceResourceIntTest {
         questionChoice.setMultipleResponse(null);
 
         // Create the QuestionChoice, which fails.
+        QuestionChoiceDTO questionChoiceDTO = questionChoiceMapper.toDto(questionChoice);
 
         restQuestionChoiceMockMvc.perform(post("/api/question-choices")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(questionChoice)))
+            .content(TestUtil.convertObjectToJsonBytes(questionChoiceDTO)))
             .andExpect(status().isBadRequest());
 
         List<QuestionChoice> questionChoiceList = questionChoiceRepository.findAll();
@@ -174,10 +186,11 @@ public class QuestionChoiceResourceIntTest {
         questionChoice.setText(null);
 
         // Create the QuestionChoice, which fails.
+        QuestionChoiceDTO questionChoiceDTO = questionChoiceMapper.toDto(questionChoice);
 
         restQuestionChoiceMockMvc.perform(post("/api/question-choices")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(questionChoice)))
+            .content(TestUtil.convertObjectToJsonBytes(questionChoiceDTO)))
             .andExpect(status().isBadRequest());
 
         List<QuestionChoice> questionChoiceList = questionChoiceRepository.findAll();
@@ -241,10 +254,11 @@ public class QuestionChoiceResourceIntTest {
             .text(UPDATED_TEXT)
             .memo(UPDATED_MEMO)
             .groupPosition(UPDATED_GROUP_POSITION);
+        QuestionChoiceDTO questionChoiceDTO = questionChoiceMapper.toDto(updatedQuestionChoice);
 
         restQuestionChoiceMockMvc.perform(put("/api/question-choices")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedQuestionChoice)))
+            .content(TestUtil.convertObjectToJsonBytes(questionChoiceDTO)))
             .andExpect(status().isOk());
 
         // Validate the QuestionChoice in the database
@@ -267,11 +281,12 @@ public class QuestionChoiceResourceIntTest {
         int databaseSizeBeforeUpdate = questionChoiceRepository.findAll().size();
 
         // Create the QuestionChoice
+        QuestionChoiceDTO questionChoiceDTO = questionChoiceMapper.toDto(questionChoice);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restQuestionChoiceMockMvc.perform(put("/api/question-choices")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(questionChoice)))
+            .content(TestUtil.convertObjectToJsonBytes(questionChoiceDTO)))
             .andExpect(status().isCreated());
 
         // Validate the QuestionChoice in the database
@@ -332,5 +347,28 @@ public class QuestionChoiceResourceIntTest {
         assertThat(questionChoice1).isNotEqualTo(questionChoice2);
         questionChoice1.setId(null);
         assertThat(questionChoice1).isNotEqualTo(questionChoice2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(QuestionChoiceDTO.class);
+        QuestionChoiceDTO questionChoiceDTO1 = new QuestionChoiceDTO();
+        questionChoiceDTO1.setId(1L);
+        QuestionChoiceDTO questionChoiceDTO2 = new QuestionChoiceDTO();
+        assertThat(questionChoiceDTO1).isNotEqualTo(questionChoiceDTO2);
+        questionChoiceDTO2.setId(questionChoiceDTO1.getId());
+        assertThat(questionChoiceDTO1).isEqualTo(questionChoiceDTO2);
+        questionChoiceDTO2.setId(2L);
+        assertThat(questionChoiceDTO1).isNotEqualTo(questionChoiceDTO2);
+        questionChoiceDTO1.setId(null);
+        assertThat(questionChoiceDTO1).isNotEqualTo(questionChoiceDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(questionChoiceMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(questionChoiceMapper.fromId(null)).isNull();
     }
 }

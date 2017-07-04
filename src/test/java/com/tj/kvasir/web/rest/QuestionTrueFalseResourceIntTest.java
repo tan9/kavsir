@@ -4,7 +4,10 @@ import com.tj.kvasir.KavsirApp;
 
 import com.tj.kvasir.domain.QuestionTrueFalse;
 import com.tj.kvasir.repository.QuestionTrueFalseRepository;
+import com.tj.kvasir.service.QuestionTrueFalseService;
 import com.tj.kvasir.repository.search.QuestionTrueFalseSearchRepository;
+import com.tj.kvasir.service.dto.QuestionTrueFalseDTO;
+import com.tj.kvasir.service.mapper.QuestionTrueFalseMapper;
 import com.tj.kvasir.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -55,6 +58,12 @@ public class QuestionTrueFalseResourceIntTest {
     private QuestionTrueFalseRepository questionTrueFalseRepository;
 
     @Autowired
+    private QuestionTrueFalseMapper questionTrueFalseMapper;
+
+    @Autowired
+    private QuestionTrueFalseService questionTrueFalseService;
+
+    @Autowired
     private QuestionTrueFalseSearchRepository questionTrueFalseSearchRepository;
 
     @Autowired
@@ -76,7 +85,7 @@ public class QuestionTrueFalseResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        QuestionTrueFalseResource questionTrueFalseResource = new QuestionTrueFalseResource(questionTrueFalseRepository, questionTrueFalseSearchRepository);
+        QuestionTrueFalseResource questionTrueFalseResource = new QuestionTrueFalseResource(questionTrueFalseService);
         this.restQuestionTrueFalseMockMvc = MockMvcBuilders.standaloneSetup(questionTrueFalseResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -110,9 +119,10 @@ public class QuestionTrueFalseResourceIntTest {
         int databaseSizeBeforeCreate = questionTrueFalseRepository.findAll().size();
 
         // Create the QuestionTrueFalse
+        QuestionTrueFalseDTO questionTrueFalseDTO = questionTrueFalseMapper.toDto(questionTrueFalse);
         restQuestionTrueFalseMockMvc.perform(post("/api/question-true-falses")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(questionTrueFalse)))
+            .content(TestUtil.convertObjectToJsonBytes(questionTrueFalseDTO)))
             .andExpect(status().isCreated());
 
         // Validate the QuestionTrueFalse in the database
@@ -136,11 +146,12 @@ public class QuestionTrueFalseResourceIntTest {
 
         // Create the QuestionTrueFalse with an existing ID
         questionTrueFalse.setId(1L);
+        QuestionTrueFalseDTO questionTrueFalseDTO = questionTrueFalseMapper.toDto(questionTrueFalse);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restQuestionTrueFalseMockMvc.perform(post("/api/question-true-falses")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(questionTrueFalse)))
+            .content(TestUtil.convertObjectToJsonBytes(questionTrueFalseDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
@@ -156,10 +167,11 @@ public class QuestionTrueFalseResourceIntTest {
         questionTrueFalse.setCorrect(null);
 
         // Create the QuestionTrueFalse, which fails.
+        QuestionTrueFalseDTO questionTrueFalseDTO = questionTrueFalseMapper.toDto(questionTrueFalse);
 
         restQuestionTrueFalseMockMvc.perform(post("/api/question-true-falses")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(questionTrueFalse)))
+            .content(TestUtil.convertObjectToJsonBytes(questionTrueFalseDTO)))
             .andExpect(status().isBadRequest());
 
         List<QuestionTrueFalse> questionTrueFalseList = questionTrueFalseRepository.findAll();
@@ -174,10 +186,11 @@ public class QuestionTrueFalseResourceIntTest {
         questionTrueFalse.setText(null);
 
         // Create the QuestionTrueFalse, which fails.
+        QuestionTrueFalseDTO questionTrueFalseDTO = questionTrueFalseMapper.toDto(questionTrueFalse);
 
         restQuestionTrueFalseMockMvc.perform(post("/api/question-true-falses")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(questionTrueFalse)))
+            .content(TestUtil.convertObjectToJsonBytes(questionTrueFalseDTO)))
             .andExpect(status().isBadRequest());
 
         List<QuestionTrueFalse> questionTrueFalseList = questionTrueFalseRepository.findAll();
@@ -241,10 +254,11 @@ public class QuestionTrueFalseResourceIntTest {
             .text(UPDATED_TEXT)
             .memo(UPDATED_MEMO)
             .groupPosition(UPDATED_GROUP_POSITION);
+        QuestionTrueFalseDTO questionTrueFalseDTO = questionTrueFalseMapper.toDto(updatedQuestionTrueFalse);
 
         restQuestionTrueFalseMockMvc.perform(put("/api/question-true-falses")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedQuestionTrueFalse)))
+            .content(TestUtil.convertObjectToJsonBytes(questionTrueFalseDTO)))
             .andExpect(status().isOk());
 
         // Validate the QuestionTrueFalse in the database
@@ -267,11 +281,12 @@ public class QuestionTrueFalseResourceIntTest {
         int databaseSizeBeforeUpdate = questionTrueFalseRepository.findAll().size();
 
         // Create the QuestionTrueFalse
+        QuestionTrueFalseDTO questionTrueFalseDTO = questionTrueFalseMapper.toDto(questionTrueFalse);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restQuestionTrueFalseMockMvc.perform(put("/api/question-true-falses")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(questionTrueFalse)))
+            .content(TestUtil.convertObjectToJsonBytes(questionTrueFalseDTO)))
             .andExpect(status().isCreated());
 
         // Validate the QuestionTrueFalse in the database
@@ -332,5 +347,28 @@ public class QuestionTrueFalseResourceIntTest {
         assertThat(questionTrueFalse1).isNotEqualTo(questionTrueFalse2);
         questionTrueFalse1.setId(null);
         assertThat(questionTrueFalse1).isNotEqualTo(questionTrueFalse2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(QuestionTrueFalseDTO.class);
+        QuestionTrueFalseDTO questionTrueFalseDTO1 = new QuestionTrueFalseDTO();
+        questionTrueFalseDTO1.setId(1L);
+        QuestionTrueFalseDTO questionTrueFalseDTO2 = new QuestionTrueFalseDTO();
+        assertThat(questionTrueFalseDTO1).isNotEqualTo(questionTrueFalseDTO2);
+        questionTrueFalseDTO2.setId(questionTrueFalseDTO1.getId());
+        assertThat(questionTrueFalseDTO1).isEqualTo(questionTrueFalseDTO2);
+        questionTrueFalseDTO2.setId(2L);
+        assertThat(questionTrueFalseDTO1).isNotEqualTo(questionTrueFalseDTO2);
+        questionTrueFalseDTO1.setId(null);
+        assertThat(questionTrueFalseDTO1).isNotEqualTo(questionTrueFalseDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(questionTrueFalseMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(questionTrueFalseMapper.fromId(null)).isNull();
     }
 }

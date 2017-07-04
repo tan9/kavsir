@@ -149,3 +149,6 @@ relationship ManyToMany {
 }
 
 paginate CategoryNode, QuestionTrueFalse, QuestionChoice, QuestionChoiceOption, QuestionEssay, QuestionGroup, ResourceImage with pagination
+
+dto CategoryNode, QuestionTrueFalse, QuestionChoice, QuestionChoiceOption, QuestionEssay, QuestionGroup, ResourceImage with mapstruct
+service QuestionTrueFalse, QuestionChoice, QuestionChoiceOption, QuestionEssay, QuestionGroup with serviceClass

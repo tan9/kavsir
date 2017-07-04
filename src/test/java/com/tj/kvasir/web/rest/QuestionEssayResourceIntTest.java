@@ -4,7 +4,10 @@ import com.tj.kvasir.KavsirApp;
 
 import com.tj.kvasir.domain.QuestionEssay;
 import com.tj.kvasir.repository.QuestionEssayRepository;
+import com.tj.kvasir.service.QuestionEssayService;
 import com.tj.kvasir.repository.search.QuestionEssaySearchRepository;
+import com.tj.kvasir.service.dto.QuestionEssayDTO;
+import com.tj.kvasir.service.mapper.QuestionEssayMapper;
 import com.tj.kvasir.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -55,6 +58,12 @@ public class QuestionEssayResourceIntTest {
     private QuestionEssayRepository questionEssayRepository;
 
     @Autowired
+    private QuestionEssayMapper questionEssayMapper;
+
+    @Autowired
+    private QuestionEssayService questionEssayService;
+
+    @Autowired
     private QuestionEssaySearchRepository questionEssaySearchRepository;
 
     @Autowired
@@ -76,7 +85,7 @@ public class QuestionEssayResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        QuestionEssayResource questionEssayResource = new QuestionEssayResource(questionEssayRepository, questionEssaySearchRepository);
+        QuestionEssayResource questionEssayResource = new QuestionEssayResource(questionEssayService);
         this.restQuestionEssayMockMvc = MockMvcBuilders.standaloneSetup(questionEssayResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -110,9 +119,10 @@ public class QuestionEssayResourceIntTest {
         int databaseSizeBeforeCreate = questionEssayRepository.findAll().size();
 
         // Create the QuestionEssay
+        QuestionEssayDTO questionEssayDTO = questionEssayMapper.toDto(questionEssay);
         restQuestionEssayMockMvc.perform(post("/api/question-essays")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(questionEssay)))
+            .content(TestUtil.convertObjectToJsonBytes(questionEssayDTO)))
             .andExpect(status().isCreated());
 
         // Validate the QuestionEssay in the database
@@ -136,11 +146,12 @@ public class QuestionEssayResourceIntTest {
 
         // Create the QuestionEssay with an existing ID
         questionEssay.setId(1L);
+        QuestionEssayDTO questionEssayDTO = questionEssayMapper.toDto(questionEssay);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restQuestionEssayMockMvc.perform(post("/api/question-essays")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(questionEssay)))
+            .content(TestUtil.convertObjectToJsonBytes(questionEssayDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
@@ -156,10 +167,11 @@ public class QuestionEssayResourceIntTest {
         questionEssay.setText(null);
 
         // Create the QuestionEssay, which fails.
+        QuestionEssayDTO questionEssayDTO = questionEssayMapper.toDto(questionEssay);
 
         restQuestionEssayMockMvc.perform(post("/api/question-essays")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(questionEssay)))
+            .content(TestUtil.convertObjectToJsonBytes(questionEssayDTO)))
             .andExpect(status().isBadRequest());
 
         List<QuestionEssay> questionEssayList = questionEssayRepository.findAll();
@@ -174,10 +186,11 @@ public class QuestionEssayResourceIntTest {
         questionEssay.setAnswer(null);
 
         // Create the QuestionEssay, which fails.
+        QuestionEssayDTO questionEssayDTO = questionEssayMapper.toDto(questionEssay);
 
         restQuestionEssayMockMvc.perform(post("/api/question-essays")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(questionEssay)))
+            .content(TestUtil.convertObjectToJsonBytes(questionEssayDTO)))
             .andExpect(status().isBadRequest());
 
         List<QuestionEssay> questionEssayList = questionEssayRepository.findAll();
@@ -241,10 +254,11 @@ public class QuestionEssayResourceIntTest {
             .answer(UPDATED_ANSWER)
             .memo(UPDATED_MEMO)
             .groupPosition(UPDATED_GROUP_POSITION);
+        QuestionEssayDTO questionEssayDTO = questionEssayMapper.toDto(updatedQuestionEssay);
 
         restQuestionEssayMockMvc.perform(put("/api/question-essays")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedQuestionEssay)))
+            .content(TestUtil.convertObjectToJsonBytes(questionEssayDTO)))
             .andExpect(status().isOk());
 
         // Validate the QuestionEssay in the database
@@ -267,11 +281,12 @@ public class QuestionEssayResourceIntTest {
         int databaseSizeBeforeUpdate = questionEssayRepository.findAll().size();
 
         // Create the QuestionEssay
+        QuestionEssayDTO questionEssayDTO = questionEssayMapper.toDto(questionEssay);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restQuestionEssayMockMvc.perform(put("/api/question-essays")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(questionEssay)))
+            .content(TestUtil.convertObjectToJsonBytes(questionEssayDTO)))
             .andExpect(status().isCreated());
 
         // Validate the QuestionEssay in the database
@@ -332,5 +347,28 @@ public class QuestionEssayResourceIntTest {
         assertThat(questionEssay1).isNotEqualTo(questionEssay2);
         questionEssay1.setId(null);
         assertThat(questionEssay1).isNotEqualTo(questionEssay2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(QuestionEssayDTO.class);
+        QuestionEssayDTO questionEssayDTO1 = new QuestionEssayDTO();
+        questionEssayDTO1.setId(1L);
+        QuestionEssayDTO questionEssayDTO2 = new QuestionEssayDTO();
+        assertThat(questionEssayDTO1).isNotEqualTo(questionEssayDTO2);
+        questionEssayDTO2.setId(questionEssayDTO1.getId());
+        assertThat(questionEssayDTO1).isEqualTo(questionEssayDTO2);
+        questionEssayDTO2.setId(2L);
+        assertThat(questionEssayDTO1).isNotEqualTo(questionEssayDTO2);
+        questionEssayDTO1.setId(null);
+        assertThat(questionEssayDTO1).isNotEqualTo(questionEssayDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(questionEssayMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(questionEssayMapper.fromId(null)).isNull();
     }
 }

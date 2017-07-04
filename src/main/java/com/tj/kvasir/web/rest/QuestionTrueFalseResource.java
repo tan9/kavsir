@@ -1,12 +1,10 @@
 package com.tj.kvasir.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.tj.kvasir.domain.QuestionTrueFalse;
-
-import com.tj.kvasir.repository.QuestionTrueFalseRepository;
-import com.tj.kvasir.repository.search.QuestionTrueFalseSearchRepository;
+import com.tj.kvasir.service.QuestionTrueFalseService;
 import com.tj.kvasir.web.rest.util.HeaderUtil;
 import com.tj.kvasir.web.rest.util.PaginationUtil;
+import com.tj.kvasir.service.dto.QuestionTrueFalseDTO;
 import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -24,7 +22,6 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
@@ -40,31 +37,27 @@ public class QuestionTrueFalseResource {
 
     private static final String ENTITY_NAME = "questionTrueFalse";
 
-    private final QuestionTrueFalseRepository questionTrueFalseRepository;
+    private final QuestionTrueFalseService questionTrueFalseService;
 
-    private final QuestionTrueFalseSearchRepository questionTrueFalseSearchRepository;
-
-    public QuestionTrueFalseResource(QuestionTrueFalseRepository questionTrueFalseRepository, QuestionTrueFalseSearchRepository questionTrueFalseSearchRepository) {
-        this.questionTrueFalseRepository = questionTrueFalseRepository;
-        this.questionTrueFalseSearchRepository = questionTrueFalseSearchRepository;
+    public QuestionTrueFalseResource(QuestionTrueFalseService questionTrueFalseService) {
+        this.questionTrueFalseService = questionTrueFalseService;
     }
 
     /**
      * POST  /question-true-falses : Create a new questionTrueFalse.
      *
-     * @param questionTrueFalse the questionTrueFalse to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new questionTrueFalse, or with status 400 (Bad Request) if the questionTrueFalse has already an ID
+     * @param questionTrueFalseDTO the questionTrueFalseDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new questionTrueFalseDTO, or with status 400 (Bad Request) if the questionTrueFalse has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/question-true-falses")
     @Timed
-    public ResponseEntity<QuestionTrueFalse> createQuestionTrueFalse(@Valid @RequestBody QuestionTrueFalse questionTrueFalse) throws URISyntaxException {
-        log.debug("REST request to save QuestionTrueFalse : {}", questionTrueFalse);
-        if (questionTrueFalse.getId() != null) {
+    public ResponseEntity<QuestionTrueFalseDTO> createQuestionTrueFalse(@Valid @RequestBody QuestionTrueFalseDTO questionTrueFalseDTO) throws URISyntaxException {
+        log.debug("REST request to save QuestionTrueFalse : {}", questionTrueFalseDTO);
+        if (questionTrueFalseDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new questionTrueFalse cannot already have an ID")).body(null);
         }
-        QuestionTrueFalse result = questionTrueFalseRepository.save(questionTrueFalse);
-        questionTrueFalseSearchRepository.save(result);
+        QuestionTrueFalseDTO result = questionTrueFalseService.save(questionTrueFalseDTO);
         return ResponseEntity.created(new URI("/api/question-true-falses/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -73,23 +66,22 @@ public class QuestionTrueFalseResource {
     /**
      * PUT  /question-true-falses : Updates an existing questionTrueFalse.
      *
-     * @param questionTrueFalse the questionTrueFalse to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated questionTrueFalse,
-     * or with status 400 (Bad Request) if the questionTrueFalse is not valid,
-     * or with status 500 (Internal Server Error) if the questionTrueFalse couldn't be updated
+     * @param questionTrueFalseDTO the questionTrueFalseDTO to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated questionTrueFalseDTO,
+     * or with status 400 (Bad Request) if the questionTrueFalseDTO is not valid,
+     * or with status 500 (Internal Server Error) if the questionTrueFalseDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/question-true-falses")
     @Timed
-    public ResponseEntity<QuestionTrueFalse> updateQuestionTrueFalse(@Valid @RequestBody QuestionTrueFalse questionTrueFalse) throws URISyntaxException {
-        log.debug("REST request to update QuestionTrueFalse : {}", questionTrueFalse);
-        if (questionTrueFalse.getId() == null) {
-            return createQuestionTrueFalse(questionTrueFalse);
+    public ResponseEntity<QuestionTrueFalseDTO> updateQuestionTrueFalse(@Valid @RequestBody QuestionTrueFalseDTO questionTrueFalseDTO) throws URISyntaxException {
+        log.debug("REST request to update QuestionTrueFalse : {}", questionTrueFalseDTO);
+        if (questionTrueFalseDTO.getId() == null) {
+            return createQuestionTrueFalse(questionTrueFalseDTO);
         }
-        QuestionTrueFalse result = questionTrueFalseRepository.save(questionTrueFalse);
-        questionTrueFalseSearchRepository.save(result);
+        QuestionTrueFalseDTO result = questionTrueFalseService.save(questionTrueFalseDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, questionTrueFalse.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, questionTrueFalseDTO.getId().toString()))
             .body(result);
     }
 
@@ -101,9 +93,9 @@ public class QuestionTrueFalseResource {
      */
     @GetMapping("/question-true-falses")
     @Timed
-    public ResponseEntity<List<QuestionTrueFalse>> getAllQuestionTrueFalses(@ApiParam Pageable pageable) {
+    public ResponseEntity<List<QuestionTrueFalseDTO>> getAllQuestionTrueFalses(@ApiParam Pageable pageable) {
         log.debug("REST request to get a page of QuestionTrueFalses");
-        Page<QuestionTrueFalse> page = questionTrueFalseRepository.findAll(pageable);
+        Page<QuestionTrueFalseDTO> page = questionTrueFalseService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/question-true-falses");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -111,29 +103,28 @@ public class QuestionTrueFalseResource {
     /**
      * GET  /question-true-falses/:id : get the "id" questionTrueFalse.
      *
-     * @param id the id of the questionTrueFalse to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the questionTrueFalse, or with status 404 (Not Found)
+     * @param id the id of the questionTrueFalseDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the questionTrueFalseDTO, or with status 404 (Not Found)
      */
     @GetMapping("/question-true-falses/{id}")
     @Timed
-    public ResponseEntity<QuestionTrueFalse> getQuestionTrueFalse(@PathVariable Long id) {
+    public ResponseEntity<QuestionTrueFalseDTO> getQuestionTrueFalse(@PathVariable Long id) {
         log.debug("REST request to get QuestionTrueFalse : {}", id);
-        QuestionTrueFalse questionTrueFalse = questionTrueFalseRepository.findOneWithEagerRelationships(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(questionTrueFalse));
+        QuestionTrueFalseDTO questionTrueFalseDTO = questionTrueFalseService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(questionTrueFalseDTO));
     }
 
     /**
      * DELETE  /question-true-falses/:id : delete the "id" questionTrueFalse.
      *
-     * @param id the id of the questionTrueFalse to delete
+     * @param id the id of the questionTrueFalseDTO to delete
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/question-true-falses/{id}")
     @Timed
     public ResponseEntity<Void> deleteQuestionTrueFalse(@PathVariable Long id) {
         log.debug("REST request to delete QuestionTrueFalse : {}", id);
-        questionTrueFalseRepository.delete(id);
-        questionTrueFalseSearchRepository.delete(id);
+        questionTrueFalseService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
@@ -147,9 +138,9 @@ public class QuestionTrueFalseResource {
      */
     @GetMapping("/_search/question-true-falses")
     @Timed
-    public ResponseEntity<List<QuestionTrueFalse>> searchQuestionTrueFalses(@RequestParam String query, @ApiParam Pageable pageable) {
+    public ResponseEntity<List<QuestionTrueFalseDTO>> searchQuestionTrueFalses(@RequestParam String query, @ApiParam Pageable pageable) {
         log.debug("REST request to search for a page of QuestionTrueFalses for query {}", query);
-        Page<QuestionTrueFalse> page = questionTrueFalseSearchRepository.search(queryStringQuery(query), pageable);
+        Page<QuestionTrueFalseDTO> page = questionTrueFalseService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/question-true-falses");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

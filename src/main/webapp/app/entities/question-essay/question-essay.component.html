@@ -34,7 +34,7 @@
             <th jhiSortBy="answer"><span jhiTranslate="kavsirApp.questionEssay.answer">Answer</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="memo"><span jhiTranslate="kavsirApp.questionEssay.memo">Memo</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="groupPosition"><span jhiTranslate="kavsirApp.questionEssay.groupPosition">Group Position</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="questionGroup.id"><span jhiTranslate="kavsirApp.questionEssay.questionGroup">Question Group</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="questionGroupId"><span jhiTranslate="kavsirApp.questionEssay.questionGroup">Question Group</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
             </thead>
@@ -46,8 +46,8 @@
                 <td>{{questionEssay.memo}}</td>
                 <td>{{questionEssay.groupPosition}}</td>
                 <td>
-                    <div *ngIf="questionEssay.questionGroup">
-                        <a [routerLink]="['../question-group', questionEssay.questionGroup?.id ]" >{{questionEssay.questionGroup?.id}}</a>
+                    <div *ngIf="questionEssay.questionGroupId">
+                        <a [routerLink]="['../question-group', questionEssay.questionGroupId  ]" >{{questionEssay.questionGroupId}}</a>
                     </div>
                 </td>
                 <td class="text-right">

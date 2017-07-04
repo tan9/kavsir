@@ -57,7 +57,7 @@
     "changelogDate": "20170704141354",
     "javadoc": "問答題",
     "entityTableName": "question_essay",
-    "dto": "no",
+    "dto": "mapstruct",
     "pagination": "pagination",
-    "service": "no"
+    "service": "serviceClass"
 }

@@ -1,12 +1,10 @@
 package com.tj.kvasir.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.tj.kvasir.domain.QuestionChoice;
-
-import com.tj.kvasir.repository.QuestionChoiceRepository;
-import com.tj.kvasir.repository.search.QuestionChoiceSearchRepository;
+import com.tj.kvasir.service.QuestionChoiceService;
 import com.tj.kvasir.web.rest.util.HeaderUtil;
 import com.tj.kvasir.web.rest.util.PaginationUtil;
+import com.tj.kvasir.service.dto.QuestionChoiceDTO;
 import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -24,7 +22,6 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
@@ -40,31 +37,27 @@ public class QuestionChoiceResource {
 
     private static final String ENTITY_NAME = "questionChoice";
 
-    private final QuestionChoiceRepository questionChoiceRepository;
+    private final QuestionChoiceService questionChoiceService;
 
-    private final QuestionChoiceSearchRepository questionChoiceSearchRepository;
-
-    public QuestionChoiceResource(QuestionChoiceRepository questionChoiceRepository, QuestionChoiceSearchRepository questionChoiceSearchRepository) {
-        this.questionChoiceRepository = questionChoiceRepository;
-        this.questionChoiceSearchRepository = questionChoiceSearchRepository;
+    public QuestionChoiceResource(QuestionChoiceService questionChoiceService) {
+        this.questionChoiceService = questionChoiceService;
     }
 
     /**
      * POST  /question-choices : Create a new questionChoice.
      *
-     * @param questionChoice the questionChoice to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new questionChoice, or with status 400 (Bad Request) if the questionChoice has already an ID
+     * @param questionChoiceDTO the questionChoiceDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new questionChoiceDTO, or with status 400 (Bad Request) if the questionChoice has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/question-choices")
     @Timed
-    public ResponseEntity<QuestionChoice> createQuestionChoice(@Valid @RequestBody QuestionChoice questionChoice) throws URISyntaxException {
-        log.debug("REST request to save QuestionChoice : {}", questionChoice);
-        if (questionChoice.getId() != null) {
+    public ResponseEntity<QuestionChoiceDTO> createQuestionChoice(@Valid @RequestBody QuestionChoiceDTO questionChoiceDTO) throws URISyntaxException {
+        log.debug("REST request to save QuestionChoice : {}", questionChoiceDTO);
+        if (questionChoiceDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new questionChoice cannot already have an ID")).body(null);
         }
-        QuestionChoice result = questionChoiceRepository.save(questionChoice);
-        questionChoiceSearchRepository.save(result);
+        QuestionChoiceDTO result = questionChoiceService.save(questionChoiceDTO);
         return ResponseEntity.created(new URI("/api/question-choices/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -73,23 +66,22 @@ public class QuestionChoiceResource {
     /**
      * PUT  /question-choices : Updates an existing questionChoice.
      *
-     * @param questionChoice the questionChoice to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated questionChoice,
-     * or with status 400 (Bad Request) if the questionChoice is not valid,
-     * or with status 500 (Internal Server Error) if the questionChoice couldn't be updated
+     * @param questionChoiceDTO the questionChoiceDTO to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated questionChoiceDTO,
+     * or with status 400 (Bad Request) if the questionChoiceDTO is not valid,
+     * or with status 500 (Internal Server Error) if the questionChoiceDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/question-choices")
     @Timed
-    public ResponseEntity<QuestionChoice> updateQuestionChoice(@Valid @RequestBody QuestionChoice questionChoice) throws URISyntaxException {
-        log.debug("REST request to update QuestionChoice : {}", questionChoice);
-        if (questionChoice.getId() == null) {
-            return createQuestionChoice(questionChoice);
+    public ResponseEntity<QuestionChoiceDTO> updateQuestionChoice(@Valid @RequestBody QuestionChoiceDTO questionChoiceDTO) throws URISyntaxException {
+        log.debug("REST request to update QuestionChoice : {}", questionChoiceDTO);
+        if (questionChoiceDTO.getId() == null) {
+            return createQuestionChoice(questionChoiceDTO);
         }
-        QuestionChoice result = questionChoiceRepository.save(questionChoice);
-        questionChoiceSearchRepository.save(result);
+        QuestionChoiceDTO result = questionChoiceService.save(questionChoiceDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, questionChoice.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, questionChoiceDTO.getId().toString()))
             .body(result);
     }
 
@@ -101,9 +93,9 @@ public class QuestionChoiceResource {
      */
     @GetMapping("/question-choices")
     @Timed
-    public ResponseEntity<List<QuestionChoice>> getAllQuestionChoices(@ApiParam Pageable pageable) {
+    public ResponseEntity<List<QuestionChoiceDTO>> getAllQuestionChoices(@ApiParam Pageable pageable) {
         log.debug("REST request to get a page of QuestionChoices");
-        Page<QuestionChoice> page = questionChoiceRepository.findAll(pageable);
+        Page<QuestionChoiceDTO> page = questionChoiceService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/question-choices");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -111,29 +103,28 @@ public class QuestionChoiceResource {
     /**
      * GET  /question-choices/:id : get the "id" questionChoice.
      *
-     * @param id the id of the questionChoice to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the questionChoice, or with status 404 (Not Found)
+     * @param id the id of the questionChoiceDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the questionChoiceDTO, or with status 404 (Not Found)
      */
     @GetMapping("/question-choices/{id}")
     @Timed
-    public ResponseEntity<QuestionChoice> getQuestionChoice(@PathVariable Long id) {
+    public ResponseEntity<QuestionChoiceDTO> getQuestionChoice(@PathVariable Long id) {
         log.debug("REST request to get QuestionChoice : {}", id);
-        QuestionChoice questionChoice = questionChoiceRepository.findOneWithEagerRelationships(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(questionChoice));
+        QuestionChoiceDTO questionChoiceDTO = questionChoiceService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(questionChoiceDTO));
     }
 
     /**
      * DELETE  /question-choices/:id : delete the "id" questionChoice.
      *
-     * @param id the id of the questionChoice to delete
+     * @param id the id of the questionChoiceDTO to delete
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/question-choices/{id}")
     @Timed
     public ResponseEntity<Void> deleteQuestionChoice(@PathVariable Long id) {
         log.debug("REST request to delete QuestionChoice : {}", id);
-        questionChoiceRepository.delete(id);
-        questionChoiceSearchRepository.delete(id);
+        questionChoiceService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
@@ -147,9 +138,9 @@ public class QuestionChoiceResource {
      */
     @GetMapping("/_search/question-choices")
     @Timed
-    public ResponseEntity<List<QuestionChoice>> searchQuestionChoices(@RequestParam String query, @ApiParam Pageable pageable) {
+    public ResponseEntity<List<QuestionChoiceDTO>> searchQuestionChoices(@RequestParam String query, @ApiParam Pageable pageable) {
         log.debug("REST request to search for a page of QuestionChoices for query {}", query);
-        Page<QuestionChoice> page = questionChoiceSearchRepository.search(queryStringQuery(query), pageable);
+        Page<QuestionChoiceDTO> page = questionChoiceService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/question-choices");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

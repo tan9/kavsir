@@ -4,7 +4,10 @@ import com.tj.kvasir.KavsirApp;
 
 import com.tj.kvasir.domain.QuestionChoiceOption;
 import com.tj.kvasir.repository.QuestionChoiceOptionRepository;
+import com.tj.kvasir.service.QuestionChoiceOptionService;
 import com.tj.kvasir.repository.search.QuestionChoiceOptionSearchRepository;
+import com.tj.kvasir.service.dto.QuestionChoiceOptionDTO;
+import com.tj.kvasir.service.mapper.QuestionChoiceOptionMapper;
 import com.tj.kvasir.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -51,6 +54,12 @@ public class QuestionChoiceOptionResourceIntTest {
     private QuestionChoiceOptionRepository questionChoiceOptionRepository;
 
     @Autowired
+    private QuestionChoiceOptionMapper questionChoiceOptionMapper;
+
+    @Autowired
+    private QuestionChoiceOptionService questionChoiceOptionService;
+
+    @Autowired
     private QuestionChoiceOptionSearchRepository questionChoiceOptionSearchRepository;
 
     @Autowired
@@ -72,7 +81,7 @@ public class QuestionChoiceOptionResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        QuestionChoiceOptionResource questionChoiceOptionResource = new QuestionChoiceOptionResource(questionChoiceOptionRepository, questionChoiceOptionSearchRepository);
+        QuestionChoiceOptionResource questionChoiceOptionResource = new QuestionChoiceOptionResource(questionChoiceOptionService);
         this.restQuestionChoiceOptionMockMvc = MockMvcBuilders.standaloneSetup(questionChoiceOptionResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -105,9 +114,10 @@ public class QuestionChoiceOptionResourceIntTest {
         int databaseSizeBeforeCreate = questionChoiceOptionRepository.findAll().size();
 
         // Create the QuestionChoiceOption
+        QuestionChoiceOptionDTO questionChoiceOptionDTO = questionChoiceOptionMapper.toDto(questionChoiceOption);
         restQuestionChoiceOptionMockMvc.perform(post("/api/question-choice-options")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(questionChoiceOption)))
+            .content(TestUtil.convertObjectToJsonBytes(questionChoiceOptionDTO)))
             .andExpect(status().isCreated());
 
         // Validate the QuestionChoiceOption in the database
@@ -130,11 +140,12 @@ public class QuestionChoiceOptionResourceIntTest {
 
         // Create the QuestionChoiceOption with an existing ID
         questionChoiceOption.setId(1L);
+        QuestionChoiceOptionDTO questionChoiceOptionDTO = questionChoiceOptionMapper.toDto(questionChoiceOption);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restQuestionChoiceOptionMockMvc.perform(post("/api/question-choice-options")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(questionChoiceOption)))
+            .content(TestUtil.convertObjectToJsonBytes(questionChoiceOptionDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
@@ -150,10 +161,11 @@ public class QuestionChoiceOptionResourceIntTest {
         questionChoiceOption.setCorrect(null);
 
         // Create the QuestionChoiceOption, which fails.
+        QuestionChoiceOptionDTO questionChoiceOptionDTO = questionChoiceOptionMapper.toDto(questionChoiceOption);
 
         restQuestionChoiceOptionMockMvc.perform(post("/api/question-choice-options")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(questionChoiceOption)))
+            .content(TestUtil.convertObjectToJsonBytes(questionChoiceOptionDTO)))
             .andExpect(status().isBadRequest());
 
         List<QuestionChoiceOption> questionChoiceOptionList = questionChoiceOptionRepository.findAll();
@@ -168,10 +180,11 @@ public class QuestionChoiceOptionResourceIntTest {
         questionChoiceOption.setText(null);
 
         // Create the QuestionChoiceOption, which fails.
+        QuestionChoiceOptionDTO questionChoiceOptionDTO = questionChoiceOptionMapper.toDto(questionChoiceOption);
 
         restQuestionChoiceOptionMockMvc.perform(post("/api/question-choice-options")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(questionChoiceOption)))
+            .content(TestUtil.convertObjectToJsonBytes(questionChoiceOptionDTO)))
             .andExpect(status().isBadRequest());
 
         List<QuestionChoiceOption> questionChoiceOptionList = questionChoiceOptionRepository.findAll();
@@ -232,10 +245,11 @@ public class QuestionChoiceOptionResourceIntTest {
             .correct(UPDATED_CORRECT)
             .text(UPDATED_TEXT)
             .memo(UPDATED_MEMO);
+        QuestionChoiceOptionDTO questionChoiceOptionDTO = questionChoiceOptionMapper.toDto(updatedQuestionChoiceOption);
 
         restQuestionChoiceOptionMockMvc.perform(put("/api/question-choice-options")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedQuestionChoiceOption)))
+            .content(TestUtil.convertObjectToJsonBytes(questionChoiceOptionDTO)))
             .andExpect(status().isOk());
 
         // Validate the QuestionChoiceOption in the database
@@ -257,11 +271,12 @@ public class QuestionChoiceOptionResourceIntTest {
         int databaseSizeBeforeUpdate = questionChoiceOptionRepository.findAll().size();
 
         // Create the QuestionChoiceOption
+        QuestionChoiceOptionDTO questionChoiceOptionDTO = questionChoiceOptionMapper.toDto(questionChoiceOption);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restQuestionChoiceOptionMockMvc.perform(put("/api/question-choice-options")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(questionChoiceOption)))
+            .content(TestUtil.convertObjectToJsonBytes(questionChoiceOptionDTO)))
             .andExpect(status().isCreated());
 
         // Validate the QuestionChoiceOption in the database
@@ -321,5 +336,28 @@ public class QuestionChoiceOptionResourceIntTest {
         assertThat(questionChoiceOption1).isNotEqualTo(questionChoiceOption2);
         questionChoiceOption1.setId(null);
         assertThat(questionChoiceOption1).isNotEqualTo(questionChoiceOption2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(QuestionChoiceOptionDTO.class);
+        QuestionChoiceOptionDTO questionChoiceOptionDTO1 = new QuestionChoiceOptionDTO();
+        questionChoiceOptionDTO1.setId(1L);
+        QuestionChoiceOptionDTO questionChoiceOptionDTO2 = new QuestionChoiceOptionDTO();
+        assertThat(questionChoiceOptionDTO1).isNotEqualTo(questionChoiceOptionDTO2);
+        questionChoiceOptionDTO2.setId(questionChoiceOptionDTO1.getId());
+        assertThat(questionChoiceOptionDTO1).isEqualTo(questionChoiceOptionDTO2);
+        questionChoiceOptionDTO2.setId(2L);
+        assertThat(questionChoiceOptionDTO1).isNotEqualTo(questionChoiceOptionDTO2);
+        questionChoiceOptionDTO1.setId(null);
+        assertThat(questionChoiceOptionDTO1).isNotEqualTo(questionChoiceOptionDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(questionChoiceOptionMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(questionChoiceOptionMapper.fromId(null)).isNull();
     }
 }

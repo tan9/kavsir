@@ -1,12 +1,10 @@
 package com.tj.kvasir.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.tj.kvasir.domain.QuestionGroup;
-
-import com.tj.kvasir.repository.QuestionGroupRepository;
-import com.tj.kvasir.repository.search.QuestionGroupSearchRepository;
+import com.tj.kvasir.service.QuestionGroupService;
 import com.tj.kvasir.web.rest.util.HeaderUtil;
 import com.tj.kvasir.web.rest.util.PaginationUtil;
+import com.tj.kvasir.service.dto.QuestionGroupDTO;
 import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -24,7 +22,6 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
@@ -40,31 +37,27 @@ public class QuestionGroupResource {
 
     private static final String ENTITY_NAME = "questionGroup";
 
-    private final QuestionGroupRepository questionGroupRepository;
+    private final QuestionGroupService questionGroupService;
 
-    private final QuestionGroupSearchRepository questionGroupSearchRepository;
-
-    public QuestionGroupResource(QuestionGroupRepository questionGroupRepository, QuestionGroupSearchRepository questionGroupSearchRepository) {
-        this.questionGroupRepository = questionGroupRepository;
-        this.questionGroupSearchRepository = questionGroupSearchRepository;
+    public QuestionGroupResource(QuestionGroupService questionGroupService) {
+        this.questionGroupService = questionGroupService;
     }
 
     /**
      * POST  /question-groups : Create a new questionGroup.
      *
-     * @param questionGroup the questionGroup to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new questionGroup, or with status 400 (Bad Request) if the questionGroup has already an ID
+     * @param questionGroupDTO the questionGroupDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new questionGroupDTO, or with status 400 (Bad Request) if the questionGroup has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/question-groups")
     @Timed
-    public ResponseEntity<QuestionGroup> createQuestionGroup(@Valid @RequestBody QuestionGroup questionGroup) throws URISyntaxException {
-        log.debug("REST request to save QuestionGroup : {}", questionGroup);
-        if (questionGroup.getId() != null) {
+    public ResponseEntity<QuestionGroupDTO> createQuestionGroup(@Valid @RequestBody QuestionGroupDTO questionGroupDTO) throws URISyntaxException {
+        log.debug("REST request to save QuestionGroup : {}", questionGroupDTO);
+        if (questionGroupDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new questionGroup cannot already have an ID")).body(null);
         }
-        QuestionGroup result = questionGroupRepository.save(questionGroup);
-        questionGroupSearchRepository.save(result);
+        QuestionGroupDTO result = questionGroupService.save(questionGroupDTO);
         return ResponseEntity.created(new URI("/api/question-groups/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -73,23 +66,22 @@ public class QuestionGroupResource {
     /**
      * PUT  /question-groups : Updates an existing questionGroup.
      *
-     * @param questionGroup the questionGroup to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated questionGroup,
-     * or with status 400 (Bad Request) if the questionGroup is not valid,
-     * or with status 500 (Internal Server Error) if the questionGroup couldn't be updated
+     * @param questionGroupDTO the questionGroupDTO to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated questionGroupDTO,
+     * or with status 400 (Bad Request) if the questionGroupDTO is not valid,
+     * or with status 500 (Internal Server Error) if the questionGroupDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/question-groups")
     @Timed
-    public ResponseEntity<QuestionGroup> updateQuestionGroup(@Valid @RequestBody QuestionGroup questionGroup) throws URISyntaxException {
-        log.debug("REST request to update QuestionGroup : {}", questionGroup);
-        if (questionGroup.getId() == null) {
-            return createQuestionGroup(questionGroup);
+    public ResponseEntity<QuestionGroupDTO> updateQuestionGroup(@Valid @RequestBody QuestionGroupDTO questionGroupDTO) throws URISyntaxException {
+        log.debug("REST request to update QuestionGroup : {}", questionGroupDTO);
+        if (questionGroupDTO.getId() == null) {
+            return createQuestionGroup(questionGroupDTO);
         }
-        QuestionGroup result = questionGroupRepository.save(questionGroup);
-        questionGroupSearchRepository.save(result);
+        QuestionGroupDTO result = questionGroupService.save(questionGroupDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, questionGroup.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, questionGroupDTO.getId().toString()))
             .body(result);
     }
 
@@ -101,9 +93,9 @@ public class QuestionGroupResource {
      */
     @GetMapping("/question-groups")
     @Timed
-    public ResponseEntity<List<QuestionGroup>> getAllQuestionGroups(@ApiParam Pageable pageable) {
+    public ResponseEntity<List<QuestionGroupDTO>> getAllQuestionGroups(@ApiParam Pageable pageable) {
         log.debug("REST request to get a page of QuestionGroups");
-        Page<QuestionGroup> page = questionGroupRepository.findAll(pageable);
+        Page<QuestionGroupDTO> page = questionGroupService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/question-groups");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -111,29 +103,28 @@ public class QuestionGroupResource {
     /**
      * GET  /question-groups/:id : get the "id" questionGroup.
      *
-     * @param id the id of the questionGroup to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the questionGroup, or with status 404 (Not Found)
+     * @param id the id of the questionGroupDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the questionGroupDTO, or with status 404 (Not Found)
      */
     @GetMapping("/question-groups/{id}")
     @Timed
-    public ResponseEntity<QuestionGroup> getQuestionGroup(@PathVariable Long id) {
+    public ResponseEntity<QuestionGroupDTO> getQuestionGroup(@PathVariable Long id) {
         log.debug("REST request to get QuestionGroup : {}", id);
-        QuestionGroup questionGroup = questionGroupRepository.findOneWithEagerRelationships(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(questionGroup));
+        QuestionGroupDTO questionGroupDTO = questionGroupService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(questionGroupDTO));
     }
 
     /**
      * DELETE  /question-groups/:id : delete the "id" questionGroup.
      *
-     * @param id the id of the questionGroup to delete
+     * @param id the id of the questionGroupDTO to delete
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/question-groups/{id}")
     @Timed
     public ResponseEntity<Void> deleteQuestionGroup(@PathVariable Long id) {
         log.debug("REST request to delete QuestionGroup : {}", id);
-        questionGroupRepository.delete(id);
-        questionGroupSearchRepository.delete(id);
+        questionGroupService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
@@ -147,9 +138,9 @@ public class QuestionGroupResource {
      */
     @GetMapping("/_search/question-groups")
     @Timed
-    public ResponseEntity<List<QuestionGroup>> searchQuestionGroups(@RequestParam String query, @ApiParam Pageable pageable) {
+    public ResponseEntity<List<QuestionGroupDTO>> searchQuestionGroups(@RequestParam String query, @ApiParam Pageable pageable) {
         log.debug("REST request to search for a page of QuestionGroups for query {}", query);
-        Page<QuestionGroup> page = questionGroupSearchRepository.search(queryStringQuery(query), pageable);
+        Page<QuestionGroupDTO> page = questionGroupService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/question-groups");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

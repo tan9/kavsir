@@ -5,6 +5,8 @@ import com.tj.kvasir.KavsirApp;
 import com.tj.kvasir.domain.CategoryNode;
 import com.tj.kvasir.repository.CategoryNodeRepository;
 import com.tj.kvasir.repository.search.CategoryNodeSearchRepository;
+import com.tj.kvasir.service.dto.CategoryNodeDTO;
+import com.tj.kvasir.service.mapper.CategoryNodeMapper;
 import com.tj.kvasir.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -55,6 +57,9 @@ public class CategoryNodeResourceIntTest {
     private CategoryNodeRepository categoryNodeRepository;
 
     @Autowired
+    private CategoryNodeMapper categoryNodeMapper;
+
+    @Autowired
     private CategoryNodeSearchRepository categoryNodeSearchRepository;
 
     @Autowired
@@ -76,7 +81,7 @@ public class CategoryNodeResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        CategoryNodeResource categoryNodeResource = new CategoryNodeResource(categoryNodeRepository, categoryNodeSearchRepository);
+        CategoryNodeResource categoryNodeResource = new CategoryNodeResource(categoryNodeRepository, categoryNodeMapper, categoryNodeSearchRepository);
         this.restCategoryNodeMockMvc = MockMvcBuilders.standaloneSetup(categoryNodeResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -110,9 +115,10 @@ public class CategoryNodeResourceIntTest {
         int databaseSizeBeforeCreate = categoryNodeRepository.findAll().size();
 
         // Create the CategoryNode
+        CategoryNodeDTO categoryNodeDTO = categoryNodeMapper.toDto(categoryNode);
         restCategoryNodeMockMvc.perform(post("/api/category-nodes")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(categoryNode)))
+            .content(TestUtil.convertObjectToJsonBytes(categoryNodeDTO)))
             .andExpect(status().isCreated());
 
         // Validate the CategoryNode in the database
@@ -136,11 +142,12 @@ public class CategoryNodeResourceIntTest {
 
         // Create the CategoryNode with an existing ID
         categoryNode.setId(1L);
+        CategoryNodeDTO categoryNodeDTO = categoryNodeMapper.toDto(categoryNode);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restCategoryNodeMockMvc.perform(post("/api/category-nodes")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(categoryNode)))
+            .content(TestUtil.convertObjectToJsonBytes(categoryNodeDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
@@ -156,10 +163,11 @@ public class CategoryNodeResourceIntTest {
         categoryNode.setType(null);
 
         // Create the CategoryNode, which fails.
+        CategoryNodeDTO categoryNodeDTO = categoryNodeMapper.toDto(categoryNode);
 
         restCategoryNodeMockMvc.perform(post("/api/category-nodes")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(categoryNode)))
+            .content(TestUtil.convertObjectToJsonBytes(categoryNodeDTO)))
             .andExpect(status().isBadRequest());
 
         List<CategoryNode> categoryNodeList = categoryNodeRepository.findAll();
@@ -223,10 +231,11 @@ public class CategoryNodeResourceIntTest {
             .typeId(UPDATED_TYPE_ID)
             .name(UPDATED_NAME)
             .position(UPDATED_POSITION);
+        CategoryNodeDTO categoryNodeDTO = categoryNodeMapper.toDto(updatedCategoryNode);
 
         restCategoryNodeMockMvc.perform(put("/api/category-nodes")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedCategoryNode)))
+            .content(TestUtil.convertObjectToJsonBytes(categoryNodeDTO)))
             .andExpect(status().isOk());
 
         // Validate the CategoryNode in the database
@@ -249,11 +258,12 @@ public class CategoryNodeResourceIntTest {
         int databaseSizeBeforeUpdate = categoryNodeRepository.findAll().size();
 
         // Create the CategoryNode
+        CategoryNodeDTO categoryNodeDTO = categoryNodeMapper.toDto(categoryNode);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restCategoryNodeMockMvc.perform(put("/api/category-nodes")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(categoryNode)))
+            .content(TestUtil.convertObjectToJsonBytes(categoryNodeDTO)))
             .andExpect(status().isCreated());
 
         // Validate the CategoryNode in the database
@@ -314,5 +324,28 @@ public class CategoryNodeResourceIntTest {
         assertThat(categoryNode1).isNotEqualTo(categoryNode2);
         categoryNode1.setId(null);
         assertThat(categoryNode1).isNotEqualTo(categoryNode2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(CategoryNodeDTO.class);
+        CategoryNodeDTO categoryNodeDTO1 = new CategoryNodeDTO();
+        categoryNodeDTO1.setId(1L);
+        CategoryNodeDTO categoryNodeDTO2 = new CategoryNodeDTO();
+        assertThat(categoryNodeDTO1).isNotEqualTo(categoryNodeDTO2);
+        categoryNodeDTO2.setId(categoryNodeDTO1.getId());
+        assertThat(categoryNodeDTO1).isEqualTo(categoryNodeDTO2);
+        categoryNodeDTO2.setId(2L);
+        assertThat(categoryNodeDTO1).isNotEqualTo(categoryNodeDTO2);
+        categoryNodeDTO1.setId(null);
+        assertThat(categoryNodeDTO1).isNotEqualTo(categoryNodeDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(categoryNodeMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(categoryNodeMapper.fromId(null)).isNull();
     }
 }

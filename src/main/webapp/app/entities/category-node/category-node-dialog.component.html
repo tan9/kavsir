@@ -47,9 +47,9 @@
 
         <div class="form-group">
             <label jhiTranslate="kavsirApp.categoryNode.parent" for="field_parent">Parent</label>
-            <select class="form-control" id="field_parent" name="parent" [(ngModel)]="categoryNode.parent" >
+            <select class="form-control" id="field_parent" name="parent" [(ngModel)]="categoryNode.parentId" >
                 <option [ngValue]="null"></option>
-                <option [ngValue]="categoryNodeOption.id === categoryNode.parent?.id ? categoryNode.parent : categoryNodeOption" *ngFor="let categoryNodeOption of categorynodes; trackBy: trackCategoryNodeById">{{categoryNodeOption.id}}</option>
+                <option [ngValue]="categoryNodeOption.id" *ngFor="let categoryNodeOption of categorynodes; trackBy: trackCategoryNodeById">{{categoryNodeOption.id}}</option>
             </select>
         </div>
     </div>

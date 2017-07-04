@@ -56,7 +56,7 @@
     "changelogDate": "20170302142432",
     "javadoc": "是非題",
     "entityTableName": "question_true_false",
-    "dto": "no",
+    "dto": "mapstruct",
     "pagination": "pagination",
-    "service": "no"
+    "service": "serviceClass"
 }

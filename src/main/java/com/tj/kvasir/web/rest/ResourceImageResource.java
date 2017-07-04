@@ -7,6 +7,8 @@ import com.tj.kvasir.repository.ResourceImageRepository;
 import com.tj.kvasir.repository.search.ResourceImageSearchRepository;
 import com.tj.kvasir.web.rest.util.HeaderUtil;
 import com.tj.kvasir.web.rest.util.PaginationUtil;
+import com.tj.kvasir.service.dto.ResourceImageDTO;
+import com.tj.kvasir.service.mapper.ResourceImageMapper;
 import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -42,29 +44,34 @@ public class ResourceImageResource {
 
     private final ResourceImageRepository resourceImageRepository;
 
+    private final ResourceImageMapper resourceImageMapper;
+
     private final ResourceImageSearchRepository resourceImageSearchRepository;
 
-    public ResourceImageResource(ResourceImageRepository resourceImageRepository, ResourceImageSearchRepository resourceImageSearchRepository) {
+    public ResourceImageResource(ResourceImageRepository resourceImageRepository, ResourceImageMapper resourceImageMapper, ResourceImageSearchRepository resourceImageSearchRepository) {
         this.resourceImageRepository = resourceImageRepository;
+        this.resourceImageMapper = resourceImageMapper;
         this.resourceImageSearchRepository = resourceImageSearchRepository;
     }
 
     /**
      * POST  /resource-images : Create a new resourceImage.
      *
-     * @param resourceImage the resourceImage to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new resourceImage, or with status 400 (Bad Request) if the resourceImage has already an ID
+     * @param resourceImageDTO the resourceImageDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new resourceImageDTO, or with status 400 (Bad Request) if the resourceImage has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/resource-images")
     @Timed
-    public ResponseEntity<ResourceImage> createResourceImage(@Valid @RequestBody ResourceImage resourceImage) throws URISyntaxException {
-        log.debug("REST request to save ResourceImage : {}", resourceImage);
-        if (resourceImage.getId() != null) {
+    public ResponseEntity<ResourceImageDTO> createResourceImage(@Valid @RequestBody ResourceImageDTO resourceImageDTO) throws URISyntaxException {
+        log.debug("REST request to save ResourceImage : {}", resourceImageDTO);
+        if (resourceImageDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new resourceImage cannot already have an ID")).body(null);
         }
-        ResourceImage result = resourceImageRepository.save(resourceImage);
-        resourceImageSearchRepository.save(result);
+        ResourceImage resourceImage = resourceImageMapper.toEntity(resourceImageDTO);
+        resourceImage = resourceImageRepository.save(resourceImage);
+        ResourceImageDTO result = resourceImageMapper.toDto(resourceImage);
+        resourceImageSearchRepository.save(resourceImage);
         return ResponseEntity.created(new URI("/api/resource-images/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -73,23 +80,25 @@ public class ResourceImageResource {
     /**
      * PUT  /resource-images : Updates an existing resourceImage.
      *
-     * @param resourceImage the resourceImage to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated resourceImage,
-     * or with status 400 (Bad Request) if the resourceImage is not valid,
-     * or with status 500 (Internal Server Error) if the resourceImage couldn't be updated
+     * @param resourceImageDTO the resourceImageDTO to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated resourceImageDTO,
+     * or with status 400 (Bad Request) if the resourceImageDTO is not valid,
+     * or with status 500 (Internal Server Error) if the resourceImageDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/resource-images")
     @Timed
-    public ResponseEntity<ResourceImage> updateResourceImage(@Valid @RequestBody ResourceImage resourceImage) throws URISyntaxException {
-        log.debug("REST request to update ResourceImage : {}", resourceImage);
-        if (resourceImage.getId() == null) {
-            return createResourceImage(resourceImage);
+    public ResponseEntity<ResourceImageDTO> updateResourceImage(@Valid @RequestBody ResourceImageDTO resourceImageDTO) throws URISyntaxException {
+        log.debug("REST request to update ResourceImage : {}", resourceImageDTO);
+        if (resourceImageDTO.getId() == null) {
+            return createResourceImage(resourceImageDTO);
         }
-        ResourceImage result = resourceImageRepository.save(resourceImage);
-        resourceImageSearchRepository.save(result);
+        ResourceImage resourceImage = resourceImageMapper.toEntity(resourceImageDTO);
+        resourceImage = resourceImageRepository.save(resourceImage);
+        ResourceImageDTO result = resourceImageMapper.toDto(resourceImage);
+        resourceImageSearchRepository.save(resourceImage);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, resourceImage.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, resourceImageDTO.getId().toString()))
             .body(result);
     }
 
@@ -101,31 +110,32 @@ public class ResourceImageResource {
      */
     @GetMapping("/resource-images")
     @Timed
-    public ResponseEntity<List<ResourceImage>> getAllResourceImages(@ApiParam Pageable pageable) {
+    public ResponseEntity<List<ResourceImageDTO>> getAllResourceImages(@ApiParam Pageable pageable) {
         log.debug("REST request to get a page of ResourceImages");
         Page<ResourceImage> page = resourceImageRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/resource-images");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        return new ResponseEntity<>(resourceImageMapper.toDto(page.getContent()), headers, HttpStatus.OK);
     }
 
     /**
      * GET  /resource-images/:id : get the "id" resourceImage.
      *
-     * @param id the id of the resourceImage to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the resourceImage, or with status 404 (Not Found)
+     * @param id the id of the resourceImageDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the resourceImageDTO, or with status 404 (Not Found)
      */
     @GetMapping("/resource-images/{id}")
     @Timed
-    public ResponseEntity<ResourceImage> getResourceImage(@PathVariable Long id) {
+    public ResponseEntity<ResourceImageDTO> getResourceImage(@PathVariable Long id) {
         log.debug("REST request to get ResourceImage : {}", id);
         ResourceImage resourceImage = resourceImageRepository.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(resourceImage));
+        ResourceImageDTO resourceImageDTO = resourceImageMapper.toDto(resourceImage);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(resourceImageDTO));
     }
 
     /**
      * DELETE  /resource-images/:id : delete the "id" resourceImage.
      *
-     * @param id the id of the resourceImage to delete
+     * @param id the id of the resourceImageDTO to delete
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/resource-images/{id}")
@@ -147,11 +157,11 @@ public class ResourceImageResource {
      */
     @GetMapping("/_search/resource-images")
     @Timed
-    public ResponseEntity<List<ResourceImage>> searchResourceImages(@RequestParam String query, @ApiParam Pageable pageable) {
+    public ResponseEntity<List<ResourceImageDTO>> searchResourceImages(@RequestParam String query, @ApiParam Pageable pageable) {
         log.debug("REST request to search for a page of ResourceImages for query {}", query);
         Page<ResourceImage> page = resourceImageSearchRepository.search(queryStringQuery(query), pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/resource-images");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        return new ResponseEntity<>(resourceImageMapper.toDto(page.getContent()), headers, HttpStatus.OK);
     }
 
 }

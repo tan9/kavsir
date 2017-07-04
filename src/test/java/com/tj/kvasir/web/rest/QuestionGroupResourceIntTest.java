@@ -4,7 +4,10 @@ import com.tj.kvasir.KavsirApp;
 
 import com.tj.kvasir.domain.QuestionGroup;
 import com.tj.kvasir.repository.QuestionGroupRepository;
+import com.tj.kvasir.service.QuestionGroupService;
 import com.tj.kvasir.repository.search.QuestionGroupSearchRepository;
+import com.tj.kvasir.service.dto.QuestionGroupDTO;
+import com.tj.kvasir.service.mapper.QuestionGroupMapper;
 import com.tj.kvasir.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -48,6 +51,12 @@ public class QuestionGroupResourceIntTest {
     private QuestionGroupRepository questionGroupRepository;
 
     @Autowired
+    private QuestionGroupMapper questionGroupMapper;
+
+    @Autowired
+    private QuestionGroupService questionGroupService;
+
+    @Autowired
     private QuestionGroupSearchRepository questionGroupSearchRepository;
 
     @Autowired
@@ -69,7 +78,7 @@ public class QuestionGroupResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        QuestionGroupResource questionGroupResource = new QuestionGroupResource(questionGroupRepository, questionGroupSearchRepository);
+        QuestionGroupResource questionGroupResource = new QuestionGroupResource(questionGroupService);
         this.restQuestionGroupMockMvc = MockMvcBuilders.standaloneSetup(questionGroupResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -101,9 +110,10 @@ public class QuestionGroupResourceIntTest {
         int databaseSizeBeforeCreate = questionGroupRepository.findAll().size();
 
         // Create the QuestionGroup
+        QuestionGroupDTO questionGroupDTO = questionGroupMapper.toDto(questionGroup);
         restQuestionGroupMockMvc.perform(post("/api/question-groups")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(questionGroup)))
+            .content(TestUtil.convertObjectToJsonBytes(questionGroupDTO)))
             .andExpect(status().isCreated());
 
         // Validate the QuestionGroup in the database
@@ -125,11 +135,12 @@ public class QuestionGroupResourceIntTest {
 
         // Create the QuestionGroup with an existing ID
         questionGroup.setId(1L);
+        QuestionGroupDTO questionGroupDTO = questionGroupMapper.toDto(questionGroup);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restQuestionGroupMockMvc.perform(post("/api/question-groups")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(questionGroup)))
+            .content(TestUtil.convertObjectToJsonBytes(questionGroupDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
@@ -145,10 +156,11 @@ public class QuestionGroupResourceIntTest {
         questionGroup.setText(null);
 
         // Create the QuestionGroup, which fails.
+        QuestionGroupDTO questionGroupDTO = questionGroupMapper.toDto(questionGroup);
 
         restQuestionGroupMockMvc.perform(post("/api/question-groups")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(questionGroup)))
+            .content(TestUtil.convertObjectToJsonBytes(questionGroupDTO)))
             .andExpect(status().isBadRequest());
 
         List<QuestionGroup> questionGroupList = questionGroupRepository.findAll();
@@ -206,10 +218,11 @@ public class QuestionGroupResourceIntTest {
         updatedQuestionGroup
             .text(UPDATED_TEXT)
             .memo(UPDATED_MEMO);
+        QuestionGroupDTO questionGroupDTO = questionGroupMapper.toDto(updatedQuestionGroup);
 
         restQuestionGroupMockMvc.perform(put("/api/question-groups")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedQuestionGroup)))
+            .content(TestUtil.convertObjectToJsonBytes(questionGroupDTO)))
             .andExpect(status().isOk());
 
         // Validate the QuestionGroup in the database
@@ -230,11 +243,12 @@ public class QuestionGroupResourceIntTest {
         int databaseSizeBeforeUpdate = questionGroupRepository.findAll().size();
 
         // Create the QuestionGroup
+        QuestionGroupDTO questionGroupDTO = questionGroupMapper.toDto(questionGroup);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restQuestionGroupMockMvc.perform(put("/api/question-groups")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(questionGroup)))
+            .content(TestUtil.convertObjectToJsonBytes(questionGroupDTO)))
             .andExpect(status().isCreated());
 
         // Validate the QuestionGroup in the database
@@ -293,5 +307,28 @@ public class QuestionGroupResourceIntTest {
         assertThat(questionGroup1).isNotEqualTo(questionGroup2);
         questionGroup1.setId(null);
         assertThat(questionGroup1).isNotEqualTo(questionGroup2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(QuestionGroupDTO.class);
+        QuestionGroupDTO questionGroupDTO1 = new QuestionGroupDTO();
+        questionGroupDTO1.setId(1L);
+        QuestionGroupDTO questionGroupDTO2 = new QuestionGroupDTO();
+        assertThat(questionGroupDTO1).isNotEqualTo(questionGroupDTO2);
+        questionGroupDTO2.setId(questionGroupDTO1.getId());
+        assertThat(questionGroupDTO1).isEqualTo(questionGroupDTO2);
+        questionGroupDTO2.setId(2L);
+        assertThat(questionGroupDTO1).isNotEqualTo(questionGroupDTO2);
+        questionGroupDTO1.setId(null);
+        assertThat(questionGroupDTO1).isNotEqualTo(questionGroupDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(questionGroupMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(questionGroupMapper.fromId(null)).isNull();
     }
 }

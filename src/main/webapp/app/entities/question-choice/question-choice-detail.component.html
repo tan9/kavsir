@@ -34,8 +34,8 @@
         </dd>
         <dt *ngIf="inGroup"><span jhiTranslate="kavsirApp.questionChoice.questionGroup">Question Group</span></dt>
         <dd *ngIf="inGroup">
-            <div *ngIf="questionChoice.questionGroup">
-                <a [routerLink]="['/question-group', questionChoice.questionGroup?.id]">{{questionChoice.questionGroup?.id}}</a>
+            <div *ngIf="questionChoice.questionGroupId">
+                <a [routerLink]="['/question-group', questionChoice.questionGroupId]">{{questionChoice.questionGroupId}}</a>
             </div>
         </dd>
     </dl>

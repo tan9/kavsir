@@ -92,8 +92,8 @@ export class CategoryHierarchyService implements OnInit {
         const childrenOfTheParent = [];
         const elementsSelected: number[] = [];
         nodes.forEach((node, index) => {
-            const isTopLevelNode = (!parentId && !node.parent);
-            const isChildOfTheParent = (parentId && node.parent && node.parent.id === parentId);
+            const isTopLevelNode = (!parentId && !node.parentId);
+            const isChildOfTheParent = (parentId && node.parentId && node.parentId === parentId);
             if (isTopLevelNode || isChildOfTheParent) {
                 childrenOfTheParent.push(node);
                 elementsSelected.push(index);
@@ -131,8 +131,8 @@ export class CategoryHierarchyService implements OnInit {
                     displayNames.unshift(
                         this.categoryNodeDisplayName(categoryNode)
                     );
-                    if (categoryNode.parent) {
-                        categoryNode = this.nodeMap.get(categoryNode.parent.id);
+                    if (categoryNode.parentId) {
+                        categoryNode = this.nodeMap.get(categoryNode.parentId);
                     } else {
                         break;
                     }
@@ -208,7 +208,9 @@ export class CategoryHierarchyService implements OnInit {
 
         treeNodes.forEach(
             (node) => {
-                node.parent = this.convert(parent);
+                if (parent) {
+                    node.parentId = parent.id;
+                }
                 if (node.id) {
                     // already persisted node, update content
                     promises.push(this.categoryNodeService.update(this.convert(node)).toPromise().then(() => {

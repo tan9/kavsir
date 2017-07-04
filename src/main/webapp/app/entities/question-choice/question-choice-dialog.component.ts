@@ -131,7 +131,7 @@ export class QuestionChoiceDialogComponent implements OnInit {
         const promises: Promise<any>[] = [];
 
         this.options.choiceOptions.forEach((option) => {
-            option.questionChoice = questionChoice;
+            option.questionChoiceId = questionChoice.id;
             if (option.id) {
                 promises.push(this.questionChoiceOptionService.update(option).toPromise());
             } else {

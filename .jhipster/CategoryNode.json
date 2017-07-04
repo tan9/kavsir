@@ -64,7 +64,7 @@
     "changelogDate": "20170302142432",
     "javadoc": "類別節點",
     "entityTableName": "category_node",
-    "dto": "no",
+    "dto": "mapstruct",
     "pagination": "pagination",
     "service": "no"
 }

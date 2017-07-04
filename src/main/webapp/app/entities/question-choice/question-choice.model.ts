@@ -13,5 +13,6 @@ export class QuestionChoice implements BaseEntity {
         public questionGroupId?: number,
     ) {
         this.multipleResponse = false;
+        this.images = [];
     }
 }

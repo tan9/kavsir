@@ -87,15 +87,9 @@ export class QuestionEssayDialogComponent implements OnInit {
     save() {
         this.isSaving = true;
         if (this.questionEssay.id !== undefined) {
-            this.subscribeToSaveResponse(
-                this.images.save(this.questionEssay, 'essays').flatMap(
-                    () => this.questionEssayService.update(this.questionEssay)),
-                false);
+            this.subscribeToSaveResponse(this.questionEssayService.update(this.questionEssay), false);
         } else {
-            this.subscribeToSaveResponse(
-                this.images.save(this.questionEssay, 'essays').flatMap(
-                    () => this.questionEssayService.create(this.questionEssay)),
-                true);
+            this.subscribeToSaveResponse(this.questionEssayService.create(this.questionEssay), true);
         }
     }
 

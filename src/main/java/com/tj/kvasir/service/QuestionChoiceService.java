@@ -1,7 +1,9 @@
 package com.tj.kvasir.service;
 
 import com.tj.kvasir.domain.QuestionChoice;
+import com.tj.kvasir.domain.ResourceImage;
 import com.tj.kvasir.repository.QuestionChoiceRepository;
+import com.tj.kvasir.repository.ResourceImageRepository;
 import com.tj.kvasir.repository.search.QuestionChoiceSearchRepository;
 import com.tj.kvasir.service.dto.QuestionChoiceDTO;
 import com.tj.kvasir.service.mapper.QuestionChoiceMapper;
@@ -37,12 +39,16 @@ public class QuestionChoiceService {
 
     private final QuestionChoiceSearchRepository questionChoiceSearchRepository;
 
+    private final ResourceImageRepository resourceImageRepository;
+
     private final ResourceHelper resourceHelper;
 
-    public QuestionChoiceService(QuestionChoiceRepository questionChoiceRepository, QuestionChoiceMapper questionChoiceMapper, QuestionChoiceSearchRepository questionChoiceSearchRepository, ResourceHelper resourceHelper) {
+    public QuestionChoiceService(QuestionChoiceRepository questionChoiceRepository, QuestionChoiceMapper questionChoiceMapper, QuestionChoiceSearchRepository questionChoiceSearchRepository,
+                                 ResourceImageRepository resourceImageRepository, ResourceHelper resourceHelper) {
         this.questionChoiceRepository = questionChoiceRepository;
         this.questionChoiceMapper = questionChoiceMapper;
         this.questionChoiceSearchRepository = questionChoiceSearchRepository;
+        this.resourceImageRepository = resourceImageRepository;
         this.resourceHelper = resourceHelper;
     }
 
@@ -55,7 +61,20 @@ public class QuestionChoiceService {
     public QuestionChoiceDTO save(QuestionChoiceDTO questionChoiceDTO) {
         log.debug("Request to save QuestionChoice : {}", questionChoiceDTO);
         QuestionChoice questionChoice = questionChoiceMapper.toEntity(questionChoiceDTO);
-        questionChoice = questionChoiceRepository.save(questionChoice);
+        // TODO clarify & cleanup
+        if (questionChoice.getId() != null) {
+            for (ResourceImage image : questionChoice.getImages()) {
+                image.setId(resourceImageRepository.save(image).getId());
+                // TODO remove image
+            }
+            questionChoice = questionChoiceRepository.save(questionChoice);
+        } else {
+            questionChoice = questionChoiceRepository.save(questionChoice);
+            for (ResourceImage image : questionChoice.getImages()) {
+                image.setId(resourceImageRepository.save(image).getId());
+                // TODO remove image
+            }
+        }
         QuestionChoiceDTO result = questionChoiceMapper.toDto(questionChoice);
         questionChoiceSearchRepository.save(questionChoice);
         return result;

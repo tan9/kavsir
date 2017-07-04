@@ -116,13 +116,9 @@ export class QuestionChoiceDialogComponent implements OnInit {
         this.isSaving = true;
         this.options.editable = false;
         if (this.questionChoice.id !== undefined) {
-            const result = this.images.save(this.questionChoice, 'choices').flatMap(
-                () => this.questionChoiceService.update(this.questionChoice));
-            this.subscribeToSaveResponse(result, false);
+            this.subscribeToSaveResponse(this.questionChoiceService.update(this.questionChoice), false);
         } else {
-            const create = this.images.save(this.questionChoice, 'choices').flatMap(
-                () => this.questionChoiceService.create(this.questionChoice));
-            this.subscribeToSaveResponse(create, true);
+            this.subscribeToSaveResponse(this.questionChoiceService.create(this.questionChoice), true);
         }
     }
 

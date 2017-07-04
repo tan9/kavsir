@@ -12,5 +12,6 @@ export class QuestionTrueFalse implements BaseEntity {
         public questionGroupId?: number,
     ) {
         this.correct = false;
+        this.images = [];
     }
 }

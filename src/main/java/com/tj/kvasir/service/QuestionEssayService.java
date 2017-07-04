@@ -1,7 +1,9 @@
 package com.tj.kvasir.service;
 
 import com.tj.kvasir.domain.QuestionEssay;
+import com.tj.kvasir.domain.ResourceImage;
 import com.tj.kvasir.repository.QuestionEssayRepository;
+import com.tj.kvasir.repository.ResourceImageRepository;
 import com.tj.kvasir.repository.search.QuestionEssaySearchRepository;
 import com.tj.kvasir.service.dto.QuestionEssayDTO;
 import com.tj.kvasir.service.mapper.QuestionEssayMapper;
@@ -14,6 +16,7 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilde
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -34,12 +37,16 @@ public class QuestionEssayService {
 
     private final QuestionEssaySearchRepository questionEssaySearchRepository;
 
+    private final ResourceImageRepository resourceImageRepository;
+
     private final ResourceHelper resourceHelper;
 
-    public QuestionEssayService(QuestionEssayRepository questionEssayRepository, QuestionEssayMapper questionEssayMapper, QuestionEssaySearchRepository questionEssaySearchRepository, ResourceHelper resourceHelper) {
+    public QuestionEssayService(QuestionEssayRepository questionEssayRepository, QuestionEssayMapper questionEssayMapper, QuestionEssaySearchRepository questionEssaySearchRepository,
+                                ResourceImageRepository resourceImageRepository, ResourceHelper resourceHelper) {
         this.questionEssayRepository = questionEssayRepository;
         this.questionEssayMapper = questionEssayMapper;
         this.questionEssaySearchRepository = questionEssaySearchRepository;
+        this.resourceImageRepository = resourceImageRepository;
         this.resourceHelper = resourceHelper;
     }
 
@@ -52,7 +59,20 @@ public class QuestionEssayService {
     public QuestionEssayDTO save(QuestionEssayDTO questionEssayDTO) {
         log.debug("Request to save QuestionEssay : {}", questionEssayDTO);
         QuestionEssay questionEssay = questionEssayMapper.toEntity(questionEssayDTO);
-        questionEssay = questionEssayRepository.save(questionEssay);
+        // TODO clarify & cleanup
+        if (questionEssay.getId() != null) {
+            for (ResourceImage image : questionEssay.getImages()) {
+                image.setId(resourceImageRepository.save(image).getId());
+                // TODO remove image
+            }
+            questionEssay = questionEssayRepository.save(questionEssay);
+        } else {
+            questionEssay = questionEssayRepository.save(questionEssay);
+            for (ResourceImage image : questionEssay.getImages()) {
+                image.setId(resourceImageRepository.save(image).getId());
+                // TODO remove image
+            }
+        }
         QuestionEssayDTO result = questionEssayMapper.toDto(questionEssay);
         questionEssaySearchRepository.save(questionEssay);
         return result;

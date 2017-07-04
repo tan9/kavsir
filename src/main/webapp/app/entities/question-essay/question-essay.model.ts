@@ -11,5 +11,6 @@ export class QuestionEssay implements BaseEntity {
         public images?: BaseEntity[],
         public questionGroupId?: number,
     ) {
+        this.images = [];
     }
 }

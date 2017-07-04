@@ -95,9 +95,6 @@ export class ImagesComponent {
     addImage() {
         const option = new ResourceImage();
         option['isEditing'] = true;
-        if (!this.images) {
-            this.images = [];
-        }
         this.images.push(option);
     }
 }

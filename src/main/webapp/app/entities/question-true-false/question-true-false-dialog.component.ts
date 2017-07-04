@@ -88,15 +88,9 @@ export class QuestionTrueFalseDialogComponent implements OnInit {
     save() {
         this.isSaving = true;
         if (this.questionTrueFalse.id !== undefined) {
-            this.subscribeToSaveResponse(
-                this.images.save(this.questionTrueFalse, 'trueFalses').flatMap(
-                    () => this.questionTrueFalseService.update(this.questionTrueFalse)
-                ), false);
+            this.subscribeToSaveResponse(this.questionTrueFalseService.update(this.questionTrueFalse), false);
         } else {
-            this.subscribeToSaveResponse(
-                this.images.save(this.questionTrueFalse, 'trueFalses').flatMap(
-                    () => this.questionTrueFalseService.create(this.questionTrueFalse)
-                ), true);
+            this.subscribeToSaveResponse(this.questionTrueFalseService.create(this.questionTrueFalse), true);
         }
     }
 

@@ -1,7 +1,9 @@
 package com.tj.kvasir.service;
 
 import com.tj.kvasir.domain.QuestionTrueFalse;
+import com.tj.kvasir.domain.ResourceImage;
 import com.tj.kvasir.repository.QuestionTrueFalseRepository;
+import com.tj.kvasir.repository.ResourceImageRepository;
 import com.tj.kvasir.repository.search.QuestionTrueFalseSearchRepository;
 import com.tj.kvasir.service.dto.QuestionTrueFalseDTO;
 import com.tj.kvasir.service.mapper.QuestionTrueFalseMapper;
@@ -34,12 +36,16 @@ public class QuestionTrueFalseService {
 
     private final QuestionTrueFalseSearchRepository questionTrueFalseSearchRepository;
 
+    private final ResourceImageRepository resourceImageRepository;
+
     private final ResourceHelper resourceHelper;
 
-    public QuestionTrueFalseService(QuestionTrueFalseRepository questionTrueFalseRepository, QuestionTrueFalseMapper questionTrueFalseMapper, QuestionTrueFalseSearchRepository questionTrueFalseSearchRepository, ResourceHelper resourceHelper) {
+    public QuestionTrueFalseService(QuestionTrueFalseRepository questionTrueFalseRepository, QuestionTrueFalseMapper questionTrueFalseMapper, QuestionTrueFalseSearchRepository questionTrueFalseSearchRepository,
+                                    ResourceImageRepository resourceImageRepository, ResourceHelper resourceHelper) {
         this.questionTrueFalseRepository = questionTrueFalseRepository;
         this.questionTrueFalseMapper = questionTrueFalseMapper;
         this.questionTrueFalseSearchRepository = questionTrueFalseSearchRepository;
+        this.resourceImageRepository = resourceImageRepository;
         this.resourceHelper = resourceHelper;
     }
 
@@ -52,7 +58,20 @@ public class QuestionTrueFalseService {
     public QuestionTrueFalseDTO save(QuestionTrueFalseDTO questionTrueFalseDTO) {
         log.debug("Request to save QuestionTrueFalse : {}", questionTrueFalseDTO);
         QuestionTrueFalse questionTrueFalse = questionTrueFalseMapper.toEntity(questionTrueFalseDTO);
-        questionTrueFalse = questionTrueFalseRepository.save(questionTrueFalse);
+        // TODO clarify & cleanup
+        if (questionTrueFalse.getId() != null) {
+            for (ResourceImage image : questionTrueFalse.getImages()) {
+                image.setId(resourceImageRepository.save(image).getId());
+                // TODO remove image
+            }
+            questionTrueFalse = questionTrueFalseRepository.save(questionTrueFalse);
+        } else {
+            questionTrueFalse = questionTrueFalseRepository.save(questionTrueFalse);
+            for (ResourceImage image : questionTrueFalse.getImages()) {
+                image.setId(resourceImageRepository.save(image).getId());
+                // TODO remove image
+            }
+        }
         QuestionTrueFalseDTO result = questionTrueFalseMapper.toDto(questionTrueFalse);
         questionTrueFalseSearchRepository.save(questionTrueFalse);
         return result;

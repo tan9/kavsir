@@ -23,6 +23,9 @@ public class ResourceImageDTO implements Serializable {
     private byte[] content;
     private String contentContentType;
 
+    @NotNull
+    private String hash;
+
     public Long getId() {
         return id;
     }
@@ -55,6 +58,14 @@ public class ResourceImageDTO implements Serializable {
         this.contentContentType = contentContentType;
     }
 
+    public String getHash() {
+        return hash;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -82,6 +93,7 @@ public class ResourceImageDTO implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", content='" + getContent() + "'" +
+            ", hash='" + getHash() + "'" +
             "}";
     }
 }

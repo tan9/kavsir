@@ -6,6 +6,7 @@ export class ResourceImage implements BaseEntity {
         public name?: string,
         public contentContentType?: string,
         public content?: any,
+        public hash?: string,
         public choices?: BaseEntity[],
         public choiceOptions?: BaseEntity[],
         public trueFalses?: BaseEntity[],

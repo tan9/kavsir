@@ -32,6 +32,7 @@
             <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="name"><span jhiTranslate="kavsirApp.resourceImage.name">Name</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="content"><span jhiTranslate="kavsirApp.resourceImage.content">Content</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="hash"><span jhiTranslate="kavsirApp.resourceImage.hash">Hash</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
             </thead>
@@ -45,6 +46,7 @@
                     </a>
                     <span *ngIf="resourceImage.content">{{resourceImage.contentContentType}}, {{byteSize(resourceImage.content)}}</span>
                 </td>
+                <td>{{resourceImage.hash}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

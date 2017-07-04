@@ -18,6 +18,7 @@
             },
             "name": "Name",
             "content": "Content",
+            "hash": "Hash",
             "choice": "Choice",
             "choiceOption": "Choice Option",
             "trueFalse": "True False",

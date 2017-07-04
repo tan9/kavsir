@@ -46,6 +46,17 @@
                 </small>
             </div>
         </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="kavsirApp.resourceImage.hash" for="field_hash">Hash</label>
+            <input type="text" class="form-control" name="hash" id="field_hash"
+                [(ngModel)]="resourceImage.hash" required />
+            <div [hidden]="!(editForm.controls.hash?.dirty && editForm.controls.hash?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.hash?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
 
     </div>
     <div class="modal-footer">

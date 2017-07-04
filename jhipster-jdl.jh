@@ -132,6 +132,8 @@ entity ResourceImage {
   name String required,
   /** 內容 */
   content ImageBlob required
+  /** 內容 Hash */
+  hash String required,
 }
 
 relationship ManyToMany {

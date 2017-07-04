@@ -67,7 +67,7 @@ class ResourceImageGatlingTest extends Simulation {
             .exec(http("Create new resourceImage")
             .post("/api/resource-images")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "name":"SAMPLE_TEXT", "content":null}""")).asJSON
+            .body(StringBody("""{"id":null, "name":"SAMPLE_TEXT", "content":null, "hash":"SAMPLE_TEXT"}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_resourceImage_url"))).exitHereIfFailed
             .pause(10)

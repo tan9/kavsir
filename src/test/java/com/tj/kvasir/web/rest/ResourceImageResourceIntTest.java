@@ -49,6 +49,9 @@ public class ResourceImageResourceIntTest {
     private static final String DEFAULT_CONTENT_CONTENT_TYPE = "image/jpg";
     private static final String UPDATED_CONTENT_CONTENT_TYPE = "image/png";
 
+    private static final String DEFAULT_HASH = "AAAAAAAAAA";
+    private static final String UPDATED_HASH = "BBBBBBBBBB";
+
     @Autowired
     private ResourceImageRepository resourceImageRepository;
 
@@ -94,7 +97,8 @@ public class ResourceImageResourceIntTest {
         ResourceImage resourceImage = new ResourceImage()
             .name(DEFAULT_NAME)
             .content(DEFAULT_CONTENT)
-            .contentContentType(DEFAULT_CONTENT_CONTENT_TYPE);
+            .contentContentType(DEFAULT_CONTENT_CONTENT_TYPE)
+            .hash(DEFAULT_HASH);
         return resourceImage;
     }
 
@@ -123,6 +127,7 @@ public class ResourceImageResourceIntTest {
         assertThat(testResourceImage.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testResourceImage.getContent()).isEqualTo(DEFAULT_CONTENT);
         assertThat(testResourceImage.getContentContentType()).isEqualTo(DEFAULT_CONTENT_CONTENT_TYPE);
+        assertThat(testResourceImage.getHash()).isEqualTo(DEFAULT_HASH);
 
         // Validate the ResourceImage in Elasticsearch
         ResourceImage resourceImageEs = resourceImageSearchRepository.findOne(testResourceImage.getId());
@@ -189,6 +194,25 @@ public class ResourceImageResourceIntTest {
 
     @Test
     @Transactional
+    public void checkHashIsRequired() throws Exception {
+        int databaseSizeBeforeTest = resourceImageRepository.findAll().size();
+        // set the field null
+        resourceImage.setHash(null);
+
+        // Create the ResourceImage, which fails.
+        ResourceImageDTO resourceImageDTO = resourceImageMapper.toDto(resourceImage);
+
+        restResourceImageMockMvc.perform(post("/api/resource-images")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(resourceImageDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<ResourceImage> resourceImageList = resourceImageRepository.findAll();
+        assertThat(resourceImageList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllResourceImages() throws Exception {
         // Initialize the database
         resourceImageRepository.saveAndFlush(resourceImage);
@@ -200,7 +224,8 @@ public class ResourceImageResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(resourceImage.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
             .andExpect(jsonPath("$.[*].contentContentType").value(hasItem(DEFAULT_CONTENT_CONTENT_TYPE)))
-            .andExpect(jsonPath("$.[*].content").value(hasItem(Base64Utils.encodeToString(DEFAULT_CONTENT))));
+            .andExpect(jsonPath("$.[*].content").value(hasItem(Base64Utils.encodeToString(DEFAULT_CONTENT))))
+            .andExpect(jsonPath("$.[*].hash").value(hasItem(DEFAULT_HASH.toString())));
     }
 
     @Test
@@ -216,7 +241,8 @@ public class ResourceImageResourceIntTest {
             .andExpect(jsonPath("$.id").value(resourceImage.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
             .andExpect(jsonPath("$.contentContentType").value(DEFAULT_CONTENT_CONTENT_TYPE))
-            .andExpect(jsonPath("$.content").value(Base64Utils.encodeToString(DEFAULT_CONTENT)));
+            .andExpect(jsonPath("$.content").value(Base64Utils.encodeToString(DEFAULT_CONTENT)))
+            .andExpect(jsonPath("$.hash").value(DEFAULT_HASH.toString()));
     }
 
     @Test
@@ -240,7 +266,8 @@ public class ResourceImageResourceIntTest {
         updatedResourceImage
             .name(UPDATED_NAME)
             .content(UPDATED_CONTENT)
-            .contentContentType(UPDATED_CONTENT_CONTENT_TYPE);
+            .contentContentType(UPDATED_CONTENT_CONTENT_TYPE)
+            .hash(UPDATED_HASH);
         ResourceImageDTO resourceImageDTO = resourceImageMapper.toDto(updatedResourceImage);
 
         restResourceImageMockMvc.perform(put("/api/resource-images")
@@ -255,6 +282,7 @@ public class ResourceImageResourceIntTest {
         assertThat(testResourceImage.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testResourceImage.getContent()).isEqualTo(UPDATED_CONTENT);
         assertThat(testResourceImage.getContentContentType()).isEqualTo(UPDATED_CONTENT_CONTENT_TYPE);
+        assertThat(testResourceImage.getHash()).isEqualTo(UPDATED_HASH);
 
         // Validate the ResourceImage in Elasticsearch
         ResourceImage resourceImageEs = resourceImageSearchRepository.findOne(testResourceImage.getId());
@@ -316,7 +344,8 @@ public class ResourceImageResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(resourceImage.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
             .andExpect(jsonPath("$.[*].contentContentType").value(hasItem(DEFAULT_CONTENT_CONTENT_TYPE)))
-            .andExpect(jsonPath("$.[*].content").value(hasItem(Base64Utils.encodeToString(DEFAULT_CONTENT))));
+            .andExpect(jsonPath("$.[*].content").value(hasItem(Base64Utils.encodeToString(DEFAULT_CONTENT))))
+            .andExpect(jsonPath("$.[*].hash").value(hasItem(DEFAULT_HASH.toString())));
     }
 
     @Test

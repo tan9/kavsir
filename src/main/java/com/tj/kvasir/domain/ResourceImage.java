@@ -51,6 +51,14 @@ public class ResourceImage implements Serializable {
     @Column(name = "content_content_type", nullable = false)
     private String contentContentType;
 
+    /**
+     * 內容 Hash
+     */
+    @NotNull
+    @ApiModelProperty(value = "內容 Hash", required = true)
+    @Column(name = "jhi_hash", nullable = false)
+    private String hash;
+
     @ManyToMany(mappedBy = "images")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -116,6 +124,19 @@ public class ResourceImage implements Serializable {
 
     public void setContentContentType(String contentContentType) {
         this.contentContentType = contentContentType;
+    }
+
+    public String getHash() {
+        return hash;
+    }
+
+    public ResourceImage hash(String hash) {
+        this.hash = hash;
+        return this;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
     }
 
     public Set<QuestionChoice> getChoices() {
@@ -245,6 +266,7 @@ public class ResourceImage implements Serializable {
             ", name='" + getName() + "'" +
             ", content='" + getContent() + "'" +
             ", contentContentType='" + contentContentType + "'" +
+            ", hash='" + getHash() + "'" +
             "}";
     }
 }

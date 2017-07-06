@@ -21,7 +21,9 @@
             </span>
             <span *ngIf="!option.isEditing">
                 <span class="correct">{{option.correct | trueFalseSymbol}}</span>
-                <span class="option">{{option.text}}</span>
+                <span class="option">
+                    <jhi-markup-render [text]="option.text" [images]="option.images"></jhi-markup-render>
+                </span>
                 <span class="memo" *ngIf="option.memo">{{option.memo}}</span>
             </span>
             <span *ngIf="editable" class="btn-group flex-btn-group-container edit-btn-group text-right">

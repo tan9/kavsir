@@ -47,7 +47,7 @@
                        [queryParams]="{ group: false }">{{questionTrueFalse.id}}</a>
                 </td>
                 <td>{{questionTrueFalse.correct | trueFalseSymbol}}</td>
-                <td><span [jhiMathJax]="questionTrueFalse.text"></span></td>
+                <td><jhi-markup-render [text]="questionTrueFalse.text" [images]="questionTrueFalse.images"></jhi-markup-render></td>
                 <td>{{questionTrueFalse.memo}}</td>
                 <td *ngIf="inGroup">{{questionTrueFalse.groupPosition}}</td>
                 <td *ngIf="inGroup">

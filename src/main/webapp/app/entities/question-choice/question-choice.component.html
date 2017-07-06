@@ -42,7 +42,7 @@
             <tr *ngFor="let questionChoice of questionChoices ;trackBy: trackId">
                 <td><a [routerLink]="['../question-choice', questionChoice.id ]">{{questionChoice.id}}</a></td>
                 <td>{{questionChoice.multipleResponse}}</td>
-                <td><span [jhiMathJax]="questionChoice.text"></span></td>
+                <td><jhi-markup-render [text]="questionChoice.text" [images]="questionChoice.images"></jhi-markup-render></td>
                 <td>{{questionChoice.memo}}</td>
                 <td>{{questionChoice.groupPosition}}</td>
                 <td>

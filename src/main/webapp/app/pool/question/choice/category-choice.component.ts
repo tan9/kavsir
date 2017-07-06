@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { QuestionChoiceComponent } from '../../../entities/question-choice/index';
 import { ResponseWrapper } from '../../../shared/model/response-wrapper.model';
-import { CategoryNode } from '../../../entities/category-node/category-node.model';
 import { CategoryHierarchyService } from '../../../shared/category/category-hierarchy.service';
 
 @Component({
@@ -96,10 +95,13 @@ export class CategoryChoiceComponent extends QuestionChoiceComponent {
         super.onSuccess(data, headers);
 
         this.questionChoices.forEach((questionChoice) => {
-            // FIXME performance??
+            // TODO move to backend for performance??
             this.questionChoiceOptionService
                 .query({questionChoiceId: questionChoice.id})
                 .subscribe((res) => questionChoice.options = res.json);
+            this.resourceImageService
+                .query({})
+                .subscribe((res) => questionChoice.images = res.json);
         });
     }
 

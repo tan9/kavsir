@@ -23,7 +23,8 @@ import {
     ChoiceOptionsComponent,
     ImagesComponent,
     ImagesPipe,
-    TrueFalseSymbolPipe
+    TrueFalseSymbolPipe,
+    MarkupRenderComponent
 } from './';
 
 @NgModule({
@@ -41,7 +42,8 @@ import {
         ChoiceOptionsComponent,
         ImagesComponent,
         ImagesPipe,
-        TrueFalseSymbolPipe
+        TrueFalseSymbolPipe,
+        MarkupRenderComponent
     ],
     providers: [
         LoginService,
@@ -69,7 +71,8 @@ import {
         ChoiceOptionsComponent,
         ImagesComponent,
         ImagesPipe,
-        TrueFalseSymbolPipe
+        TrueFalseSymbolPipe,
+        MarkupRenderComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 

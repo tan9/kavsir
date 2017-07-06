@@ -22,7 +22,7 @@ export class ImagesPipe implements PipeTransform {
      */
     transform(text: string, images: ResourceImage[]): string {
         if (text) {
-            text = text.replace(/{{(.*?)(?:\|(.*)em)?}}/g, (match, name, height) => {
+            text = text.replace(/{{(.*?)(?:\|(.*?)em)?}}/g, (match, name, height) => {
                 const image = images.find((e) => e.name === name);
                 if (image) {
                     return `<img src="data:${image.contentContentType};base64,${image.content}" style="max-height: ${(height !== undefined) ? height : 1}em;" alt="image"/>`;

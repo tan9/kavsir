@@ -17,7 +17,7 @@ export class ImagesComponent {
 
     imagesDeleted: ResourceImage[] = [];
 
-    constructor(protected domSanitizer: DomSanitizer,
+    constructor(public domSanitizer: DomSanitizer,
                 private dataUtils: JhiDataUtils,
                 private resourceImageService: ResourceImageService) {
     }

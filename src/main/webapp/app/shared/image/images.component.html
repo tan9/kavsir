@@ -4,8 +4,8 @@
             <span *ngIf="image.isEditing">
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="kavsirApp.resourceImage.name" for="field_name-{{i}}">Name</label>
-                    <input type="checkbox" class="form-control" name="name-{{i}}" id="field_name-{{i}}"
-                           [(ngModel)]="image.name"  />
+                    <input type="text" class="form-control" name="name-{{i}}" id="field_name-{{i}}"
+                           [(ngModel)]="image.name" required />
                 </div>
                 <input type="file" id="fileImage" (change)="setFileData($event, image, 'content', true)" accept="image/*" jhiTranslate="entity.action.addimage"/>
             </span>

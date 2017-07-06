@@ -22,6 +22,7 @@ import {
     MathJaxDirective,
     ChoiceOptionsComponent,
     ImagesComponent,
+    ImagesPipe,
     TrueFalseSymbolPipe
 } from './';
 
@@ -39,6 +40,7 @@ import {
         MathJaxDirective,
         ChoiceOptionsComponent,
         ImagesComponent,
+        ImagesPipe,
         TrueFalseSymbolPipe
     ],
     providers: [
@@ -66,6 +68,7 @@ import {
         MathJaxDirective,
         ChoiceOptionsComponent,
         ImagesComponent,
+        ImagesPipe,
         TrueFalseSymbolPipe
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]

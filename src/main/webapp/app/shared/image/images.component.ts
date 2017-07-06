@@ -4,6 +4,7 @@ import { JhiDataUtils } from 'ng-jhipster';
 import { ResourceImage, ResourceImageService } from '../../entities/resource-image';
 import { BaseEntity } from '../model/base-entity';
 import { Observable } from 'rxjs/Observable';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
     selector: 'jhi-images',
@@ -16,7 +17,8 @@ export class ImagesComponent {
 
     imagesDeleted: ResourceImage[] = [];
 
-    constructor(private dataUtils: JhiDataUtils,
+    constructor(protected domSanitizer: DomSanitizer,
+                private dataUtils: JhiDataUtils,
                 private resourceImageService: ResourceImageService) {
     }
 

@@ -12,8 +12,8 @@
             <span *ngIf="!image.isEditing">
                 <span class="name">{{image.name}}</span>
                 <span class="content">
-                    <img [src]="'data:' + image.contentContentType + ';base64,' + image.content" style="max-height: 30px;" alt="image"/>
-                    <span class="pull-left">{{image.contentContentType}}, {{byteSize(image.content)}}</span>
+                    <img [src]="domSanitizer.bypassSecurityTrustResourceUrl('data:' + image.contentContentType + ';base64,' + image.content)" style="max-height: 30px;" alt="image"/>
+                    <span class="small">{{image.contentContentType}}, {{byteSize(image.content)}}</span>
                 </span>
             </span>
             <span class="btn-group flex-btn-group-container edit-btn-group text-right">

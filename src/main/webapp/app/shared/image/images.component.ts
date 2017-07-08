@@ -1,9 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { JhiDataUtils } from 'ng-jhipster';
 
-import { ResourceImage, ResourceImageService } from '../../entities/resource-image';
-import { BaseEntity } from '../model/base-entity';
-import { Observable } from 'rxjs/Observable';
+import { ResourceImage } from '../../entities/resource-image';
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
@@ -18,8 +16,7 @@ export class ImagesComponent {
     imagesDeleted: ResourceImage[] = [];
 
     constructor(public domSanitizer: DomSanitizer,
-                private dataUtils: JhiDataUtils,
-                private resourceImageService: ResourceImageService) {
+                private dataUtils: JhiDataUtils) {
     }
 
     setFileData(event, resourceImage, field, isImage) {
@@ -40,50 +37,6 @@ export class ImagesComponent {
 
     byteSize(field) {
         return this.dataUtils.byteSize(field);
-    }
-
-    /**
-     * Persistent all images related to the specified entity.
-     *
-     * @param related
-     * @param owner <strong>choices</strong>, <strong>choiceOptions</strong>, <strong>trueFalses</strong> or <strong>essays</strong>
-     * @returns {Observable<any[]>}
-     */
-    save(related: BaseEntity, ownerType: string): Observable<any> {
-        if (['choices', 'choiceOptions', 'trueFalses', 'essays'].indexOf(ownerType) === -1) {
-            return Observable.throw(`Invalid ownerType: ${ownerType}`);
-        }
-
-        const observables: Observable<any>[] = [];
-        this.images.forEach((image) => {
-            image[ownerType] = [ this.convert(related) ]; // TODO n-to-n relation?
-            if (image.id) {
-                // TODO dirty check? prevent untouched image been updated
-                observables.push(this.resourceImageService.update(image));
-            } else {
-                observables.push(this.resourceImageService.create(image)
-                    .map((result) => {
-                        image.id = result.id;
-                        return image;
-                    })
-                );
-            }
-        });
-        this.imagesDeleted.forEach((image) => {
-            if (image.id) {
-                observables.push(this.resourceImageService.delete(image.id));
-            }
-        });
-
-        return Observable.forkJoin(observables);
-    }
-
-    private convert(related: BaseEntity): BaseEntity {
-        const copy = Object.assign({}, related);
-        if (copy['images']) {
-            copy['images'] = undefined;
-        }
-        return copy;
     }
 
     removeImage(index: number) {

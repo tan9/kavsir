@@ -7,9 +7,9 @@ import org.slf4j.LoggerFactory
 import scala.concurrent.duration._
 
 /**
- * Performance test for the QuestionTrueFalse entity.
+ * Performance test for the QuestionChoiceOption entity.
  */
-class QuestionTrueFalseGatlingTest extends Simulation {
+class QuestionChoiceOptionGatlingTest extends Simulation {
 
     val context: LoggerContext = LoggerFactory.getILoggerFactory.asInstanceOf[LoggerContext]
     // Log all HTTP requests
@@ -37,7 +37,7 @@ class QuestionTrueFalseGatlingTest extends Simulation {
         "X-XSRF-TOKEN" -> "${xsrf_token}"
     )
 
-    val scn = scenario("Test the QuestionTrueFalse entity")
+    val scn = scenario("Test the QuestionChoiceOption entity")
         .exec(http("First unauthenticated request")
         .get("/api/account")
         .headers(headers_http)
@@ -59,26 +59,26 @@ class QuestionTrueFalseGatlingTest extends Simulation {
         .check(status.is(200)))
         .pause(10)
         .repeat(2) {
-            exec(http("Get all questionTrueFalses")
-            .get("/api/question-true-falses")
+            exec(http("Get all questionChoiceOptions")
+            .get("/api/question-choice-options")
             .headers(headers_http_authenticated)
             .check(status.is(200)))
             .pause(10 seconds, 20 seconds)
-            .exec(http("Create new questionTrueFalse")
-            .post("/api/question-true-falses")
+            .exec(http("Create new questionChoiceOption")
+            .post("/api/question-choice-options")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "correct":null, "text":"SAMPLE_TEXT", "memo":"SAMPLE_TEXT", "groupPosition":"0"}""")).asJSON
+            .body(StringBody("""{"id":null, "correct":null, "text":"SAMPLE_TEXT", "memo":"SAMPLE_TEXT"}""")).asJSON
             .check(status.is(201))
-            .check(headerRegex("Location", "(.*)").saveAs("new_questionTrueFalse_url"))).exitHereIfFailed
+            .check(headerRegex("Location", "(.*)").saveAs("new_questionChoiceOption_url"))).exitHereIfFailed
             .pause(10)
             .repeat(5) {
-                exec(http("Get created questionTrueFalse")
-                .get("${new_questionTrueFalse_url}")
+                exec(http("Get created questionChoiceOption")
+                .get("${new_questionChoiceOption_url}")
                 .headers(headers_http_authenticated))
                 .pause(10)
             }
-            .exec(http("Delete created questionTrueFalse")
-            .delete("${new_questionTrueFalse_url}")
+            .exec(http("Delete created questionChoiceOption")
+            .delete("${new_questionChoiceOption_url}")
             .headers(headers_http_authenticated))
             .pause(10)
         }
@@ -86,6 +86,6 @@ class QuestionTrueFalseGatlingTest extends Simulation {
     val users = scenario("Users").exec(scn)
 
     setUp(
-        users.inject(rampUsers(100) over (1 minutes))
+        users.inject(rampUsers(Integer.getInteger("users", 100)) over (Integer.getInteger("ramp", 1) minutes))
     ).protocols(httpConf)
 }

@@ -60,24 +60,19 @@ export class QuestionEssayDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.questionEssay.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.questionEssayService.update(this.questionEssay), false);
+                this.questionEssayService.update(this.questionEssay));
         } else {
             this.subscribeToSaveResponse(
-                this.questionEssayService.create(this.questionEssay), true);
+                this.questionEssayService.create(this.questionEssay));
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<QuestionEssay>, isCreated: boolean) {
+    private subscribeToSaveResponse(result: Observable<QuestionEssay>) {
         result.subscribe((res: QuestionEssay) =>
-            this.onSaveSuccess(res, isCreated), (res: Response) => this.onSaveError(res));
+            this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
     }
 
-    private onSaveSuccess(result: QuestionEssay, isCreated: boolean) {
-        this.alertService.success(
-            isCreated ? 'kavsirApp.questionEssay.created'
-            : 'kavsirApp.questionEssay.updated',
-            { param : result.id }, null);
-
+    private onSaveSuccess(result: QuestionEssay) {
         this.eventManager.broadcast({ name: 'questionEssayListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);

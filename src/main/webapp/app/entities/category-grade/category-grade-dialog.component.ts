@@ -41,24 +41,19 @@ export class CategoryGradeDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.categoryGrade.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.categoryGradeService.update(this.categoryGrade), false);
+                this.categoryGradeService.update(this.categoryGrade));
         } else {
             this.subscribeToSaveResponse(
-                this.categoryGradeService.create(this.categoryGrade), true);
+                this.categoryGradeService.create(this.categoryGrade));
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<CategoryGrade>, isCreated: boolean) {
+    private subscribeToSaveResponse(result: Observable<CategoryGrade>) {
         result.subscribe((res: CategoryGrade) =>
-            this.onSaveSuccess(res, isCreated), (res: Response) => this.onSaveError(res));
+            this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
     }
 
-    private onSaveSuccess(result: CategoryGrade, isCreated: boolean) {
-        this.alertService.success(
-            isCreated ? 'kavsirApp.categoryGrade.created'
-            : 'kavsirApp.categoryGrade.updated',
-            { param : result.id }, null);
-
+    private onSaveSuccess(result: CategoryGrade) {
         this.eventManager.broadcast({ name: 'categoryGradeListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);

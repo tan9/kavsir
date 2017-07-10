@@ -7,9 +7,9 @@ import org.slf4j.LoggerFactory
 import scala.concurrent.duration._
 
 /**
- * Performance test for the ResourceImage entity.
+ * Performance test for the QuestionEssay entity.
  */
-class ResourceImageGatlingTest extends Simulation {
+class QuestionEssayGatlingTest extends Simulation {
 
     val context: LoggerContext = LoggerFactory.getILoggerFactory.asInstanceOf[LoggerContext]
     // Log all HTTP requests
@@ -37,7 +37,7 @@ class ResourceImageGatlingTest extends Simulation {
         "X-XSRF-TOKEN" -> "${xsrf_token}"
     )
 
-    val scn = scenario("Test the ResourceImage entity")
+    val scn = scenario("Test the QuestionEssay entity")
         .exec(http("First unauthenticated request")
         .get("/api/account")
         .headers(headers_http)
@@ -59,26 +59,26 @@ class ResourceImageGatlingTest extends Simulation {
         .check(status.is(200)))
         .pause(10)
         .repeat(2) {
-            exec(http("Get all resourceImages")
-            .get("/api/resource-images")
+            exec(http("Get all questionEssays")
+            .get("/api/question-essays")
             .headers(headers_http_authenticated)
             .check(status.is(200)))
             .pause(10 seconds, 20 seconds)
-            .exec(http("Create new resourceImage")
-            .post("/api/resource-images")
+            .exec(http("Create new questionEssay")
+            .post("/api/question-essays")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "name":"SAMPLE_TEXT", "content":null}""")).asJSON
+            .body(StringBody("""{"id":null, "text":"SAMPLE_TEXT", "answer":"SAMPLE_TEXT", "memo":"SAMPLE_TEXT", "groupPosition":"0"}""")).asJSON
             .check(status.is(201))
-            .check(headerRegex("Location", "(.*)").saveAs("new_resourceImage_url"))).exitHereIfFailed
+            .check(headerRegex("Location", "(.*)").saveAs("new_questionEssay_url"))).exitHereIfFailed
             .pause(10)
             .repeat(5) {
-                exec(http("Get created resourceImage")
-                .get("${new_resourceImage_url}")
+                exec(http("Get created questionEssay")
+                .get("${new_questionEssay_url}")
                 .headers(headers_http_authenticated))
                 .pause(10)
             }
-            .exec(http("Delete created resourceImage")
-            .delete("${new_resourceImage_url}")
+            .exec(http("Delete created questionEssay")
+            .delete("${new_questionEssay_url}")
             .headers(headers_http_authenticated))
             .pause(10)
         }
@@ -86,6 +86,6 @@ class ResourceImageGatlingTest extends Simulation {
     val users = scenario("Users").exec(scn)
 
     setUp(
-        users.inject(rampUsers(100) over (1 minutes))
+        users.inject(rampUsers(Integer.getInteger("users", 100)) over (Integer.getInteger("ramp", 1) minutes))
     ).protocols(httpConf)
 }

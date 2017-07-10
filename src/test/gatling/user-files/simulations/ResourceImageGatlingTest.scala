@@ -7,9 +7,9 @@ import org.slf4j.LoggerFactory
 import scala.concurrent.duration._
 
 /**
- * Performance test for the CategoryNode entity.
+ * Performance test for the ResourceImage entity.
  */
-class CategoryNodeGatlingTest extends Simulation {
+class ResourceImageGatlingTest extends Simulation {
 
     val context: LoggerContext = LoggerFactory.getILoggerFactory.asInstanceOf[LoggerContext]
     // Log all HTTP requests
@@ -37,7 +37,7 @@ class CategoryNodeGatlingTest extends Simulation {
         "X-XSRF-TOKEN" -> "${xsrf_token}"
     )
 
-    val scn = scenario("Test the CategoryNode entity")
+    val scn = scenario("Test the ResourceImage entity")
         .exec(http("First unauthenticated request")
         .get("/api/account")
         .headers(headers_http)
@@ -59,26 +59,26 @@ class CategoryNodeGatlingTest extends Simulation {
         .check(status.is(200)))
         .pause(10)
         .repeat(2) {
-            exec(http("Get all categoryNodes")
-            .get("/api/category-nodes")
+            exec(http("Get all resourceImages")
+            .get("/api/resource-images")
             .headers(headers_http_authenticated)
             .check(status.is(200)))
             .pause(10 seconds, 20 seconds)
-            .exec(http("Create new categoryNode")
-            .post("/api/category-nodes")
+            .exec(http("Create new resourceImage")
+            .post("/api/resource-images")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "type":null, "typeId":null, "name":"SAMPLE_TEXT", "position":"0"}""")).asJSON
+            .body(StringBody("""{"id":null, "name":"SAMPLE_TEXT", "content":null}""")).asJSON
             .check(status.is(201))
-            .check(headerRegex("Location", "(.*)").saveAs("new_categoryNode_url"))).exitHereIfFailed
+            .check(headerRegex("Location", "(.*)").saveAs("new_resourceImage_url"))).exitHereIfFailed
             .pause(10)
             .repeat(5) {
-                exec(http("Get created categoryNode")
-                .get("${new_categoryNode_url}")
+                exec(http("Get created resourceImage")
+                .get("${new_resourceImage_url}")
                 .headers(headers_http_authenticated))
                 .pause(10)
             }
-            .exec(http("Delete created categoryNode")
-            .delete("${new_categoryNode_url}")
+            .exec(http("Delete created resourceImage")
+            .delete("${new_resourceImage_url}")
             .headers(headers_http_authenticated))
             .pause(10)
         }
@@ -86,6 +86,6 @@ class CategoryNodeGatlingTest extends Simulation {
     val users = scenario("Users").exec(scn)
 
     setUp(
-        users.inject(rampUsers(100) over (1 minutes))
+        users.inject(rampUsers(Integer.getInteger("users", 100)) over (Integer.getInteger("ramp", 1) minutes))
     ).protocols(httpConf)
 }

@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
+import { JhiEventManager } from 'ng-jhipster';
 
 import { QuestionGroup } from './question-group.model';
 import { QuestionGroupPopupService } from './question-group-popup.service';
@@ -19,7 +19,6 @@ export class QuestionGroupDeleteDialogComponent {
     constructor(
         private questionGroupService: QuestionGroupService,
         public activeModal: NgbActiveModal,
-        private alertService: JhiAlertService,
         private eventManager: JhiEventManager
     ) {
     }
@@ -36,7 +35,6 @@ export class QuestionGroupDeleteDialogComponent {
             });
             this.activeModal.dismiss(true);
         });
-        this.alertService.success('kavsirApp.questionGroup.deleted', { param : id }, null);
     }
 }
 

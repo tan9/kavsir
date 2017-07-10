@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
+import { JhiEventManager } from 'ng-jhipster';
 
 import { CategorySubject } from './category-subject.model';
 import { CategorySubjectPopupService } from './category-subject-popup.service';
@@ -19,7 +19,6 @@ export class CategorySubjectDeleteDialogComponent {
     constructor(
         private categorySubjectService: CategorySubjectService,
         public activeModal: NgbActiveModal,
-        private alertService: JhiAlertService,
         private eventManager: JhiEventManager
     ) {
     }
@@ -36,7 +35,6 @@ export class CategorySubjectDeleteDialogComponent {
             });
             this.activeModal.dismiss(true);
         });
-        this.alertService.success('kavsirApp.categorySubject.deleted', { param : id }, null);
     }
 }
 

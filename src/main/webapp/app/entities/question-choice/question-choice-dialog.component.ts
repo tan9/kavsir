@@ -60,24 +60,19 @@ export class QuestionChoiceDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.questionChoice.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.questionChoiceService.update(this.questionChoice), false);
+                this.questionChoiceService.update(this.questionChoice));
         } else {
             this.subscribeToSaveResponse(
-                this.questionChoiceService.create(this.questionChoice), true);
+                this.questionChoiceService.create(this.questionChoice));
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<QuestionChoice>, isCreated: boolean) {
+    private subscribeToSaveResponse(result: Observable<QuestionChoice>) {
         result.subscribe((res: QuestionChoice) =>
-            this.onSaveSuccess(res, isCreated), (res: Response) => this.onSaveError(res));
+            this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
     }
 
-    private onSaveSuccess(result: QuestionChoice, isCreated: boolean) {
-        this.alertService.success(
-            isCreated ? 'kavsirApp.questionChoice.created'
-            : 'kavsirApp.questionChoice.updated',
-            { param : result.id }, null);
-
+    private onSaveSuccess(result: QuestionChoice) {
         this.eventManager.broadcast({ name: 'questionChoiceListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);

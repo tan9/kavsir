@@ -60,24 +60,19 @@ export class QuestionTrueFalseDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.questionTrueFalse.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.questionTrueFalseService.update(this.questionTrueFalse), false);
+                this.questionTrueFalseService.update(this.questionTrueFalse));
         } else {
             this.subscribeToSaveResponse(
-                this.questionTrueFalseService.create(this.questionTrueFalse), true);
+                this.questionTrueFalseService.create(this.questionTrueFalse));
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<QuestionTrueFalse>, isCreated: boolean) {
+    private subscribeToSaveResponse(result: Observable<QuestionTrueFalse>) {
         result.subscribe((res: QuestionTrueFalse) =>
-            this.onSaveSuccess(res, isCreated), (res: Response) => this.onSaveError(res));
+            this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
     }
 
-    private onSaveSuccess(result: QuestionTrueFalse, isCreated: boolean) {
-        this.alertService.success(
-            isCreated ? 'kavsirApp.questionTrueFalse.created'
-            : 'kavsirApp.questionTrueFalse.updated',
-            { param : result.id }, null);
-
+    private onSaveSuccess(result: QuestionTrueFalse) {
         this.eventManager.broadcast({ name: 'questionTrueFalseListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);

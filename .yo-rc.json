@@ -1,6 +1,6 @@
 {
   "generator-jhipster": {
-    "jhipsterVersion": "4.5.6",
+    "jhipsterVersion": "4.6.1",
     "baseName": "kavsir",
     "packageName": "com.tj.kvasir",
     "packageFolder": "com/tj/kvasir",
@@ -21,7 +21,7 @@
     "useSass": false,
     "clientPackageManager": "yarn",
     "applicationType": "monolith",
-    "clientFramework": "angular2",
+    "clientFramework": "angularX",
     "testFrameworks": [
       "gatling"
     ],

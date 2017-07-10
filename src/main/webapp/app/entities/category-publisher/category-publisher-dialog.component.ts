@@ -41,24 +41,19 @@ export class CategoryPublisherDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.categoryPublisher.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.categoryPublisherService.update(this.categoryPublisher), false);
+                this.categoryPublisherService.update(this.categoryPublisher));
         } else {
             this.subscribeToSaveResponse(
-                this.categoryPublisherService.create(this.categoryPublisher), true);
+                this.categoryPublisherService.create(this.categoryPublisher));
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<CategoryPublisher>, isCreated: boolean) {
+    private subscribeToSaveResponse(result: Observable<CategoryPublisher>) {
         result.subscribe((res: CategoryPublisher) =>
-            this.onSaveSuccess(res, isCreated), (res: Response) => this.onSaveError(res));
+            this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
     }
 
-    private onSaveSuccess(result: CategoryPublisher, isCreated: boolean) {
-        this.alertService.success(
-            isCreated ? 'kavsirApp.categoryPublisher.created'
-            : 'kavsirApp.categoryPublisher.updated',
-            { param : result.id }, null);
-
+    private onSaveSuccess(result: CategoryPublisher) {
         this.eventManager.broadcast({ name: 'categoryPublisherListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);

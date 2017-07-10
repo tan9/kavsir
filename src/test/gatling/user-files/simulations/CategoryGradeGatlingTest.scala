@@ -7,9 +7,9 @@ import org.slf4j.LoggerFactory
 import scala.concurrent.duration._
 
 /**
- * Performance test for the QuestionChoiceOption entity.
+ * Performance test for the CategoryGrade entity.
  */
-class QuestionChoiceOptionGatlingTest extends Simulation {
+class CategoryGradeGatlingTest extends Simulation {
 
     val context: LoggerContext = LoggerFactory.getILoggerFactory.asInstanceOf[LoggerContext]
     // Log all HTTP requests
@@ -37,7 +37,7 @@ class QuestionChoiceOptionGatlingTest extends Simulation {
         "X-XSRF-TOKEN" -> "${xsrf_token}"
     )
 
-    val scn = scenario("Test the QuestionChoiceOption entity")
+    val scn = scenario("Test the CategoryGrade entity")
         .exec(http("First unauthenticated request")
         .get("/api/account")
         .headers(headers_http)
@@ -59,26 +59,26 @@ class QuestionChoiceOptionGatlingTest extends Simulation {
         .check(status.is(200)))
         .pause(10)
         .repeat(2) {
-            exec(http("Get all questionChoiceOptions")
-            .get("/api/question-choice-options")
+            exec(http("Get all categoryGrades")
+            .get("/api/category-grades")
             .headers(headers_http_authenticated)
             .check(status.is(200)))
             .pause(10 seconds, 20 seconds)
-            .exec(http("Create new questionChoiceOption")
-            .post("/api/question-choice-options")
+            .exec(http("Create new categoryGrade")
+            .post("/api/category-grades")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "correct":null, "text":null, "memo":"SAMPLE_TEXT"}""")).asJSON
+            .body(StringBody("""{"id":null, "position":"0", "name":"SAMPLE_TEXT"}""")).asJSON
             .check(status.is(201))
-            .check(headerRegex("Location", "(.*)").saveAs("new_questionChoiceOption_url"))).exitHereIfFailed
+            .check(headerRegex("Location", "(.*)").saveAs("new_categoryGrade_url"))).exitHereIfFailed
             .pause(10)
             .repeat(5) {
-                exec(http("Get created questionChoiceOption")
-                .get("${new_questionChoiceOption_url}")
+                exec(http("Get created categoryGrade")
+                .get("${new_categoryGrade_url}")
                 .headers(headers_http_authenticated))
                 .pause(10)
             }
-            .exec(http("Delete created questionChoiceOption")
-            .delete("${new_questionChoiceOption_url}")
+            .exec(http("Delete created categoryGrade")
+            .delete("${new_categoryGrade_url}")
             .headers(headers_http_authenticated))
             .pause(10)
         }
@@ -86,6 +86,6 @@ class QuestionChoiceOptionGatlingTest extends Simulation {
     val users = scenario("Users").exec(scn)
 
     setUp(
-        users.inject(rampUsers(100) over (1 minutes))
+        users.inject(rampUsers(Integer.getInteger("users", 100)) over (Integer.getInteger("ramp", 1) minutes))
     ).protocols(httpConf)
 }

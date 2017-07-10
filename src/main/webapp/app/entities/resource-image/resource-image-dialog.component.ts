@@ -96,24 +96,19 @@ export class ResourceImageDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.resourceImage.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.resourceImageService.update(this.resourceImage), false);
+                this.resourceImageService.update(this.resourceImage));
         } else {
             this.subscribeToSaveResponse(
-                this.resourceImageService.create(this.resourceImage), true);
+                this.resourceImageService.create(this.resourceImage));
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<ResourceImage>, isCreated: boolean) {
+    private subscribeToSaveResponse(result: Observable<ResourceImage>) {
         result.subscribe((res: ResourceImage) =>
-            this.onSaveSuccess(res, isCreated), (res: Response) => this.onSaveError(res));
+            this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
     }
 
-    private onSaveSuccess(result: ResourceImage, isCreated: boolean) {
-        this.alertService.success(
-            isCreated ? 'kavsirApp.resourceImage.created'
-            : 'kavsirApp.resourceImage.updated',
-            { param : result.id }, null);
-
+    private onSaveSuccess(result: ResourceImage) {
         this.eventManager.broadcast({ name: 'resourceImageListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);

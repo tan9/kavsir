@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
+import { JhiEventManager } from 'ng-jhipster';
 
 import { QuestionChoiceOption } from './question-choice-option.model';
 import { QuestionChoiceOptionPopupService } from './question-choice-option-popup.service';
@@ -19,7 +19,6 @@ export class QuestionChoiceOptionDeleteDialogComponent {
     constructor(
         private questionChoiceOptionService: QuestionChoiceOptionService,
         public activeModal: NgbActiveModal,
-        private alertService: JhiAlertService,
         private eventManager: JhiEventManager
     ) {
     }
@@ -36,7 +35,6 @@ export class QuestionChoiceOptionDeleteDialogComponent {
             });
             this.activeModal.dismiss(true);
         });
-        this.alertService.success('kavsirApp.questionChoiceOption.deleted', { param : id }, null);
     }
 }
 

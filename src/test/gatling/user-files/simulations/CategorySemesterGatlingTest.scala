@@ -7,9 +7,9 @@ import org.slf4j.LoggerFactory
 import scala.concurrent.duration._
 
 /**
- * Performance test for the QuestionEssay entity.
+ * Performance test for the CategorySemester entity.
  */
-class QuestionEssayGatlingTest extends Simulation {
+class CategorySemesterGatlingTest extends Simulation {
 
     val context: LoggerContext = LoggerFactory.getILoggerFactory.asInstanceOf[LoggerContext]
     // Log all HTTP requests
@@ -37,7 +37,7 @@ class QuestionEssayGatlingTest extends Simulation {
         "X-XSRF-TOKEN" -> "${xsrf_token}"
     )
 
-    val scn = scenario("Test the QuestionEssay entity")
+    val scn = scenario("Test the CategorySemester entity")
         .exec(http("First unauthenticated request")
         .get("/api/account")
         .headers(headers_http)
@@ -59,26 +59,26 @@ class QuestionEssayGatlingTest extends Simulation {
         .check(status.is(200)))
         .pause(10)
         .repeat(2) {
-            exec(http("Get all questionEssays")
-            .get("/api/question-essays")
+            exec(http("Get all categorySemesters")
+            .get("/api/category-semesters")
             .headers(headers_http_authenticated)
             .check(status.is(200)))
             .pause(10 seconds, 20 seconds)
-            .exec(http("Create new questionEssay")
-            .post("/api/question-essays")
+            .exec(http("Create new categorySemester")
+            .post("/api/category-semesters")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "text":null, "answer":null, "memo":"SAMPLE_TEXT", "groupPosition":"0"}""")).asJSON
+            .body(StringBody("""{"id":null, "position":"0", "name":"SAMPLE_TEXT"}""")).asJSON
             .check(status.is(201))
-            .check(headerRegex("Location", "(.*)").saveAs("new_questionEssay_url"))).exitHereIfFailed
+            .check(headerRegex("Location", "(.*)").saveAs("new_categorySemester_url"))).exitHereIfFailed
             .pause(10)
             .repeat(5) {
-                exec(http("Get created questionEssay")
-                .get("${new_questionEssay_url}")
+                exec(http("Get created categorySemester")
+                .get("${new_categorySemester_url}")
                 .headers(headers_http_authenticated))
                 .pause(10)
             }
-            .exec(http("Delete created questionEssay")
-            .delete("${new_questionEssay_url}")
+            .exec(http("Delete created categorySemester")
+            .delete("${new_categorySemester_url}")
             .headers(headers_http_authenticated))
             .pause(10)
         }
@@ -86,6 +86,6 @@ class QuestionEssayGatlingTest extends Simulation {
     val users = scenario("Users").exec(scn)
 
     setUp(
-        users.inject(rampUsers(100) over (1 minutes))
+        users.inject(rampUsers(Integer.getInteger("users", 100)) over (Integer.getInteger("ramp", 1) minutes))
     ).protocols(httpConf)
 }

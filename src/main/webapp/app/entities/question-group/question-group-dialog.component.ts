@@ -70,24 +70,19 @@ export class QuestionGroupDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.questionGroup.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.questionGroupService.update(this.questionGroup), false);
+                this.questionGroupService.update(this.questionGroup));
         } else {
             this.subscribeToSaveResponse(
-                this.questionGroupService.create(this.questionGroup), true);
+                this.questionGroupService.create(this.questionGroup));
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<QuestionGroup>, isCreated: boolean) {
+    private subscribeToSaveResponse(result: Observable<QuestionGroup>) {
         result.subscribe((res: QuestionGroup) =>
-            this.onSaveSuccess(res, isCreated), (res: Response) => this.onSaveError(res));
+            this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
     }
 
-    private onSaveSuccess(result: QuestionGroup, isCreated: boolean) {
-        this.alertService.success(
-            isCreated ? 'kavsirApp.questionGroup.created'
-            : 'kavsirApp.questionGroup.updated',
-            { param : result.id }, null);
-
+    private onSaveSuccess(result: QuestionGroup) {
         this.eventManager.broadcast({ name: 'questionGroupListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);

@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
+import { JhiEventManager } from 'ng-jhipster';
 
 import { QuestionEssay } from './question-essay.model';
 import { QuestionEssayPopupService } from './question-essay-popup.service';
@@ -19,7 +19,6 @@ export class QuestionEssayDeleteDialogComponent {
     constructor(
         private questionEssayService: QuestionEssayService,
         public activeModal: NgbActiveModal,
-        private alertService: JhiAlertService,
         private eventManager: JhiEventManager
     ) {
     }
@@ -36,7 +35,6 @@ export class QuestionEssayDeleteDialogComponent {
             });
             this.activeModal.dismiss(true);
         });
-        this.alertService.success('kavsirApp.questionEssay.deleted', { param : id }, null);
     }
 }
 

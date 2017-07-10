@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, forwardRef } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Response } from '@angular/http';
 
@@ -14,7 +14,6 @@ import { ResourceImage } from '../resource-image';
 import { QuestionGroup, QuestionGroupService } from '../question-group';
 import { ResponseWrapper } from '../../shared';
 import { CategoryHierarchyService } from '../../shared/category/category-hierarchy.service';
-import { ImagesComponent } from '../../shared/image/images.component';
 
 @Component({
     selector: 'jhi-question-true-false-dialog',
@@ -30,8 +29,6 @@ export class QuestionTrueFalseDialogComponent implements OnInit {
     categorynodes: CategoryNode[];
 
     questiongroups: QuestionGroup[];
-
-    @ViewChild(forwardRef(() => ImagesComponent)) images: ImagesComponent;
 
     constructor(
         public activeModal: NgbActiveModal,
@@ -88,23 +85,20 @@ export class QuestionTrueFalseDialogComponent implements OnInit {
     save() {
         this.isSaving = true;
         if (this.questionTrueFalse.id !== undefined) {
-            this.subscribeToSaveResponse(this.questionTrueFalseService.update(this.questionTrueFalse), false);
+            this.subscribeToSaveResponse(
+                this.questionTrueFalseService.update(this.questionTrueFalse));
         } else {
-            this.subscribeToSaveResponse(this.questionTrueFalseService.create(this.questionTrueFalse), true);
+            this.subscribeToSaveResponse(
+                this.questionTrueFalseService.create(this.questionTrueFalse));
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<QuestionTrueFalse>, isCreated: boolean) {
+    private subscribeToSaveResponse(result: Observable<QuestionTrueFalse>) {
         result.subscribe((res: QuestionTrueFalse) =>
-            this.onSaveSuccess(res, isCreated), (res: Response) => this.onSaveError(res));
+            this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
     }
 
-    private onSaveSuccess(result: QuestionTrueFalse, isCreated: boolean) {
-        this.alertService.success(
-            isCreated ? 'kavsirApp.questionTrueFalse.created'
-            : 'kavsirApp.questionTrueFalse.updated',
-            { param : result.id }, null);
-
+    private onSaveSuccess(result: QuestionTrueFalse) {
         this.eventManager.broadcast({ name: 'questionTrueFalseListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);

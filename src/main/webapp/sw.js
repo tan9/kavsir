@@ -1,5 +1,5 @@
-var dataCacheName = '"Kavsir-v1';
-var cacheName = '"Kavsir-1';
+var dataCacheName = 'Kavsir-v1';
+var cacheName = 'Kavsir-1';
 var filesToCache = [
     '/',
     '/index.html'

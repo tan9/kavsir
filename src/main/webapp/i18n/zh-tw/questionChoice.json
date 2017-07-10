@@ -27,7 +27,7 @@
             "image": "圖片",
             "questionGroup": "題組",
             "validation": {
-                "minoptions": "最少要輸入 4 個選項。",
+                "minoptions": "最少要輸入 {{ min }} 個選項。",
                 "hasanswer": "至少要有一個選項是正解。",
                 "exactoneanswer": "單選題只能有一個正解。"
             }

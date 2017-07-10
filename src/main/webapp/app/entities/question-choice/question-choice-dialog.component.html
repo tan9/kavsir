@@ -33,8 +33,8 @@
                 <textarea class="form-control" name="text" id="field_text"
                           [(ngModel)]="questionChoice.text" required>
                 </textarea>
-                <button type="button" class="input-group-addon btn btn-info" (click)="preview = !preview">
-                    <span [class]="'fa fa-eye' + (preview ? '-slash' : '')"></span>
+                <button type="button" class="input-group-addon btn btn-info" (click)="showPreview = !showPreview">
+                    <span [class]="'fa fa-eye' + (showPreview ? '-slash' : '')"></span>
                 </button>
             </div>
             <div [hidden]="!(editForm.controls.text?.dirty && editForm.controls.text?.invalid)">
@@ -43,7 +43,7 @@
                    This field is required.
                 </small>
             </div>
-            <div *ngIf="preview" class="card"
+            <div *ngIf="showPreview" class="card"
                  style="margin-top: 0.5em; padding: 0.5em; background-color: #eee">
                 <jhi-markup-render [text]="questionChoice.text" [images]="aggregatedImages"></jhi-markup-render>
             </div>
@@ -55,7 +55,7 @@
                 <!-- TODO validation through validator. -->
                 <small class="form-text text-danger"
                        [hidden]="optionNumberValid()" jhiTranslate="kavsirApp.questionChoice.validation.minoptions">
-                    Not less than {{min}} options.
+                    Not less than {{ min }} options.
                 </small>
                 <small class="form-text text-danger"
                        [hidden]="optionAnswerValid()" jhiTranslate="kavsirApp.questionChoice.validation.hasanswer">

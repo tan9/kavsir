@@ -25,6 +25,7 @@ export class QuestionEssayDialogComponent implements OnInit {
     authorities: any[];
     isSaving: boolean;
     inGroup = true;
+    showPreview = false;
 
     categorynodes: CategoryNode[];
 

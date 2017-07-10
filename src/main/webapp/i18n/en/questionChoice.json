@@ -27,7 +27,7 @@
             "image": "Image",
             "questionGroup": "Question Group",
             "validation": {
-                "minoptions": "Not less than 4 options.",
+                "minoptions": "Not less than {{ min }} options.",
                 "hasanswer": "Mark at least one option as correct.",
                 "exactoneanswer": "Specify exact one answer for choice question."
             }

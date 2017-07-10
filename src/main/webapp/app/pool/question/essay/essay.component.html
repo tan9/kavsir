@@ -6,7 +6,7 @@
             ( 'category.all' | translate) }}
         </h2>
         <button type="submit"
-                [routerLink]="['/', { outlets: { popup: 'category-select/' + ((categories && categories[0] && categories[0].data) ? categories[0].data.id : -1) } }]"
+                [routerLink]="['/', { outlets: { popup: 'category-select/' + (categoryHierarchyService.getWorkingCategory() ? categoryHierarchyService.getWorkingCategory().id : -1) } }]"
                 replaceUrl="true"
                 class="btn btn-primary btn-sm category-select-button" style="display: inline-block">
             <span class="fa fa-tags"></span>

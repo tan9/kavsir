@@ -26,6 +26,8 @@ export class QuestionTrueFalseDialogComponent implements OnInit {
     isSaving: boolean;
     inGroup = true;
 
+    showPreview = false;
+
     categorynodes: CategoryNode[];
 
     questiongroups: QuestionGroup[];

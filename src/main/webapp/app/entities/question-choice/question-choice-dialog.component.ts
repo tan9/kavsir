@@ -30,6 +30,9 @@ export class QuestionChoiceDialogComponent implements OnInit {
     inGroup = false;
     multi: boolean; /* valid values: true, false, undefined (not specified) */
 
+    showPreview = false;
+    min: 4;
+
     categorynodes: CategoryNode[];
 
     questiongroups: QuestionGroup[];
@@ -64,13 +67,13 @@ export class QuestionChoiceDialogComponent implements OnInit {
     optionNumberValid() {
         // FIXME avoid hard-coded threshold, and find out how to apply to i18n message
         return !this.options ||
-            (this.options.choiceOptions && this.options.choiceOptions.length >= 4);
+            (this.options.choiceOptions && this.options.choiceOptions.length >= this.min);
     }
 
     ngOnInit() {
         this.isSaving = false;
         this.inGroup = this.route.snapshot.queryParams['group'] !== 'false';
-        let multi = this.route.snapshot.queryParams['multi'];
+        const multi = this.route.snapshot.queryParams['multi'];
 
         if (multi !== undefined) {
             this.multi = ('true' === multi);
@@ -150,7 +153,7 @@ export class QuestionChoiceDialogComponent implements OnInit {
         }
     }
 
-    private saveOptions(questionChoice: QuestionChoice) : Promise<any> {
+    private saveOptions(questionChoice: QuestionChoice): Promise<any> {
         // TODO use Observable instead?
         const promises: Promise<any>[] = [];
 

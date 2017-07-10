@@ -7,6 +7,8 @@ import com.tj.kvasir.repository.CategoryNodeRepository;
 import com.tj.kvasir.repository.search.CategoryNodeSearchRepository;
 import com.tj.kvasir.web.rest.util.HeaderUtil;
 import com.tj.kvasir.web.rest.util.PaginationUtil;
+import com.tj.kvasir.service.dto.CategoryNodeDTO;
+import com.tj.kvasir.service.mapper.CategoryNodeMapper;
 import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -42,29 +44,34 @@ public class CategoryNodeResource {
 
     private final CategoryNodeRepository categoryNodeRepository;
 
+    private final CategoryNodeMapper categoryNodeMapper;
+
     private final CategoryNodeSearchRepository categoryNodeSearchRepository;
 
-    public CategoryNodeResource(CategoryNodeRepository categoryNodeRepository, CategoryNodeSearchRepository categoryNodeSearchRepository) {
+    public CategoryNodeResource(CategoryNodeRepository categoryNodeRepository, CategoryNodeMapper categoryNodeMapper, CategoryNodeSearchRepository categoryNodeSearchRepository) {
         this.categoryNodeRepository = categoryNodeRepository;
+        this.categoryNodeMapper = categoryNodeMapper;
         this.categoryNodeSearchRepository = categoryNodeSearchRepository;
     }
 
     /**
      * POST  /category-nodes : Create a new categoryNode.
      *
-     * @param categoryNode the categoryNode to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new categoryNode, or with status 400 (Bad Request) if the categoryNode has already an ID
+     * @param categoryNodeDTO the categoryNodeDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new categoryNodeDTO, or with status 400 (Bad Request) if the categoryNode has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/category-nodes")
     @Timed
-    public ResponseEntity<CategoryNode> createCategoryNode(@Valid @RequestBody CategoryNode categoryNode) throws URISyntaxException {
-        log.debug("REST request to save CategoryNode : {}", categoryNode);
-        if (categoryNode.getId() != null) {
+    public ResponseEntity<CategoryNodeDTO> createCategoryNode(@Valid @RequestBody CategoryNodeDTO categoryNodeDTO) throws URISyntaxException {
+        log.debug("REST request to save CategoryNode : {}", categoryNodeDTO);
+        if (categoryNodeDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new categoryNode cannot already have an ID")).body(null);
         }
-        CategoryNode result = categoryNodeRepository.save(categoryNode);
-        categoryNodeSearchRepository.save(result);
+        CategoryNode categoryNode = categoryNodeMapper.toEntity(categoryNodeDTO);
+        categoryNode = categoryNodeRepository.save(categoryNode);
+        CategoryNodeDTO result = categoryNodeMapper.toDto(categoryNode);
+        categoryNodeSearchRepository.save(categoryNode);
         return ResponseEntity.created(new URI("/api/category-nodes/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -73,23 +80,25 @@ public class CategoryNodeResource {
     /**
      * PUT  /category-nodes : Updates an existing categoryNode.
      *
-     * @param categoryNode the categoryNode to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated categoryNode,
-     * or with status 400 (Bad Request) if the categoryNode is not valid,
-     * or with status 500 (Internal Server Error) if the categoryNode couldn't be updated
+     * @param categoryNodeDTO the categoryNodeDTO to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated categoryNodeDTO,
+     * or with status 400 (Bad Request) if the categoryNodeDTO is not valid,
+     * or with status 500 (Internal Server Error) if the categoryNodeDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/category-nodes")
     @Timed
-    public ResponseEntity<CategoryNode> updateCategoryNode(@Valid @RequestBody CategoryNode categoryNode) throws URISyntaxException {
-        log.debug("REST request to update CategoryNode : {}", categoryNode);
-        if (categoryNode.getId() == null) {
-            return createCategoryNode(categoryNode);
+    public ResponseEntity<CategoryNodeDTO> updateCategoryNode(@Valid @RequestBody CategoryNodeDTO categoryNodeDTO) throws URISyntaxException {
+        log.debug("REST request to update CategoryNode : {}", categoryNodeDTO);
+        if (categoryNodeDTO.getId() == null) {
+            return createCategoryNode(categoryNodeDTO);
         }
-        CategoryNode result = categoryNodeRepository.save(categoryNode);
-        categoryNodeSearchRepository.save(result);
+        CategoryNode categoryNode = categoryNodeMapper.toEntity(categoryNodeDTO);
+        categoryNode = categoryNodeRepository.save(categoryNode);
+        CategoryNodeDTO result = categoryNodeMapper.toDto(categoryNode);
+        categoryNodeSearchRepository.save(categoryNode);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, categoryNode.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, categoryNodeDTO.getId().toString()))
             .body(result);
     }
 
@@ -101,31 +110,32 @@ public class CategoryNodeResource {
      */
     @GetMapping("/category-nodes")
     @Timed
-    public ResponseEntity<List<CategoryNode>> getAllCategoryNodes(@ApiParam Pageable pageable) {
+    public ResponseEntity<List<CategoryNodeDTO>> getAllCategoryNodes(@ApiParam Pageable pageable) {
         log.debug("REST request to get a page of CategoryNodes");
         Page<CategoryNode> page = categoryNodeRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/category-nodes");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        return new ResponseEntity<>(categoryNodeMapper.toDto(page.getContent()), headers, HttpStatus.OK);
     }
 
     /**
      * GET  /category-nodes/:id : get the "id" categoryNode.
      *
-     * @param id the id of the categoryNode to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the categoryNode, or with status 404 (Not Found)
+     * @param id the id of the categoryNodeDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the categoryNodeDTO, or with status 404 (Not Found)
      */
     @GetMapping("/category-nodes/{id}")
     @Timed
-    public ResponseEntity<CategoryNode> getCategoryNode(@PathVariable Long id) {
+    public ResponseEntity<CategoryNodeDTO> getCategoryNode(@PathVariable Long id) {
         log.debug("REST request to get CategoryNode : {}", id);
         CategoryNode categoryNode = categoryNodeRepository.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(categoryNode));
+        CategoryNodeDTO categoryNodeDTO = categoryNodeMapper.toDto(categoryNode);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(categoryNodeDTO));
     }
 
     /**
      * DELETE  /category-nodes/:id : delete the "id" categoryNode.
      *
-     * @param id the id of the categoryNode to delete
+     * @param id the id of the categoryNodeDTO to delete
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/category-nodes/{id}")
@@ -147,11 +157,11 @@ public class CategoryNodeResource {
      */
     @GetMapping("/_search/category-nodes")
     @Timed
-    public ResponseEntity<List<CategoryNode>> searchCategoryNodes(@RequestParam String query, @ApiParam Pageable pageable) {
+    public ResponseEntity<List<CategoryNodeDTO>> searchCategoryNodes(@RequestParam String query, @ApiParam Pageable pageable) {
         log.debug("REST request to search for a page of CategoryNodes for query {}", query);
         Page<CategoryNode> page = categoryNodeSearchRepository.search(queryStringQuery(query), pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/category-nodes");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        return new ResponseEntity<>(categoryNodeMapper.toDto(page.getContent()), headers, HttpStatus.OK);
     }
 
 }

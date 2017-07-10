@@ -21,7 +21,10 @@ import {
     CategorySelectComponent,
     MathJaxDirective,
     ChoiceOptionsComponent,
-    TrueFalseSymbolPipe
+    ImagesComponent,
+    ImagesPipe,
+    TrueFalseSymbolPipe,
+    MarkupRenderComponent
 } from './';
 
 @NgModule({
@@ -37,7 +40,10 @@ import {
         CategorySelectComponent,
         MathJaxDirective,
         ChoiceOptionsComponent,
-        TrueFalseSymbolPipe
+        ImagesComponent,
+        ImagesPipe,
+        TrueFalseSymbolPipe,
+        MarkupRenderComponent
     ],
     providers: [
         LoginService,
@@ -63,7 +69,10 @@ import {
         CategorySelectComponent,
         MathJaxDirective,
         ChoiceOptionsComponent,
-        TrueFalseSymbolPipe
+        ImagesComponent,
+        ImagesPipe,
+        TrueFalseSymbolPipe,
+        MarkupRenderComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 

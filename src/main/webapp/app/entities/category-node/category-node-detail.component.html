@@ -22,8 +22,8 @@
         </dd>
         <dt><span jhiTranslate="kavsirApp.categoryNode.parent">Parent</span></dt>
         <dd>
-            <div *ngIf="categoryNode.parent">
-                <a [routerLink]="['/category-node', categoryNode.parent?.id]">{{categoryNode.parent?.id}}</a>
+            <div *ngIf="categoryNode.parentId">
+                <a [routerLink]="['/category-node', categoryNode.parentId]">{{categoryNode.parentId}}</a>
             </div>
         </dd>
     </dl>

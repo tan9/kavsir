@@ -9,7 +9,8 @@ import { JhiEventManager, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
 import { QuestionChoiceOption } from './question-choice-option.model';
 import { QuestionChoiceOptionPopupService } from './question-choice-option-popup.service';
 import { QuestionChoiceOptionService } from './question-choice-option.service';
-import { QuestionChoice, QuestionChoiceService } from '../question-choice';
+import { QuestionChoice } from '../question-choice/question-choice.model';
+import { QuestionChoiceService } from '../question-choice/question-choice.service';
 import { ResourceImage, ResourceImageService } from '../resource-image';
 import { ResponseWrapper } from '../../shared';
 

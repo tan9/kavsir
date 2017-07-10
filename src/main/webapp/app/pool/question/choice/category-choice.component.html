@@ -47,7 +47,7 @@
                        [queryParams]="{ group: false }">{{questionChoice.id}}</a></td>
                 <td *ngIf="multipleResponse === undefined">{{questionChoice.multipleResponse}}</td>
                 <td>
-                    <span [jhiMathJax]="questionChoice.text"></span>
+                    <jhi-markup-render [text]="questionChoice.text" [images]="questionChoice.images"></jhi-markup-render>
                     <jhi-choice-options *ngIf="questionChoice.options" [choiceOptions]="questionChoice.options"></jhi-choice-options>
                 </td>
                 <td>{{questionChoice.memo}}</td>

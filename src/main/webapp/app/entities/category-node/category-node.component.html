@@ -34,7 +34,7 @@
             <th jhiSortBy="typeId"><span jhiTranslate="kavsirApp.categoryNode.typeId">Type Id</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="name"><span jhiTranslate="kavsirApp.categoryNode.name">Name</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="position"><span jhiTranslate="kavsirApp.categoryNode.position">Position</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="parent.id"><span jhiTranslate="kavsirApp.categoryNode.parent">Parent</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="parentId"><span jhiTranslate="kavsirApp.categoryNode.parent">Parent</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
             </thead>
@@ -46,8 +46,8 @@
                 <td>{{categoryNode.name}}</td>
                 <td>{{categoryNode.position}}</td>
                 <td>
-                    <div *ngIf="categoryNode.parent">
-                        <a [routerLink]="['../category-node', categoryNode.parent?.id ]" >{{categoryNode.parent?.id}}</a>
+                    <div *ngIf="categoryNode.parentId">
+                        <a [routerLink]="['../category-node', categoryNode.parentId  ]" >{{categoryNode.parentId}}</a>
                     </div>
                 </td>
                 <td class="text-right">

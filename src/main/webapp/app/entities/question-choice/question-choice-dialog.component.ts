@@ -10,12 +10,13 @@ import { QuestionChoice } from './question-choice.model';
 import { QuestionChoicePopupService } from './question-choice-popup.service';
 import { QuestionChoiceService } from './question-choice.service';
 import { CategoryNode } from '../category-node';
-import { ResourceImage, ResourceImageService } from '../resource-image';
+import { ResourceImage } from '../resource-image';
 import { QuestionGroup, QuestionGroupService } from '../question-group';
 import { ResponseWrapper } from '../../shared';
 import { ChoiceOptionsComponent } from '../../shared/question/choice-options.component';
 import { QuestionChoiceOptionService } from '../question-choice-option/question-choice-option.service';
 import { CategoryHierarchyService } from '../../shared/category/category-hierarchy.service';
+import { QuestionChoiceOption } from '../question-choice-option/question-choice-option.model';
 
 @Component({
     selector: 'jhi-question-choice-dialog',
@@ -31,9 +32,9 @@ export class QuestionChoiceDialogComponent implements OnInit {
 
     categorynodes: CategoryNode[];
 
-    resourceimages: ResourceImage[];
-
     questiongroups: QuestionGroup[];
+
+    aggregatedImages: ResourceImage[];
 
     @ViewChild(forwardRef(() => ChoiceOptionsComponent)) options: ChoiceOptionsComponent;
 
@@ -44,7 +45,6 @@ export class QuestionChoiceDialogComponent implements OnInit {
         private questionChoiceService: QuestionChoiceService,
         private questionChoiceOptionService: QuestionChoiceOptionService,
         private categoryHierarchyService: CategoryHierarchyService,
-        private resourceImageService: ResourceImageService,
         private questionGroupService: QuestionGroupService,
         private eventManager: JhiEventManager,
         private route: ActivatedRoute
@@ -81,12 +81,36 @@ export class QuestionChoiceDialogComponent implements OnInit {
             this.questionChoice.categories = [this.categoryHierarchyService.getWorkingCategory()];
         }
 
+        this.initAggregatedImages();
+
         this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
         this.categorynodes = this.categoryHierarchyService.getNodes();
-        this.resourceImageService.query()
-            .subscribe((res: ResponseWrapper) => { this.resourceimages = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
         this.questionGroupService.query()
             .subscribe((res: ResponseWrapper) => { this.questiongroups = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+    }
+
+    private initAggregatedImages(): void {
+        // merge images from question, options into one aggregated array
+        let images: ResourceImage[] = [];
+        this.pushAll(images, this.questionChoice.images);
+        this.questionChoice.options.forEach(
+            (option: QuestionChoiceOption) => this.pushAll(images, option.images)
+        );
+
+        images = images.filter((image, index) =>
+            (image.id === undefined) || (images.findIndex((img) => img.id === image.id) === index)
+        );
+        this.aggregatedImages = images;
+
+        // sync all related entities with the same images array
+        this.questionChoice.images = this.aggregatedImages;
+        this.questionChoice.options.forEach(
+            (option: QuestionChoiceOption) => option.images = this.aggregatedImages
+        );
+    }
+
+    private pushAll(container: ResourceImage[], elements: ResourceImage) {
+        Array.prototype.push.apply(container, elements);
     }
 
     byteSize(field) {
@@ -118,19 +142,18 @@ export class QuestionChoiceDialogComponent implements OnInit {
         this.isSaving = true;
         this.options.editable = false;
         if (this.questionChoice.id !== undefined) {
-            const result = this.questionChoiceService.update(this.questionChoice);
-            this.subscribeToSaveResponse(result, false);
+            this.subscribeToSaveResponse(this.questionChoiceService.update(this.questionChoice), false);
         } else {
-            const create = this.questionChoiceService.create(this.questionChoice);
-            this.subscribeToSaveResponse(create, true);
+            this.subscribeToSaveResponse(this.questionChoiceService.create(this.questionChoice), true);
         }
     }
 
     private saveOptions(questionChoice: QuestionChoice) : Promise<any> {
+        // TODO use Observable instead?
         const promises: Promise<any>[] = [];
 
         this.options.choiceOptions.forEach((option) => {
-            option.questionChoice = questionChoice;
+            option.questionChoiceId = questionChoice.id;
             if (option.id) {
                 promises.push(this.questionChoiceOptionService.update(option).toPromise());
             } else {

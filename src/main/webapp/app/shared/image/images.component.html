@@ -1,0 +1,48 @@
+<form name="imagesForm" role="form" nonvalidate #imagesForm="ngForm">
+    <ul class="card">
+        <li *ngFor="let image of images; let i = index" [class.editing]="image.isEditing">
+            <span *ngIf="image.isEditing">
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="kavsirApp.resourceImage.name" for="field_name-{{i}}">Name</label>
+                    <input type="text" class="form-control" name="name-{{i}}" id="field_name-{{i}}"
+                           [(ngModel)]="image.name" required />
+                </div>
+                <input type="file" id="fileImage" (change)="setFileData($event, image, 'content', true)" accept="image/*" jhiTranslate="entity.action.addimage"/>
+            </span>
+            <span *ngIf="!image.isEditing">
+                <span class="name">{{image.name}}</span>
+                <span class="content">
+                    <img [src]="domSanitizer.bypassSecurityTrustResourceUrl('data:' + image.contentContentType + ';base64,' + image.content)" style="max-height: 30px;" alt="image"/>
+                    <span class="small">{{image.contentContentType}}, {{byteSize(image.content)}}</span>
+                </span>
+            </span>
+            <span class="btn-group flex-btn-group-container edit-btn-group text-right">
+                <button class="btn btn-primary btn-sm" type="submit"
+                        (click)="image.isEditing = !image.isEditing"
+                        [disabled]="(!image.isEditing && isEditing()) || imagesForm.form.invalid">
+                    <span *ngIf="!image.isEditing" class="fa fa-pencil"></span>
+                    <span *ngIf="image.isEditing" class="fa fa-save"></span>
+                    <span *ngIf="!image.isEditing" class="hidden-sm-down"
+                          jhiTranslate="entity.action.edit">Edit</span>
+                    <span *ngIf="image.isEditing" class="hidden-sm-down"
+                          jhiTranslate="entity.action.save">Save</span>
+                </button>
+                <button (click)="removeImage(i)" class="btn btn-danger btn-sm">
+                    <span class="fa fa-remove"></span>
+                    <span class="hidden-md-down" jhiTranslate="entity.action.delete">Delete</span>
+                </button>
+            </span>
+        </li>
+    </ul>
+    <div class="row">
+        <div class="col-sm-12">
+            <button (click)="addImage()" [disabled]="isEditing()"
+                    class="btn btn-sm btn-primary pull-right">
+                <span class="fa fa-plus"></span>
+                <span class="hidden-sm-down"  jhiTranslate="kavsirApp.resourceImage.home.createLabel">
+                    Create a new Resource Image
+                </span>
+            </button>
+        </div>
+    </div>
+</form>

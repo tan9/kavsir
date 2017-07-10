@@ -6,9 +6,10 @@ export class QuestionChoiceOption implements BaseEntity {
         public correct?: boolean,
         public text?: string,
         public memo?: string,
-        public questionChoice?: BaseEntity,
+        public questionChoiceId?: number,
         public images?: BaseEntity[],
     ) {
         this.correct = false;
+        this.images = [];
     }
 }

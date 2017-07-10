@@ -45,7 +45,7 @@
             </div>
             <div *ngIf="preview" class="card"
                  style="margin-top: 0.5em; padding: 0.5em; background-color: #eee">
-                <span [jhiMathJax]="questionChoice.text"></span>
+                <jhi-markup-render [text]="questionChoice.text" [images]="aggregatedImages"></jhi-markup-render>
             </div>
         </div>
         <div class="form-group">
@@ -88,15 +88,13 @@
         </div>
         <div class="form-group">
             <label jhiTranslate="kavsirApp.questionChoice.image" for="field_image">Image</label>
-            <select class="form-control" id="field_image" multiple name="image" [(ngModel)]="questionChoice.images">
-                <option [ngValue]="getSelected(questionChoice.images, resourceImageOption)" *ngFor="let resourceImageOption of resourceimages; trackBy: trackResourceImageById">{{resourceImageOption.id}}</option>
-            </select>
+            <jhi-images [images]="questionChoice.images" id="field_image"></jhi-images>
         </div>
         <div *ngIf="inGroup" class="form-group">
             <label jhiTranslate="kavsirApp.questionChoice.questionGroup" for="field_questionGroup">Question Group</label>
-            <select class="form-control" id="field_questionGroup" name="questionGroup" [(ngModel)]="questionChoice.questionGroup" >
+            <select class="form-control" id="field_questionGroup" name="questionGroup" [(ngModel)]="questionChoice.questionGroupId" >
                 <option [ngValue]="null"></option>
-                <option [ngValue]="questionGroupOption.id === questionChoice.questionGroup?.id ? questionChoice.questionGroup : questionGroupOption" *ngFor="let questionGroupOption of questiongroups; trackBy: trackQuestionGroupById">{{questionGroupOption.id}}</option>
+                <option [ngValue]="questionGroupOption.id" *ngFor="let questionGroupOption of questiongroups; trackBy: trackQuestionGroupById">{{questionGroupOption.id}}</option>
             </select>
         </div>
     </div>

@@ -53,7 +53,7 @@
             </div>
             <div *ngIf="preview" class="card"
                  style="margin-top: 0.5em; padding: 0.5em; background-color: #eee">
-                <span [jhiMathJax]="questionTrueFalse.text"></span>
+                <jhi-markup-render [text]="questionTrueFalse.text" [images]="questionTrueFalse.images"></jhi-markup-render>
             </div>
         </div>
         <div class="form-group">
@@ -75,15 +75,13 @@
         </div>
         <div class="form-group">
             <label jhiTranslate="kavsirApp.questionTrueFalse.image" for="field_image">Image</label>
-            <select class="form-control" id="field_image" multiple name="image" [(ngModel)]="questionTrueFalse.images">
-                <option [ngValue]="getSelected(questionTrueFalse.images, resourceImageOption)" *ngFor="let resourceImageOption of resourceimages; trackBy: trackResourceImageById">{{resourceImageOption.id}}</option>
-            </select>
+            <jhi-images [images]="questionTrueFalse.images" id="field_image"></jhi-images>
         </div>
         <div *ngIf="inGroup" class="form-group">
             <label jhiTranslate="kavsirApp.questionTrueFalse.questionGroup" for="field_questionGroup">Question Group</label>
-            <select class="form-control" id="field_questionGroup" name="questionGroup" [(ngModel)]="questionTrueFalse.questionGroup" >
+            <select class="form-control" id="field_questionGroup" name="questionGroup" [(ngModel)]="questionTrueFalse.questionGroupId" >
                 <option [ngValue]="null"></option>
-                <option [ngValue]="questionGroupOption.id === questionTrueFalse.questionGroup?.id ? questionTrueFalse.questionGroup : questionGroupOption" *ngFor="let questionGroupOption of questiongroups; trackBy: trackQuestionGroupById">{{questionGroupOption.id}}</option>
+                <option [ngValue]="questionGroupOption.id" *ngFor="let questionGroupOption of questiongroups; trackBy: trackQuestionGroupById">{{questionGroupOption.id}}</option>
             </select>
         </div>
     </div>

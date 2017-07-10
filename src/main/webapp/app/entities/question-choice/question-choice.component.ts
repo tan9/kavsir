@@ -8,6 +8,7 @@ import { QuestionChoiceService } from './question-choice.service';
 import { ITEMS_PER_PAGE, Principal, ResponseWrapper } from '../../shared';
 import { PaginationConfig } from '../../blocks/config/uib-pagination.config';
 import { QuestionChoiceOptionService } from '../question-choice-option/question-choice-option.service';
+import { ResourceImageService } from '../resource-image/resource-image.service';
 
 @Component({
     selector: 'jhi-question-choice',
@@ -34,6 +35,7 @@ currentAccount: any;
     constructor(
         protected questionChoiceService: QuestionChoiceService,
         protected questionChoiceOptionService: QuestionChoiceOptionService,
+        protected resourceImageService: ResourceImageService,
         private parseLinks: JhiParseLinks,
         private alertService: JhiAlertService,
         private principal: Principal,

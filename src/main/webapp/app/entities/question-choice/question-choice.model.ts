@@ -10,8 +10,9 @@ export class QuestionChoice implements BaseEntity {
         public options?: BaseEntity[],
         public categories?: BaseEntity[],
         public images?: BaseEntity[],
-        public questionGroup?: BaseEntity,
+        public questionGroupId?: number,
     ) {
         this.multipleResponse = false;
+        this.images = [];
     }
 }

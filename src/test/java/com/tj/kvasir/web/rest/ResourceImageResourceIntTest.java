@@ -5,6 +5,8 @@ import com.tj.kvasir.KavsirApp;
 import com.tj.kvasir.domain.ResourceImage;
 import com.tj.kvasir.repository.ResourceImageRepository;
 import com.tj.kvasir.repository.search.ResourceImageSearchRepository;
+import com.tj.kvasir.service.dto.ResourceImageDTO;
+import com.tj.kvasir.service.mapper.ResourceImageMapper;
 import com.tj.kvasir.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -51,6 +53,9 @@ public class ResourceImageResourceIntTest {
     private ResourceImageRepository resourceImageRepository;
 
     @Autowired
+    private ResourceImageMapper resourceImageMapper;
+
+    @Autowired
     private ResourceImageSearchRepository resourceImageSearchRepository;
 
     @Autowired
@@ -72,7 +77,7 @@ public class ResourceImageResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        ResourceImageResource resourceImageResource = new ResourceImageResource(resourceImageRepository, resourceImageSearchRepository);
+        ResourceImageResource resourceImageResource = new ResourceImageResource(resourceImageRepository, resourceImageMapper, resourceImageSearchRepository);
         this.restResourceImageMockMvc = MockMvcBuilders.standaloneSetup(resourceImageResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -105,9 +110,10 @@ public class ResourceImageResourceIntTest {
         int databaseSizeBeforeCreate = resourceImageRepository.findAll().size();
 
         // Create the ResourceImage
+        ResourceImageDTO resourceImageDTO = resourceImageMapper.toDto(resourceImage);
         restResourceImageMockMvc.perform(post("/api/resource-images")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(resourceImage)))
+            .content(TestUtil.convertObjectToJsonBytes(resourceImageDTO)))
             .andExpect(status().isCreated());
 
         // Validate the ResourceImage in the database
@@ -130,11 +136,12 @@ public class ResourceImageResourceIntTest {
 
         // Create the ResourceImage with an existing ID
         resourceImage.setId(1L);
+        ResourceImageDTO resourceImageDTO = resourceImageMapper.toDto(resourceImage);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restResourceImageMockMvc.perform(post("/api/resource-images")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(resourceImage)))
+            .content(TestUtil.convertObjectToJsonBytes(resourceImageDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
@@ -150,10 +157,11 @@ public class ResourceImageResourceIntTest {
         resourceImage.setName(null);
 
         // Create the ResourceImage, which fails.
+        ResourceImageDTO resourceImageDTO = resourceImageMapper.toDto(resourceImage);
 
         restResourceImageMockMvc.perform(post("/api/resource-images")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(resourceImage)))
+            .content(TestUtil.convertObjectToJsonBytes(resourceImageDTO)))
             .andExpect(status().isBadRequest());
 
         List<ResourceImage> resourceImageList = resourceImageRepository.findAll();
@@ -168,10 +176,11 @@ public class ResourceImageResourceIntTest {
         resourceImage.setContent(null);
 
         // Create the ResourceImage, which fails.
+        ResourceImageDTO resourceImageDTO = resourceImageMapper.toDto(resourceImage);
 
         restResourceImageMockMvc.perform(post("/api/resource-images")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(resourceImage)))
+            .content(TestUtil.convertObjectToJsonBytes(resourceImageDTO)))
             .andExpect(status().isBadRequest());
 
         List<ResourceImage> resourceImageList = resourceImageRepository.findAll();
@@ -232,10 +241,11 @@ public class ResourceImageResourceIntTest {
             .name(UPDATED_NAME)
             .content(UPDATED_CONTENT)
             .contentContentType(UPDATED_CONTENT_CONTENT_TYPE);
+        ResourceImageDTO resourceImageDTO = resourceImageMapper.toDto(updatedResourceImage);
 
         restResourceImageMockMvc.perform(put("/api/resource-images")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedResourceImage)))
+            .content(TestUtil.convertObjectToJsonBytes(resourceImageDTO)))
             .andExpect(status().isOk());
 
         // Validate the ResourceImage in the database
@@ -257,11 +267,12 @@ public class ResourceImageResourceIntTest {
         int databaseSizeBeforeUpdate = resourceImageRepository.findAll().size();
 
         // Create the ResourceImage
+        ResourceImageDTO resourceImageDTO = resourceImageMapper.toDto(resourceImage);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restResourceImageMockMvc.perform(put("/api/resource-images")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(resourceImage)))
+            .content(TestUtil.convertObjectToJsonBytes(resourceImageDTO)))
             .andExpect(status().isCreated());
 
         // Validate the ResourceImage in the database
@@ -321,5 +332,28 @@ public class ResourceImageResourceIntTest {
         assertThat(resourceImage1).isNotEqualTo(resourceImage2);
         resourceImage1.setId(null);
         assertThat(resourceImage1).isNotEqualTo(resourceImage2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(ResourceImageDTO.class);
+        ResourceImageDTO resourceImageDTO1 = new ResourceImageDTO();
+        resourceImageDTO1.setId(1L);
+        ResourceImageDTO resourceImageDTO2 = new ResourceImageDTO();
+        assertThat(resourceImageDTO1).isNotEqualTo(resourceImageDTO2);
+        resourceImageDTO2.setId(resourceImageDTO1.getId());
+        assertThat(resourceImageDTO1).isEqualTo(resourceImageDTO2);
+        resourceImageDTO2.setId(2L);
+        assertThat(resourceImageDTO1).isNotEqualTo(resourceImageDTO2);
+        resourceImageDTO1.setId(null);
+        assertThat(resourceImageDTO1).isNotEqualTo(resourceImageDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(resourceImageMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(resourceImageMapper.fromId(null)).isNull();
     }
 }

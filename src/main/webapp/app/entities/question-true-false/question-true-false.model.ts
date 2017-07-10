@@ -9,8 +9,9 @@ export class QuestionTrueFalse implements BaseEntity {
         public groupPosition?: number,
         public categories?: BaseEntity[],
         public images?: BaseEntity[],
-        public questionGroup?: BaseEntity,
+        public questionGroupId?: number,
     ) {
         this.correct = false;
+        this.images = [];
     }
 }

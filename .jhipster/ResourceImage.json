@@ -52,7 +52,7 @@
     "changelogDate": "20170302142432",
     "javadoc": "圖檔",
     "entityTableName": "resource_image",
-    "dto": "no",
+    "dto": "mapstruct",
     "pagination": "pagination",
     "service": "no"
 }

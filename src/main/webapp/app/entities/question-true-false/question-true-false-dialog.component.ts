@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, forwardRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Response } from '@angular/http';
 
@@ -10,10 +10,11 @@ import { QuestionTrueFalse } from './question-true-false.model';
 import { QuestionTrueFalsePopupService } from './question-true-false-popup.service';
 import { QuestionTrueFalseService } from './question-true-false.service';
 import { CategoryNode } from '../category-node';
-import { ResourceImage, ResourceImageService } from '../resource-image';
+import { ResourceImage } from '../resource-image';
 import { QuestionGroup, QuestionGroupService } from '../question-group';
 import { ResponseWrapper } from '../../shared';
 import { CategoryHierarchyService } from '../../shared/category/category-hierarchy.service';
+import { ImagesComponent } from '../../shared/image/images.component';
 
 @Component({
     selector: 'jhi-question-true-false-dialog',
@@ -28,9 +29,9 @@ export class QuestionTrueFalseDialogComponent implements OnInit {
 
     categorynodes: CategoryNode[];
 
-    resourceimages: ResourceImage[];
-
     questiongroups: QuestionGroup[];
+
+    @ViewChild(forwardRef(() => ImagesComponent)) images: ImagesComponent;
 
     constructor(
         public activeModal: NgbActiveModal,
@@ -38,7 +39,6 @@ export class QuestionTrueFalseDialogComponent implements OnInit {
         private alertService: JhiAlertService,
         private questionTrueFalseService: QuestionTrueFalseService,
         private categoryHierarchyService: CategoryHierarchyService,
-        private resourceImageService: ResourceImageService,
         private questionGroupService: QuestionGroupService,
         private eventManager: JhiEventManager,
         private route: ActivatedRoute
@@ -56,8 +56,6 @@ export class QuestionTrueFalseDialogComponent implements OnInit {
         }
 
         this.categorynodes = this.categoryHierarchyService.getNodes();
-        this.resourceImageService.query()
-            .subscribe((res: ResponseWrapper) => { this.resourceimages = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
         this.questionGroupService.query()
             .subscribe((res: ResponseWrapper) => { this.questiongroups = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
@@ -90,11 +88,9 @@ export class QuestionTrueFalseDialogComponent implements OnInit {
     save() {
         this.isSaving = true;
         if (this.questionTrueFalse.id !== undefined) {
-            this.subscribeToSaveResponse(
-                this.questionTrueFalseService.update(this.questionTrueFalse), false);
+            this.subscribeToSaveResponse(this.questionTrueFalseService.update(this.questionTrueFalse), false);
         } else {
-            this.subscribeToSaveResponse(
-                this.questionTrueFalseService.create(this.questionTrueFalse), true);
+            this.subscribeToSaveResponse(this.questionTrueFalseService.create(this.questionTrueFalse), true);
         }
     }
 

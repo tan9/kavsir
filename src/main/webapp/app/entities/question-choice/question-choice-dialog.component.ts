@@ -16,7 +16,7 @@ import { ResponseWrapper } from '../../shared';
 import { ChoiceOptionsComponent } from '../../shared/question/choice-options.component';
 import { QuestionChoiceOptionService } from '../question-choice-option/question-choice-option.service';
 import { CategoryHierarchyService } from '../../shared/category/category-hierarchy.service';
-import { ImagesComponent } from '../../shared/image/images.component';
+import { QuestionChoiceOption } from '../question-choice-option/question-choice-option.model';
 
 @Component({
     selector: 'jhi-question-choice-dialog',
@@ -34,9 +34,9 @@ export class QuestionChoiceDialogComponent implements OnInit {
 
     questiongroups: QuestionGroup[];
 
-    @ViewChild(forwardRef(() => ChoiceOptionsComponent)) options: ChoiceOptionsComponent;
+    aggregatedImages: ResourceImage[];
 
-    @ViewChild(forwardRef(() => ImagesComponent)) images: ImagesComponent;
+    @ViewChild(forwardRef(() => ChoiceOptionsComponent)) options: ChoiceOptionsComponent;
 
     constructor(
         public activeModal: NgbActiveModal,
@@ -81,10 +81,36 @@ export class QuestionChoiceDialogComponent implements OnInit {
             this.questionChoice.categories = [this.categoryHierarchyService.getWorkingCategory()];
         }
 
+        this.initAggregatedImages();
+
         this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
         this.categorynodes = this.categoryHierarchyService.getNodes();
         this.questionGroupService.query()
             .subscribe((res: ResponseWrapper) => { this.questiongroups = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+    }
+
+    private initAggregatedImages(): void {
+        // merge images from question, options into one aggregated array
+        let images: ResourceImage[] = [];
+        this.pushAll(images, this.questionChoice.images);
+        this.questionChoice.options.forEach(
+            (option: QuestionChoiceOption) => this.pushAll(images, option.images)
+        );
+
+        images = images.filter((image, index) =>
+            (image.id === undefined) || (images.findIndex((img) => img.id === image.id) === index)
+        );
+        this.aggregatedImages = images;
+
+        // sync all related entities with the same images array
+        this.questionChoice.images = this.aggregatedImages;
+        this.questionChoice.options.forEach(
+            (option: QuestionChoiceOption) => option.images = this.aggregatedImages
+        );
+    }
+
+    private pushAll(container: ResourceImage[], elements: ResourceImage) {
+        Array.prototype.push.apply(container, elements);
     }
 
     byteSize(field) {

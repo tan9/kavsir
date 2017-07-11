@@ -54,7 +54,8 @@
             <div [hidden]="optionNumberValid() && optionAnswerValid() && optionAnswerForSingleChoiceValid()">
                 <!-- TODO validation through validator. -->
                 <small class="form-text text-danger"
-                       [hidden]="optionNumberValid()" jhiTranslate="kavsirApp.questionChoice.validation.minoptions">
+                       [hidden]="optionNumberValid()" jhiTranslate="kavsirApp.questionChoice.validation.minoptions"
+                       translateValues="{min: '{{min}}'}">
                     Not less than {{ min }} options.
                 </small>
                 <small class="form-text text-danger"

@@ -31,7 +31,7 @@ export class QuestionChoiceDialogComponent implements OnInit {
     multi: boolean; /* valid values: true, false, undefined (not specified) */
 
     showPreview = false;
-    min: 4;
+    min = 4;
 
     categorynodes: CategoryNode[];
 
@@ -65,7 +65,6 @@ export class QuestionChoiceDialogComponent implements OnInit {
     }
 
     optionNumberValid() {
-        // FIXME avoid hard-coded threshold, and find out how to apply to i18n message
         return !this.options ||
             (this.options.choiceOptions && this.options.choiceOptions.length >= this.min);
     }

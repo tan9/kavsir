@@ -17,7 +17,6 @@ import { CategoryAcademicYearService } from './category-academic-year.service';
 export class CategoryAcademicYearDialogComponent implements OnInit {
 
     categoryAcademicYear: CategoryAcademicYear;
-    authorities: any[];
     isSaving: boolean;
 
     constructor(
@@ -30,7 +29,6 @@ export class CategoryAcademicYearDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
-        this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
     }
 
     clear() {
@@ -80,7 +78,6 @@ export class CategoryAcademicYearDialogComponent implements OnInit {
 })
 export class CategoryAcademicYearPopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
@@ -91,11 +88,11 @@ export class CategoryAcademicYearPopupComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
-                this.modalRef = this.categoryAcademicYearPopupService
-                    .open(CategoryAcademicYearDialogComponent, params['id']);
+                this.categoryAcademicYearPopupService
+                    .open(CategoryAcademicYearDialogComponent as Component, params['id']);
             } else {
-                this.modalRef = this.categoryAcademicYearPopupService
-                    .open(CategoryAcademicYearDialogComponent);
+                this.categoryAcademicYearPopupService
+                    .open(CategoryAcademicYearDialogComponent as Component);
             }
         });
     }

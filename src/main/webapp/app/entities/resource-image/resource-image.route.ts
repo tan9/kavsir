@@ -9,8 +9,6 @@ import { ResourceImageDetailComponent } from './resource-image-detail.component'
 import { ResourceImagePopupComponent } from './resource-image-dialog.component';
 import { ResourceImageDeletePopupComponent } from './resource-image-delete-dialog.component';
 
-import { Principal } from '../../shared';
-
 export const resourceImageRoute: Routes = [
     {
         path: 'resource-image',

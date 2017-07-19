@@ -44,7 +44,6 @@ export class QuestionGroupDeleteDialogComponent {
 })
 export class QuestionGroupDeletePopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
@@ -54,8 +53,8 @@ export class QuestionGroupDeletePopupComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
-            this.modalRef = this.questionGroupPopupService
-                .open(QuestionGroupDeleteDialogComponent, params['id']);
+            this.questionGroupPopupService
+                .open(QuestionGroupDeleteDialogComponent as Component, params['id']);
         });
     }
 

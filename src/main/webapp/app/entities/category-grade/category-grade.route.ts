@@ -9,8 +9,6 @@ import { CategoryGradeDetailComponent } from './category-grade-detail.component'
 import { CategoryGradePopupComponent } from './category-grade-dialog.component';
 import { CategoryGradeDeletePopupComponent } from './category-grade-delete-dialog.component';
 
-import { Principal } from '../../shared';
-
 export const categoryGradeRoute: Routes = [
     {
         path: 'category-grade',

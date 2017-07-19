@@ -6,27 +6,37 @@ import { CategorySemesterService } from './category-semester.service';
 
 @Injectable()
 export class CategorySemesterPopupService {
-    private isOpen = false;
+    private ngbModalRef: NgbModalRef;
+
     constructor(
         private modalService: NgbModal,
         private router: Router,
         private categorySemesterService: CategorySemesterService
 
-    ) {}
+    ) {
+        this.ngbModalRef = null;
+    }
 
-    open(component: Component, id?: number | any): NgbModalRef {
-        if (this.isOpen) {
-            return;
-        }
-        this.isOpen = true;
+    open(component: Component, id?: number | any): Promise<NgbModalRef> {
+        return new Promise<NgbModalRef>((resolve, reject) => {
+            const isOpen = this.ngbModalRef !== null;
+            if (isOpen) {
+                resolve(this.ngbModalRef);
+            }
 
-        if (id) {
-            this.categorySemesterService.find(id).subscribe((categorySemester) => {
-                this.categorySemesterModalRef(component, categorySemester);
-            });
-        } else {
-            return this.categorySemesterModalRef(component, new CategorySemester());
-        }
+            if (id) {
+                this.categorySemesterService.find(id).subscribe((categorySemester) => {
+                    this.ngbModalRef = this.categorySemesterModalRef(component, categorySemester);
+                    resolve(this.ngbModalRef);
+                });
+            } else {
+                // setTimeout used as a workaround for getting ExpressionChangedAfterItHasBeenCheckedError
+                setTimeout(() => {
+                    this.ngbModalRef = this.categorySemesterModalRef(component, new CategorySemester());
+                    resolve(this.ngbModalRef);
+                }, 0);
+            }
+        });
     }
 
     categorySemesterModalRef(component: Component, categorySemester: CategorySemester): NgbModalRef {
@@ -34,10 +44,10 @@ export class CategorySemesterPopupService {
         modalRef.componentInstance.categorySemester = categorySemester;
         modalRef.result.then((result) => {
             this.router.navigate([{ outlets: { popup: null }}], { replaceUrl: true });
-            this.isOpen = false;
+            this.ngbModalRef = null;
         }, (reason) => {
             this.router.navigate([{ outlets: { popup: null }}], { replaceUrl: true });
-            this.isOpen = false;
+            this.ngbModalRef = null;
         });
         return modalRef;
     }

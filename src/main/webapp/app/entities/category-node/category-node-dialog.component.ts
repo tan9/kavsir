@@ -9,7 +9,6 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { CategoryNode } from './category-node.model';
 import { CategoryNodePopupService } from './category-node-popup.service';
 import { CategoryNodeService } from './category-node.service';
-import { CategoryNode, CategoryNodeService } from '../category-node';
 import { QuestionTrueFalse, QuestionTrueFalseService } from '../question-true-false';
 import { QuestionChoice, QuestionChoiceService } from '../question-choice';
 import { QuestionEssay, QuestionEssayService } from '../question-essay';
@@ -23,7 +22,6 @@ import { ResponseWrapper } from '../../shared';
 export class CategoryNodeDialogComponent implements OnInit {
 
     categoryNode: CategoryNode;
-    authorities: any[];
     isSaving: boolean;
 
     categorynodes: CategoryNode[];
@@ -40,7 +38,6 @@ export class CategoryNodeDialogComponent implements OnInit {
         public activeModal: NgbActiveModal,
         private alertService: JhiAlertService,
         private categoryNodeService: CategoryNodeService,
-        private categoryNodeService: CategoryNodeService,
         private questionTrueFalseService: QuestionTrueFalseService,
         private questionChoiceService: QuestionChoiceService,
         private questionEssayService: QuestionEssayService,
@@ -51,7 +48,6 @@ export class CategoryNodeDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
-        this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
         this.categoryNodeService.query()
             .subscribe((res: ResponseWrapper) => { this.categorynodes = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
         this.questionTrueFalseService.query()
@@ -142,7 +138,6 @@ export class CategoryNodeDialogComponent implements OnInit {
 })
 export class CategoryNodePopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
@@ -153,11 +148,11 @@ export class CategoryNodePopupComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
-                this.modalRef = this.categoryNodePopupService
-                    .open(CategoryNodeDialogComponent, params['id']);
+                this.categoryNodePopupService
+                    .open(CategoryNodeDialogComponent as Component, params['id']);
             } else {
-                this.modalRef = this.categoryNodePopupService
-                    .open(CategoryNodeDialogComponent);
+                this.categoryNodePopupService
+                    .open(CategoryNodeDialogComponent as Component);
             }
         });
     }

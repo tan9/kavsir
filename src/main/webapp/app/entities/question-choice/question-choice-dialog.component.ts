@@ -21,7 +21,6 @@ import { ResponseWrapper } from '../../shared';
 export class QuestionChoiceDialogComponent implements OnInit {
 
     questionChoice: QuestionChoice;
-    authorities: any[];
     isSaving: boolean;
 
     categorynodes: CategoryNode[];
@@ -43,7 +42,6 @@ export class QuestionChoiceDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
-        this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
         this.categoryNodeService.query()
             .subscribe((res: ResponseWrapper) => { this.categorynodes = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
         this.resourceImageService.query()
@@ -122,7 +120,6 @@ export class QuestionChoiceDialogComponent implements OnInit {
 })
 export class QuestionChoicePopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
@@ -133,11 +130,11 @@ export class QuestionChoicePopupComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
-                this.modalRef = this.questionChoicePopupService
-                    .open(QuestionChoiceDialogComponent, params['id']);
+                this.questionChoicePopupService
+                    .open(QuestionChoiceDialogComponent as Component, params['id']);
             } else {
-                this.modalRef = this.questionChoicePopupService
-                    .open(QuestionChoiceDialogComponent);
+                this.questionChoicePopupService
+                    .open(QuestionChoiceDialogComponent as Component);
             }
         });
     }

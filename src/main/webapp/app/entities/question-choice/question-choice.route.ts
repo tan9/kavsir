@@ -9,8 +9,6 @@ import { QuestionChoiceDetailComponent } from './question-choice-detail.componen
 import { QuestionChoicePopupComponent } from './question-choice-dialog.component';
 import { QuestionChoiceDeletePopupComponent } from './question-choice-delete-dialog.component';
 
-import { Principal } from '../../shared';
-
 export const questionChoiceRoute: Routes = [
     {
         path: 'question-choice',

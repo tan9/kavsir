@@ -17,7 +17,6 @@ import { CategorySemesterService } from './category-semester.service';
 export class CategorySemesterDialogComponent implements OnInit {
 
     categorySemester: CategorySemester;
-    authorities: any[];
     isSaving: boolean;
 
     constructor(
@@ -30,7 +29,6 @@ export class CategorySemesterDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
-        this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
     }
 
     clear() {
@@ -80,7 +78,6 @@ export class CategorySemesterDialogComponent implements OnInit {
 })
 export class CategorySemesterPopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
@@ -91,11 +88,11 @@ export class CategorySemesterPopupComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
-                this.modalRef = this.categorySemesterPopupService
-                    .open(CategorySemesterDialogComponent, params['id']);
+                this.categorySemesterPopupService
+                    .open(CategorySemesterDialogComponent as Component, params['id']);
             } else {
-                this.modalRef = this.categorySemesterPopupService
-                    .open(CategorySemesterDialogComponent);
+                this.categorySemesterPopupService
+                    .open(CategorySemesterDialogComponent as Component);
             }
         });
     }

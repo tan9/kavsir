@@ -22,7 +22,6 @@ import { ResponseWrapper } from '../../shared';
 export class ResourceImageDialogComponent implements OnInit {
 
     resourceImage: ResourceImage;
-    authorities: any[];
     isSaving: boolean;
 
     questionchoices: QuestionChoice[];
@@ -49,7 +48,6 @@ export class ResourceImageDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
-        this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
         this.questionChoiceService.query()
             .subscribe((res: ResponseWrapper) => { this.questionchoices = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
         this.questionChoiceOptionService.query()
@@ -159,7 +157,6 @@ export class ResourceImageDialogComponent implements OnInit {
 })
 export class ResourceImagePopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
@@ -170,11 +167,11 @@ export class ResourceImagePopupComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
-                this.modalRef = this.resourceImagePopupService
-                    .open(ResourceImageDialogComponent, params['id']);
+                this.resourceImagePopupService
+                    .open(ResourceImageDialogComponent as Component, params['id']);
             } else {
-                this.modalRef = this.resourceImagePopupService
-                    .open(ResourceImageDialogComponent);
+                this.resourceImagePopupService
+                    .open(ResourceImageDialogComponent as Component);
             }
         });
     }

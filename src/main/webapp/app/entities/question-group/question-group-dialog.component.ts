@@ -19,7 +19,6 @@ import { ResponseWrapper } from '../../shared';
 export class QuestionGroupDialogComponent implements OnInit {
 
     questionGroup: QuestionGroup;
-    authorities: any[];
     isSaving: boolean;
 
     categorynodes: CategoryNode[];
@@ -35,7 +34,6 @@ export class QuestionGroupDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
-        this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
         this.categoryNodeService.query()
             .subscribe((res: ResponseWrapper) => { this.categorynodes = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
@@ -102,7 +100,6 @@ export class QuestionGroupDialogComponent implements OnInit {
 })
 export class QuestionGroupPopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
@@ -113,11 +110,11 @@ export class QuestionGroupPopupComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
-                this.modalRef = this.questionGroupPopupService
-                    .open(QuestionGroupDialogComponent, params['id']);
+                this.questionGroupPopupService
+                    .open(QuestionGroupDialogComponent as Component, params['id']);
             } else {
-                this.modalRef = this.questionGroupPopupService
-                    .open(QuestionGroupDialogComponent);
+                this.questionGroupPopupService
+                    .open(QuestionGroupDialogComponent as Component);
             }
         });
     }

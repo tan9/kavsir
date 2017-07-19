@@ -9,8 +9,6 @@ import { CategoryNodeDetailComponent } from './category-node-detail.component';
 import { CategoryNodePopupComponent } from './category-node-dialog.component';
 import { CategoryNodeDeletePopupComponent } from './category-node-delete-dialog.component';
 
-import { Principal } from '../../shared';
-
 export const categoryNodeRoute: Routes = [
     {
         path: 'category-node',

@@ -21,7 +21,6 @@ import { ResponseWrapper } from '../../shared';
 export class QuestionEssayDialogComponent implements OnInit {
 
     questionEssay: QuestionEssay;
-    authorities: any[];
     isSaving: boolean;
 
     categorynodes: CategoryNode[];
@@ -43,7 +42,6 @@ export class QuestionEssayDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
-        this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
         this.categoryNodeService.query()
             .subscribe((res: ResponseWrapper) => { this.categorynodes = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
         this.resourceImageService.query()
@@ -122,7 +120,6 @@ export class QuestionEssayDialogComponent implements OnInit {
 })
 export class QuestionEssayPopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
@@ -133,11 +130,11 @@ export class QuestionEssayPopupComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
-                this.modalRef = this.questionEssayPopupService
-                    .open(QuestionEssayDialogComponent, params['id']);
+                this.questionEssayPopupService
+                    .open(QuestionEssayDialogComponent as Component, params['id']);
             } else {
-                this.modalRef = this.questionEssayPopupService
-                    .open(QuestionEssayDialogComponent);
+                this.questionEssayPopupService
+                    .open(QuestionEssayDialogComponent as Component);
             }
         });
     }

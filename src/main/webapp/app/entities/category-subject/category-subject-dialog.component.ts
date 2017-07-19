@@ -17,7 +17,6 @@ import { CategorySubjectService } from './category-subject.service';
 export class CategorySubjectDialogComponent implements OnInit {
 
     categorySubject: CategorySubject;
-    authorities: any[];
     isSaving: boolean;
 
     constructor(
@@ -30,7 +29,6 @@ export class CategorySubjectDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
-        this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
     }
 
     clear() {
@@ -80,7 +78,6 @@ export class CategorySubjectDialogComponent implements OnInit {
 })
 export class CategorySubjectPopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
@@ -91,11 +88,11 @@ export class CategorySubjectPopupComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
-                this.modalRef = this.categorySubjectPopupService
-                    .open(CategorySubjectDialogComponent, params['id']);
+                this.categorySubjectPopupService
+                    .open(CategorySubjectDialogComponent as Component, params['id']);
             } else {
-                this.modalRef = this.categorySubjectPopupService
-                    .open(CategorySubjectDialogComponent);
+                this.categorySubjectPopupService
+                    .open(CategorySubjectDialogComponent as Component);
             }
         });
     }

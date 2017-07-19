@@ -21,7 +21,6 @@ import { ResponseWrapper } from '../../shared';
 export class QuestionTrueFalseDialogComponent implements OnInit {
 
     questionTrueFalse: QuestionTrueFalse;
-    authorities: any[];
     isSaving: boolean;
 
     categorynodes: CategoryNode[];
@@ -43,7 +42,6 @@ export class QuestionTrueFalseDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
-        this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
         this.categoryNodeService.query()
             .subscribe((res: ResponseWrapper) => { this.categorynodes = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
         this.resourceImageService.query()
@@ -122,7 +120,6 @@ export class QuestionTrueFalseDialogComponent implements OnInit {
 })
 export class QuestionTrueFalsePopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
@@ -133,11 +130,11 @@ export class QuestionTrueFalsePopupComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
-                this.modalRef = this.questionTrueFalsePopupService
-                    .open(QuestionTrueFalseDialogComponent, params['id']);
+                this.questionTrueFalsePopupService
+                    .open(QuestionTrueFalseDialogComponent as Component, params['id']);
             } else {
-                this.modalRef = this.questionTrueFalsePopupService
-                    .open(QuestionTrueFalseDialogComponent);
+                this.questionTrueFalsePopupService
+                    .open(QuestionTrueFalseDialogComponent as Component);
             }
         });
     }

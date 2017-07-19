@@ -9,8 +9,6 @@ import { QuestionTrueFalseDetailComponent } from './question-true-false-detail.c
 import { QuestionTrueFalsePopupComponent } from './question-true-false-dialog.component';
 import { QuestionTrueFalseDeletePopupComponent } from './question-true-false-delete-dialog.component';
 
-import { Principal } from '../../shared';
-
 export const questionTrueFalseRoute: Routes = [
     {
         path: 'question-true-false',

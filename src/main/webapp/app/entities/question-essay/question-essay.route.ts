@@ -9,8 +9,6 @@ import { QuestionEssayDetailComponent } from './question-essay-detail.component'
 import { QuestionEssayPopupComponent } from './question-essay-dialog.component';
 import { QuestionEssayDeletePopupComponent } from './question-essay-delete-dialog.component';
 
-import { Principal } from '../../shared';
-
 export const questionEssayRoute: Routes = [
     {
         path: 'question-essay',

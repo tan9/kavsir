@@ -44,7 +44,6 @@ export class ResourceImageDeleteDialogComponent {
 })
 export class ResourceImageDeletePopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
@@ -54,8 +53,8 @@ export class ResourceImageDeletePopupComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
-            this.modalRef = this.resourceImagePopupService
-                .open(ResourceImageDeleteDialogComponent, params['id']);
+            this.resourceImagePopupService
+                .open(ResourceImageDeleteDialogComponent as Component, params['id']);
         });
     }
 

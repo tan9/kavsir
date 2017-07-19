@@ -17,7 +17,6 @@ import { CategoryPublisherService } from './category-publisher.service';
 export class CategoryPublisherDialogComponent implements OnInit {
 
     categoryPublisher: CategoryPublisher;
-    authorities: any[];
     isSaving: boolean;
 
     constructor(
@@ -30,7 +29,6 @@ export class CategoryPublisherDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
-        this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
     }
 
     clear() {
@@ -80,7 +78,6 @@ export class CategoryPublisherDialogComponent implements OnInit {
 })
 export class CategoryPublisherPopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
@@ -91,11 +88,11 @@ export class CategoryPublisherPopupComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
-                this.modalRef = this.categoryPublisherPopupService
-                    .open(CategoryPublisherDialogComponent, params['id']);
+                this.categoryPublisherPopupService
+                    .open(CategoryPublisherDialogComponent as Component, params['id']);
             } else {
-                this.modalRef = this.categoryPublisherPopupService
-                    .open(CategoryPublisherDialogComponent);
+                this.categoryPublisherPopupService
+                    .open(CategoryPublisherDialogComponent as Component);
             }
         });
     }

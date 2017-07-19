@@ -44,7 +44,6 @@ export class QuestionTrueFalseDeleteDialogComponent {
 })
 export class QuestionTrueFalseDeletePopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
@@ -54,8 +53,8 @@ export class QuestionTrueFalseDeletePopupComponent implements OnInit, OnDestroy 
 
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
-            this.modalRef = this.questionTrueFalsePopupService
-                .open(QuestionTrueFalseDeleteDialogComponent, params['id']);
+            this.questionTrueFalsePopupService
+                .open(QuestionTrueFalseDeleteDialogComponent as Component, params['id']);
         });
     }
 

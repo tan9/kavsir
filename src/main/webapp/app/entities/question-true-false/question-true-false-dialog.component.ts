@@ -22,7 +22,6 @@ import { CategoryHierarchyService } from '../../shared/category/category-hierarc
 export class QuestionTrueFalseDialogComponent implements OnInit {
 
     questionTrueFalse: QuestionTrueFalse;
-    authorities: any[];
     isSaving: boolean;
     inGroup = true;
 
@@ -47,7 +46,6 @@ export class QuestionTrueFalseDialogComponent implements OnInit {
     ngOnInit() {
         this.isSaving = false;
         this.inGroup = this.route.snapshot.queryParams['group'] !== 'false';
-        this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
 
         if (this.categoryHierarchyService.getWorkingCategory() &&
             (!this.questionTrueFalse.categories || this.questionTrueFalse.categories.length === 0)) {
@@ -161,11 +159,11 @@ export class QuestionTrueFalsePopupComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
-                this.modalRef = this.questionTrueFalsePopupService
-                    .open(QuestionTrueFalseDialogComponent, params['id']);
+                this.questionTrueFalsePopupService
+                    .open(QuestionTrueFalseDialogComponent as Component, params['id']);
             } else {
-                this.modalRef = this.questionTrueFalsePopupService
-                    .open(QuestionTrueFalseDialogComponent);
+                this.questionTrueFalsePopupService
+                    .open(QuestionTrueFalseDialogComponent as Component);
             }
         });
     }

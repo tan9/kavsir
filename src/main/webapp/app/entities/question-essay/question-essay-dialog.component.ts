@@ -22,7 +22,6 @@ import { ImagesComponent } from '../../shared/image/images.component';
 export class QuestionEssayDialogComponent implements OnInit {
 
     questionEssay: QuestionEssay;
-    authorities: any[];
     isSaving: boolean;
     inGroup = true;
     showPreview = false;
@@ -48,7 +47,6 @@ export class QuestionEssayDialogComponent implements OnInit {
     ngOnInit() {
         this.isSaving = false;
         this.inGroup = this.route.snapshot.queryParams['group'] !== 'false';
-        this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
 
         if (this.categoryHierarchyService.getWorkingCategory() &&
             (!this.questionEssay.categories || this.questionEssay.categories.length === 0)) {
@@ -151,7 +149,6 @@ export class QuestionEssayDialogComponent implements OnInit {
 })
 export class QuestionEssayPopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
@@ -162,11 +159,11 @@ export class QuestionEssayPopupComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
-                this.modalRef = this.questionEssayPopupService
-                    .open(QuestionEssayDialogComponent, params['id']);
+                this.questionEssayPopupService
+                    .open(QuestionEssayDialogComponent as Component, params['id']);
             } else {
-                this.modalRef = this.questionEssayPopupService
-                    .open(QuestionEssayDialogComponent);
+                this.questionEssayPopupService
+                    .open(QuestionEssayDialogComponent as Component);
             }
         });
     }

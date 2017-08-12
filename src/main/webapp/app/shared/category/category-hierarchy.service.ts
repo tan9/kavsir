@@ -202,8 +202,8 @@ export class CategoryHierarchyService implements OnInit {
             }[level] || [];
     }
 
-    saveTreeRecursively(treeNodes: CategoryTreeNode[], parent?: CategoryTreeNode): Promise<CategoryNode> {
-        // TODO Observable?
+    saveTreeRecursively(treeNodes: CategoryTreeNode[], parent?: CategoryTreeNode): Promise<any> {
+        // TODO Observable? Promise generic type clarify?
         const promises: Promise<CategoryNode>[] = [];
 
         treeNodes.forEach(
@@ -217,7 +217,7 @@ export class CategoryHierarchyService implements OnInit {
                         if (node.children) {
                             return this.saveTreeRecursively(node.children, node);
                         } else {
-                            return Promise.resolve<CategoryNode>(null);
+                            return Promise.resolve<CategoryNode[]>(null);
                         }
                     }));
                 } else {
@@ -227,7 +227,7 @@ export class CategoryHierarchyService implements OnInit {
                             if (node.children) {
                                 return this.saveTreeRecursively(node.children, node);
                             } else {
-                                return Promise.resolve<CategoryNode>(null);
+                                return Promise.resolve<CategoryNode[]>(null);
                             }
                         })
                     );

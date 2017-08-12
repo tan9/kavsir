@@ -9,8 +9,6 @@ import { CategoryAcademicYearDetailComponent } from './category-academic-year-de
 import { CategoryAcademicYearPopupComponent } from './category-academic-year-dialog.component';
 import { CategoryAcademicYearDeletePopupComponent } from './category-academic-year-delete-dialog.component';
 
-import { Principal } from '../../shared';
-
 export const categoryAcademicYearRoute: Routes = [
     {
         path: 'category-academic-year',

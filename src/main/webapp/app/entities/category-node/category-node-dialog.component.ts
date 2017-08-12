@@ -21,7 +21,6 @@ import { ResponseWrapper } from '../../shared';
 export class CategoryNodeDialogComponent implements OnInit {
 
     categoryNode: CategoryNode;
-    authorities: any[];
     isSaving: boolean;
 
     categorynodes: CategoryNode[];
@@ -48,7 +47,6 @@ export class CategoryNodeDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
-        this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
         this.categoryNodeService.query()
             .subscribe((res: ResponseWrapper) => { this.categorynodes = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
         this.questionTrueFalseService.query()
@@ -139,7 +137,6 @@ export class CategoryNodeDialogComponent implements OnInit {
 })
 export class CategoryNodePopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
@@ -150,11 +147,11 @@ export class CategoryNodePopupComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
-                this.modalRef = this.categoryNodePopupService
-                    .open(CategoryNodeDialogComponent, params['id']);
+                this.categoryNodePopupService
+                    .open(CategoryNodeDialogComponent as Component, params['id']);
             } else {
-                this.modalRef = this.categoryNodePopupService
-                    .open(CategoryNodeDialogComponent);
+                this.categoryNodePopupService
+                    .open(CategoryNodeDialogComponent as Component);
             }
         });
     }

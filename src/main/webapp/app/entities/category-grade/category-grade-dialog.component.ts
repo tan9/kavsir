@@ -17,7 +17,6 @@ import { CategoryGradeService } from './category-grade.service';
 export class CategoryGradeDialogComponent implements OnInit {
 
     categoryGrade: CategoryGrade;
-    authorities: any[];
     isSaving: boolean;
 
     constructor(
@@ -30,7 +29,6 @@ export class CategoryGradeDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
-        this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
     }
 
     clear() {
@@ -80,7 +78,6 @@ export class CategoryGradeDialogComponent implements OnInit {
 })
 export class CategoryGradePopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
@@ -91,11 +88,11 @@ export class CategoryGradePopupComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
-                this.modalRef = this.categoryGradePopupService
-                    .open(CategoryGradeDialogComponent, params['id']);
+                this.categoryGradePopupService
+                    .open(CategoryGradeDialogComponent as Component, params['id']);
             } else {
-                this.modalRef = this.categoryGradePopupService
-                    .open(CategoryGradeDialogComponent);
+                this.categoryGradePopupService
+                    .open(CategoryGradeDialogComponent as Component);
             }
         });
     }

@@ -25,7 +25,6 @@ import { QuestionChoiceOption } from '../question-choice-option/question-choice-
 export class QuestionChoiceDialogComponent implements OnInit {
 
     questionChoice: QuestionChoice;
-    authorities: any[];
     isSaving: boolean;
     inGroup = false;
     multi: boolean; /* valid values: true, false, undefined (not specified) */
@@ -85,7 +84,6 @@ export class QuestionChoiceDialogComponent implements OnInit {
 
         this.initAggregatedImages();
 
-        this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
         this.categorynodes = this.categoryHierarchyService.getNodes();
         this.questionGroupService.query()
             .subscribe((res: ResponseWrapper) => { this.questiongroups = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
@@ -94,9 +92,9 @@ export class QuestionChoiceDialogComponent implements OnInit {
     private initAggregatedImages(): void {
         // merge images from question, options into one aggregated array
         let images: ResourceImage[] = [];
-        this.pushAll(images, this.questionChoice.images);
+        this.pushAll(images, this.questionChoice.images as ResourceImage);
         this.questionChoice.options.forEach(
-            (option: QuestionChoiceOption) => this.pushAll(images, option.images)
+            (option: QuestionChoiceOption) => this.pushAll(images, option.images as ResourceImage)
         );
 
         images = images.filter((image, index) =>
@@ -231,7 +229,6 @@ export class QuestionChoiceDialogComponent implements OnInit {
 })
 export class QuestionChoicePopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
@@ -242,11 +239,11 @@ export class QuestionChoicePopupComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
-                this.modalRef = this.questionChoicePopupService
-                    .open(QuestionChoiceDialogComponent, params['id']);
+                this.questionChoicePopupService
+                    .open(QuestionChoiceDialogComponent as Component, params['id']);
             } else {
-                this.modalRef = this.questionChoicePopupService
-                    .open(QuestionChoiceDialogComponent);
+                this.questionChoicePopupService
+                    .open(QuestionChoiceDialogComponent as Component);
             }
         });
     }

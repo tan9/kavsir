@@ -9,8 +9,6 @@ import { QuestionGroupDetailComponent } from './question-group-detail.component'
 import { QuestionGroupPopupComponent } from './question-group-dialog.component';
 import { QuestionGroupDeletePopupComponent } from './question-group-delete-dialog.component';
 
-import { Principal } from '../../shared';
-
 @Injectable()
 export class QuestionGroupResolvePagingParams implements Resolve<any> {
 

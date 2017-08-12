@@ -44,7 +44,6 @@ export class CategorySemesterDeleteDialogComponent {
 })
 export class CategorySemesterDeletePopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
@@ -54,8 +53,8 @@ export class CategorySemesterDeletePopupComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
-            this.modalRef = this.categorySemesterPopupService
-                .open(CategorySemesterDeleteDialogComponent, params['id']);
+            this.categorySemesterPopupService
+                .open(CategorySemesterDeleteDialogComponent as Component, params['id']);
         });
     }
 

@@ -44,7 +44,6 @@ export class QuestionChoiceOptionDeleteDialogComponent {
 })
 export class QuestionChoiceOptionDeletePopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
@@ -54,8 +53,8 @@ export class QuestionChoiceOptionDeletePopupComponent implements OnInit, OnDestr
 
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
-            this.modalRef = this.questionChoiceOptionPopupService
-                .open(QuestionChoiceOptionDeleteDialogComponent, params['id']);
+            this.questionChoiceOptionPopupService
+                .open(QuestionChoiceOptionDeleteDialogComponent as Component, params['id']);
         });
     }
 

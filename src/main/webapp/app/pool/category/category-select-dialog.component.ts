@@ -72,10 +72,10 @@ export class CategorySelectPopupComponent implements OnInit, OnDestroy {
         this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
                 this.modalRef = this.categorySelectPopupService
-                    .open(CategorySelectDialogComponent, params['id']);
+                    .open(CategorySelectDialogComponent as Component, params['id']);
             } else {
                 this.modalRef = this.categorySelectPopupService
-                    .open(CategorySelectDialogComponent);
+                    .open(CategorySelectDialogComponent as Component);
             }
         });
     }

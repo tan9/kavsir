@@ -37,7 +37,6 @@ public class CategoryPublisherResource {
     private final CategoryPublisherRepository categoryPublisherRepository;
 
     private final CategoryPublisherSearchRepository categoryPublisherSearchRepository;
-
     public CategoryPublisherResource(CategoryPublisherRepository categoryPublisherRepository, CategoryPublisherSearchRepository categoryPublisherSearchRepository) {
         this.categoryPublisherRepository = categoryPublisherRepository;
         this.categoryPublisherSearchRepository = categoryPublisherSearchRepository;
@@ -97,7 +96,7 @@ public class CategoryPublisherResource {
     public List<CategoryPublisher> getAllCategoryPublishers() {
         log.debug("REST request to get all CategoryPublishers");
         return categoryPublisherRepository.findAll();
-    }
+        }
 
     /**
      * GET  /category-publishers/:id : get the "id" categoryPublisher.

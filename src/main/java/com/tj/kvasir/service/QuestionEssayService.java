@@ -29,7 +29,6 @@ public class QuestionEssayService {
     private final QuestionEssayMapper questionEssayMapper;
 
     private final QuestionEssaySearchRepository questionEssaySearchRepository;
-
     public QuestionEssayService(QuestionEssayRepository questionEssayRepository, QuestionEssayMapper questionEssayMapper, QuestionEssaySearchRepository questionEssaySearchRepository) {
         this.questionEssayRepository = questionEssayRepository;
         this.questionEssayMapper = questionEssayMapper;

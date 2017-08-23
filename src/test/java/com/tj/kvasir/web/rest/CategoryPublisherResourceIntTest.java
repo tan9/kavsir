@@ -69,7 +69,7 @@ public class CategoryPublisherResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        CategoryPublisherResource categoryPublisherResource = new CategoryPublisherResource(categoryPublisherRepository, categoryPublisherSearchRepository);
+        final CategoryPublisherResource categoryPublisherResource = new CategoryPublisherResource(categoryPublisherRepository, categoryPublisherSearchRepository);
         this.restCategoryPublisherMockMvc = MockMvcBuilders.standaloneSetup(categoryPublisherResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

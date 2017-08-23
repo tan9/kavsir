@@ -82,7 +82,7 @@ public class QuestionChoiceOptionResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        QuestionChoiceOptionResource questionChoiceOptionResource = new QuestionChoiceOptionResource(questionChoiceOptionService);
+        final QuestionChoiceOptionResource questionChoiceOptionResource = new QuestionChoiceOptionResource(questionChoiceOptionService);
         this.restQuestionChoiceOptionMockMvc = MockMvcBuilders.standaloneSetup(questionChoiceOptionResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

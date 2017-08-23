@@ -11,6 +11,6 @@ import org.springframework.data.jpa.repository.*;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface ResourceImageRepository extends JpaRepository<ResourceImage,Long> {
-    
+public interface ResourceImageRepository extends JpaRepository<ResourceImage, Long> {
+
 }

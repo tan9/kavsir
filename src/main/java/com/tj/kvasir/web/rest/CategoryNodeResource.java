@@ -47,7 +47,6 @@ public class CategoryNodeResource {
     private final CategoryNodeMapper categoryNodeMapper;
 
     private final CategoryNodeSearchRepository categoryNodeSearchRepository;
-
     public CategoryNodeResource(CategoryNodeRepository categoryNodeRepository, CategoryNodeMapper categoryNodeMapper, CategoryNodeSearchRepository categoryNodeSearchRepository) {
         this.categoryNodeRepository = categoryNodeRepository;
         this.categoryNodeMapper = categoryNodeMapper;

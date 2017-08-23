@@ -79,7 +79,7 @@ public class QuestionGroupResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        QuestionGroupResource questionGroupResource = new QuestionGroupResource(questionGroupService);
+        final QuestionGroupResource questionGroupResource = new QuestionGroupResource(questionGroupService);
         this.restQuestionGroupMockMvc = MockMvcBuilders.standaloneSetup(questionGroupResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

@@ -37,7 +37,6 @@ public class CategoryGradeResource {
     private final CategoryGradeRepository categoryGradeRepository;
 
     private final CategoryGradeSearchRepository categoryGradeSearchRepository;
-
     public CategoryGradeResource(CategoryGradeRepository categoryGradeRepository, CategoryGradeSearchRepository categoryGradeSearchRepository) {
         this.categoryGradeRepository = categoryGradeRepository;
         this.categoryGradeSearchRepository = categoryGradeSearchRepository;
@@ -97,7 +96,7 @@ public class CategoryGradeResource {
     public List<CategoryGrade> getAllCategoryGrades() {
         log.debug("REST request to get all CategoryGrades");
         return categoryGradeRepository.findAll();
-    }
+        }
 
     /**
      * GET  /category-grades/:id : get the "id" categoryGrade.

@@ -15,12 +15,12 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="kavsirApp.categoryNode.type" for="field_type">Type</label>
             <select class="form-control" name="type" [(ngModel)]="categoryNode.type" id="field_type"  required>
-                <option value="ACADEMIC_YEAR" jhiTranslate="kavsirApp.CategoryType.ACADEMIC_YEAR">ACADEMIC_YEAR</option>
-                <option value="GRADE" jhiTranslate="kavsirApp.CategoryType.GRADE">GRADE</option>
-                <option value="SEMESTER" jhiTranslate="kavsirApp.CategoryType.SEMESTER">SEMESTER</option>
-                <option value="SUBJECT" jhiTranslate="kavsirApp.CategoryType.SUBJECT">SUBJECT</option>
-                <option value="PUBLISHER" jhiTranslate="kavsirApp.CategoryType.PUBLISHER">PUBLISHER</option>
-                <option value="SEGMENT" jhiTranslate="kavsirApp.CategoryType.SEGMENT">SEGMENT</option>
+                <option value="ACADEMIC_YEAR">{{'kavsirApp.CategoryType.ACADEMIC_YEAR' | translate}}</option>
+                <option value="GRADE">{{'kavsirApp.CategoryType.GRADE' | translate}}</option>
+                <option value="SEMESTER">{{'kavsirApp.CategoryType.SEMESTER' | translate}}</option>
+                <option value="SUBJECT">{{'kavsirApp.CategoryType.SUBJECT' | translate}}</option>
+                <option value="PUBLISHER">{{'kavsirApp.CategoryType.PUBLISHER' | translate}}</option>
+                <option value="SEGMENT">{{'kavsirApp.CategoryType.SEGMENT' | translate}}</option>
             </select>
             <div [hidden]="!(editForm.controls.type?.dirty && editForm.controls.type?.invalid)">
                 <small class="form-text text-danger"
@@ -46,7 +46,7 @@
         </div>
 
         <div class="form-group">
-            <label jhiTranslate="kavsirApp.categoryNode.parent" for="field_parent">Parent</label>
+            <label class="form-control-label" jhiTranslate="kavsirApp.categoryNode.parent" for="field_parent">Parent</label>
             <select class="form-control" id="field_parent" name="parent" [(ngModel)]="categoryNode.parentId" >
                 <option [ngValue]="null"></option>
                 <option [ngValue]="categoryNodeOption.id" *ngFor="let categoryNodeOption of categorynodes; trackBy: trackCategoryNodeById">{{categoryNodeOption.id}}</option>

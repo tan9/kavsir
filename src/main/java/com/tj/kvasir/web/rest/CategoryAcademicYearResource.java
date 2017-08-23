@@ -37,7 +37,6 @@ public class CategoryAcademicYearResource {
     private final CategoryAcademicYearRepository categoryAcademicYearRepository;
 
     private final CategoryAcademicYearSearchRepository categoryAcademicYearSearchRepository;
-
     public CategoryAcademicYearResource(CategoryAcademicYearRepository categoryAcademicYearRepository, CategoryAcademicYearSearchRepository categoryAcademicYearSearchRepository) {
         this.categoryAcademicYearRepository = categoryAcademicYearRepository;
         this.categoryAcademicYearSearchRepository = categoryAcademicYearSearchRepository;
@@ -97,7 +96,7 @@ public class CategoryAcademicYearResource {
     public List<CategoryAcademicYear> getAllCategoryAcademicYears() {
         log.debug("REST request to get all CategoryAcademicYears");
         return categoryAcademicYearRepository.findAll();
-    }
+        }
 
     /**
      * GET  /category-academic-years/:id : get the "id" categoryAcademicYear.

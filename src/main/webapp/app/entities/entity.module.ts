@@ -5,7 +5,7 @@ import { KavsirCategoryAcademicYearModule } from './category-academic-year/categ
 import { KavsirCategoryGradeModule } from './category-grade/category-grade.module';
 import { KavsirCategorySemesterModule } from './category-semester/category-semester.module';
 import { KavsirCategorySubjectModule } from './category-subject/category-subject.module';
-import { KavsirCategoryPublisherModule } from './category-publisher/category-publisher.module';
+import { KavsirCategorySourceModule } from './category-source/category-source.module';
 import { KavsirQuestionTrueFalseModule } from './question-true-false/question-true-false.module';
 import { KavsirQuestionChoiceModule } from './question-choice/question-choice.module';
 import { KavsirQuestionChoiceOptionModule } from './question-choice-option/question-choice-option.module';
@@ -21,13 +21,14 @@ import { KavsirResourceImageModule } from './resource-image/resource-image.modul
         KavsirCategoryGradeModule,
         KavsirCategorySemesterModule,
         KavsirCategorySubjectModule,
-        KavsirCategoryPublisherModule,
+        KavsirCategorySourceModule,
         KavsirQuestionTrueFalseModule,
         KavsirQuestionChoiceModule,
         KavsirQuestionChoiceOptionModule,
         KavsirQuestionEssayModule,
         KavsirQuestionGroupModule,
         KavsirResourceImageModule,
+        KavsirCategorySourceModule,
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
     ],
     declarations: [],

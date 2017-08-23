@@ -19,9 +19,9 @@
             ]
         }
     ],
-    "changelogDate": "20170704141350",
-    "javadoc": "出版社 (康軒、翰林、三民...)",
-    "entityTableName": "category_publisher",
+    "changelogDate": "20170823152534",
+    "javadoc": "來源 (學校、出版社...)",
+    "entityTableName": "category_source",
     "dto": "no",
     "pagination": "no",
     "service": "no"

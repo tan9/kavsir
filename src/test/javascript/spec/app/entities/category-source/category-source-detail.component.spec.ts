@@ -7,21 +7,21 @@ import { Observable } from 'rxjs/Rx';
 import { JhiDateUtils, JhiDataUtils, JhiEventManager } from 'ng-jhipster';
 import { KavsirTestModule } from '../../../test.module';
 import { MockActivatedRoute } from '../../../helpers/mock-route.service';
-import { CategoryPublisherDetailComponent } from '../../../../../../main/webapp/app/entities/category-publisher/category-publisher-detail.component';
-import { CategoryPublisherService } from '../../../../../../main/webapp/app/entities/category-publisher/category-publisher.service';
-import { CategoryPublisher } from '../../../../../../main/webapp/app/entities/category-publisher/category-publisher.model';
+import { CategorySourceDetailComponent } from '../../../../../../main/webapp/app/entities/category-source/category-source-detail.component';
+import { CategorySourceService } from '../../../../../../main/webapp/app/entities/category-source/category-source.service';
+import { CategorySource } from '../../../../../../main/webapp/app/entities/category-source/category-source.model';
 
 describe('Component Tests', () => {
 
-    describe('CategoryPublisher Management Detail Component', () => {
-        let comp: CategoryPublisherDetailComponent;
-        let fixture: ComponentFixture<CategoryPublisherDetailComponent>;
-        let service: CategoryPublisherService;
+    describe('CategorySource Management Detail Component', () => {
+        let comp: CategorySourceDetailComponent;
+        let fixture: ComponentFixture<CategorySourceDetailComponent>;
+        let service: CategorySourceService;
 
         beforeEach(async(() => {
             TestBed.configureTestingModule({
                 imports: [KavsirTestModule],
-                declarations: [CategoryPublisherDetailComponent],
+                declarations: [CategorySourceDetailComponent],
                 providers: [
                     JhiDateUtils,
                     JhiDataUtils,
@@ -30,31 +30,31 @@ describe('Component Tests', () => {
                         provide: ActivatedRoute,
                         useValue: new MockActivatedRoute({id: 123})
                     },
-                    CategoryPublisherService,
+                    CategorySourceService,
                     JhiEventManager
                 ]
-            }).overrideTemplate(CategoryPublisherDetailComponent, '')
+            }).overrideTemplate(CategorySourceDetailComponent, '')
             .compileComponents();
         }));
 
         beforeEach(() => {
-            fixture = TestBed.createComponent(CategoryPublisherDetailComponent);
+            fixture = TestBed.createComponent(CategorySourceDetailComponent);
             comp = fixture.componentInstance;
-            service = fixture.debugElement.injector.get(CategoryPublisherService);
+            service = fixture.debugElement.injector.get(CategorySourceService);
         });
 
         describe('OnInit', () => {
             it('Should call load all on init', () => {
             // GIVEN
 
-            spyOn(service, 'find').and.returnValue(Observable.of(new CategoryPublisher(10)));
+            spyOn(service, 'find').and.returnValue(Observable.of(new CategorySource(10)));
 
             // WHEN
             comp.ngOnInit();
 
             // THEN
             expect(service.find).toHaveBeenCalledWith(123);
-            expect(comp.categoryPublisher).toEqual(jasmine.objectContaining({id: 10}));
+            expect(comp.categorySource).toEqual(jasmine.objectContaining({id: 10}));
             });
         });
     });

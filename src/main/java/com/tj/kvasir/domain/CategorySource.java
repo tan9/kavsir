@@ -12,14 +12,14 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * 出版社 (康軒、翰林、三民...)
+ * 來源 (學校、出版社...)
  */
-@ApiModel(description = "出版社 (康軒、翰林、三民...)")
+@ApiModel(description = "來源 (學校、出版社...)")
 @Entity
-@Table(name = "category_publisher")
+@Table(name = "category_source")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "categorypublisher")
-public class CategoryPublisher implements Serializable {
+@Document(indexName = "categorysource")
+public class CategorySource implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -57,7 +57,7 @@ public class CategoryPublisher implements Serializable {
         return position;
     }
 
-    public CategoryPublisher position(Integer position) {
+    public CategorySource position(Integer position) {
         this.position = position;
         return this;
     }
@@ -70,7 +70,7 @@ public class CategoryPublisher implements Serializable {
         return name;
     }
 
-    public CategoryPublisher name(String name) {
+    public CategorySource name(String name) {
         this.name = name;
         return this;
     }
@@ -88,11 +88,11 @@ public class CategoryPublisher implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        CategoryPublisher categoryPublisher = (CategoryPublisher) o;
-        if (categoryPublisher.getId() == null || getId() == null) {
+        CategorySource categorySource = (CategorySource) o;
+        if (categorySource.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(getId(), categoryPublisher.getId());
+        return Objects.equals(getId(), categorySource.getId());
     }
 
     @Override
@@ -102,7 +102,7 @@ public class CategoryPublisher implements Serializable {
 
     @Override
     public String toString() {
-        return "CategoryPublisher{" +
+        return "CategorySource{" +
             "id=" + getId() +
             ", position='" + getPosition() + "'" +
             ", name='" + getName() + "'" +

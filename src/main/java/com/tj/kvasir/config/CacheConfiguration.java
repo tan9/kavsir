@@ -50,8 +50,8 @@ public class CacheConfiguration {
             cm.createCache(com.tj.kvasir.domain.CategoryAcademicYear.class.getName(), jcacheConfiguration);
             cm.createCache(com.tj.kvasir.domain.CategoryGrade.class.getName(), jcacheConfiguration);
             cm.createCache(com.tj.kvasir.domain.CategorySemester.class.getName(), jcacheConfiguration);
+            cm.createCache(com.tj.kvasir.domain.CategorySource.class.getName(), jcacheConfiguration);
             cm.createCache(com.tj.kvasir.domain.CategorySubject.class.getName(), jcacheConfiguration);
-            cm.createCache(com.tj.kvasir.domain.CategoryPublisher.class.getName(), jcacheConfiguration);
             cm.createCache(com.tj.kvasir.domain.QuestionTrueFalse.class.getName(), jcacheConfiguration);
             cm.createCache(com.tj.kvasir.domain.QuestionTrueFalse.class.getName() + ".categories", jcacheConfiguration);
             cm.createCache(com.tj.kvasir.domain.QuestionTrueFalse.class.getName() + ".images", jcacheConfiguration);

@@ -1,6 +1,6 @@
 import { BaseEntity } from './../../shared';
 
-export class CategoryPublisher implements BaseEntity {
+export class CategorySource implements BaseEntity {
     constructor(
         public id?: number,
         public position?: number,

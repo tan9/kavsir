@@ -5,7 +5,7 @@ const enum CategoryType {
     'GRADE',
     'SEMESTER',
     'SUBJECT',
-    'PUBLISHER',
+    'SOURCE',
     'SEGMENT'
 }
 

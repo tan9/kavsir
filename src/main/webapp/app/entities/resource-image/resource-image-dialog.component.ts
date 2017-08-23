@@ -67,16 +67,11 @@ export class ResourceImageDialogComponent implements OnInit {
     }
 
     setFileData(event, resourceImage, field, isImage) {
+        this.dataUtils.setFileData(event, resourceImage, field, isImage);
+
         if (event && event.target.files && event.target.files[0]) {
-            const file = event.target.files[0];
-            if (isImage && !/^image\//.test(file.type)) {
-                return;
-            }
-            this.dataUtils.toBase64(file, (base64Data) => {
-                resourceImage[field] = base64Data;
-                resourceImage[`${field}ContentType`] = file.type;
-            });
             if (!resourceImage.name) {
+                const file = event.target.files[0];
                 resourceImage.name = file.name;
             }
         }

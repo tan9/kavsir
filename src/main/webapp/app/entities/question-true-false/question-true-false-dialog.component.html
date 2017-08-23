@@ -78,7 +78,7 @@
             <jhi-images [images]="questionTrueFalse.images" id="field_image"></jhi-images>
         </div>
         <div *ngIf="inGroup" class="form-group">
-            <label jhiTranslate="kavsirApp.questionTrueFalse.questionGroup" for="field_questionGroup">Question Group</label>
+            <label class="form-control-label" jhiTranslate="kavsirApp.questionTrueFalse.questionGroup" for="field_questionGroup">Question Group</label>
             <select class="form-control" id="field_questionGroup" name="questionGroup" [(ngModel)]="questionTrueFalse.questionGroupId" >
                 <option [ngValue]="null"></option>
                 <option [ngValue]="questionGroupOption.id" *ngFor="let questionGroupOption of questiongroups; trackBy: trackQuestionGroupById">{{questionGroupOption.id}}</option>

@@ -12,7 +12,7 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface QuestionChoiceOptionRepository extends JpaRepository<QuestionChoiceOption,Long> {
+public interface QuestionChoiceOptionRepository extends JpaRepository<QuestionChoiceOption, Long> {
 
     @Query("select distinct question_choice_option from QuestionChoiceOption question_choice_option left join fetch question_choice_option.images")
     List<QuestionChoiceOption> findAllWithEagerRelationships();

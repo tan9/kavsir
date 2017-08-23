@@ -41,7 +41,7 @@
         </div>
 
         <div class="form-group">
-            <label jhiTranslate="kavsirApp.questionChoiceOption.questionChoice" for="field_questionChoice">Question Choice</label>
+            <label class="form-control-label" jhiTranslate="kavsirApp.questionChoiceOption.questionChoice" for="field_questionChoice">Question Choice</label>
             <select class="form-control" id="field_questionChoice" name="questionChoice" [(ngModel)]="questionChoiceOption.questionChoiceId" >
                 <option [ngValue]="null"></option>
                 <option [ngValue]="questionChoiceOption.id" *ngFor="let questionChoiceOption of questionchoices; trackBy: trackQuestionChoiceById">{{questionChoiceOption.id}}</option>

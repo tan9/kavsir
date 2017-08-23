@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.math.BigInteger;
 import java.util.Set;
 
 /**
@@ -14,7 +13,7 @@ import java.util.Set;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface CategoryNodeRepository extends JpaRepository<CategoryNode,Long> {
+public interface CategoryNodeRepository extends JpaRepository<CategoryNode, Long> {
 
     @Query(name = "CategoryNode.findAllChildNodes", nativeQuery = true)
     Set<CategoryNode> findAllChildNodes(@Param("categoryIds") Set<Long> categoryIds);

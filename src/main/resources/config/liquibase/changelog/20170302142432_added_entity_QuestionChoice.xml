@@ -67,4 +67,5 @@
         <addPrimaryKey columnNames="question_choices_id, images_id" tableName="question_choice_image"/>
         
     </changeSet>
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

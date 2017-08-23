@@ -44,4 +44,5 @@
         <addPrimaryKey columnNames="question_groups_id, categories_id" tableName="question_group_category"/>
         
     </changeSet>
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

@@ -15,7 +15,7 @@ import java.util.Set;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface QuestionChoiceRepository extends JpaRepository<QuestionChoice,Long> {
+public interface QuestionChoiceRepository extends JpaRepository<QuestionChoice, Long> {
 
     @Query("select distinct question_choice from QuestionChoice question_choice left join fetch question_choice.categories left join fetch question_choice.images")
     List<QuestionChoice> findAllWithEagerRelationships();

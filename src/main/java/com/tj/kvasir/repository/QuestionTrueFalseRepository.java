@@ -15,7 +15,7 @@ import java.util.Set;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface QuestionTrueFalseRepository extends JpaRepository<QuestionTrueFalse,Long> {
+public interface QuestionTrueFalseRepository extends JpaRepository<QuestionTrueFalse, Long> {
 
     @Query("select distinct question_true_false from QuestionTrueFalse question_true_false left join fetch question_true_false.categories left join fetch question_true_false.images")
     List<QuestionTrueFalse> findAllWithEagerRelationships();

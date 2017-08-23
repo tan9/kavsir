@@ -84,7 +84,7 @@ public class QuestionEssayResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        QuestionEssayResource questionEssayResource = new QuestionEssayResource(questionEssayService);
+        final QuestionEssayResource questionEssayResource = new QuestionEssayResource(questionEssayService);
         this.restQuestionEssayMockMvc = MockMvcBuilders.standaloneSetup(questionEssayResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

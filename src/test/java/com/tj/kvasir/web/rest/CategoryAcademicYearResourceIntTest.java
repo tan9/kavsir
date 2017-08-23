@@ -69,7 +69,7 @@ public class CategoryAcademicYearResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        CategoryAcademicYearResource categoryAcademicYearResource = new CategoryAcademicYearResource(categoryAcademicYearRepository, categoryAcademicYearSearchRepository);
+        final CategoryAcademicYearResource categoryAcademicYearResource = new CategoryAcademicYearResource(categoryAcademicYearRepository, categoryAcademicYearSearchRepository);
         this.restCategoryAcademicYearMockMvc = MockMvcBuilders.standaloneSetup(categoryAcademicYearResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

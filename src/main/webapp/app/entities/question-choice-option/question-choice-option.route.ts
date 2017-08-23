@@ -9,8 +9,6 @@ import { QuestionChoiceOptionDetailComponent } from './question-choice-option-de
 import { QuestionChoiceOptionPopupComponent } from './question-choice-option-dialog.component';
 import { QuestionChoiceOptionDeletePopupComponent } from './question-choice-option-delete-dialog.component';
 
-import { Principal } from '../../shared';
-
 @Injectable()
 export class QuestionChoiceOptionResolvePagingParams implements Resolve<any> {
 

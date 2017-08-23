@@ -11,6 +11,6 @@ import org.springframework.data.jpa.repository.*;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface CategoryGradeRepository extends JpaRepository<CategoryGrade,Long> {
-    
+public interface CategoryGradeRepository extends JpaRepository<CategoryGrade, Long> {
+
 }

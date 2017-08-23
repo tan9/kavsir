@@ -81,7 +81,7 @@ public class CategoryNodeResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        CategoryNodeResource categoryNodeResource = new CategoryNodeResource(categoryNodeRepository, categoryNodeMapper, categoryNodeSearchRepository);
+        final CategoryNodeResource categoryNodeResource = new CategoryNodeResource(categoryNodeRepository, categoryNodeMapper, categoryNodeSearchRepository);
         this.restCategoryNodeMockMvc = MockMvcBuilders.standaloneSetup(categoryNodeResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

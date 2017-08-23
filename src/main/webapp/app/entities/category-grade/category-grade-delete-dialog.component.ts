@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
+import { JhiEventManager } from 'ng-jhipster';
 
 import { CategoryGrade } from './category-grade.model';
 import { CategoryGradePopupService } from './category-grade-popup.service';
@@ -19,7 +19,6 @@ export class CategoryGradeDeleteDialogComponent {
     constructor(
         private categoryGradeService: CategoryGradeService,
         public activeModal: NgbActiveModal,
-        private alertService: JhiAlertService,
         private eventManager: JhiEventManager
     ) {
     }
@@ -36,7 +35,6 @@ export class CategoryGradeDeleteDialogComponent {
             });
             this.activeModal.dismiss(true);
         });
-        this.alertService.success('kavsirApp.categoryGrade.deleted', { param : id }, null);
     }
 }
 
@@ -46,7 +44,6 @@ export class CategoryGradeDeleteDialogComponent {
 })
 export class CategoryGradeDeletePopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
@@ -56,8 +53,8 @@ export class CategoryGradeDeletePopupComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
-            this.modalRef = this.categoryGradePopupService
-                .open(CategoryGradeDeleteDialogComponent, params['id']);
+            this.categoryGradePopupService
+                .open(CategoryGradeDeleteDialogComponent as Component, params['id']);
         });
     }
 

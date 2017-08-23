@@ -29,7 +29,6 @@ public class QuestionTrueFalseService {
     private final QuestionTrueFalseMapper questionTrueFalseMapper;
 
     private final QuestionTrueFalseSearchRepository questionTrueFalseSearchRepository;
-
     public QuestionTrueFalseService(QuestionTrueFalseRepository questionTrueFalseRepository, QuestionTrueFalseMapper questionTrueFalseMapper, QuestionTrueFalseSearchRepository questionTrueFalseSearchRepository) {
         this.questionTrueFalseRepository = questionTrueFalseRepository;
         this.questionTrueFalseMapper = questionTrueFalseMapper;

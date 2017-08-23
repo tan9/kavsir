@@ -21,7 +21,6 @@ import { ResponseWrapper } from '../../shared';
 export class QuestionTrueFalseDialogComponent implements OnInit {
 
     questionTrueFalse: QuestionTrueFalse;
-    authorities: any[];
     isSaving: boolean;
 
     categorynodes: CategoryNode[];
@@ -44,7 +43,6 @@ export class QuestionTrueFalseDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
-        this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
         this.categoryNodeService.query()
             .subscribe((res: ResponseWrapper) => { this.categorynodes = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
         this.resourceImageService.query()
@@ -61,17 +59,8 @@ export class QuestionTrueFalseDialogComponent implements OnInit {
         return this.dataUtils.openFile(contentType, field);
     }
 
-    setFileData(event, questionTrueFalse, field, isImage) {
-        if (event && event.target.files && event.target.files[0]) {
-            const file = event.target.files[0];
-            if (isImage && !/^image\//.test(file.type)) {
-                return;
-            }
-            this.dataUtils.toBase64(file, (base64Data) => {
-                questionTrueFalse[field] = base64Data;
-                questionTrueFalse[`${field}ContentType`] = file.type;
-            });
-        }
+    setFileData(event, entity, field, isImage) {
+        this.dataUtils.setFileData(event, entity, field, isImage);
     }
 
     clear() {
@@ -82,24 +71,19 @@ export class QuestionTrueFalseDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.questionTrueFalse.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.questionTrueFalseService.update(this.questionTrueFalse), false);
+                this.questionTrueFalseService.update(this.questionTrueFalse));
         } else {
             this.subscribeToSaveResponse(
-                this.questionTrueFalseService.create(this.questionTrueFalse), true);
+                this.questionTrueFalseService.create(this.questionTrueFalse));
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<QuestionTrueFalse>, isCreated: boolean) {
+    private subscribeToSaveResponse(result: Observable<QuestionTrueFalse>) {
         result.subscribe((res: QuestionTrueFalse) =>
-            this.onSaveSuccess(res, isCreated), (res: Response) => this.onSaveError(res));
+            this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
     }
 
-    private onSaveSuccess(result: QuestionTrueFalse, isCreated: boolean) {
-        this.alertService.success(
-            isCreated ? 'kavsirApp.questionTrueFalse.created'
-            : 'kavsirApp.questionTrueFalse.updated',
-            { param : result.id }, null);
-
+    private onSaveSuccess(result: QuestionTrueFalse) {
         this.eventManager.broadcast({ name: 'questionTrueFalseListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
@@ -149,7 +133,6 @@ export class QuestionTrueFalseDialogComponent implements OnInit {
 })
 export class QuestionTrueFalsePopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
@@ -160,11 +143,11 @@ export class QuestionTrueFalsePopupComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
-                this.modalRef = this.questionTrueFalsePopupService
-                    .open(QuestionTrueFalseDialogComponent, params['id']);
+                this.questionTrueFalsePopupService
+                    .open(QuestionTrueFalseDialogComponent as Component, params['id']);
             } else {
-                this.modalRef = this.questionTrueFalsePopupService
-                    .open(QuestionTrueFalseDialogComponent);
+                this.questionTrueFalsePopupService
+                    .open(QuestionTrueFalseDialogComponent as Component);
             }
         });
     }

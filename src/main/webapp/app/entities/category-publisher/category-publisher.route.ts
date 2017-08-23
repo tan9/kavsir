@@ -9,8 +9,6 @@ import { CategoryPublisherDetailComponent } from './category-publisher-detail.co
 import { CategoryPublisherPopupComponent } from './category-publisher-dialog.component';
 import { CategoryPublisherDeletePopupComponent } from './category-publisher-delete-dialog.component';
 
-import { Principal } from '../../shared';
-
 export const categoryPublisherRoute: Routes = [
     {
         path: 'category-publisher',

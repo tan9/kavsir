@@ -37,7 +37,6 @@ public class CategorySubjectResource {
     private final CategorySubjectRepository categorySubjectRepository;
 
     private final CategorySubjectSearchRepository categorySubjectSearchRepository;
-
     public CategorySubjectResource(CategorySubjectRepository categorySubjectRepository, CategorySubjectSearchRepository categorySubjectSearchRepository) {
         this.categorySubjectRepository = categorySubjectRepository;
         this.categorySubjectSearchRepository = categorySubjectSearchRepository;
@@ -97,7 +96,7 @@ public class CategorySubjectResource {
     public List<CategorySubject> getAllCategorySubjects() {
         log.debug("REST request to get all CategorySubjects");
         return categorySubjectRepository.findAll();
-    }
+        }
 
     /**
      * GET  /category-subjects/:id : get the "id" categorySubject.

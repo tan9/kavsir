@@ -22,7 +22,6 @@ import { ResponseWrapper } from '../../shared';
 export class ResourceImageDialogComponent implements OnInit {
 
     resourceImage: ResourceImage;
-    authorities: any[];
     isSaving: boolean;
 
     questionchoices: QuestionChoice[];
@@ -49,7 +48,6 @@ export class ResourceImageDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
-        this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
         this.questionChoiceService.query()
             .subscribe((res: ResponseWrapper) => { this.questionchoices = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
         this.questionChoiceOptionService.query()
@@ -68,17 +66,8 @@ export class ResourceImageDialogComponent implements OnInit {
         return this.dataUtils.openFile(contentType, field);
     }
 
-    setFileData(event, resourceImage, field, isImage) {
-        if (event && event.target.files && event.target.files[0]) {
-            const file = event.target.files[0];
-            if (isImage && !/^image\//.test(file.type)) {
-                return;
-            }
-            this.dataUtils.toBase64(file, (base64Data) => {
-                resourceImage[field] = base64Data;
-                resourceImage[`${field}ContentType`] = file.type;
-            });
-        }
+    setFileData(event, entity, field, isImage) {
+        this.dataUtils.setFileData(event, entity, field, isImage);
     }
 
     clearInputImage(field: string, fieldContentType: string, idInput: string) {
@@ -93,24 +82,19 @@ export class ResourceImageDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.resourceImage.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.resourceImageService.update(this.resourceImage), false);
+                this.resourceImageService.update(this.resourceImage));
         } else {
             this.subscribeToSaveResponse(
-                this.resourceImageService.create(this.resourceImage), true);
+                this.resourceImageService.create(this.resourceImage));
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<ResourceImage>, isCreated: boolean) {
+    private subscribeToSaveResponse(result: Observable<ResourceImage>) {
         result.subscribe((res: ResourceImage) =>
-            this.onSaveSuccess(res, isCreated), (res: Response) => this.onSaveError(res));
+            this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
     }
 
-    private onSaveSuccess(result: ResourceImage, isCreated: boolean) {
-        this.alertService.success(
-            isCreated ? 'kavsirApp.resourceImage.created'
-            : 'kavsirApp.resourceImage.updated',
-            { param : result.id }, null);
-
+    private onSaveSuccess(result: ResourceImage) {
         this.eventManager.broadcast({ name: 'resourceImageListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
@@ -164,7 +148,6 @@ export class ResourceImageDialogComponent implements OnInit {
 })
 export class ResourceImagePopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
@@ -175,11 +158,11 @@ export class ResourceImagePopupComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
-                this.modalRef = this.resourceImagePopupService
-                    .open(ResourceImageDialogComponent, params['id']);
+                this.resourceImagePopupService
+                    .open(ResourceImageDialogComponent as Component, params['id']);
             } else {
-                this.modalRef = this.resourceImagePopupService
-                    .open(ResourceImageDialogComponent);
+                this.resourceImagePopupService
+                    .open(ResourceImageDialogComponent as Component);
             }
         });
     }

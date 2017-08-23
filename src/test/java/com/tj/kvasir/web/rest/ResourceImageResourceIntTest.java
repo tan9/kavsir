@@ -80,7 +80,7 @@ public class ResourceImageResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        ResourceImageResource resourceImageResource = new ResourceImageResource(resourceImageRepository, resourceImageMapper, resourceImageSearchRepository);
+        final ResourceImageResource resourceImageResource = new ResourceImageResource(resourceImageRepository, resourceImageMapper, resourceImageSearchRepository);
         this.restResourceImageMockMvc = MockMvcBuilders.standaloneSetup(resourceImageResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

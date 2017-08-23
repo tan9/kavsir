@@ -21,7 +21,6 @@ import { ResponseWrapper } from '../../shared';
 export class QuestionEssayDialogComponent implements OnInit {
 
     questionEssay: QuestionEssay;
-    authorities: any[];
     isSaving: boolean;
 
     categorynodes: CategoryNode[];
@@ -44,7 +43,6 @@ export class QuestionEssayDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
-        this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
         this.categoryNodeService.query()
             .subscribe((res: ResponseWrapper) => { this.categorynodes = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
         this.resourceImageService.query()
@@ -61,17 +59,8 @@ export class QuestionEssayDialogComponent implements OnInit {
         return this.dataUtils.openFile(contentType, field);
     }
 
-    setFileData(event, questionEssay, field, isImage) {
-        if (event && event.target.files && event.target.files[0]) {
-            const file = event.target.files[0];
-            if (isImage && !/^image\//.test(file.type)) {
-                return;
-            }
-            this.dataUtils.toBase64(file, (base64Data) => {
-                questionEssay[field] = base64Data;
-                questionEssay[`${field}ContentType`] = file.type;
-            });
-        }
+    setFileData(event, entity, field, isImage) {
+        this.dataUtils.setFileData(event, entity, field, isImage);
     }
 
     clear() {
@@ -82,24 +71,19 @@ export class QuestionEssayDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.questionEssay.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.questionEssayService.update(this.questionEssay), false);
+                this.questionEssayService.update(this.questionEssay));
         } else {
             this.subscribeToSaveResponse(
-                this.questionEssayService.create(this.questionEssay), true);
+                this.questionEssayService.create(this.questionEssay));
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<QuestionEssay>, isCreated: boolean) {
+    private subscribeToSaveResponse(result: Observable<QuestionEssay>) {
         result.subscribe((res: QuestionEssay) =>
-            this.onSaveSuccess(res, isCreated), (res: Response) => this.onSaveError(res));
+            this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
     }
 
-    private onSaveSuccess(result: QuestionEssay, isCreated: boolean) {
-        this.alertService.success(
-            isCreated ? 'kavsirApp.questionEssay.created'
-            : 'kavsirApp.questionEssay.updated',
-            { param : result.id }, null);
-
+    private onSaveSuccess(result: QuestionEssay) {
         this.eventManager.broadcast({ name: 'questionEssayListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
@@ -149,7 +133,6 @@ export class QuestionEssayDialogComponent implements OnInit {
 })
 export class QuestionEssayPopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
@@ -160,11 +143,11 @@ export class QuestionEssayPopupComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
-                this.modalRef = this.questionEssayPopupService
-                    .open(QuestionEssayDialogComponent, params['id']);
+                this.questionEssayPopupService
+                    .open(QuestionEssayDialogComponent as Component, params['id']);
             } else {
-                this.modalRef = this.questionEssayPopupService
-                    .open(QuestionEssayDialogComponent);
+                this.questionEssayPopupService
+                    .open(QuestionEssayDialogComponent as Component);
             }
         });
     }

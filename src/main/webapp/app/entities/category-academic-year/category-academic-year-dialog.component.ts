@@ -17,7 +17,6 @@ import { CategoryAcademicYearService } from './category-academic-year.service';
 export class CategoryAcademicYearDialogComponent implements OnInit {
 
     categoryAcademicYear: CategoryAcademicYear;
-    authorities: any[];
     isSaving: boolean;
 
     constructor(
@@ -30,7 +29,6 @@ export class CategoryAcademicYearDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
-        this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
     }
 
     clear() {
@@ -41,24 +39,19 @@ export class CategoryAcademicYearDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.categoryAcademicYear.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.categoryAcademicYearService.update(this.categoryAcademicYear), false);
+                this.categoryAcademicYearService.update(this.categoryAcademicYear));
         } else {
             this.subscribeToSaveResponse(
-                this.categoryAcademicYearService.create(this.categoryAcademicYear), true);
+                this.categoryAcademicYearService.create(this.categoryAcademicYear));
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<CategoryAcademicYear>, isCreated: boolean) {
+    private subscribeToSaveResponse(result: Observable<CategoryAcademicYear>) {
         result.subscribe((res: CategoryAcademicYear) =>
-            this.onSaveSuccess(res, isCreated), (res: Response) => this.onSaveError(res));
+            this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
     }
 
-    private onSaveSuccess(result: CategoryAcademicYear, isCreated: boolean) {
-        this.alertService.success(
-            isCreated ? 'kavsirApp.categoryAcademicYear.created'
-            : 'kavsirApp.categoryAcademicYear.updated',
-            { param : result.id }, null);
-
+    private onSaveSuccess(result: CategoryAcademicYear) {
         this.eventManager.broadcast({ name: 'categoryAcademicYearListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
@@ -85,7 +78,6 @@ export class CategoryAcademicYearDialogComponent implements OnInit {
 })
 export class CategoryAcademicYearPopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
@@ -96,11 +88,11 @@ export class CategoryAcademicYearPopupComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
-                this.modalRef = this.categoryAcademicYearPopupService
-                    .open(CategoryAcademicYearDialogComponent, params['id']);
+                this.categoryAcademicYearPopupService
+                    .open(CategoryAcademicYearDialogComponent as Component, params['id']);
             } else {
-                this.modalRef = this.categoryAcademicYearPopupService
-                    .open(CategoryAcademicYearDialogComponent);
+                this.categoryAcademicYearPopupService
+                    .open(CategoryAcademicYearDialogComponent as Component);
             }
         });
     }

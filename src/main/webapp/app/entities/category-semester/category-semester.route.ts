@@ -9,8 +9,6 @@ import { CategorySemesterDetailComponent } from './category-semester-detail.comp
 import { CategorySemesterPopupComponent } from './category-semester-dialog.component';
 import { CategorySemesterDeletePopupComponent } from './category-semester-delete-dialog.component';
 
-import { Principal } from '../../shared';
-
 export const categorySemesterRoute: Routes = [
     {
         path: 'category-semester',

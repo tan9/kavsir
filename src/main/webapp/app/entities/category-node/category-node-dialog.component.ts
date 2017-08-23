@@ -22,7 +22,6 @@ import { ResponseWrapper } from '../../shared';
 export class CategoryNodeDialogComponent implements OnInit {
 
     categoryNode: CategoryNode;
-    authorities: any[];
     isSaving: boolean;
 
     categorynodes: CategoryNode[];
@@ -49,7 +48,6 @@ export class CategoryNodeDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
-        this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
         this.categoryNodeService.query()
             .subscribe((res: ResponseWrapper) => { this.categorynodes = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
         this.questionTrueFalseService.query()
@@ -70,24 +68,19 @@ export class CategoryNodeDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.categoryNode.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.categoryNodeService.update(this.categoryNode), false);
+                this.categoryNodeService.update(this.categoryNode));
         } else {
             this.subscribeToSaveResponse(
-                this.categoryNodeService.create(this.categoryNode), true);
+                this.categoryNodeService.create(this.categoryNode));
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<CategoryNode>, isCreated: boolean) {
+    private subscribeToSaveResponse(result: Observable<CategoryNode>) {
         result.subscribe((res: CategoryNode) =>
-            this.onSaveSuccess(res, isCreated), (res: Response) => this.onSaveError(res));
+            this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
     }
 
-    private onSaveSuccess(result: CategoryNode, isCreated: boolean) {
-        this.alertService.success(
-            isCreated ? 'kavsirApp.categoryNode.created'
-            : 'kavsirApp.categoryNode.updated',
-            { param : result.id }, null);
-
+    private onSaveSuccess(result: CategoryNode) {
         this.eventManager.broadcast({ name: 'categoryNodeListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
@@ -145,7 +138,6 @@ export class CategoryNodeDialogComponent implements OnInit {
 })
 export class CategoryNodePopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
@@ -156,11 +148,11 @@ export class CategoryNodePopupComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
-                this.modalRef = this.categoryNodePopupService
-                    .open(CategoryNodeDialogComponent, params['id']);
+                this.categoryNodePopupService
+                    .open(CategoryNodeDialogComponent as Component, params['id']);
             } else {
-                this.modalRef = this.categoryNodePopupService
-                    .open(CategoryNodeDialogComponent);
+                this.categoryNodePopupService
+                    .open(CategoryNodeDialogComponent as Component);
             }
         });
     }

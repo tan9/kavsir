@@ -69,6 +69,7 @@ public class QuestionGroup implements Serializable {
                inverseJoinColumns = @JoinColumn(name="categories_id", referencedColumnName="id"))
     private Set<CategoryNode> categories = new HashSet<>();
 
+    // jhipster-needle-entity-add-field - Jhipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -202,6 +203,7 @@ public class QuestionGroup implements Serializable {
     public void setCategories(Set<CategoryNode> categoryNodes) {
         this.categories = categoryNodes;
     }
+    // jhipster-needle-entity-add-getters-setters - Jhipster will add getters and setters here, do not remove
 
     @Override
     public boolean equals(Object o) {

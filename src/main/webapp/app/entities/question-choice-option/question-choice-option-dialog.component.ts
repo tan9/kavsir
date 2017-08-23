@@ -20,7 +20,6 @@ import { ResponseWrapper } from '../../shared';
 export class QuestionChoiceOptionDialogComponent implements OnInit {
 
     questionChoiceOption: QuestionChoiceOption;
-    authorities: any[];
     isSaving: boolean;
 
     questionchoices: QuestionChoice[];
@@ -40,7 +39,6 @@ export class QuestionChoiceOptionDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
-        this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
         this.questionChoiceService.query()
             .subscribe((res: ResponseWrapper) => { this.questionchoices = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
         this.resourceImageService.query()
@@ -55,17 +53,8 @@ export class QuestionChoiceOptionDialogComponent implements OnInit {
         return this.dataUtils.openFile(contentType, field);
     }
 
-    setFileData(event, questionChoiceOption, field, isImage) {
-        if (event && event.target.files && event.target.files[0]) {
-            const file = event.target.files[0];
-            if (isImage && !/^image\//.test(file.type)) {
-                return;
-            }
-            this.dataUtils.toBase64(file, (base64Data) => {
-                questionChoiceOption[field] = base64Data;
-                questionChoiceOption[`${field}ContentType`] = file.type;
-            });
-        }
+    setFileData(event, entity, field, isImage) {
+        this.dataUtils.setFileData(event, entity, field, isImage);
     }
 
     clear() {
@@ -76,24 +65,19 @@ export class QuestionChoiceOptionDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.questionChoiceOption.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.questionChoiceOptionService.update(this.questionChoiceOption), false);
+                this.questionChoiceOptionService.update(this.questionChoiceOption));
         } else {
             this.subscribeToSaveResponse(
-                this.questionChoiceOptionService.create(this.questionChoiceOption), true);
+                this.questionChoiceOptionService.create(this.questionChoiceOption));
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<QuestionChoiceOption>, isCreated: boolean) {
+    private subscribeToSaveResponse(result: Observable<QuestionChoiceOption>) {
         result.subscribe((res: QuestionChoiceOption) =>
-            this.onSaveSuccess(res, isCreated), (res: Response) => this.onSaveError(res));
+            this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
     }
 
-    private onSaveSuccess(result: QuestionChoiceOption, isCreated: boolean) {
-        this.alertService.success(
-            isCreated ? 'kavsirApp.questionChoiceOption.created'
-            : 'kavsirApp.questionChoiceOption.updated',
-            { param : result.id }, null);
-
+    private onSaveSuccess(result: QuestionChoiceOption) {
         this.eventManager.broadcast({ name: 'questionChoiceOptionListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
@@ -139,7 +123,6 @@ export class QuestionChoiceOptionDialogComponent implements OnInit {
 })
 export class QuestionChoiceOptionPopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
@@ -150,11 +133,11 @@ export class QuestionChoiceOptionPopupComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
-                this.modalRef = this.questionChoiceOptionPopupService
-                    .open(QuestionChoiceOptionDialogComponent, params['id']);
+                this.questionChoiceOptionPopupService
+                    .open(QuestionChoiceOptionDialogComponent as Component, params['id']);
             } else {
-                this.modalRef = this.questionChoiceOptionPopupService
-                    .open(QuestionChoiceOptionDialogComponent);
+                this.questionChoiceOptionPopupService
+                    .open(QuestionChoiceOptionDialogComponent as Component);
             }
         });
     }

@@ -69,7 +69,7 @@ public class CategoryGradeResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        CategoryGradeResource categoryGradeResource = new CategoryGradeResource(categoryGradeRepository, categoryGradeSearchRepository);
+        final CategoryGradeResource categoryGradeResource = new CategoryGradeResource(categoryGradeRepository, categoryGradeSearchRepository);
         this.restCategoryGradeMockMvc = MockMvcBuilders.standaloneSetup(categoryGradeResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

@@ -11,6 +11,6 @@ import org.springframework.data.jpa.repository.*;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface CategoryPublisherRepository extends JpaRepository<CategoryPublisher,Long> {
-    
+public interface CategoryPublisherRepository extends JpaRepository<CategoryPublisher, Long> {
+
 }

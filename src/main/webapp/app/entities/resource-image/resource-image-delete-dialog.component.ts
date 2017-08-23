@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
+import { JhiEventManager } from 'ng-jhipster';
 
 import { ResourceImage } from './resource-image.model';
 import { ResourceImagePopupService } from './resource-image-popup.service';
@@ -19,7 +19,6 @@ export class ResourceImageDeleteDialogComponent {
     constructor(
         private resourceImageService: ResourceImageService,
         public activeModal: NgbActiveModal,
-        private alertService: JhiAlertService,
         private eventManager: JhiEventManager
     ) {
     }
@@ -36,7 +35,6 @@ export class ResourceImageDeleteDialogComponent {
             });
             this.activeModal.dismiss(true);
         });
-        this.alertService.success('kavsirApp.resourceImage.deleted', { param : id }, null);
     }
 }
 
@@ -46,7 +44,6 @@ export class ResourceImageDeleteDialogComponent {
 })
 export class ResourceImageDeletePopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
@@ -56,8 +53,8 @@ export class ResourceImageDeletePopupComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
-            this.modalRef = this.resourceImagePopupService
-                .open(ResourceImageDeleteDialogComponent, params['id']);
+            this.resourceImagePopupService
+                .open(ResourceImageDeleteDialogComponent as Component, params['id']);
         });
     }
 

@@ -19,7 +19,6 @@ import { ResponseWrapper } from '../../shared';
 export class QuestionGroupDialogComponent implements OnInit {
 
     questionGroup: QuestionGroup;
-    authorities: any[];
     isSaving: boolean;
 
     categorynodes: CategoryNode[];
@@ -36,7 +35,6 @@ export class QuestionGroupDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
-        this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
         this.categoryNodeService.query()
             .subscribe((res: ResponseWrapper) => { this.categorynodes = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
@@ -49,17 +47,8 @@ export class QuestionGroupDialogComponent implements OnInit {
         return this.dataUtils.openFile(contentType, field);
     }
 
-    setFileData(event, questionGroup, field, isImage) {
-        if (event && event.target.files && event.target.files[0]) {
-            const file = event.target.files[0];
-            if (isImage && !/^image\//.test(file.type)) {
-                return;
-            }
-            this.dataUtils.toBase64(file, (base64Data) => {
-                questionGroup[field] = base64Data;
-                questionGroup[`${field}ContentType`] = file.type;
-            });
-        }
+    setFileData(event, entity, field, isImage) {
+        this.dataUtils.setFileData(event, entity, field, isImage);
     }
 
     clear() {
@@ -70,24 +59,19 @@ export class QuestionGroupDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.questionGroup.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.questionGroupService.update(this.questionGroup), false);
+                this.questionGroupService.update(this.questionGroup));
         } else {
             this.subscribeToSaveResponse(
-                this.questionGroupService.create(this.questionGroup), true);
+                this.questionGroupService.create(this.questionGroup));
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<QuestionGroup>, isCreated: boolean) {
+    private subscribeToSaveResponse(result: Observable<QuestionGroup>) {
         result.subscribe((res: QuestionGroup) =>
-            this.onSaveSuccess(res, isCreated), (res: Response) => this.onSaveError(res));
+            this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
     }
 
-    private onSaveSuccess(result: QuestionGroup, isCreated: boolean) {
-        this.alertService.success(
-            isCreated ? 'kavsirApp.questionGroup.created'
-            : 'kavsirApp.questionGroup.updated',
-            { param : result.id }, null);
-
+    private onSaveSuccess(result: QuestionGroup) {
         this.eventManager.broadcast({ name: 'questionGroupListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
@@ -129,7 +113,6 @@ export class QuestionGroupDialogComponent implements OnInit {
 })
 export class QuestionGroupPopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
@@ -140,11 +123,11 @@ export class QuestionGroupPopupComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
-                this.modalRef = this.questionGroupPopupService
-                    .open(QuestionGroupDialogComponent, params['id']);
+                this.questionGroupPopupService
+                    .open(QuestionGroupDialogComponent as Component, params['id']);
             } else {
-                this.modalRef = this.questionGroupPopupService
-                    .open(QuestionGroupDialogComponent);
+                this.questionGroupPopupService
+                    .open(QuestionGroupDialogComponent as Component);
             }
         });
     }

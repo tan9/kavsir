@@ -17,7 +17,6 @@ import { CategorySubjectService } from './category-subject.service';
 export class CategorySubjectDialogComponent implements OnInit {
 
     categorySubject: CategorySubject;
-    authorities: any[];
     isSaving: boolean;
 
     constructor(
@@ -30,7 +29,6 @@ export class CategorySubjectDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
-        this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
     }
 
     clear() {
@@ -41,24 +39,19 @@ export class CategorySubjectDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.categorySubject.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.categorySubjectService.update(this.categorySubject), false);
+                this.categorySubjectService.update(this.categorySubject));
         } else {
             this.subscribeToSaveResponse(
-                this.categorySubjectService.create(this.categorySubject), true);
+                this.categorySubjectService.create(this.categorySubject));
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<CategorySubject>, isCreated: boolean) {
+    private subscribeToSaveResponse(result: Observable<CategorySubject>) {
         result.subscribe((res: CategorySubject) =>
-            this.onSaveSuccess(res, isCreated), (res: Response) => this.onSaveError(res));
+            this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
     }
 
-    private onSaveSuccess(result: CategorySubject, isCreated: boolean) {
-        this.alertService.success(
-            isCreated ? 'kavsirApp.categorySubject.created'
-            : 'kavsirApp.categorySubject.updated',
-            { param : result.id }, null);
-
+    private onSaveSuccess(result: CategorySubject) {
         this.eventManager.broadcast({ name: 'categorySubjectListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
@@ -85,7 +78,6 @@ export class CategorySubjectDialogComponent implements OnInit {
 })
 export class CategorySubjectPopupComponent implements OnInit, OnDestroy {
 
-    modalRef: NgbModalRef;
     routeSub: any;
 
     constructor(
@@ -96,11 +88,11 @@ export class CategorySubjectPopupComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
-                this.modalRef = this.categorySubjectPopupService
-                    .open(CategorySubjectDialogComponent, params['id']);
+                this.categorySubjectPopupService
+                    .open(CategorySubjectDialogComponent as Component, params['id']);
             } else {
-                this.modalRef = this.categorySubjectPopupService
-                    .open(CategorySubjectDialogComponent);
+                this.categorySubjectPopupService
+                    .open(CategorySubjectDialogComponent as Component);
             }
         });
     }

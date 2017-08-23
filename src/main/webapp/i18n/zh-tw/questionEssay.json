@@ -1,0 +1,28 @@
+{
+    "kavsirApp": {
+        "questionEssay" : {
+            "home": {
+                "title": "Question Essays",
+                "createLabel": "建立一筆新的 Question Essay",
+                "createOrEditLabel": "建立或編輯 Question Essay",
+                "search": "搜尋 Question Essay"
+            },
+            "created": "新的 Question Essay 建立成功，識別碼為 {{ param }}",
+            "updated": "識別碼為 {{ param }} 的 Question Essay 更新成功",
+            "deleted": "識別碼為 {{ param }} 的 Question Essay 刪除成功",
+            "delete": {
+                "question": "您確定要刪除 Question Essay {{ id }} 嗎?"
+            },
+            "detail": {
+                "title": "Question Essay"
+            },
+            "text": "Text",
+            "answer": "Answer",
+            "memo": "Memo",
+            "groupPosition": "Group Position",
+            "category": "Category",
+            "image": "Image",
+            "questionGroup": "Question Group"
+        }
+    }
+}

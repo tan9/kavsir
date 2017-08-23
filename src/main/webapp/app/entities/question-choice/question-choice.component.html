@@ -1,0 +1,89 @@
+<div>
+    <h2>
+        <span jhiTranslate="kavsirApp.questionChoice.home.title">Question Choices</span>
+        <button class="btn btn-primary float-right jh-create-entity create-question-choice" [routerLink]="['/', { outlets: { popup: ['question-choice-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span class="hidden-sm-down"  jhiTranslate="kavsirApp.questionChoice.home.createLabel">
+            Create new Question Choice
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+        <div class="col-sm-12">
+            <form name="searchForm" class="form-inline">
+                <div class="input-group w-100 mt-3">
+                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'kavsirApp.questionChoice.home.search' | translate }}">
+                    <button class="input-group-addon btn btn-info" (click)="search(currentSearch)">
+                        <span class="fa fa-search"></span>
+                    </button>
+                    <button class="input-group-addon btn btn-danger" (click)="clear()" *ngIf="currentSearch">
+                        <span class="fa fa-trash-o"></span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="questionChoices">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="multipleResponse"><span jhiTranslate="kavsirApp.questionChoice.multipleResponse">Multiple Response</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="text"><span jhiTranslate="kavsirApp.questionChoice.text">Text</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="memo"><span jhiTranslate="kavsirApp.questionChoice.memo">Memo</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="groupPosition"><span jhiTranslate="kavsirApp.questionChoice.groupPosition">Group Position</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="questionGroupId"><span jhiTranslate="kavsirApp.questionChoice.questionGroup">Question Group</span> <span class="fa fa-sort"></span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let questionChoice of questionChoices ;trackBy: trackId">
+                <td><a [routerLink]="['../question-choice', questionChoice.id ]">{{questionChoice.id}}</a></td>
+                <td>{{questionChoice.multipleResponse}}</td>
+                <td>{{questionChoice.text}}</td>
+                <td>{{questionChoice.memo}}</td>
+                <td>{{questionChoice.groupPosition}}</td>
+                <td>
+                    <div *ngIf="questionChoice.questionGroupId">
+                        <a [routerLink]="['../question-group', questionChoice.questionGroupId  ]" >{{questionChoice.questionGroupId}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../question-choice', questionChoice.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="hidden-md-down" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'question-choice/'+ questionChoice.id + '/edit'} }]"
+                                replaceUrl="true"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="hidden-md-down" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'question-choice/'+ questionChoice.id + '/delete'} }]"
+                                replaceUrl="true"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="hidden-md-down" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+        <div *ngIf="questionChoices && questionChoices.length">
+            <div class="row justify-content-center">
+                <jhi-item-count [page]="page" [total]="queryCount" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+            </div>
+            <div class="row justify-content-center">
+                <ngb-pagination [collectionSize]="totalItems" [(page)]="page" (pageChange)="loadPage(page)"></ngb-pagination>
+            </div>
+        </div>
+</div>

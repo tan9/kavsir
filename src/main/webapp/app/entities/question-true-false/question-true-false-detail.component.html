@@ -1,0 +1,55 @@
+
+<div *ngIf="questionTrueFalse">
+    <h2><span jhiTranslate="kavsirApp.questionTrueFalse.detail.title">Question True False</span> {{questionTrueFalse.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="kavsirApp.questionTrueFalse.correct">Correct</span></dt>
+        <dd>
+            <span>{{questionTrueFalse.correct}}</span>
+        </dd>
+        <dt><span jhiTranslate="kavsirApp.questionTrueFalse.text">Text</span></dt>
+        <dd>
+            <span>{{questionTrueFalse.text}}</span>
+        </dd>
+        <dt><span jhiTranslate="kavsirApp.questionTrueFalse.memo">Memo</span></dt>
+        <dd>
+            <span>{{questionTrueFalse.memo}}</span>
+        </dd>
+        <dt><span jhiTranslate="kavsirApp.questionTrueFalse.groupPosition">Group Position</span></dt>
+        <dd>
+            <span>{{questionTrueFalse.groupPosition}}</span>
+        </dd>
+        <dt><span jhiTranslate="kavsirApp.questionTrueFalse.category">Category</span></dt>
+        <dd>
+            <span *ngFor="let category of questionTrueFalse.categories; let last = last">
+                <a [routerLink]="['/category-node', category?.id ]">{{category.id}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
+        <dt><span jhiTranslate="kavsirApp.questionTrueFalse.image">Image</span></dt>
+        <dd>
+            <span *ngFor="let image of questionTrueFalse.images; let last = last">
+                <a [routerLink]="['/resource-image', image?.id ]">{{image.id}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
+        <dt><span jhiTranslate="kavsirApp.questionTrueFalse.questionGroup">Question Group</span></dt>
+        <dd>
+            <div *ngIf="questionTrueFalse.questionGroupId">
+                <a [routerLink]="['/question-group', questionTrueFalse.questionGroupId]">{{questionTrueFalse.questionGroupId}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'question-true-false/'+ questionTrueFalse.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

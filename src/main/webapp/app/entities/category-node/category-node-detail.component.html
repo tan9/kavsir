@@ -1,0 +1,43 @@
+
+<div *ngIf="categoryNode">
+    <h2><span jhiTranslate="kavsirApp.categoryNode.detail.title">Category Node</span> {{categoryNode.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="kavsirApp.categoryNode.type">Type</span></dt>
+        <dd>
+            <span jhiTranslate="{{'kavsirApp.CategoryType.' + categoryNode.type}}">{{categoryNode.type}}</span>
+        </dd>
+        <dt><span jhiTranslate="kavsirApp.categoryNode.typeId">Type Id</span></dt>
+        <dd>
+            <span>{{categoryNode.typeId}}</span>
+        </dd>
+        <dt><span jhiTranslate="kavsirApp.categoryNode.name">Name</span></dt>
+        <dd>
+            <span>{{categoryNode.name}}</span>
+        </dd>
+        <dt><span jhiTranslate="kavsirApp.categoryNode.position">Position</span></dt>
+        <dd>
+            <span>{{categoryNode.position}}</span>
+        </dd>
+        <dt><span jhiTranslate="kavsirApp.categoryNode.parent">Parent</span></dt>
+        <dd>
+            <div *ngIf="categoryNode.parentId">
+                <a [routerLink]="['/category-node', categoryNode.parentId]">{{categoryNode.parentId}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'category-node/'+ categoryNode.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

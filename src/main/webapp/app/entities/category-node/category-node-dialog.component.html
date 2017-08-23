@@ -1,0 +1,64 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myCategoryNodeLabel" jhiTranslate="kavsirApp.categoryNode.home.createOrEditLabel">Create or edit a Category Node</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!categoryNode.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="categoryNode.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="kavsirApp.categoryNode.type" for="field_type">Type</label>
+            <select class="form-control" name="type" [(ngModel)]="categoryNode.type" id="field_type"  required>
+                <option value="ACADEMIC_YEAR" jhiTranslate="kavsirApp.CategoryType.ACADEMIC_YEAR">ACADEMIC_YEAR</option>
+                <option value="GRADE" jhiTranslate="kavsirApp.CategoryType.GRADE">GRADE</option>
+                <option value="SEMESTER" jhiTranslate="kavsirApp.CategoryType.SEMESTER">SEMESTER</option>
+                <option value="SUBJECT" jhiTranslate="kavsirApp.CategoryType.SUBJECT">SUBJECT</option>
+                <option value="PUBLISHER" jhiTranslate="kavsirApp.CategoryType.PUBLISHER">PUBLISHER</option>
+                <option value="SEGMENT" jhiTranslate="kavsirApp.CategoryType.SEGMENT">SEGMENT</option>
+            </select>
+            <div [hidden]="!(editForm.controls.type?.dirty && editForm.controls.type?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.type?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="kavsirApp.categoryNode.typeId" for="field_typeId">Type Id</label>
+            <input type="number" class="form-control" name="typeId" id="field_typeId"
+                [(ngModel)]="categoryNode.typeId"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="kavsirApp.categoryNode.name" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name"
+                [(ngModel)]="categoryNode.name"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="kavsirApp.categoryNode.position" for="field_position">Position</label>
+            <input type="number" class="form-control" name="position" id="field_position"
+                [(ngModel)]="categoryNode.position"  />
+        </div>
+
+        <div class="form-group">
+            <label jhiTranslate="kavsirApp.categoryNode.parent" for="field_parent">Parent</label>
+            <select class="form-control" id="field_parent" name="parent" [(ngModel)]="categoryNode.parentId" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="categoryNodeOption.id" *ngFor="let categoryNodeOption of categorynodes; trackBy: trackCategoryNodeById">{{categoryNodeOption.id}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

@@ -1,0 +1,28 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "position",
+            "javadoc": "序位",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "name",
+            "javadoc": "名稱",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20170302142432",
+    "javadoc": "年級 (一年級 ~ 十二年級)",
+    "entityTableName": "category_grade",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no"
+}

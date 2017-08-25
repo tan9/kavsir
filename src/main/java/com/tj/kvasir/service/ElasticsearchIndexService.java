@@ -36,9 +36,9 @@ public class ElasticsearchIndexService {
 
     private final CategoryNodeSearchRepository categoryNodeSearchRepository;
 
-    private final CategoryPublisherRepository categoryPublisherRepository;
+    private final CategorySourceRepository categorySourceRepository;
 
-    private final CategoryPublisherSearchRepository categoryPublisherSearchRepository;
+    private final CategorySourceSearchRepository categorySourceSearchRepository;
 
     private final CategorySemesterRepository categorySemesterRepository;
 
@@ -87,8 +87,8 @@ public class ElasticsearchIndexService {
         CategoryGradeSearchRepository categoryGradeSearchRepository,
         CategoryNodeRepository categoryNodeRepository,
         CategoryNodeSearchRepository categoryNodeSearchRepository,
-        CategoryPublisherRepository categoryPublisherRepository,
-        CategoryPublisherSearchRepository categoryPublisherSearchRepository,
+        CategorySourceRepository categorySourceRepository,
+        CategorySourceSearchRepository categorySourceSearchRepository,
         CategorySemesterRepository categorySemesterRepository,
         CategorySemesterSearchRepository categorySemesterSearchRepository,
         CategorySubjectRepository categorySubjectRepository,
@@ -114,8 +114,8 @@ public class ElasticsearchIndexService {
         this.categoryGradeSearchRepository = categoryGradeSearchRepository;
         this.categoryNodeRepository = categoryNodeRepository;
         this.categoryNodeSearchRepository = categoryNodeSearchRepository;
-        this.categoryPublisherRepository = categoryPublisherRepository;
-        this.categoryPublisherSearchRepository = categoryPublisherSearchRepository;
+        this.categorySourceRepository = categorySourceRepository;
+        this.categorySourceSearchRepository = categorySourceSearchRepository;
         this.categorySemesterRepository = categorySemesterRepository;
         this.categorySemesterSearchRepository = categorySemesterSearchRepository;
         this.categorySubjectRepository = categorySubjectRepository;
@@ -142,7 +142,7 @@ public class ElasticsearchIndexService {
         reindexForClass(CategoryAcademicYear.class, categoryAcademicYearRepository, categoryAcademicYearSearchRepository);
         reindexForClass(CategoryGrade.class, categoryGradeRepository, categoryGradeSearchRepository);
         reindexForClass(CategoryNode.class, categoryNodeRepository, categoryNodeSearchRepository);
-        reindexForClass(CategoryPublisher.class, categoryPublisherRepository, categoryPublisherSearchRepository);
+        reindexForClass(CategorySource.class, categorySourceRepository, categorySourceSearchRepository);
         reindexForClass(CategorySemester.class, categorySemesterRepository, categorySemesterSearchRepository);
         reindexForClass(CategorySubject.class, categorySubjectRepository, categorySubjectSearchRepository);
         reindexForClass(QuestionChoice.class, questionChoiceRepository, questionChoiceSearchRepository);

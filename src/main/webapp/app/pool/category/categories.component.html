@@ -45,12 +45,12 @@
                         </jhi-category>
                     </ng-template>
                 </ngb-tab>
-                <ngb-tab id="tab-publishers" [title]="'category.type.publisher' | translate">
+                <ngb-tab id="tab-sources" [title]="'category.type.source' | translate">
                     <ng-template ngbTabContent>
-                        <jhi-category #publisherCategory
-                                      [typeName]="'Publisher'"
-                                      [items]="categoriesService.publishers"
-                                      [service]="categoriesService.publisherService">
+                        <jhi-category #sourceCategory
+                                      [typeName]="'Source'"
+                                      [items]="categoriesService.sources"
+                                      [service]="categoriesService.sourceService">
                         </jhi-category>
                     </ng-template>
                 </ngb-tab>

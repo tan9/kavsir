@@ -4,7 +4,7 @@ import { CategoryAcademicYearService, CategoryAcademicYear } from '../../entitie
 import { CategoryGradeService, CategoryGrade } from '../../entities/category-grade';
 import { CategorySemesterService, CategorySemester } from '../../entities/category-semester';
 import { CategorySubjectService, CategorySubject } from '../../entities/category-subject';
-import { CategoryPublisherService, CategoryPublisher } from '../../entities/category-publisher';
+import { CategorySourceService, CategorySource } from '../../entities/category-source';
 import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
 import { Subscription } from 'rxjs/Subscription';
 import { ResponseWrapper } from '../model/response-wrapper.model';
@@ -17,19 +17,19 @@ export class CategoriesService implements OnInit, OnDestroy {
     private gradesEventSubscriber: Subscription;
     private semestersEventSubscriber: Subscription;
     private subjectsEventSubscriber: Subscription;
-    private publishersEventSubscriber: Subscription;
+    private sourcesEventSubscriber: Subscription;
 
     academicYears: CategoryAcademicYear[] = [];
     grades: CategoryGrade[] = [];
     semesters: CategorySemester[] = [];
     subjects: CategorySubject[] = [];
-    publishers: CategoryPublisher[] = [];
+    sources: CategorySource[] = [];
 
     constructor(public academicYearService: CategoryAcademicYearService,
                 public gradeService: CategoryGradeService,
                 public semesterService: CategorySemesterService,
                 public subjectService: CategorySubjectService,
-                public publisherService: CategoryPublisherService,
+                public sourceService: CategorySourceService,
                 private eventManager: JhiEventManager,
                 private alertService: JhiAlertService) {
 
@@ -39,7 +39,7 @@ export class CategoriesService implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        ['academicYear', 'grade', 'semester', 'subject', 'publisher'].forEach(
+        ['academicYear', 'grade', 'semester', 'subject', 'source'].forEach(
             (typeName) => {
                 this.loadAllCategoryItems(typeName);
                 this.registerChangeInCategoryItems(typeName);
@@ -48,7 +48,7 @@ export class CategoriesService implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        ['academicYear', 'grade', 'semester', 'subject', 'publisher'].forEach(
+        ['academicYear', 'grade', 'semester', 'subject', 'source'].forEach(
             (typeName) => {
                 const subscriberName = typeName + 'sEventSubscriber';
                 this.eventManager.destroy(this[subscriberName]);

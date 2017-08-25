@@ -7,7 +7,7 @@
             "grade": "Grade",
             "semester": "Semester",
             "subject": "Subject",
-            "publisher": "Publisher",
+            "source": "Source",
             "segment": "Segment"
         },
         "action": {

@@ -7,7 +7,7 @@
             "grade": "年級",
             "semester": "學期",
             "subject": "科目",
-            "publisher": "出版社",
+            "source": "來源",
             "segment": "章、課、篇、節"
         },
         "action": {

@@ -16,7 +16,7 @@ export class CategoryHierarchyService implements OnInit {
         2: {type: CategoryType.GRADE, name: '年級'},
         3: {type: CategoryType.SEMESTER, name: '學期'},
         4: {type: CategoryType.SUBJECT, name: '科目'},
-        5: {type: CategoryType.PUBLISHER, name: '出版社'},
+        5: {type: CategoryType.SOURCE, name: '來源別'},
         6: {type: CategoryType.SEGMENT, name: '子類別'}
     };
 
@@ -187,8 +187,8 @@ export class CategoryHierarchyService implements OnInit {
                 return this.categoriesService.semesters;
             case CategoryType.SUBJECT:
                 return this.categoriesService.subjects;
-            case CategoryType.PUBLISHER:
-                return this.categoriesService.publishers;
+            case CategoryType.SOURCE:
+                return this.categoriesService.sources;
         }
     }
 
@@ -198,7 +198,7 @@ export class CategoryHierarchyService implements OnInit {
                 2: this.categoriesService.grades,
                 3: this.categoriesService.semesters,
                 4: this.categoriesService.subjects,
-                5: this.categoriesService.publishers
+                5: this.categoriesService.sources
             }[level] || [];
     }
 

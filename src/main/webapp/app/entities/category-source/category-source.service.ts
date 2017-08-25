@@ -2,33 +2,33 @@ import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
-import { CategoryPublisher } from './category-publisher.model';
+import { CategorySource } from './category-source.model';
 import { ResponseWrapper, createRequestOption } from '../../shared';
 import { CategoryService } from '../category.service';
 
 @Injectable()
-export class CategoryPublisherService implements CategoryService<CategoryPublisher> {
+export class CategorySourceService implements CategoryService<CategorySource> {
 
-    private resourceUrl = 'api/category-publishers';
-    private resourceSearchUrl = 'api/_search/category-publishers';
+    private resourceUrl = 'api/category-sources';
+    private resourceSearchUrl = 'api/_search/category-sources';
 
     constructor(private http: Http) { }
 
-    create(categoryPublisher: CategoryPublisher): Observable<CategoryPublisher> {
-        const copy = this.convert(categoryPublisher);
+    create(categorySource: CategorySource): Observable<CategorySource> {
+        const copy = this.convert(categorySource);
         return this.http.post(this.resourceUrl, copy).map((res: Response) => {
             return res.json();
         });
     }
 
-    update(categoryPublisher: CategoryPublisher): Observable<CategoryPublisher> {
-        const copy = this.convert(categoryPublisher);
+    update(categorySource: CategorySource): Observable<CategorySource> {
+        const copy = this.convert(categorySource);
         return this.http.put(this.resourceUrl, copy).map((res: Response) => {
             return res.json();
         });
     }
 
-    find(id: number): Observable<CategoryPublisher> {
+    find(id: number): Observable<CategorySource> {
         return this.http.get(`${this.resourceUrl}/${id}`).map((res: Response) => {
             return res.json();
         });
@@ -55,8 +55,8 @@ export class CategoryPublisherService implements CategoryService<CategoryPublish
         return new ResponseWrapper(res.headers, jsonResponse, res.status);
     }
 
-    private convert(categoryPublisher: CategoryPublisher): CategoryPublisher {
-        const copy: CategoryPublisher = Object.assign({}, categoryPublisher);
+    private convert(categorySource: CategorySource): CategorySource {
+        const copy: CategorySource = Object.assign({}, categorySource);
         return copy;
     }
 }

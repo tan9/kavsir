@@ -18,7 +18,7 @@ enum CategoryType {
   GRADE,
   SEMESTER,
   SUBJECT,
-  PUBLISHER,
+  SOURCE,
   SEGMENT
 }
 
@@ -54,8 +54,8 @@ entity CategorySubject {
   name String required
 }
 
-/** 出版社 (康軒、翰林、三民...) */
-entity CategoryPublisher {
+/** 來源 (學校、出版社...) */
+entity CategorySource {
   /** 序位 */
   position Integer required,
   /** 名稱 */

@@ -5,7 +5,7 @@ export enum CategoryType {
     'GRADE',
     'SEMESTER',
     'SUBJECT',
-    'PUBLISHER',
+    'SOURCE',
     'SEGMENT'
 }
 

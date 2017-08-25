@@ -52,7 +52,7 @@ public class CacheConfiguration {
             cm.createCache(com.tj.kvasir.domain.CategoryNode.class.getName() + ".choices", jcacheConfiguration);
             cm.createCache(com.tj.kvasir.domain.CategoryNode.class.getName() + ".essays", jcacheConfiguration);
             cm.createCache(com.tj.kvasir.domain.CategoryNode.class.getName() + ".groups", jcacheConfiguration);
-            cm.createCache(com.tj.kvasir.domain.CategoryPublisher.class.getName(), jcacheConfiguration);
+            cm.createCache(com.tj.kvasir.domain.CategorySource.class.getName(), jcacheConfiguration);
             cm.createCache(com.tj.kvasir.domain.CategorySemester.class.getName(), jcacheConfiguration);
             cm.createCache(com.tj.kvasir.domain.CategorySubject.class.getName(), jcacheConfiguration);
             cm.createCache(com.tj.kvasir.domain.CategoryGrade.class.getName(), jcacheConfiguration);

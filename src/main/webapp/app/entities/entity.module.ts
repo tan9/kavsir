@@ -3,7 +3,7 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { KavsirQuestionChoiceModule } from './question-choice/question-choice.module';
 import { KavsirCategoryAcademicYearModule } from './category-academic-year/category-academic-year.module';
 import { KavsirCategoryNodeModule } from './category-node/category-node.module';
-import { KavsirCategoryPublisherModule } from './category-publisher/category-publisher.module';
+import { KavsirCategorySourceModule } from './category-source/category-source.module';
 import { KavsirCategorySemesterModule } from './category-semester/category-semester.module';
 import { KavsirCategorySubjectModule } from './category-subject/category-subject.module';
 import { KavsirCategoryGradeModule } from './category-grade/category-grade.module';
@@ -19,7 +19,7 @@ import { KavsirResourceImageModule } from './resource-image/resource-image.modul
         KavsirQuestionChoiceModule,
         KavsirCategoryAcademicYearModule,
         KavsirCategoryNodeModule,
-        KavsirCategoryPublisherModule,
+        KavsirCategorySourceModule,
         KavsirCategorySemesterModule,
         KavsirCategorySubjectModule,
         KavsirCategoryGradeModule,

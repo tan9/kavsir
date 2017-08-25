@@ -40,7 +40,7 @@
         {
             "fieldName": "type",
             "fieldType": "CategoryType",
-            "fieldValues": "ACADEMIC_YEAR,GRADE,SEMESTER,SUBJECT,PUBLISHER,SEGMENT",
+            "fieldValues": "ACADEMIC_YEAR,GRADE,SEMESTER,SUBJECT,SOURCE,SEGMENT",
             "fieldValidateRules": [
                 "required"
             ]

@@ -3,23 +3,23 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { JhiEventManager, JhiParseLinks, JhiPaginationUtil, JhiLanguageService, JhiAlertService } from 'ng-jhipster';
 
-import { CategoryPublisher } from './category-publisher.model';
-import { CategoryPublisherService } from './category-publisher.service';
+import { CategorySource } from './category-source.model';
+import { CategorySourceService } from './category-source.service';
 import { ITEMS_PER_PAGE, Principal, ResponseWrapper } from '../../shared';
 import { PaginationConfig } from '../../blocks/config/uib-pagination.config';
 
 @Component({
-    selector: 'jhi-category-publisher',
-    templateUrl: './category-publisher.component.html'
+    selector: 'jhi-category-source',
+    templateUrl: './category-source.component.html'
 })
-export class CategoryPublisherComponent implements OnInit, OnDestroy {
-categoryPublishers: CategoryPublisher[];
+export class CategorySourceComponent implements OnInit, OnDestroy {
+categorySources: CategorySource[];
     currentAccount: any;
     eventSubscriber: Subscription;
     currentSearch: string;
 
     constructor(
-        private categoryPublisherService: CategoryPublisherService,
+        private categorySourceService: CategorySourceService,
         private alertService: JhiAlertService,
         private eventManager: JhiEventManager,
         private activatedRoute: ActivatedRoute,
@@ -30,17 +30,17 @@ categoryPublishers: CategoryPublisher[];
 
     loadAll() {
         if (this.currentSearch) {
-            this.categoryPublisherService.search({
+            this.categorySourceService.search({
                 query: this.currentSearch,
                 }).subscribe(
-                    (res: ResponseWrapper) => this.categoryPublishers = res.json,
+                    (res: ResponseWrapper) => this.categorySources = res.json,
                     (res: ResponseWrapper) => this.onError(res.json)
                 );
             return;
        }
-        this.categoryPublisherService.query().subscribe(
+        this.categorySourceService.query().subscribe(
             (res: ResponseWrapper) => {
-                this.categoryPublishers = res.json;
+                this.categorySources = res.json;
                 this.currentSearch = '';
             },
             (res: ResponseWrapper) => this.onError(res.json)
@@ -64,18 +64,18 @@ categoryPublishers: CategoryPublisher[];
         this.principal.identity().then((account) => {
             this.currentAccount = account;
         });
-        this.registerChangeInCategoryPublishers();
+        this.registerChangeInCategorySources();
     }
 
     ngOnDestroy() {
         this.eventManager.destroy(this.eventSubscriber);
     }
 
-    trackId(index: number, item: CategoryPublisher) {
+    trackId(index: number, item: CategorySource) {
         return item.id;
     }
-    registerChangeInCategoryPublishers() {
-        this.eventSubscriber = this.eventManager.subscribe('categoryPublisherListModification', (response) => this.loadAll());
+    registerChangeInCategorySources() {
+        this.eventSubscriber = this.eventManager.subscribe('categorySourceListModification', (response) => this.loadAll());
     }
 
     private onError(error) {

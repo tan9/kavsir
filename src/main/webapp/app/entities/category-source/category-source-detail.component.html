@@ -1,16 +1,16 @@
 
-<div *ngIf="categoryPublisher">
-    <h2><span jhiTranslate="kavsirApp.categoryPublisher.detail.title">Category Publisher</span> {{categoryPublisher.id}}</h2>
+<div *ngIf="categorySource">
+    <h2><span jhiTranslate="kavsirApp.categorySource.detail.title">Category Source</span> {{categorySource.id}}</h2>
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="kavsirApp.categoryPublisher.position">Position</span></dt>
+        <dt><span jhiTranslate="kavsirApp.categorySource.position">Position</span></dt>
         <dd>
-            <span>{{categoryPublisher.position}}</span>
+            <span>{{categorySource.position}}</span>
         </dd>
-        <dt><span jhiTranslate="kavsirApp.categoryPublisher.name">Name</span></dt>
+        <dt><span jhiTranslate="kavsirApp.categorySource.name">Name</span></dt>
         <dd>
-            <span>{{categoryPublisher.name}}</span>
+            <span>{{categorySource.name}}</span>
         </dd>
     </dl>
 
@@ -21,7 +21,7 @@
     </button>
 
     <button type="button"
-            [routerLink]="['/', { outlets: { popup: 'category-publisher/'+ categoryPublisher.id + '/edit'} }]"
+            [routerLink]="['/', { outlets: { popup: 'category-source/'+ categorySource.id + '/edit'} }]"
             replaceUrl="true"
             class="btn btn-primary">
         <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>

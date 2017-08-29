@@ -10,7 +10,7 @@ import { CategoryHierarchyService } from '../../../shared/category/category-hier
 export class CategoryChoiceComponent extends QuestionChoiceComponent {
 
     inGroup = false;
-    multipleResponse : boolean;
+    multipleResponse: boolean;
 
     // not using normal inject because we do wanna to tight to the super constructor
     @Input() categoryHierarchyService: CategoryHierarchyService;

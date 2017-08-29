@@ -38,7 +38,7 @@
                                 [disabled]="childrenCount(node) >= availableCategoryChildren(node.level).length">
                             <span class="fa fa-plus"></span>
                             <span class="hidden-sm-down">新增{{categoryLevelName(node.level)}}</span>
-                            <div class="dropdown-menu" [attr.aria-labelledby]="'dropdownAddChild' + index">
+                            <div class="dropdown-menu" ngbDropdownMenu [attr.aria-labelledby]="'dropdownAddChild' + index">
                                 <button class="dropdown-item"
                                         *ngFor="let item of availableCategoryChildren(node.level)"
                                         (click)="addCategoryChild(node, item)"

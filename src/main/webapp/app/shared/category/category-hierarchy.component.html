@@ -24,7 +24,7 @@
             <ng-template #treeNodeTemplate let-node let-index="index">
                 <form class="form-inline" #categoryNodeForm="ngForm">
                     <span>
-                        <span *ngIf="!node.data.isEditing">
+                        <span *ngIf="!node.data.isEditing" [title]="node.data.id">
                             {{ nodeDisplayName(node) }}
                         </span>
                         <input *ngIf="node.level > 6 && node.data.isEditing"

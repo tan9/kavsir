@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
+import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
 
 import { CategoryAcademicYear } from './category-academic-year.model';
 import { CategoryAcademicYearPopupService } from './category-academic-year-popup.service';
@@ -18,6 +18,7 @@ export class CategoryAcademicYearDeleteDialogComponent {
 
     constructor(
         private categoryAcademicYearService: CategoryAcademicYearService,
+        private alertService: JhiAlertService,
         public activeModal: NgbActiveModal,
         private eventManager: JhiEventManager
     ) {
@@ -33,6 +34,9 @@ export class CategoryAcademicYearDeleteDialogComponent {
                 name: 'categoryAcademicYearListModification',
                 content: 'Deleted an categoryAcademicYear'
             });
+            this.activeModal.dismiss(true);
+        }, (response: Response) => {
+            this.alertService.error(response.headers.get('X-kavsirApp-error'), null, null);
             this.activeModal.dismiss(true);
         });
     }

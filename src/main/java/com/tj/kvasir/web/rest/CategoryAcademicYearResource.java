@@ -3,12 +3,18 @@ package com.tj.kvasir.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.tj.kvasir.domain.CategoryAcademicYear;
 
+import com.tj.kvasir.domain.CategoryNode;
+import com.tj.kvasir.domain.enumeration.CategoryType;
 import com.tj.kvasir.repository.CategoryAcademicYearRepository;
+import com.tj.kvasir.repository.CategoryNodeRepository;
 import com.tj.kvasir.repository.search.CategoryAcademicYearSearchRepository;
 import com.tj.kvasir.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Example;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,9 +44,12 @@ public class CategoryAcademicYearResource {
 
     private final CategoryAcademicYearSearchRepository categoryAcademicYearSearchRepository;
 
-    public CategoryAcademicYearResource(CategoryAcademicYearRepository categoryAcademicYearRepository, CategoryAcademicYearSearchRepository categoryAcademicYearSearchRepository) {
+    private final CategoryNodeRepository categoryNodeRepository;
+
+    public CategoryAcademicYearResource(CategoryAcademicYearRepository categoryAcademicYearRepository, CategoryAcademicYearSearchRepository categoryAcademicYearSearchRepository, CategoryNodeRepository categoryNodeRepository) {
         this.categoryAcademicYearRepository = categoryAcademicYearRepository;
         this.categoryAcademicYearSearchRepository = categoryAcademicYearSearchRepository;
+        this.categoryNodeRepository = categoryNodeRepository;
     }
 
     /**
@@ -123,9 +132,18 @@ public class CategoryAcademicYearResource {
     @Timed
     public ResponseEntity<Void> deleteCategoryAcademicYear(@PathVariable Long id) {
         log.debug("REST request to delete CategoryAcademicYear : {}", id);
-        categoryAcademicYearRepository.delete(id);
-        categoryAcademicYearSearchRepository.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+        CategoryNode node = new CategoryNode();
+        node.setType(CategoryType.ACADEMIC_YEAR);
+        node.setTypeId(id);
+        List<CategoryNode> nodes = categoryNodeRepository.findAll(Example.of(node));
+        if (nodes.isEmpty()) {
+            categoryAcademicYearRepository.delete(id);
+            categoryAcademicYearSearchRepository.delete(id);
+            return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+        } else {
+            HttpHeaders alert = HeaderUtil.createFailureAlert(ENTITY_NAME, "categoryinuse", "Can not delete category in use");
+            return ResponseEntity.status(HttpStatus.CONFLICT).headers(alert).build();
+        }
     }
 
     /**

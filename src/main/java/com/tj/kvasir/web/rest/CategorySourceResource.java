@@ -1,14 +1,20 @@
 package com.tj.kvasir.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.tj.kvasir.domain.CategoryNode;
 import com.tj.kvasir.domain.CategorySource;
 
+import com.tj.kvasir.domain.enumeration.CategoryType;
+import com.tj.kvasir.repository.CategoryNodeRepository;
 import com.tj.kvasir.repository.CategorySourceRepository;
 import com.tj.kvasir.repository.search.CategorySourceSearchRepository;
 import com.tj.kvasir.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Example;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,9 +44,12 @@ public class CategorySourceResource {
 
     private final CategorySourceSearchRepository categorySourceSearchRepository;
 
-    public CategorySourceResource(CategorySourceRepository categorySourceRepository, CategorySourceSearchRepository categorySourceSearchRepository) {
+    private final CategoryNodeRepository categoryNodeRepository;
+
+    public CategorySourceResource(CategorySourceRepository categorySourceRepository, CategorySourceSearchRepository categorySourceSearchRepository, CategoryNodeRepository categoryNodeRepository) {
         this.categorySourceRepository = categorySourceRepository;
         this.categorySourceSearchRepository = categorySourceSearchRepository;
+        this.categoryNodeRepository = categoryNodeRepository;
     }
 
     /**
@@ -123,9 +132,18 @@ public class CategorySourceResource {
     @Timed
     public ResponseEntity<Void> deleteCategorySource(@PathVariable Long id) {
         log.debug("REST request to delete CategorySource : {}", id);
-        categorySourceRepository.delete(id);
-        categorySourceSearchRepository.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+        CategoryNode node = new CategoryNode();
+        node.setType(CategoryType.SOURCE);
+        node.setTypeId(id);
+        List<CategoryNode> nodes = categoryNodeRepository.findAll(Example.of(node));
+        if (nodes.isEmpty()) {
+            categorySourceRepository.delete(id);
+            categorySourceSearchRepository.delete(id);
+            return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+        } else {
+            HttpHeaders alert = HeaderUtil.createFailureAlert(ENTITY_NAME, "categoryinuse", "Can not delete category in use");
+            return ResponseEntity.status(HttpStatus.CONFLICT).headers(alert).build();
+        }
     }
 
     /**

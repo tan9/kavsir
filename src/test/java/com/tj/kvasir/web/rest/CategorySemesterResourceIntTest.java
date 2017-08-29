@@ -3,6 +3,7 @@ package com.tj.kvasir.web.rest;
 import com.tj.kvasir.KavsirApp;
 
 import com.tj.kvasir.domain.CategorySemester;
+import com.tj.kvasir.repository.CategoryNodeRepository;
 import com.tj.kvasir.repository.CategorySemesterRepository;
 import com.tj.kvasir.repository.search.CategorySemesterSearchRepository;
 import com.tj.kvasir.web.rest.errors.ExceptionTranslator;
@@ -51,6 +52,9 @@ public class CategorySemesterResourceIntTest {
     private CategorySemesterSearchRepository categorySemesterSearchRepository;
 
     @Autowired
+    private CategoryNodeRepository categoryNodeRepository;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -69,7 +73,7 @@ public class CategorySemesterResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final CategorySemesterResource categorySemesterResource = new CategorySemesterResource(categorySemesterRepository, categorySemesterSearchRepository);
+        final CategorySemesterResource categorySemesterResource = new CategorySemesterResource(categorySemesterRepository, categorySemesterSearchRepository, categoryNodeRepository);
         this.restCategorySemesterMockMvc = MockMvcBuilders.standaloneSetup(categorySemesterResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

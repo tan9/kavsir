@@ -154,7 +154,7 @@ public class QuestionEssayResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(questionEssayDTO)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the QuestionEssay in the database
         List<QuestionEssay> questionEssayList = questionEssayRepository.findAll();
         assertThat(questionEssayList).hasSize(databaseSizeBeforeCreate);
     }

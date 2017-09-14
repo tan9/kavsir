@@ -132,7 +132,7 @@ public class CategoryPublisherResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(categoryPublisher)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the CategoryPublisher in the database
         List<CategoryPublisher> categoryPublisherList = categoryPublisherRepository.findAll();
         assertThat(categoryPublisherList).hasSize(databaseSizeBeforeCreate);
     }

@@ -132,7 +132,7 @@ public class CategorySemesterResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(categorySemester)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the CategorySemester in the database
         List<CategorySemester> categorySemesterList = categorySemesterRepository.findAll();
         assertThat(categorySemesterList).hasSize(databaseSizeBeforeCreate);
     }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
+import { SERVER_API_URL } from '../../app.constants';
 
 import { CategoryAcademicYear } from './category-academic-year.model';
 import { ResponseWrapper, createRequestOption } from '../../shared';
@@ -8,8 +9,8 @@ import { ResponseWrapper, createRequestOption } from '../../shared';
 @Injectable()
 export class CategoryAcademicYearService {
 
-    private resourceUrl = 'api/category-academic-years';
-    private resourceSearchUrl = 'api/_search/category-academic-years';
+    private resourceUrl = SERVER_API_URL + 'api/category-academic-years';
+    private resourceSearchUrl = SERVER_API_URL + 'api/_search/category-academic-years';
 
     constructor(private http: Http) { }
 

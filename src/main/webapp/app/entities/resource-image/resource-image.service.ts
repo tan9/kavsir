@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
+import { SERVER_API_URL } from '../../app.constants';
 
 import { ResourceImage } from './resource-image.model';
 import { ResponseWrapper, createRequestOption } from '../../shared';
@@ -8,8 +9,8 @@ import { ResponseWrapper, createRequestOption } from '../../shared';
 @Injectable()
 export class ResourceImageService {
 
-    private resourceUrl = 'api/resource-images';
-    private resourceSearchUrl = 'api/_search/resource-images';
+    private resourceUrl = SERVER_API_URL + 'api/resource-images';
+    private resourceSearchUrl = SERVER_API_URL + 'api/_search/resource-images';
 
     constructor(private http: Http) { }
 

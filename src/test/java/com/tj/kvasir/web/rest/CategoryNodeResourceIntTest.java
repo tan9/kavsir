@@ -150,7 +150,7 @@ public class CategoryNodeResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(categoryNodeDTO)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the CategoryNode in the database
         List<CategoryNode> categoryNodeList = categoryNodeRepository.findAll();
         assertThat(categoryNodeList).hasSize(databaseSizeBeforeCreate);
     }

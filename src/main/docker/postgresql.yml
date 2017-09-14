@@ -1,7 +1,7 @@
 version: '2'
 services:
     kavsir-postgresql:
-        image: postgres:9.6.2
+        image: postgres:9.6.5
         # volumes:
         #     - ~/volumes/jhipster/kavsir/postgresql/:/var/lib/postgresql/data/
         environment:

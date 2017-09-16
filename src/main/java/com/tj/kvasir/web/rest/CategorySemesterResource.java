@@ -37,6 +37,7 @@ public class CategorySemesterResource {
     private final CategorySemesterRepository categorySemesterRepository;
 
     private final CategorySemesterSearchRepository categorySemesterSearchRepository;
+
     public CategorySemesterResource(CategorySemesterRepository categorySemesterRepository, CategorySemesterSearchRepository categorySemesterSearchRepository) {
         this.categorySemesterRepository = categorySemesterRepository;
         this.categorySemesterSearchRepository = categorySemesterSearchRepository;

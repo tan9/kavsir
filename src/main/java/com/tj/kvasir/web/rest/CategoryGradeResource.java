@@ -37,6 +37,7 @@ public class CategoryGradeResource {
     private final CategoryGradeRepository categoryGradeRepository;
 
     private final CategoryGradeSearchRepository categoryGradeSearchRepository;
+
     public CategoryGradeResource(CategoryGradeRepository categoryGradeRepository, CategoryGradeSearchRepository categoryGradeSearchRepository) {
         this.categoryGradeRepository = categoryGradeRepository;
         this.categoryGradeSearchRepository = categoryGradeSearchRepository;

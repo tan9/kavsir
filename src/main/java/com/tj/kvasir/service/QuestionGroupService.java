@@ -29,6 +29,7 @@ public class QuestionGroupService {
     private final QuestionGroupMapper questionGroupMapper;
 
     private final QuestionGroupSearchRepository questionGroupSearchRepository;
+
     public QuestionGroupService(QuestionGroupRepository questionGroupRepository, QuestionGroupMapper questionGroupMapper, QuestionGroupSearchRepository questionGroupSearchRepository) {
         this.questionGroupRepository = questionGroupRepository;
         this.questionGroupMapper = questionGroupMapper;

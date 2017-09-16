@@ -29,6 +29,7 @@ public class QuestionChoiceService {
     private final QuestionChoiceMapper questionChoiceMapper;
 
     private final QuestionChoiceSearchRepository questionChoiceSearchRepository;
+
     public QuestionChoiceService(QuestionChoiceRepository questionChoiceRepository, QuestionChoiceMapper questionChoiceMapper, QuestionChoiceSearchRepository questionChoiceSearchRepository) {
         this.questionChoiceRepository = questionChoiceRepository;
         this.questionChoiceMapper = questionChoiceMapper;

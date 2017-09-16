@@ -37,6 +37,7 @@ public class CategoryAcademicYearResource {
     private final CategoryAcademicYearRepository categoryAcademicYearRepository;
 
     private final CategoryAcademicYearSearchRepository categoryAcademicYearSearchRepository;
+
     public CategoryAcademicYearResource(CategoryAcademicYearRepository categoryAcademicYearRepository, CategoryAcademicYearSearchRepository categoryAcademicYearSearchRepository) {
         this.categoryAcademicYearRepository = categoryAcademicYearRepository;
         this.categoryAcademicYearSearchRepository = categoryAcademicYearSearchRepository;

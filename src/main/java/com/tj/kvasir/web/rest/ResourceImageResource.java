@@ -47,6 +47,7 @@ public class ResourceImageResource {
     private final ResourceImageMapper resourceImageMapper;
 
     private final ResourceImageSearchRepository resourceImageSearchRepository;
+
     public ResourceImageResource(ResourceImageRepository resourceImageRepository, ResourceImageMapper resourceImageMapper, ResourceImageSearchRepository resourceImageSearchRepository) {
         this.resourceImageRepository = resourceImageRepository;
         this.resourceImageMapper = resourceImageMapper;

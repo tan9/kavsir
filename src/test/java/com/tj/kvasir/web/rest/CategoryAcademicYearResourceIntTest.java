@@ -137,7 +137,7 @@ public class CategoryAcademicYearResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(categoryAcademicYear)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the CategoryAcademicYear in the database
         List<CategoryAcademicYear> categoryAcademicYearList = categoryAcademicYearRepository.findAll();
         assertThat(categoryAcademicYearList).hasSize(databaseSizeBeforeCreate);
     }

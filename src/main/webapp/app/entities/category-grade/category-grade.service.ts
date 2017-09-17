@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
+import { SERVER_API_URL } from '../../app.constants';
 
 import { CategoryGrade } from './category-grade.model';
 import { ResponseWrapper, createRequestOption } from '../../shared';
@@ -9,8 +10,8 @@ import { CategoryService } from '../category.service';
 @Injectable()
 export class CategoryGradeService implements CategoryService<CategoryGrade> {
 
-    private resourceUrl = 'api/category-grades';
-    private resourceSearchUrl = 'api/_search/category-grades';
+    private resourceUrl = SERVER_API_URL + 'api/category-grades';
+    private resourceSearchUrl = SERVER_API_URL + 'api/_search/category-grades';
 
     constructor(private http: Http) { }
 

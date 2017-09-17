@@ -143,7 +143,7 @@ public class QuestionGroupResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(questionGroupDTO)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the QuestionGroup in the database
         List<QuestionGroup> questionGroupList = questionGroupRepository.findAll();
         assertThat(questionGroupList).hasSize(databaseSizeBeforeCreate);
     }

@@ -136,7 +136,7 @@ public class CategoryGradeResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(categoryGrade)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the CategoryGrade in the database
         List<CategoryGrade> categoryGradeList = categoryGradeRepository.findAll();
         assertThat(categoryGradeList).hasSize(databaseSizeBeforeCreate);
     }

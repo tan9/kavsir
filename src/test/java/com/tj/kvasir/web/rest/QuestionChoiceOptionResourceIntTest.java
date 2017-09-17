@@ -148,7 +148,7 @@ public class QuestionChoiceOptionResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(questionChoiceOptionDTO)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the QuestionChoiceOption in the database
         List<QuestionChoiceOption> questionChoiceOptionList = questionChoiceOptionRepository.findAll();
         assertThat(questionChoiceOptionList).hasSize(databaseSizeBeforeCreate);
     }

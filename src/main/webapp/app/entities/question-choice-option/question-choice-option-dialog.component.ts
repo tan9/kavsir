@@ -75,7 +75,7 @@ export class QuestionChoiceOptionDialogComponent implements OnInit {
 
     private subscribeToSaveResponse(result: Observable<QuestionChoiceOption>) {
         result.subscribe((res: QuestionChoiceOption) =>
-            this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
+            this.onSaveSuccess(res), (res: Response) => this.onSaveError());
     }
 
     private onSaveSuccess(result: QuestionChoiceOption) {
@@ -84,17 +84,11 @@ export class QuestionChoiceOptionDialogComponent implements OnInit {
         this.activeModal.dismiss(result);
     }
 
-    private onSaveError(error) {
-        try {
-            error.json();
-        } catch (exception) {
-            error.message = error.text();
-        }
+    private onSaveError() {
         this.isSaving = false;
-        this.onError(error);
     }
 
-    private onError(error) {
+    private onError(error: any) {
         this.alertService.error(error.message, null, null);
     }
 

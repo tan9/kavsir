@@ -29,7 +29,7 @@
                 <img [src]="'data:' + resourceImage.contentContentType + ';base64,' + resourceImage.content" style="max-height: 100px;" *ngIf="resourceImage.content" alt="resourceImage image"/>
                 <div *ngIf="resourceImage.content" class="form-text text-danger clearfix">
                     <span class="pull-left">{{resourceImage.contentContentType}}, {{byteSize(resourceImage.content)}}</span>
-                    <button type="button" (click)="clearInputImage('content', 'contentContentType', 'fileImage')" class="btn btn-default btn-xs pull-right">
+                    <button type="button" (click)="clearInputImage('content', 'contentContentType', 'fileImage')" class="btn btn-secondary btn-xs pull-right">
                         <span class="fa fa-times"></span>
                     </button>
                 </div>
@@ -49,7 +49,7 @@
 
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clear()">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
             <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
         </button>
         <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">

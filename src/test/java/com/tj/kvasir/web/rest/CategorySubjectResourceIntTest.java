@@ -136,7 +136,7 @@ public class CategorySubjectResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(categorySubject)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the CategorySubject in the database
         List<CategorySubject> categorySubjectList = categorySubjectRepository.findAll();
         assertThat(categorySubjectList).hasSize(databaseSizeBeforeCreate);
     }

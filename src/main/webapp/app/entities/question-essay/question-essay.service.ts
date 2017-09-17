@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
+import { SERVER_API_URL } from '../../app.constants';
 
 import { QuestionEssay } from './question-essay.model';
 import { ResponseWrapper, createRequestOption } from '../../shared';
@@ -8,8 +9,8 @@ import { ResponseWrapper, createRequestOption } from '../../shared';
 @Injectable()
 export class QuestionEssayService {
 
-    private resourceUrl = 'api/question-essays';
-    private resourceSearchUrl = 'api/_search/question-essays';
+    private resourceUrl = SERVER_API_URL + 'api/question-essays';
+    private resourceSearchUrl = SERVER_API_URL + 'api/_search/question-essays';
 
     constructor(private http: Http) { }
 

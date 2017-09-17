@@ -48,7 +48,7 @@ export class CategorySemesterDialogComponent implements OnInit {
 
     private subscribeToSaveResponse(result: Observable<CategorySemester>) {
         result.subscribe((res: CategorySemester) =>
-            this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
+            this.onSaveSuccess(res), (res: Response) => this.onSaveError());
     }
 
     private onSaveSuccess(result: CategorySemester) {
@@ -57,17 +57,11 @@ export class CategorySemesterDialogComponent implements OnInit {
         this.activeModal.dismiss(result);
     }
 
-    private onSaveError(error) {
-        try {
-            error.json();
-        } catch (exception) {
-            error.message = error.text();
-        }
+    private onSaveError() {
         this.isSaving = false;
-        this.onError(error);
     }
 
-    private onError(error) {
+    private onError(error: any) {
         this.alertService.error(error.message, null, null);
     }
 }

@@ -153,7 +153,7 @@ public class QuestionTrueFalseResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(questionTrueFalseDTO)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the QuestionTrueFalse in the database
         List<QuestionTrueFalse> questionTrueFalseList = questionTrueFalseRepository.findAll();
         assertThat(questionTrueFalseList).hasSize(databaseSizeBeforeCreate);
     }

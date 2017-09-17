@@ -144,7 +144,7 @@ public class ResourceImageResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(resourceImageDTO)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the ResourceImage in the database
         List<ResourceImage> resourceImageList = resourceImageRepository.findAll();
         assertThat(resourceImageList).hasSize(databaseSizeBeforeCreate);
     }

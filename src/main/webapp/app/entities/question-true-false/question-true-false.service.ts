@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
+import { SERVER_API_URL } from '../../app.constants';
 
 import { QuestionTrueFalse } from './question-true-false.model';
 import { ResponseWrapper, createRequestOption } from '../../shared';
@@ -8,8 +9,8 @@ import { ResponseWrapper, createRequestOption } from '../../shared';
 @Injectable()
 export class QuestionTrueFalseService {
 
-    private resourceUrl = 'api/question-true-falses';
-    private resourceSearchUrl = 'api/_search/question-true-falses';
+    private resourceUrl = SERVER_API_URL + 'api/question-true-falses';
+    private resourceSearchUrl = SERVER_API_URL + 'api/_search/question-true-falses';
 
     constructor(private http: Http) { }
 

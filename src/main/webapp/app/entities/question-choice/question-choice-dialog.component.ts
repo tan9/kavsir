@@ -166,8 +166,8 @@ export class QuestionChoiceDialogComponent implements OnInit {
         result.subscribe((res: QuestionChoice) =>
             this.saveOptions(res).then(
                 () => this.onSaveSuccess(res),
-                () => this.onSaveError(res)
-            ), (res: Response) => this.onSaveError(res));
+                () => this.onSaveError()
+            ), (res: Response) => this.onSaveError());
     }
 
     private onSaveSuccess(result: QuestionChoice) {
@@ -176,17 +176,11 @@ export class QuestionChoiceDialogComponent implements OnInit {
         this.activeModal.dismiss(result);
     }
 
-    private onSaveError(error) {
-        try {
-            error.json();
-        } catch (exception) {
-            error.message = error.text();
-        }
+    private onSaveError() {
         this.isSaving = false;
-        this.onError(error);
     }
 
-    private onError(error) {
+    private onError(error: any) {
         this.alertService.error(error.message, null, null);
     }
 

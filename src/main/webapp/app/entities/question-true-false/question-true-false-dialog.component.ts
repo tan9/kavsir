@@ -32,7 +32,7 @@ export class QuestionTrueFalseDialogComponent implements OnInit {
     constructor(
         public activeModal: NgbActiveModal,
         private dataUtils: JhiDataUtils,
-        private alertService: JhiAlertService,
+        private jhiAlertService: JhiAlertService,
         private questionTrueFalseService: QuestionTrueFalseService,
         private categoryNodeService: CategoryNodeService,
         private resourceImageService: ResourceImageService,
@@ -94,7 +94,7 @@ export class QuestionTrueFalseDialogComponent implements OnInit {
     }
 
     private onError(error: any) {
-        this.alertService.error(error.message, null, null);
+        this.jhiAlertService.error(error.message, null, null);
     }
 
     trackCategoryNodeById(index: number, item: CategoryNode) {

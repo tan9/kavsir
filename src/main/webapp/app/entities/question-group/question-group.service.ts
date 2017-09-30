@@ -17,20 +17,23 @@ export class QuestionGroupService {
     create(questionGroup: QuestionGroup): Observable<QuestionGroup> {
         const copy = this.convert(questionGroup);
         return this.http.post(this.resourceUrl, copy).map((res: Response) => {
-            return res.json();
+            const jsonResponse = res.json();
+            return this.convertItemFromServer(jsonResponse);
         });
     }
 
     update(questionGroup: QuestionGroup): Observable<QuestionGroup> {
         const copy = this.convert(questionGroup);
         return this.http.put(this.resourceUrl, copy).map((res: Response) => {
-            return res.json();
+            const jsonResponse = res.json();
+            return this.convertItemFromServer(jsonResponse);
         });
     }
 
     find(id: number): Observable<QuestionGroup> {
         return this.http.get(`${this.resourceUrl}/${id}`).map((res: Response) => {
-            return res.json();
+            const jsonResponse = res.json();
+            return this.convertItemFromServer(jsonResponse);
         });
     }
 
@@ -52,9 +55,24 @@ export class QuestionGroupService {
 
     private convertResponse(res: Response): ResponseWrapper {
         const jsonResponse = res.json();
-        return new ResponseWrapper(res.headers, jsonResponse, res.status);
+        const result = [];
+        for (let i = 0; i < jsonResponse.length; i++) {
+            result.push(this.convertItemFromServer(jsonResponse[i]));
+        }
+        return new ResponseWrapper(res.headers, result, res.status);
     }
 
+    /**
+     * Convert a returned JSON object to QuestionGroup.
+     */
+    private convertItemFromServer(json: any): QuestionGroup {
+        const entity: QuestionGroup = Object.assign(new QuestionGroup(), json);
+        return entity;
+    }
+
+    /**
+     * Convert a QuestionGroup to a JSON which can be sent to the server.
+     */
     private convert(questionGroup: QuestionGroup): QuestionGroup {
         const copy: QuestionGroup = Object.assign({}, questionGroup);
         return copy;

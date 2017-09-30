@@ -26,7 +26,7 @@ export class QuestionGroupDialogComponent implements OnInit {
     constructor(
         public activeModal: NgbActiveModal,
         private dataUtils: JhiDataUtils,
-        private alertService: JhiAlertService,
+        private jhiAlertService: JhiAlertService,
         private questionGroupService: QuestionGroupService,
         private categoryNodeService: CategoryNodeService,
         private eventManager: JhiEventManager
@@ -82,7 +82,7 @@ export class QuestionGroupDialogComponent implements OnInit {
     }
 
     private onError(error: any) {
-        this.alertService.error(error.message, null, null);
+        this.jhiAlertService.error(error.message, null, null);
     }
 
     trackCategoryNodeById(index: number, item: CategoryNode) {

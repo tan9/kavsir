@@ -17,20 +17,23 @@ export class CategoryNodeService {
     create(categoryNode: CategoryNode): Observable<CategoryNode> {
         const copy = this.convert(categoryNode);
         return this.http.post(this.resourceUrl, copy).map((res: Response) => {
-            return res.json();
+            const jsonResponse = res.json();
+            return this.convertItemFromServer(jsonResponse);
         });
     }
 
     update(categoryNode: CategoryNode): Observable<CategoryNode> {
         const copy = this.convert(categoryNode);
         return this.http.put(this.resourceUrl, copy).map((res: Response) => {
-            return res.json();
+            const jsonResponse = res.json();
+            return this.convertItemFromServer(jsonResponse);
         });
     }
 
     find(id: number): Observable<CategoryNode> {
         return this.http.get(`${this.resourceUrl}/${id}`).map((res: Response) => {
-            return res.json();
+            const jsonResponse = res.json();
+            return this.convertItemFromServer(jsonResponse);
         });
     }
 
@@ -52,9 +55,24 @@ export class CategoryNodeService {
 
     private convertResponse(res: Response): ResponseWrapper {
         const jsonResponse = res.json();
-        return new ResponseWrapper(res.headers, jsonResponse, res.status);
+        const result = [];
+        for (let i = 0; i < jsonResponse.length; i++) {
+            result.push(this.convertItemFromServer(jsonResponse[i]));
+        }
+        return new ResponseWrapper(res.headers, result, res.status);
     }
 
+    /**
+     * Convert a returned JSON object to CategoryNode.
+     */
+    private convertItemFromServer(json: any): CategoryNode {
+        const entity: CategoryNode = Object.assign(new CategoryNode(), json);
+        return entity;
+    }
+
+    /**
+     * Convert a CategoryNode to a JSON which can be sent to the server.
+     */
     private convert(categoryNode: CategoryNode): CategoryNode {
         const copy: CategoryNode = Object.assign({}, categoryNode);
         return copy;

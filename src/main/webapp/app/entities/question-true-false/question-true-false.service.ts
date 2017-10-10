@@ -17,20 +17,23 @@ export class QuestionTrueFalseService {
     create(questionTrueFalse: QuestionTrueFalse): Observable<QuestionTrueFalse> {
         const copy = this.convert(questionTrueFalse);
         return this.http.post(this.resourceUrl, copy).map((res: Response) => {
-            return res.json();
+            const jsonResponse = res.json();
+            return this.convertItemFromServer(jsonResponse);
         });
     }
 
     update(questionTrueFalse: QuestionTrueFalse): Observable<QuestionTrueFalse> {
         const copy = this.convert(questionTrueFalse);
         return this.http.put(this.resourceUrl, copy).map((res: Response) => {
-            return res.json();
+            const jsonResponse = res.json();
+            return this.convertItemFromServer(jsonResponse);
         });
     }
 
     find(id: number): Observable<QuestionTrueFalse> {
         return this.http.get(`${this.resourceUrl}/${id}`).map((res: Response) => {
-            return res.json();
+            const jsonResponse = res.json();
+            return this.convertItemFromServer(jsonResponse);
         });
     }
 
@@ -58,9 +61,24 @@ export class QuestionTrueFalseService {
 
     private convertResponse(res: Response): ResponseWrapper {
         const jsonResponse = res.json();
-        return new ResponseWrapper(res.headers, jsonResponse, res.status);
+        const result = [];
+        for (let i = 0; i < jsonResponse.length; i++) {
+            result.push(this.convertItemFromServer(jsonResponse[i]));
+        }
+        return new ResponseWrapper(res.headers, result, res.status);
     }
 
+    /**
+     * Convert a returned JSON object to QuestionTrueFalse.
+     */
+    private convertItemFromServer(json: any): QuestionTrueFalse {
+        const entity: QuestionTrueFalse = Object.assign(new QuestionTrueFalse(), json);
+        return entity;
+    }
+
+    /**
+     * Convert a QuestionTrueFalse to a JSON which can be sent to the server.
+     */
     private convert(questionTrueFalse: QuestionTrueFalse): QuestionTrueFalse {
         const copy: QuestionTrueFalse = Object.assign({}, questionTrueFalse);
         return copy;

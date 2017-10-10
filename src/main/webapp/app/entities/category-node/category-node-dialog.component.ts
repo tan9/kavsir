@@ -35,7 +35,7 @@ export class CategoryNodeDialogComponent implements OnInit {
 
     constructor(
         public activeModal: NgbActiveModal,
-        private alertService: JhiAlertService,
+        private jhiAlertService: JhiAlertService,
         private categoryNodeService: CategoryNodeService,
         private questionTrueFalseService: QuestionTrueFalseService,
         private questionChoiceService: QuestionChoiceService,
@@ -90,7 +90,7 @@ export class CategoryNodeDialogComponent implements OnInit {
     }
 
     private onError(error: any) {
-        this.alertService.error(error.message, null, null);
+        this.jhiAlertService.error(error.message, null, null);
     }
 
     trackCategoryNodeById(index: number, item: CategoryNode) {

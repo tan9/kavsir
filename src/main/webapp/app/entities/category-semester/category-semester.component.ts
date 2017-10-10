@@ -20,7 +20,7 @@ categorySemesters: CategorySemester[];
 
     constructor(
         private categorySemesterService: CategorySemesterService,
-        private alertService: JhiAlertService,
+        private jhiAlertService: JhiAlertService,
         private eventManager: JhiEventManager,
         private activatedRoute: ActivatedRoute,
         private principal: Principal
@@ -79,6 +79,6 @@ categorySemesters: CategorySemester[];
     }
 
     private onError(error) {
-        this.alertService.error(error.message, null, null);
+        this.jhiAlertService.error(error.message, null, null);
     }
 }

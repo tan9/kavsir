@@ -33,7 +33,7 @@ currentAccount: any;
     constructor(
         private categoryNodeService: CategoryNodeService,
         private parseLinks: JhiParseLinks,
-        private alertService: JhiAlertService,
+        private jhiAlertService: JhiAlertService,
         private principal: Principal,
         private activatedRoute: ActivatedRoute,
         private router: Router,
@@ -146,6 +146,6 @@ currentAccount: any;
         this.categoryNodes = data;
     }
     private onError(error) {
-        this.alertService.error(error.message, null, null);
+        this.jhiAlertService.error(error.message, null, null);
     }
 }

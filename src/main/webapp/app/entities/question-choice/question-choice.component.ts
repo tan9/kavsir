@@ -37,7 +37,7 @@ currentAccount: any;
         protected questionChoiceOptionService: QuestionChoiceOptionService,
         protected resourceImageService: ResourceImageService,
         private parseLinks: JhiParseLinks,
-        private alertService: JhiAlertService,
+        private jhiAlertService: JhiAlertService,
         private principal: Principal,
         protected activatedRoute: ActivatedRoute,
         private dataUtils: JhiDataUtils,
@@ -159,6 +159,6 @@ currentAccount: any;
         this.questionChoices = data;
     }
     protected onError(error) {
-        this.alertService.error(error.message, null, null);
+        this.jhiAlertService.error(error.message, null, null);
     }
 }

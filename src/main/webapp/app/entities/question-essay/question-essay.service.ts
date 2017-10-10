@@ -17,20 +17,23 @@ export class QuestionEssayService {
     create(questionEssay: QuestionEssay): Observable<QuestionEssay> {
         const copy = this.convert(questionEssay);
         return this.http.post(this.resourceUrl, copy).map((res: Response) => {
-            return res.json();
+            const jsonResponse = res.json();
+            return this.convertItemFromServer(jsonResponse);
         });
     }
 
     update(questionEssay: QuestionEssay): Observable<QuestionEssay> {
         const copy = this.convert(questionEssay);
         return this.http.put(this.resourceUrl, copy).map((res: Response) => {
-            return res.json();
+            const jsonResponse = res.json();
+            return this.convertItemFromServer(jsonResponse);
         });
     }
 
     find(id: number): Observable<QuestionEssay> {
         return this.http.get(`${this.resourceUrl}/${id}`).map((res: Response) => {
-            return res.json();
+            const jsonResponse = res.json();
+            return this.convertItemFromServer(jsonResponse);
         });
     }
 
@@ -58,9 +61,24 @@ export class QuestionEssayService {
 
     private convertResponse(res: Response): ResponseWrapper {
         const jsonResponse = res.json();
-        return new ResponseWrapper(res.headers, jsonResponse, res.status);
+        const result = [];
+        for (let i = 0; i < jsonResponse.length; i++) {
+            result.push(this.convertItemFromServer(jsonResponse[i]));
+        }
+        return new ResponseWrapper(res.headers, result, res.status);
     }
 
+    /**
+     * Convert a returned JSON object to QuestionEssay.
+     */
+    private convertItemFromServer(json: any): QuestionEssay {
+        const entity: QuestionEssay = Object.assign(new QuestionEssay(), json);
+        return entity;
+    }
+
+    /**
+     * Convert a QuestionEssay to a JSON which can be sent to the server.
+     */
     private convert(questionEssay: QuestionEssay): QuestionEssay {
         const copy: QuestionEssay = Object.assign({}, questionEssay);
         return copy;

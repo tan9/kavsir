@@ -18,20 +18,23 @@ export class CategorySemesterService implements CategoryService<CategorySemester
     create(categorySemester: CategorySemester): Observable<CategorySemester> {
         const copy = this.convert(categorySemester);
         return this.http.post(this.resourceUrl, copy).map((res: Response) => {
-            return res.json();
+            const jsonResponse = res.json();
+            return this.convertItemFromServer(jsonResponse);
         });
     }
 
     update(categorySemester: CategorySemester): Observable<CategorySemester> {
         const copy = this.convert(categorySemester);
         return this.http.put(this.resourceUrl, copy).map((res: Response) => {
-            return res.json();
+            const jsonResponse = res.json();
+            return this.convertItemFromServer(jsonResponse);
         });
     }
 
     find(id: number): Observable<CategorySemester> {
         return this.http.get(`${this.resourceUrl}/${id}`).map((res: Response) => {
-            return res.json();
+            const jsonResponse = res.json();
+            return this.convertItemFromServer(jsonResponse);
         });
     }
 
@@ -53,9 +56,24 @@ export class CategorySemesterService implements CategoryService<CategorySemester
 
     private convertResponse(res: Response): ResponseWrapper {
         const jsonResponse = res.json();
-        return new ResponseWrapper(res.headers, jsonResponse, res.status);
+        const result = [];
+        for (let i = 0; i < jsonResponse.length; i++) {
+            result.push(this.convertItemFromServer(jsonResponse[i]));
+        }
+        return new ResponseWrapper(res.headers, result, res.status);
     }
 
+    /**
+     * Convert a returned JSON object to CategorySemester.
+     */
+    private convertItemFromServer(json: any): CategorySemester {
+        const entity: CategorySemester = Object.assign(new CategorySemester(), json);
+        return entity;
+    }
+
+    /**
+     * Convert a CategorySemester to a JSON which can be sent to the server.
+     */
     private convert(categorySemester: CategorySemester): CategorySemester {
         const copy: CategorySemester = Object.assign({}, categorySemester);
         return copy;

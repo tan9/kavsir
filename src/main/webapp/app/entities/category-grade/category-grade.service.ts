@@ -18,20 +18,23 @@ export class CategoryGradeService implements CategoryService<CategoryGrade> {
     create(categoryGrade: CategoryGrade): Observable<CategoryGrade> {
         const copy = this.convert(categoryGrade);
         return this.http.post(this.resourceUrl, copy).map((res: Response) => {
-            return res.json();
+            const jsonResponse = res.json();
+            return this.convertItemFromServer(jsonResponse);
         });
     }
 
     update(categoryGrade: CategoryGrade): Observable<CategoryGrade> {
         const copy = this.convert(categoryGrade);
         return this.http.put(this.resourceUrl, copy).map((res: Response) => {
-            return res.json();
+            const jsonResponse = res.json();
+            return this.convertItemFromServer(jsonResponse);
         });
     }
 
     find(id: number): Observable<CategoryGrade> {
         return this.http.get(`${this.resourceUrl}/${id}`).map((res: Response) => {
-            return res.json();
+            const jsonResponse = res.json();
+            return this.convertItemFromServer(jsonResponse);
         });
     }
 
@@ -53,9 +56,24 @@ export class CategoryGradeService implements CategoryService<CategoryGrade> {
 
     private convertResponse(res: Response): ResponseWrapper {
         const jsonResponse = res.json();
-        return new ResponseWrapper(res.headers, jsonResponse, res.status);
+        const result = [];
+        for (let i = 0; i < jsonResponse.length; i++) {
+            result.push(this.convertItemFromServer(jsonResponse[i]));
+        }
+        return new ResponseWrapper(res.headers, result, res.status);
     }
 
+    /**
+     * Convert a returned JSON object to CategoryGrade.
+     */
+    private convertItemFromServer(json: any): CategoryGrade {
+        const entity: CategoryGrade = Object.assign(new CategoryGrade(), json);
+        return entity;
+    }
+
+    /**
+     * Convert a CategoryGrade to a JSON which can be sent to the server.
+     */
     private convert(categoryGrade: CategoryGrade): CategoryGrade {
         const copy: CategoryGrade = Object.assign({}, categoryGrade);
         return copy;

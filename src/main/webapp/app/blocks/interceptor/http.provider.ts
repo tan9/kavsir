@@ -1,8 +1,9 @@
 import { JhiEventManager, JhiInterceptableHttp } from 'ng-jhipster';
 import { Injector } from '@angular/core';
 import { Http, XHRBackend, RequestOptions } from '@angular/http';
-import { Router } from '@angular/router/router';
 
+import { AuthServerProvider } from '../../shared/auth/auth-session.service';
+import { LoginModalService } from '../../shared/login/login-modal.service';
 import { StateStorageService } from '../../shared/auth/state-storage.service';
 import { AuthExpiredInterceptor } from './auth-expired.interceptor';
 import { ErrorHandlerInterceptor } from './errorhandler.interceptor';
@@ -13,14 +14,15 @@ export function interceptableFactory(
     defaultOptions: RequestOptions,
     injector: Injector,
     stateStorageService: StateStorageService,
-    router: Router,
+    loginServiceModal: LoginModalService,
     eventManager: JhiEventManager
 ) {
     return new JhiInterceptableHttp(
         backend,
         defaultOptions,
         [
-            new AuthExpiredInterceptor(injector, stateStorageService, router),
+            new AuthExpiredInterceptor(injector, stateStorageService,
+                loginServiceModal),
             // Other interceptors can be added here
             new ErrorHandlerInterceptor(eventManager),
             new NotificationInterceptor(injector)
@@ -37,6 +39,7 @@ export function customHttpProvider() {
             RequestOptions,
             Injector,
             StateStorageService,
+            LoginModalService,
             JhiEventManager
         ]
     };

@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Response } from '@angular/http';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
-import { Observable } from 'rxjs/Rx';
-import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { Observable } from 'rxjs/Observable';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
 
 import { QuestionChoiceOption } from './question-choice-option.model';
@@ -11,7 +11,6 @@ import { QuestionChoiceOptionPopupService } from './question-choice-option-popup
 import { QuestionChoiceOptionService } from './question-choice-option.service';
 import { QuestionChoice, QuestionChoiceService } from '../question-choice';
 import { ResourceImage, ResourceImageService } from '../resource-image';
-import { ResponseWrapper } from '../../shared';
 
 @Component({
     selector: 'jhi-question-choice-option-dialog',
@@ -40,9 +39,9 @@ export class QuestionChoiceOptionDialogComponent implements OnInit {
     ngOnInit() {
         this.isSaving = false;
         this.questionChoiceService.query()
-            .subscribe((res: ResponseWrapper) => { this.questionchoices = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+            .subscribe((res: HttpResponse<QuestionChoice[]>) => { this.questionchoices = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.resourceImageService.query()
-            .subscribe((res: ResponseWrapper) => { this.resourceimages = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+            .subscribe((res: HttpResponse<ResourceImage[]>) => { this.resourceimages = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     byteSize(field) {
@@ -72,9 +71,9 @@ export class QuestionChoiceOptionDialogComponent implements OnInit {
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<QuestionChoiceOption>) {
-        result.subscribe((res: QuestionChoiceOption) =>
-            this.onSaveSuccess(res), (res: Response) => this.onSaveError());
+    private subscribeToSaveResponse(result: Observable<HttpResponse<QuestionChoiceOption>>) {
+        result.subscribe((res: HttpResponse<QuestionChoiceOption>) =>
+            this.onSaveSuccess(res.body), (res: HttpErrorResponse) => this.onSaveError());
     }
 
     private onSaveSuccess(result: QuestionChoiceOption) {

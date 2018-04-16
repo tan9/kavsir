@@ -1,9 +1,6 @@
-import { Injectable } from '@angular/core';
-import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes, CanActivate } from '@angular/router';
+import { Routes } from '@angular/router';
 
 import { UserRouteAccessService } from '../../shared';
-import { JhiPaginationUtil } from 'ng-jhipster';
-
 import { CategoryPublisherComponent } from './category-publisher.component';
 import { CategoryPublisherDetailComponent } from './category-publisher-detail.component';
 import { CategoryPublisherPopupComponent } from './category-publisher-dialog.component';

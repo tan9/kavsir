@@ -1,9 +1,6 @@
-import { Injectable } from '@angular/core';
-import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes, CanActivate } from '@angular/router';
+import { Routes } from '@angular/router';
 
 import { UserRouteAccessService } from '../../shared';
-import { JhiPaginationUtil } from 'ng-jhipster';
-
 import { CategoryGradeComponent } from './category-grade.component';
 import { CategoryGradeDetailComponent } from './category-grade-detail.component';
 import { CategoryGradePopupComponent } from './category-grade-dialog.component';

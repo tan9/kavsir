@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Rx';
+import { HttpResponse } from '@angular/common/http';
+import { Subscription } from 'rxjs/Subscription';
 import { JhiEventManager, JhiDataUtils } from 'ng-jhipster';
 
 import { QuestionChoiceOption } from './question-choice-option.model';
@@ -32,9 +33,10 @@ export class QuestionChoiceOptionDetailComponent implements OnInit, OnDestroy {
     }
 
     load(id) {
-        this.questionChoiceOptionService.find(id).subscribe((questionChoiceOption) => {
-            this.questionChoiceOption = questionChoiceOption;
-        });
+        this.questionChoiceOptionService.find(id)
+            .subscribe((questionChoiceOptionResponse: HttpResponse<QuestionChoiceOption>) => {
+                this.questionChoiceOption = questionChoiceOptionResponse.body;
+            });
     }
     byteSize(field) {
         return this.dataUtils.byteSize(field);

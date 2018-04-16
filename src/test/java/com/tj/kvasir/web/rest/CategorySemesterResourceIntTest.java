@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static com.tj.kvasir.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -73,6 +74,7 @@ public class CategorySemesterResourceIntTest {
         this.restCategorySemesterMockMvc = MockMvcBuilders.standaloneSetup(categorySemesterResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
+            .setConversionService(createFormattingConversionService())
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
@@ -115,7 +117,7 @@ public class CategorySemesterResourceIntTest {
 
         // Validate the CategorySemester in Elasticsearch
         CategorySemester categorySemesterEs = categorySemesterSearchRepository.findOne(testCategorySemester.getId());
-        assertThat(categorySemesterEs).isEqualToComparingFieldByField(testCategorySemester);
+        assertThat(categorySemesterEs).isEqualToIgnoringGivenFields(testCategorySemester);
     }
 
     @Test
@@ -221,6 +223,8 @@ public class CategorySemesterResourceIntTest {
 
         // Update the categorySemester
         CategorySemester updatedCategorySemester = categorySemesterRepository.findOne(categorySemester.getId());
+        // Disconnect from session so that the updates on updatedCategorySemester are not directly saved in db
+        em.detach(updatedCategorySemester);
         updatedCategorySemester
             .position(UPDATED_POSITION)
             .name(UPDATED_NAME);
@@ -239,7 +243,7 @@ public class CategorySemesterResourceIntTest {
 
         // Validate the CategorySemester in Elasticsearch
         CategorySemester categorySemesterEs = categorySemesterSearchRepository.findOne(testCategorySemester.getId());
-        assertThat(categorySemesterEs).isEqualToComparingFieldByField(testCategorySemester);
+        assertThat(categorySemesterEs).isEqualToIgnoringGivenFields(testCategorySemester);
     }
 
     @Test

@@ -5,11 +5,11 @@ import com.tj.kvasir.domain.CategoryNode;
 
 import com.tj.kvasir.repository.CategoryNodeRepository;
 import com.tj.kvasir.repository.search.CategoryNodeSearchRepository;
+import com.tj.kvasir.web.rest.errors.BadRequestAlertException;
 import com.tj.kvasir.web.rest.util.HeaderUtil;
 import com.tj.kvasir.web.rest.util.PaginationUtil;
 import com.tj.kvasir.service.dto.CategoryNodeDTO;
 import com.tj.kvasir.service.mapper.CategoryNodeMapper;
-import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,7 +66,7 @@ public class CategoryNodeResource {
     public ResponseEntity<CategoryNodeDTO> createCategoryNode(@Valid @RequestBody CategoryNodeDTO categoryNodeDTO) throws URISyntaxException {
         log.debug("REST request to save CategoryNode : {}", categoryNodeDTO);
         if (categoryNodeDTO.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new categoryNode cannot already have an ID")).body(null);
+            throw new BadRequestAlertException("A new categoryNode cannot already have an ID", ENTITY_NAME, "idexists");
         }
         CategoryNode categoryNode = categoryNodeMapper.toEntity(categoryNodeDTO);
         categoryNode = categoryNodeRepository.save(categoryNode);
@@ -110,7 +110,7 @@ public class CategoryNodeResource {
      */
     @GetMapping("/category-nodes")
     @Timed
-    public ResponseEntity<List<CategoryNodeDTO>> getAllCategoryNodes(@ApiParam Pageable pageable) {
+    public ResponseEntity<List<CategoryNodeDTO>> getAllCategoryNodes(Pageable pageable) {
         log.debug("REST request to get a page of CategoryNodes");
         Page<CategoryNode> page = categoryNodeRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/category-nodes");
@@ -157,7 +157,7 @@ public class CategoryNodeResource {
      */
     @GetMapping("/_search/category-nodes")
     @Timed
-    public ResponseEntity<List<CategoryNodeDTO>> searchCategoryNodes(@RequestParam String query, @ApiParam Pageable pageable) {
+    public ResponseEntity<List<CategoryNodeDTO>> searchCategoryNodes(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of CategoryNodes for query {}", query);
         Page<CategoryNode> page = categoryNodeSearchRepository.search(queryStringQuery(query), pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/category-nodes");

@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Rx';
+import { HttpResponse } from '@angular/common/http';
+import { Subscription } from 'rxjs/Subscription';
 import { JhiEventManager } from 'ng-jhipster';
 
 import { CategoryPublisher } from './category-publisher.model';
@@ -31,9 +32,10 @@ export class CategoryPublisherDetailComponent implements OnInit, OnDestroy {
     }
 
     load(id) {
-        this.categoryPublisherService.find(id).subscribe((categoryPublisher) => {
-            this.categoryPublisher = categoryPublisher;
-        });
+        this.categoryPublisherService.find(id)
+            .subscribe((categoryPublisherResponse: HttpResponse<CategoryPublisher>) => {
+                this.categoryPublisher = categoryPublisherResponse.body;
+            });
     }
     previousState() {
         window.history.back();

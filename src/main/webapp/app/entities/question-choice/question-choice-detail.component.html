@@ -4,19 +4,19 @@
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="kavsirApp.questionChoice.multipleResponse">Multiple Response</span></dt>
+        <dt><span jhiTranslate="kavsirApp.questionChoice.multipleResponse" [ngbTooltip]="'kavsirApp.questionChoice.help.multipleResponse' | translate">Multiple Response</span></dt>
         <dd>
             <span>{{questionChoice.multipleResponse}}</span>
         </dd>
-        <dt><span jhiTranslate="kavsirApp.questionChoice.text">Text</span></dt>
+        <dt><span jhiTranslate="kavsirApp.questionChoice.text" [ngbTooltip]="'kavsirApp.questionChoice.help.text' | translate">Text</span></dt>
         <dd>
             <span>{{questionChoice.text}}</span>
         </dd>
-        <dt><span jhiTranslate="kavsirApp.questionChoice.memo">Memo</span></dt>
+        <dt><span jhiTranslate="kavsirApp.questionChoice.memo" [ngbTooltip]="'kavsirApp.questionChoice.help.memo' | translate">Memo</span></dt>
         <dd>
             <span>{{questionChoice.memo}}</span>
         </dd>
-        <dt><span jhiTranslate="kavsirApp.questionChoice.groupPosition">Group Position</span></dt>
+        <dt><span jhiTranslate="kavsirApp.questionChoice.groupPosition" [ngbTooltip]="'kavsirApp.questionChoice.help.groupPosition' | translate">Group Position</span></dt>
         <dd>
             <span>{{questionChoice.groupPosition}}</span>
         </dd>
@@ -49,6 +49,7 @@
     <button type="button"
             [routerLink]="['/', { outlets: { popup: 'question-choice/'+ questionChoice.id + '/edit'} }]"
             replaceUrl="true"
+            queryParamsHandling="merge"
             class="btn btn-primary">
         <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
     </button>

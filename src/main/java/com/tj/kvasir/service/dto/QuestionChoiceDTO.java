@@ -124,7 +124,7 @@ public class QuestionChoiceDTO implements Serializable {
             ", multipleResponse='" + isMultipleResponse() + "'" +
             ", text='" + getText() + "'" +
             ", memo='" + getMemo() + "'" +
-            ", groupPosition='" + getGroupPosition() + "'" +
+            ", groupPosition=" + getGroupPosition() +
             "}";
     }
 }

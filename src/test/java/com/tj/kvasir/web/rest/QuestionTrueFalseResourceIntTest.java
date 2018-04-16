@@ -28,6 +28,7 @@ import org.springframework.util.Base64Utils;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static com.tj.kvasir.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -89,6 +90,7 @@ public class QuestionTrueFalseResourceIntTest {
         this.restQuestionTrueFalseMockMvc = MockMvcBuilders.standaloneSetup(questionTrueFalseResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
+            .setConversionService(createFormattingConversionService())
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
@@ -136,7 +138,7 @@ public class QuestionTrueFalseResourceIntTest {
 
         // Validate the QuestionTrueFalse in Elasticsearch
         QuestionTrueFalse questionTrueFalseEs = questionTrueFalseSearchRepository.findOne(testQuestionTrueFalse.getId());
-        assertThat(questionTrueFalseEs).isEqualToComparingFieldByField(testQuestionTrueFalse);
+        assertThat(questionTrueFalseEs).isEqualToIgnoringGivenFields(testQuestionTrueFalse);
     }
 
     @Test
@@ -249,6 +251,8 @@ public class QuestionTrueFalseResourceIntTest {
 
         // Update the questionTrueFalse
         QuestionTrueFalse updatedQuestionTrueFalse = questionTrueFalseRepository.findOne(questionTrueFalse.getId());
+        // Disconnect from session so that the updates on updatedQuestionTrueFalse are not directly saved in db
+        em.detach(updatedQuestionTrueFalse);
         updatedQuestionTrueFalse
             .correct(UPDATED_CORRECT)
             .text(UPDATED_TEXT)
@@ -272,7 +276,7 @@ public class QuestionTrueFalseResourceIntTest {
 
         // Validate the QuestionTrueFalse in Elasticsearch
         QuestionTrueFalse questionTrueFalseEs = questionTrueFalseSearchRepository.findOne(testQuestionTrueFalse.getId());
-        assertThat(questionTrueFalseEs).isEqualToComparingFieldByField(testQuestionTrueFalse);
+        assertThat(questionTrueFalseEs).isEqualToIgnoringGivenFields(testQuestionTrueFalse);
     }
 
     @Test

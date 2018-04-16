@@ -1,6 +1,7 @@
 import { Injectable, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { HttpResponse } from '@angular/common/http';
 import { CategorySubject } from './category-subject.model';
 import { CategorySubjectService } from './category-subject.service';
 
@@ -25,10 +26,12 @@ export class CategorySubjectPopupService {
             }
 
             if (id) {
-                this.categorySubjectService.find(id).subscribe((categorySubject) => {
-                    this.ngbModalRef = this.categorySubjectModalRef(component, categorySubject);
-                    resolve(this.ngbModalRef);
-                });
+                this.categorySubjectService.find(id)
+                    .subscribe((categorySubjectResponse: HttpResponse<CategorySubject>) => {
+                        const categorySubject: CategorySubject = categorySubjectResponse.body;
+                        this.ngbModalRef = this.categorySubjectModalRef(component, categorySubject);
+                        resolve(this.ngbModalRef);
+                    });
             } else {
                 // setTimeout used as a workaround for getting ExpressionChangedAfterItHasBeenCheckedError
                 setTimeout(() => {
@@ -43,10 +46,10 @@ export class CategorySubjectPopupService {
         const modalRef = this.modalService.open(component, { size: 'lg', backdrop: 'static'});
         modalRef.componentInstance.categorySubject = categorySubject;
         modalRef.result.then((result) => {
-            this.router.navigate([{ outlets: { popup: null }}], { replaceUrl: true });
+            this.router.navigate([{ outlets: { popup: null }}], { replaceUrl: true, queryParamsHandling: 'merge' });
             this.ngbModalRef = null;
         }, (reason) => {
-            this.router.navigate([{ outlets: { popup: null }}], { replaceUrl: true });
+            this.router.navigate([{ outlets: { popup: null }}], { replaceUrl: true, queryParamsHandling: 'merge' });
             this.ngbModalRef = null;
         });
         return modalRef;

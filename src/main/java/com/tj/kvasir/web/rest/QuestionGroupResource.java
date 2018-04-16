@@ -2,10 +2,10 @@ package com.tj.kvasir.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.tj.kvasir.service.QuestionGroupService;
+import com.tj.kvasir.web.rest.errors.BadRequestAlertException;
 import com.tj.kvasir.web.rest.util.HeaderUtil;
 import com.tj.kvasir.web.rest.util.PaginationUtil;
 import com.tj.kvasir.service.dto.QuestionGroupDTO;
-import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,7 +55,7 @@ public class QuestionGroupResource {
     public ResponseEntity<QuestionGroupDTO> createQuestionGroup(@Valid @RequestBody QuestionGroupDTO questionGroupDTO) throws URISyntaxException {
         log.debug("REST request to save QuestionGroup : {}", questionGroupDTO);
         if (questionGroupDTO.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new questionGroup cannot already have an ID")).body(null);
+            throw new BadRequestAlertException("A new questionGroup cannot already have an ID", ENTITY_NAME, "idexists");
         }
         QuestionGroupDTO result = questionGroupService.save(questionGroupDTO);
         return ResponseEntity.created(new URI("/api/question-groups/" + result.getId()))
@@ -93,7 +93,7 @@ public class QuestionGroupResource {
      */
     @GetMapping("/question-groups")
     @Timed
-    public ResponseEntity<List<QuestionGroupDTO>> getAllQuestionGroups(@ApiParam Pageable pageable) {
+    public ResponseEntity<List<QuestionGroupDTO>> getAllQuestionGroups(Pageable pageable) {
         log.debug("REST request to get a page of QuestionGroups");
         Page<QuestionGroupDTO> page = questionGroupService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/question-groups");
@@ -138,7 +138,7 @@ public class QuestionGroupResource {
      */
     @GetMapping("/_search/question-groups")
     @Timed
-    public ResponseEntity<List<QuestionGroupDTO>> searchQuestionGroups(@RequestParam String query, @ApiParam Pageable pageable) {
+    public ResponseEntity<List<QuestionGroupDTO>> searchQuestionGroups(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of QuestionGroups for query {}", query);
         Page<QuestionGroupDTO> page = questionGroupService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/question-groups");

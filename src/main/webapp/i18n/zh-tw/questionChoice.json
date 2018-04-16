@@ -1,3 +1,4 @@
+
 {
     "kavsirApp": {
         "questionChoice" : {
@@ -23,7 +24,13 @@
             "option": "Option",
             "category": "Category",
             "image": "Image",
-            "questionGroup": "Question Group"
+            "questionGroup": "Question Group",
+            "help": {
+                "multipleResponse": "是否為複選",
+                "text": "題目",
+                "memo": "備註",
+                "groupPosition": "題組中序位"
+            }
         }
     }
 }

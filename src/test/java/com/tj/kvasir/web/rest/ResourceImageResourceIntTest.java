@@ -27,6 +27,7 @@ import org.springframework.util.Base64Utils;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static com.tj.kvasir.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -81,6 +82,7 @@ public class ResourceImageResourceIntTest {
         this.restResourceImageMockMvc = MockMvcBuilders.standaloneSetup(resourceImageResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
+            .setConversionService(createFormattingConversionService())
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
@@ -126,7 +128,7 @@ public class ResourceImageResourceIntTest {
 
         // Validate the ResourceImage in Elasticsearch
         ResourceImage resourceImageEs = resourceImageSearchRepository.findOne(testResourceImage.getId());
-        assertThat(resourceImageEs).isEqualToComparingFieldByField(testResourceImage);
+        assertThat(resourceImageEs).isEqualToIgnoringGivenFields(testResourceImage);
     }
 
     @Test
@@ -237,6 +239,8 @@ public class ResourceImageResourceIntTest {
 
         // Update the resourceImage
         ResourceImage updatedResourceImage = resourceImageRepository.findOne(resourceImage.getId());
+        // Disconnect from session so that the updates on updatedResourceImage are not directly saved in db
+        em.detach(updatedResourceImage);
         updatedResourceImage
             .name(UPDATED_NAME)
             .content(UPDATED_CONTENT)
@@ -258,7 +262,7 @@ public class ResourceImageResourceIntTest {
 
         // Validate the ResourceImage in Elasticsearch
         ResourceImage resourceImageEs = resourceImageSearchRepository.findOne(testResourceImage.getId());
-        assertThat(resourceImageEs).isEqualToComparingFieldByField(testResourceImage);
+        assertThat(resourceImageEs).isEqualToIgnoringGivenFields(testResourceImage);
     }
 
     @Test

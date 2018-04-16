@@ -2,10 +2,10 @@ package com.tj.kvasir.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.tj.kvasir.service.QuestionEssayService;
+import com.tj.kvasir.web.rest.errors.BadRequestAlertException;
 import com.tj.kvasir.web.rest.util.HeaderUtil;
 import com.tj.kvasir.web.rest.util.PaginationUtil;
 import com.tj.kvasir.service.dto.QuestionEssayDTO;
-import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,7 +55,7 @@ public class QuestionEssayResource {
     public ResponseEntity<QuestionEssayDTO> createQuestionEssay(@Valid @RequestBody QuestionEssayDTO questionEssayDTO) throws URISyntaxException {
         log.debug("REST request to save QuestionEssay : {}", questionEssayDTO);
         if (questionEssayDTO.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new questionEssay cannot already have an ID")).body(null);
+            throw new BadRequestAlertException("A new questionEssay cannot already have an ID", ENTITY_NAME, "idexists");
         }
         QuestionEssayDTO result = questionEssayService.save(questionEssayDTO);
         return ResponseEntity.created(new URI("/api/question-essays/" + result.getId()))
@@ -93,7 +93,7 @@ public class QuestionEssayResource {
      */
     @GetMapping("/question-essays")
     @Timed
-    public ResponseEntity<List<QuestionEssayDTO>> getAllQuestionEssays(@ApiParam Pageable pageable) {
+    public ResponseEntity<List<QuestionEssayDTO>> getAllQuestionEssays(Pageable pageable) {
         log.debug("REST request to get a page of QuestionEssays");
         Page<QuestionEssayDTO> page = questionEssayService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/question-essays");
@@ -138,7 +138,7 @@ public class QuestionEssayResource {
      */
     @GetMapping("/_search/question-essays")
     @Timed
-    public ResponseEntity<List<QuestionEssayDTO>> searchQuestionEssays(@RequestParam String query, @ApiParam Pageable pageable) {
+    public ResponseEntity<List<QuestionEssayDTO>> searchQuestionEssays(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of QuestionEssays for query {}", query);
         Page<QuestionEssayDTO> page = questionEssayService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/question-essays");

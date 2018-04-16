@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static com.tj.kvasir.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -73,6 +74,7 @@ public class CategoryGradeResourceIntTest {
         this.restCategoryGradeMockMvc = MockMvcBuilders.standaloneSetup(categoryGradeResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
+            .setConversionService(createFormattingConversionService())
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
@@ -115,7 +117,7 @@ public class CategoryGradeResourceIntTest {
 
         // Validate the CategoryGrade in Elasticsearch
         CategoryGrade categoryGradeEs = categoryGradeSearchRepository.findOne(testCategoryGrade.getId());
-        assertThat(categoryGradeEs).isEqualToComparingFieldByField(testCategoryGrade);
+        assertThat(categoryGradeEs).isEqualToIgnoringGivenFields(testCategoryGrade);
     }
 
     @Test
@@ -221,6 +223,8 @@ public class CategoryGradeResourceIntTest {
 
         // Update the categoryGrade
         CategoryGrade updatedCategoryGrade = categoryGradeRepository.findOne(categoryGrade.getId());
+        // Disconnect from session so that the updates on updatedCategoryGrade are not directly saved in db
+        em.detach(updatedCategoryGrade);
         updatedCategoryGrade
             .position(UPDATED_POSITION)
             .name(UPDATED_NAME);
@@ -239,7 +243,7 @@ public class CategoryGradeResourceIntTest {
 
         // Validate the CategoryGrade in Elasticsearch
         CategoryGrade categoryGradeEs = categoryGradeSearchRepository.findOne(testCategoryGrade.getId());
-        assertThat(categoryGradeEs).isEqualToComparingFieldByField(testCategoryGrade);
+        assertThat(categoryGradeEs).isEqualToIgnoringGivenFields(testCategoryGrade);
     }
 
     @Test

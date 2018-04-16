@@ -13,9 +13,9 @@
                    [(ngModel)]="questionChoiceOption.id" readonly />
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="kavsirApp.questionChoiceOption.correct" for="field_correct">Correct</label>
+            <label class="form-control-label" jhiTranslate="kavsirApp.questionChoiceOption.correct" for="field_correct" [ngbTooltip]="'kavsirApp.questionChoiceOption.help.correct' | translate">Correct</label>
             <input type="checkbox" class="form-control" name="correct" id="field_correct"
-                [(ngModel)]="questionChoiceOption.correct"  />
+                [(ngModel)]="questionChoiceOption.correct" />
             <div [hidden]="!(editForm.controls.correct?.dirty && editForm.controls.correct?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.correct?.errors?.required" jhiTranslate="entity.validation.required">
@@ -24,9 +24,9 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="kavsirApp.questionChoiceOption.text" for="field_text">Text</label>
+            <label class="form-control-label" jhiTranslate="kavsirApp.questionChoiceOption.text" for="field_text" [ngbTooltip]="'kavsirApp.questionChoiceOption.help.text' | translate">Text</label>
             <textarea class="form-control" name="text" id="field_text"
-                [(ngModel)]="questionChoiceOption.text" required ></textarea>
+                [(ngModel)]="questionChoiceOption.text" required></textarea>
             <div [hidden]="!(editForm.controls.text?.dirty && editForm.controls.text?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.text?.errors?.required" jhiTranslate="entity.validation.required">
@@ -35,9 +35,9 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="kavsirApp.questionChoiceOption.memo" for="field_memo">Memo</label>
+            <label class="form-control-label" jhiTranslate="kavsirApp.questionChoiceOption.memo" for="field_memo" [ngbTooltip]="'kavsirApp.questionChoiceOption.help.memo' | translate">Memo</label>
             <input type="text" class="form-control" name="memo" id="field_memo"
-                [(ngModel)]="questionChoiceOption.memo"  />
+                [(ngModel)]="questionChoiceOption.memo" />
         </div>
 
         <div class="form-group">

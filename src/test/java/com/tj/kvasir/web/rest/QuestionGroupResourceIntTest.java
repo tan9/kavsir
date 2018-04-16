@@ -28,6 +28,7 @@ import org.springframework.util.Base64Utils;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static com.tj.kvasir.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -83,6 +84,7 @@ public class QuestionGroupResourceIntTest {
         this.restQuestionGroupMockMvc = MockMvcBuilders.standaloneSetup(questionGroupResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
+            .setConversionService(createFormattingConversionService())
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
@@ -126,7 +128,7 @@ public class QuestionGroupResourceIntTest {
 
         // Validate the QuestionGroup in Elasticsearch
         QuestionGroup questionGroupEs = questionGroupSearchRepository.findOne(testQuestionGroup.getId());
-        assertThat(questionGroupEs).isEqualToComparingFieldByField(testQuestionGroup);
+        assertThat(questionGroupEs).isEqualToIgnoringGivenFields(testQuestionGroup);
     }
 
     @Test
@@ -216,6 +218,8 @@ public class QuestionGroupResourceIntTest {
 
         // Update the questionGroup
         QuestionGroup updatedQuestionGroup = questionGroupRepository.findOne(questionGroup.getId());
+        // Disconnect from session so that the updates on updatedQuestionGroup are not directly saved in db
+        em.detach(updatedQuestionGroup);
         updatedQuestionGroup
             .text(UPDATED_TEXT)
             .memo(UPDATED_MEMO);
@@ -235,7 +239,7 @@ public class QuestionGroupResourceIntTest {
 
         // Validate the QuestionGroup in Elasticsearch
         QuestionGroup questionGroupEs = questionGroupSearchRepository.findOne(testQuestionGroup.getId());
-        assertThat(questionGroupEs).isEqualToComparingFieldByField(testQuestionGroup);
+        assertThat(questionGroupEs).isEqualToIgnoringGivenFields(testQuestionGroup);
     }
 
     @Test

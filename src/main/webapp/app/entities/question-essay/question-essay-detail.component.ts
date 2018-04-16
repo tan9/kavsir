@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Rx';
+import { HttpResponse } from '@angular/common/http';
+import { Subscription } from 'rxjs/Subscription';
 import { JhiEventManager, JhiDataUtils } from 'ng-jhipster';
 
 import { QuestionEssay } from './question-essay.model';
@@ -32,9 +33,10 @@ export class QuestionEssayDetailComponent implements OnInit, OnDestroy {
     }
 
     load(id) {
-        this.questionEssayService.find(id).subscribe((questionEssay) => {
-            this.questionEssay = questionEssay;
-        });
+        this.questionEssayService.find(id)
+            .subscribe((questionEssayResponse: HttpResponse<QuestionEssay>) => {
+                this.questionEssay = questionEssayResponse.body;
+            });
     }
     byteSize(field) {
         return this.dataUtils.byteSize(field);

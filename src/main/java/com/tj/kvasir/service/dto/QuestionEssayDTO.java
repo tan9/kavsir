@@ -125,7 +125,7 @@ public class QuestionEssayDTO implements Serializable {
             ", text='" + getText() + "'" +
             ", answer='" + getAnswer() + "'" +
             ", memo='" + getMemo() + "'" +
-            ", groupPosition='" + getGroupPosition() + "'" +
+            ", groupPosition=" + getGroupPosition() +
             "}";
     }
 }

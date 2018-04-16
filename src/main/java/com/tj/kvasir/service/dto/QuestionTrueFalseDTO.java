@@ -124,7 +124,7 @@ public class QuestionTrueFalseDTO implements Serializable {
             ", correct='" + isCorrect() + "'" +
             ", text='" + getText() + "'" +
             ", memo='" + getMemo() + "'" +
-            ", groupPosition='" + getGroupPosition() + "'" +
+            ", groupPosition=" + getGroupPosition() +
             "}";
     }
 }

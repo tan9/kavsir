@@ -2,10 +2,10 @@ package com.tj.kvasir.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.tj.kvasir.service.QuestionChoiceService;
+import com.tj.kvasir.web.rest.errors.BadRequestAlertException;
 import com.tj.kvasir.web.rest.util.HeaderUtil;
 import com.tj.kvasir.web.rest.util.PaginationUtil;
 import com.tj.kvasir.service.dto.QuestionChoiceDTO;
-import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,7 +55,7 @@ public class QuestionChoiceResource {
     public ResponseEntity<QuestionChoiceDTO> createQuestionChoice(@Valid @RequestBody QuestionChoiceDTO questionChoiceDTO) throws URISyntaxException {
         log.debug("REST request to save QuestionChoice : {}", questionChoiceDTO);
         if (questionChoiceDTO.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new questionChoice cannot already have an ID")).body(null);
+            throw new BadRequestAlertException("A new questionChoice cannot already have an ID", ENTITY_NAME, "idexists");
         }
         QuestionChoiceDTO result = questionChoiceService.save(questionChoiceDTO);
         return ResponseEntity.created(new URI("/api/question-choices/" + result.getId()))
@@ -93,7 +93,7 @@ public class QuestionChoiceResource {
      */
     @GetMapping("/question-choices")
     @Timed
-    public ResponseEntity<List<QuestionChoiceDTO>> getAllQuestionChoices(@ApiParam Pageable pageable) {
+    public ResponseEntity<List<QuestionChoiceDTO>> getAllQuestionChoices(Pageable pageable) {
         log.debug("REST request to get a page of QuestionChoices");
         Page<QuestionChoiceDTO> page = questionChoiceService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/question-choices");
@@ -138,7 +138,7 @@ public class QuestionChoiceResource {
      */
     @GetMapping("/_search/question-choices")
     @Timed
-    public ResponseEntity<List<QuestionChoiceDTO>> searchQuestionChoices(@RequestParam String query, @ApiParam Pageable pageable) {
+    public ResponseEntity<List<QuestionChoiceDTO>> searchQuestionChoices(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of QuestionChoices for query {}", query);
         Page<QuestionChoiceDTO> page = questionChoiceService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/question-choices");

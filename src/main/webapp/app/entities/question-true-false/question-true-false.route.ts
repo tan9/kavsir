@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes, CanActivate } from '@angular/router';
-
-import { UserRouteAccessService } from '../../shared';
+import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes } from '@angular/router';
 import { JhiPaginationUtil } from 'ng-jhipster';
 
+import { UserRouteAccessService } from '../../shared';
 import { QuestionTrueFalseComponent } from './question-true-false.component';
 import { QuestionTrueFalseDetailComponent } from './question-true-false-detail.component';
 import { QuestionTrueFalsePopupComponent } from './question-true-false-dialog.component';

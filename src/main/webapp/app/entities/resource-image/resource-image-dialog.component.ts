@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Response } from '@angular/http';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
-import { Observable } from 'rxjs/Rx';
-import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { Observable } from 'rxjs/Observable';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
 
 import { ResourceImage } from './resource-image.model';
@@ -13,7 +13,6 @@ import { QuestionChoice, QuestionChoiceService } from '../question-choice';
 import { QuestionChoiceOption, QuestionChoiceOptionService } from '../question-choice-option';
 import { QuestionTrueFalse, QuestionTrueFalseService } from '../question-true-false';
 import { QuestionEssay, QuestionEssayService } from '../question-essay';
-import { ResponseWrapper } from '../../shared';
 
 @Component({
     selector: 'jhi-resource-image-dialog',
@@ -49,13 +48,13 @@ export class ResourceImageDialogComponent implements OnInit {
     ngOnInit() {
         this.isSaving = false;
         this.questionChoiceService.query()
-            .subscribe((res: ResponseWrapper) => { this.questionchoices = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+            .subscribe((res: HttpResponse<QuestionChoice[]>) => { this.questionchoices = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.questionChoiceOptionService.query()
-            .subscribe((res: ResponseWrapper) => { this.questionchoiceoptions = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+            .subscribe((res: HttpResponse<QuestionChoiceOption[]>) => { this.questionchoiceoptions = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.questionTrueFalseService.query()
-            .subscribe((res: ResponseWrapper) => { this.questiontruefalses = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+            .subscribe((res: HttpResponse<QuestionTrueFalse[]>) => { this.questiontruefalses = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.questionEssayService.query()
-            .subscribe((res: ResponseWrapper) => { this.questionessays = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+            .subscribe((res: HttpResponse<QuestionEssay[]>) => { this.questionessays = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     byteSize(field) {
@@ -89,9 +88,9 @@ export class ResourceImageDialogComponent implements OnInit {
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<ResourceImage>) {
-        result.subscribe((res: ResourceImage) =>
-            this.onSaveSuccess(res), (res: Response) => this.onSaveError());
+    private subscribeToSaveResponse(result: Observable<HttpResponse<ResourceImage>>) {
+        result.subscribe((res: HttpResponse<ResourceImage>) =>
+            this.onSaveSuccess(res.body), (res: HttpErrorResponse) => this.onSaveError());
     }
 
     private onSaveSuccess(result: ResourceImage) {

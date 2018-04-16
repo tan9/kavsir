@@ -4,10 +4,11 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+
+import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -104,7 +105,7 @@ public class CategoryPublisher implements Serializable {
     public String toString() {
         return "CategoryPublisher{" +
             "id=" + getId() +
-            ", position='" + getPosition() + "'" +
+            ", position=" + getPosition() +
             ", name='" + getName() + "'" +
             "}";
     }

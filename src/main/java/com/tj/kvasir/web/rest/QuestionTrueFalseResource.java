@@ -2,10 +2,10 @@ package com.tj.kvasir.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.tj.kvasir.service.QuestionTrueFalseService;
+import com.tj.kvasir.web.rest.errors.BadRequestAlertException;
 import com.tj.kvasir.web.rest.util.HeaderUtil;
 import com.tj.kvasir.web.rest.util.PaginationUtil;
 import com.tj.kvasir.service.dto.QuestionTrueFalseDTO;
-import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,7 +55,7 @@ public class QuestionTrueFalseResource {
     public ResponseEntity<QuestionTrueFalseDTO> createQuestionTrueFalse(@Valid @RequestBody QuestionTrueFalseDTO questionTrueFalseDTO) throws URISyntaxException {
         log.debug("REST request to save QuestionTrueFalse : {}", questionTrueFalseDTO);
         if (questionTrueFalseDTO.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new questionTrueFalse cannot already have an ID")).body(null);
+            throw new BadRequestAlertException("A new questionTrueFalse cannot already have an ID", ENTITY_NAME, "idexists");
         }
         QuestionTrueFalseDTO result = questionTrueFalseService.save(questionTrueFalseDTO);
         return ResponseEntity.created(new URI("/api/question-true-falses/" + result.getId()))
@@ -93,7 +93,7 @@ public class QuestionTrueFalseResource {
      */
     @GetMapping("/question-true-falses")
     @Timed
-    public ResponseEntity<List<QuestionTrueFalseDTO>> getAllQuestionTrueFalses(@ApiParam Pageable pageable) {
+    public ResponseEntity<List<QuestionTrueFalseDTO>> getAllQuestionTrueFalses(Pageable pageable) {
         log.debug("REST request to get a page of QuestionTrueFalses");
         Page<QuestionTrueFalseDTO> page = questionTrueFalseService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/question-true-falses");
@@ -138,7 +138,7 @@ public class QuestionTrueFalseResource {
      */
     @GetMapping("/_search/question-true-falses")
     @Timed
-    public ResponseEntity<List<QuestionTrueFalseDTO>> searchQuestionTrueFalses(@RequestParam String query, @ApiParam Pageable pageable) {
+    public ResponseEntity<List<QuestionTrueFalseDTO>> searchQuestionTrueFalses(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of QuestionTrueFalses for query {}", query);
         Page<QuestionTrueFalseDTO> page = questionTrueFalseService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/question-true-falses");

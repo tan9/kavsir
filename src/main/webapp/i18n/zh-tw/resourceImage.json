@@ -1,3 +1,4 @@
+
 {
     "kavsirApp": {
         "resourceImage" : {
@@ -21,7 +22,11 @@
             "choice": "Choice",
             "choiceOption": "Choice Option",
             "trueFalse": "True False",
-            "essay": "Essay"
+            "essay": "Essay",
+            "help": {
+                "name": "名稱",
+                "content": "內容"
+            }
         }
     }
 }

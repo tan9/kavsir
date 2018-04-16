@@ -100,9 +100,9 @@ public class CategoryNodeDTO implements Serializable {
         return "CategoryNodeDTO{" +
             "id=" + getId() +
             ", type='" + getType() + "'" +
-            ", typeId='" + getTypeId() + "'" +
+            ", typeId=" + getTypeId() +
             ", name='" + getName() + "'" +
-            ", position='" + getPosition() + "'" +
+            ", position=" + getPosition() +
             "}";
     }
 }

@@ -1,3 +1,4 @@
+
 {
     "kavsirApp": {
         "questionChoiceOption" : {
@@ -20,7 +21,12 @@
             "text": "Text",
             "memo": "Memo",
             "questionChoice": "Question Choice",
-            "image": "Image"
+            "image": "Image",
+            "help": {
+                "correct": "是否為正解",
+                "text": "選項內容",
+                "memo": "備註"
+            }
         }
     }
 }

@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Response } from '@angular/http';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
-import { Observable } from 'rxjs/Rx';
-import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { Observable } from 'rxjs/Observable';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
 
 import { QuestionChoice } from './question-choice.model';
@@ -12,7 +12,6 @@ import { QuestionChoiceService } from './question-choice.service';
 import { CategoryNode, CategoryNodeService } from '../category-node';
 import { ResourceImage, ResourceImageService } from '../resource-image';
 import { QuestionGroup, QuestionGroupService } from '../question-group';
-import { ResponseWrapper } from '../../shared';
 
 @Component({
     selector: 'jhi-question-choice-dialog',
@@ -44,11 +43,11 @@ export class QuestionChoiceDialogComponent implements OnInit {
     ngOnInit() {
         this.isSaving = false;
         this.categoryNodeService.query()
-            .subscribe((res: ResponseWrapper) => { this.categorynodes = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+            .subscribe((res: HttpResponse<CategoryNode[]>) => { this.categorynodes = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.resourceImageService.query()
-            .subscribe((res: ResponseWrapper) => { this.resourceimages = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+            .subscribe((res: HttpResponse<ResourceImage[]>) => { this.resourceimages = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.questionGroupService.query()
-            .subscribe((res: ResponseWrapper) => { this.questiongroups = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+            .subscribe((res: HttpResponse<QuestionGroup[]>) => { this.questiongroups = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     byteSize(field) {
@@ -78,9 +77,9 @@ export class QuestionChoiceDialogComponent implements OnInit {
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<QuestionChoice>) {
-        result.subscribe((res: QuestionChoice) =>
-            this.onSaveSuccess(res), (res: Response) => this.onSaveError());
+    private subscribeToSaveResponse(result: Observable<HttpResponse<QuestionChoice>>) {
+        result.subscribe((res: HttpResponse<QuestionChoice>) =>
+            this.onSaveSuccess(res.body), (res: HttpErrorResponse) => this.onSaveError());
     }
 
     private onSaveSuccess(result: QuestionChoice) {

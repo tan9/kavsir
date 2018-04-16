@@ -13,9 +13,9 @@
                    [(ngModel)]="questionTrueFalse.id" readonly />
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="kavsirApp.questionTrueFalse.correct" for="field_correct">Correct</label>
+            <label class="form-control-label" jhiTranslate="kavsirApp.questionTrueFalse.correct" for="field_correct" [ngbTooltip]="'kavsirApp.questionTrueFalse.help.correct' | translate">Correct</label>
             <input type="checkbox" class="form-control" name="correct" id="field_correct"
-                [(ngModel)]="questionTrueFalse.correct"  />
+                [(ngModel)]="questionTrueFalse.correct" />
             <div [hidden]="!(editForm.controls.correct?.dirty && editForm.controls.correct?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.correct?.errors?.required" jhiTranslate="entity.validation.required">
@@ -24,9 +24,9 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="kavsirApp.questionTrueFalse.text" for="field_text">Text</label>
+            <label class="form-control-label" jhiTranslate="kavsirApp.questionTrueFalse.text" for="field_text" [ngbTooltip]="'kavsirApp.questionTrueFalse.help.text' | translate">Text</label>
             <textarea class="form-control" name="text" id="field_text"
-                [(ngModel)]="questionTrueFalse.text" required ></textarea>
+                [(ngModel)]="questionTrueFalse.text" required></textarea>
             <div [hidden]="!(editForm.controls.text?.dirty && editForm.controls.text?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.text?.errors?.required" jhiTranslate="entity.validation.required">
@@ -35,14 +35,14 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="kavsirApp.questionTrueFalse.memo" for="field_memo">Memo</label>
+            <label class="form-control-label" jhiTranslate="kavsirApp.questionTrueFalse.memo" for="field_memo" [ngbTooltip]="'kavsirApp.questionTrueFalse.help.memo' | translate">Memo</label>
             <input type="text" class="form-control" name="memo" id="field_memo"
-                [(ngModel)]="questionTrueFalse.memo"  />
+                [(ngModel)]="questionTrueFalse.memo" />
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="kavsirApp.questionTrueFalse.groupPosition" for="field_groupPosition">Group Position</label>
+            <label class="form-control-label" jhiTranslate="kavsirApp.questionTrueFalse.groupPosition" for="field_groupPosition" [ngbTooltip]="'kavsirApp.questionTrueFalse.help.groupPosition' | translate">Group Position</label>
             <input type="number" class="form-control" name="groupPosition" id="field_groupPosition"
-                [(ngModel)]="questionTrueFalse.groupPosition"  />
+                [(ngModel)]="questionTrueFalse.groupPosition" />
         </div>
 
         <div class="form-group">

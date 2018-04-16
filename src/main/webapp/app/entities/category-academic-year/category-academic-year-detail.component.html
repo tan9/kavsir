@@ -4,11 +4,11 @@
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="kavsirApp.categoryAcademicYear.position">Position</span></dt>
+        <dt><span jhiTranslate="kavsirApp.categoryAcademicYear.position" [ngbTooltip]="'kavsirApp.categoryAcademicYear.help.position' | translate">Position</span></dt>
         <dd>
             <span>{{categoryAcademicYear.position}}</span>
         </dd>
-        <dt><span jhiTranslate="kavsirApp.categoryAcademicYear.name">Name</span></dt>
+        <dt><span jhiTranslate="kavsirApp.categoryAcademicYear.name" [ngbTooltip]="'kavsirApp.categoryAcademicYear.help.name' | translate">Name</span></dt>
         <dd>
             <span>{{categoryAcademicYear.name}}</span>
         </dd>
@@ -23,6 +23,7 @@
     <button type="button"
             [routerLink]="['/', { outlets: { popup: 'category-academic-year/'+ categoryAcademicYear.id + '/edit'} }]"
             replaceUrl="true"
+            queryParamsHandling="merge"
             class="btn btn-primary">
         <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
     </button>

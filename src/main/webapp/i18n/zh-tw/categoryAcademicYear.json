@@ -1,3 +1,4 @@
+
 {
     "kavsirApp": {
         "categoryAcademicYear" : {
@@ -17,7 +18,11 @@
                 "title": "Category Academic Year"
             },
             "position": "Position",
-            "name": "Name"
+            "name": "Name",
+            "help": {
+                "position": "序位",
+                "name": "名稱"
+            }
         }
     }
 }

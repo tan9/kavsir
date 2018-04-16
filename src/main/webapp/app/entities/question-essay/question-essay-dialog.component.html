@@ -13,9 +13,9 @@
                    [(ngModel)]="questionEssay.id" readonly />
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="kavsirApp.questionEssay.text" for="field_text">Text</label>
+            <label class="form-control-label" jhiTranslate="kavsirApp.questionEssay.text" for="field_text" [ngbTooltip]="'kavsirApp.questionEssay.help.text' | translate">Text</label>
             <textarea class="form-control" name="text" id="field_text"
-                [(ngModel)]="questionEssay.text" required ></textarea>
+                [(ngModel)]="questionEssay.text" required></textarea>
             <div [hidden]="!(editForm.controls.text?.dirty && editForm.controls.text?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.text?.errors?.required" jhiTranslate="entity.validation.required">
@@ -24,9 +24,9 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="kavsirApp.questionEssay.answer" for="field_answer">Answer</label>
+            <label class="form-control-label" jhiTranslate="kavsirApp.questionEssay.answer" for="field_answer" [ngbTooltip]="'kavsirApp.questionEssay.help.answer' | translate">Answer</label>
             <textarea class="form-control" name="answer" id="field_answer"
-                [(ngModel)]="questionEssay.answer" required ></textarea>
+                [(ngModel)]="questionEssay.answer" required></textarea>
             <div [hidden]="!(editForm.controls.answer?.dirty && editForm.controls.answer?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.answer?.errors?.required" jhiTranslate="entity.validation.required">
@@ -35,14 +35,14 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="kavsirApp.questionEssay.memo" for="field_memo">Memo</label>
+            <label class="form-control-label" jhiTranslate="kavsirApp.questionEssay.memo" for="field_memo" [ngbTooltip]="'kavsirApp.questionEssay.help.memo' | translate">Memo</label>
             <input type="text" class="form-control" name="memo" id="field_memo"
-                [(ngModel)]="questionEssay.memo"  />
+                [(ngModel)]="questionEssay.memo" />
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="kavsirApp.questionEssay.groupPosition" for="field_groupPosition">Group Position</label>
+            <label class="form-control-label" jhiTranslate="kavsirApp.questionEssay.groupPosition" for="field_groupPosition" [ngbTooltip]="'kavsirApp.questionEssay.help.groupPosition' | translate">Group Position</label>
             <input type="number" class="form-control" name="groupPosition" id="field_groupPosition"
-                [(ngModel)]="questionEssay.groupPosition"  />
+                [(ngModel)]="questionEssay.groupPosition" />
         </div>
 
         <div class="form-group">

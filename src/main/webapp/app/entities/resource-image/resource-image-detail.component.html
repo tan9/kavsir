@@ -4,11 +4,11 @@
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="kavsirApp.resourceImage.name">Name</span></dt>
+        <dt><span jhiTranslate="kavsirApp.resourceImage.name" [ngbTooltip]="'kavsirApp.resourceImage.help.name' | translate">Name</span></dt>
         <dd>
             <span>{{resourceImage.name}}</span>
         </dd>
-        <dt><span jhiTranslate="kavsirApp.resourceImage.content">Content</span></dt>
+        <dt><span jhiTranslate="kavsirApp.resourceImage.content" [ngbTooltip]="'kavsirApp.resourceImage.help.content' | translate">Content</span></dt>
         <dd>
             <div *ngIf="resourceImage.content">
                 <a (click)="openFile(resourceImage.contentContentType, resourceImage.content)">
@@ -28,6 +28,7 @@
     <button type="button"
             [routerLink]="['/', { outlets: { popup: 'resource-image/'+ resourceImage.id + '/edit'} }]"
             replaceUrl="true"
+            queryParamsHandling="merge"
             class="btn btn-primary">
         <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
     </button>

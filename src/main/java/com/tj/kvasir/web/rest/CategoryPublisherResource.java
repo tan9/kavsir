@@ -5,6 +5,7 @@ import com.tj.kvasir.domain.CategoryPublisher;
 
 import com.tj.kvasir.repository.CategoryPublisherRepository;
 import com.tj.kvasir.repository.search.CategoryPublisherSearchRepository;
+import com.tj.kvasir.web.rest.errors.BadRequestAlertException;
 import com.tj.kvasir.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -55,7 +56,7 @@ public class CategoryPublisherResource {
     public ResponseEntity<CategoryPublisher> createCategoryPublisher(@Valid @RequestBody CategoryPublisher categoryPublisher) throws URISyntaxException {
         log.debug("REST request to save CategoryPublisher : {}", categoryPublisher);
         if (categoryPublisher.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new categoryPublisher cannot already have an ID")).body(null);
+            throw new BadRequestAlertException("A new categoryPublisher cannot already have an ID", ENTITY_NAME, "idexists");
         }
         CategoryPublisher result = categoryPublisherRepository.save(categoryPublisher);
         categoryPublisherSearchRepository.save(result);

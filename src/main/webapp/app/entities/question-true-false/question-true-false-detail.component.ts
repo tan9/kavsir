@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Rx';
+import { HttpResponse } from '@angular/common/http';
+import { Subscription } from 'rxjs/Subscription';
 import { JhiEventManager, JhiDataUtils } from 'ng-jhipster';
 
 import { QuestionTrueFalse } from './question-true-false.model';
@@ -32,9 +33,10 @@ export class QuestionTrueFalseDetailComponent implements OnInit, OnDestroy {
     }
 
     load(id) {
-        this.questionTrueFalseService.find(id).subscribe((questionTrueFalse) => {
-            this.questionTrueFalse = questionTrueFalse;
-        });
+        this.questionTrueFalseService.find(id)
+            .subscribe((questionTrueFalseResponse: HttpResponse<QuestionTrueFalse>) => {
+                this.questionTrueFalse = questionTrueFalseResponse.body;
+            });
     }
     byteSize(field) {
         return this.dataUtils.byteSize(field);

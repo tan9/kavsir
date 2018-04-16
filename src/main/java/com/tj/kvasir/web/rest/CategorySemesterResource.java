@@ -5,6 +5,7 @@ import com.tj.kvasir.domain.CategorySemester;
 
 import com.tj.kvasir.repository.CategorySemesterRepository;
 import com.tj.kvasir.repository.search.CategorySemesterSearchRepository;
+import com.tj.kvasir.web.rest.errors.BadRequestAlertException;
 import com.tj.kvasir.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -55,7 +56,7 @@ public class CategorySemesterResource {
     public ResponseEntity<CategorySemester> createCategorySemester(@Valid @RequestBody CategorySemester categorySemester) throws URISyntaxException {
         log.debug("REST request to save CategorySemester : {}", categorySemester);
         if (categorySemester.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new categorySemester cannot already have an ID")).body(null);
+            throw new BadRequestAlertException("A new categorySemester cannot already have an ID", ENTITY_NAME, "idexists");
         }
         CategorySemester result = categorySemesterRepository.save(categorySemester);
         categorySemesterSearchRepository.save(result);

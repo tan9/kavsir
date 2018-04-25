@@ -78,11 +78,11 @@ public class QuestionTrueFalseService {
     }
 
     /**
-     *  Get all the questionTrueFalses.
+     * Get all the questionTrueFalses.
      *
-     *  @param categories limiting result in categories
+     * @param categories limiting result in categories
      *  @param pageable the pagination information
-     *  @return the list of entities
+     * @return the list of entities
      */
     @Transactional(readOnly = true)
     public Page<QuestionTrueFalseDTO> findAll(Optional<Set<Long>> categories, Pageable pageable) {
@@ -98,10 +98,10 @@ public class QuestionTrueFalseService {
     }
 
     /**
-     *  Get one questionTrueFalse by id.
+     * Get one questionTrueFalse by id.
      *
-     *  @param id the id of the entity
-     *  @return the entity
+     * @param id the id of the entity
+     * @return the entity
      */
     @Transactional(readOnly = true)
     public QuestionTrueFalseDTO findOne(Long id) {
@@ -111,9 +111,9 @@ public class QuestionTrueFalseService {
     }
 
     /**
-     *  Delete the  questionTrueFalse by id.
+     * Delete the questionTrueFalse by id.
      *
-     *  @param id the id of the entity
+     * @param id the id of the entity
      */
     public void delete(Long id) {
         log.debug("Request to delete QuestionTrueFalse : {}", id);
@@ -124,10 +124,10 @@ public class QuestionTrueFalseService {
     /**
      * Search for the questionTrueFalse corresponding to the query.
      *
-     *  @param query the query of the search
-     *  @param categories  limiting result in category
+     * @param query the query of the search
+     * @param categories  limiting result in category
      *  @param pageable the pagination information
-     *  @return the list of entities
+     * @return the list of entities
      */
     @Transactional(readOnly = true)
     public Page<QuestionTrueFalseDTO> search(String query, Optional<Set<Long>> categories, Pageable pageable) {

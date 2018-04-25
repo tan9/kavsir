@@ -1,12 +1,12 @@
 import { BaseEntity } from './../../shared';
 
 export enum CategoryType {
-    'ACADEMIC_YEAR',
-    'GRADE',
-    'SEMESTER',
-    'SUBJECT',
-    'SOURCE',
-    'SEGMENT'
+    ACADEMIC_YEAR = 'ACADEMIC_YEAR',
+    GRADE = 'GRADE' ,
+    SEMESTER = 'SEMESTER' ,
+    SUBJECT = 'SUBJECT',
+    SOURCE = 'SOURCE',
+    SEGMENT = 'SEGMENT'
 }
 
 export class CategoryNode implements BaseEntity {

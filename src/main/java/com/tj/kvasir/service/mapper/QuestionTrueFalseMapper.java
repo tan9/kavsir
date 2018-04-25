@@ -8,14 +8,15 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity QuestionTrueFalse and its DTO QuestionTrueFalseDTO.
  */
-@Mapper(componentModel = "spring", uses = {CategoryNodeMapper.class, ResourceImageMapper.class, QuestionGroupMapper.class, })
-public interface QuestionTrueFalseMapper extends EntityMapper <QuestionTrueFalseDTO, QuestionTrueFalse> {
+@Mapper(componentModel = "spring", uses = {CategoryNodeMapper.class, ResourceImageMapper.class, QuestionGroupMapper.class})
+public interface QuestionTrueFalseMapper extends EntityMapper<QuestionTrueFalseDTO, QuestionTrueFalse> {
 
     @Mapping(source = "questionGroup.id", target = "questionGroupId")
-    QuestionTrueFalseDTO toDto(QuestionTrueFalse questionTrueFalse); 
+    QuestionTrueFalseDTO toDto(QuestionTrueFalse questionTrueFalse);
 
     @Mapping(source = "questionGroupId", target = "questionGroup")
-    QuestionTrueFalse toEntity(QuestionTrueFalseDTO questionTrueFalseDTO); 
+    QuestionTrueFalse toEntity(QuestionTrueFalseDTO questionTrueFalseDTO);
+
     default QuestionTrueFalse fromId(Long id) {
         if (id == null) {
             return null;

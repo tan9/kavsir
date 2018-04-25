@@ -1,3 +1,4 @@
+
 {
     "kavsirApp": {
         "questionEssay" : {
@@ -22,7 +23,13 @@
             "groupPosition": "題組中序位",
             "category": "類別",
             "image": "圖片",
-            "questionGroup": "題組"
+            "questionGroup": "題組",
+            "help": {
+                "text": "題目",
+                "answer": "答案",
+                "memo": "備註",
+                "groupPosition": "題組中序位"
+            }
         }
     }
 }

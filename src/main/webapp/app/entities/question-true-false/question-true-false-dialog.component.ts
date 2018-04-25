@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Response } from '@angular/http';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
 
@@ -12,7 +12,6 @@ import { QuestionTrueFalseService } from './question-true-false.service';
 import { CategoryNode } from '../category-node';
 import { ResourceImage } from '../resource-image';
 import { QuestionGroup, QuestionGroupService } from '../question-group';
-import { ResponseWrapper } from '../../shared';
 import { CategoryHierarchyService } from '../../shared/category/category-hierarchy.service';
 
 @Component({
@@ -54,7 +53,7 @@ export class QuestionTrueFalseDialogComponent implements OnInit {
 
         this.categorynodes = this.categoryHierarchyService.getNodes();
         this.questionGroupService.query()
-            .subscribe((res: ResponseWrapper) => { this.questiongroups = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+            .subscribe((res: HttpResponse<QuestionGroup[]>) => { this.questiongroups = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     byteSize(field) {
@@ -84,9 +83,9 @@ export class QuestionTrueFalseDialogComponent implements OnInit {
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<QuestionTrueFalse>) {
-        result.subscribe((res: QuestionTrueFalse) =>
-            this.onSaveSuccess(res), (res: Response) => this.onSaveError());
+    private subscribeToSaveResponse(result: Observable<HttpResponse<QuestionTrueFalse>>) {
+        result.subscribe((res: HttpResponse<QuestionTrueFalse>) =>
+            this.onSaveSuccess(res.body), (res: HttpErrorResponse) => this.onSaveError());
     }
 
     private onSaveSuccess(result: QuestionTrueFalse) {

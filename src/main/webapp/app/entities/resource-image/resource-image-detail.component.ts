@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Rx';
+import { HttpResponse } from '@angular/common/http';
+import { Subscription } from 'rxjs/Subscription';
 import { JhiEventManager, JhiDataUtils } from 'ng-jhipster';
 
 import { ResourceImage } from './resource-image.model';
@@ -32,9 +33,10 @@ export class ResourceImageDetailComponent implements OnInit, OnDestroy {
     }
 
     load(id) {
-        this.resourceImageService.find(id).subscribe((resourceImage) => {
-            this.resourceImage = resourceImage;
-        });
+        this.resourceImageService.find(id)
+            .subscribe((resourceImageResponse: HttpResponse<ResourceImage>) => {
+                this.resourceImage = resourceImageResponse.body;
+            });
     }
     byteSize(field) {
         return this.dataUtils.byteSize(field);

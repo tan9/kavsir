@@ -1,6 +1,7 @@
 import { Injectable, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { HttpResponse } from '@angular/common/http';
 import { QuestionChoice } from './question-choice.model';
 import { QuestionChoiceService } from './question-choice.service';
 import { QuestionChoiceOptionService } from '../question-choice-option';
@@ -26,11 +27,12 @@ export class QuestionChoicePopupService {
             }
 
             if (id) {
-                this.questionChoiceService.find(id).subscribe((questionChoice) => {
+                this.questionChoiceService.find(id).subscribe((questionChoiceResponse: HttpResponse<QuestionChoice>) => {
+                        const questionChoice: QuestionChoice = questionChoiceResponse.body;
                     this.questionChoiceOptionService
                         .query({questionChoiceId: questionChoice.id})
                         .subscribe((res) => {
-                            questionChoice.options = res.json;
+                            questionChoice.options = res.body;
                             this.ngbModalRef = this.questionChoiceModalRef(component, questionChoice);
                             resolve(this.ngbModalRef);
                         });
@@ -49,10 +51,10 @@ export class QuestionChoicePopupService {
         const modalRef = this.modalService.open(component, { size: 'lg', backdrop: 'static'});
         modalRef.componentInstance.questionChoice = questionChoice;
         modalRef.result.then((result) => {
-            this.router.navigate([{ outlets: { popup: null }}], { replaceUrl: true });
+            this.router.navigate([{ outlets: { popup: null }}], { replaceUrl: true, queryParamsHandling: 'merge' });
             this.ngbModalRef = null;
         }, (reason) => {
-            this.router.navigate([{ outlets: { popup: null }}], { replaceUrl: true });
+            this.router.navigate([{ outlets: { popup: null }}], { replaceUrl: true, queryParamsHandling: 'merge' });
             this.ngbModalRef = null;
         });
         return modalRef;

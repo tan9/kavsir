@@ -17,9 +17,9 @@
                    [(ngModel)]="questionChoice.id" readonly />
         </div>
         <div *ngIf="multi === undefined" class="form-group">
-            <label class="form-control-label" jhiTranslate="kavsirApp.questionChoice.multipleResponse" for="field_multipleResponse">Multiple Response</label>
+            <label class="form-control-label" jhiTranslate="kavsirApp.questionChoice.multipleResponse" for="field_multipleResponse" [ngbTooltip]="'kavsirApp.questionChoice.help.multipleResponse' | translate">Multiple Response</label>
             <input type="checkbox" class="form-control" name="multipleResponse" id="field_multipleResponse"
-                [(ngModel)]="questionChoice.multipleResponse"  />
+                [(ngModel)]="questionChoice.multipleResponse" />
             <div [hidden]="!(editForm.controls.multipleResponse?.dirty && editForm.controls.multipleResponse?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.multipleResponse?.errors?.required" jhiTranslate="entity.validation.required">
@@ -28,7 +28,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="kavsirApp.questionChoice.text" for="field_text">Text</label>
+            <label class="form-control-label" jhiTranslate="kavsirApp.questionChoice.text" for="field_text" [ngbTooltip]="'kavsirApp.questionChoice.help.text' | translate">Text</label>
             <div class="input-group">
                 <textarea class="form-control" name="text" id="field_text"
                           [(ngModel)]="questionChoice.text" required>
@@ -71,14 +71,14 @@
         </div>
 
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="kavsirApp.questionChoice.memo" for="field_memo">Memo</label>
+            <label class="form-control-label" jhiTranslate="kavsirApp.questionChoice.memo" for="field_memo" [ngbTooltip]="'kavsirApp.questionChoice.help.memo' | translate">Memo</label>
             <input type="text" class="form-control" name="memo" id="field_memo"
-                [(ngModel)]="questionChoice.memo"  />
+                [(ngModel)]="questionChoice.memo" />
         </div>
         <div *ngIf="inGroup" class="form-group">
-            <label class="form-control-label" jhiTranslate="kavsirApp.questionChoice.groupPosition" for="field_groupPosition">Group Position</label>
+            <label class="form-control-label" jhiTranslate="kavsirApp.questionChoice.groupPosition" for="field_groupPosition" [ngbTooltip]="'kavsirApp.questionChoice.help.groupPosition' | translate">Group Position</label>
             <input type="number" class="form-control" name="groupPosition" id="field_groupPosition"
-                [(ngModel)]="questionChoice.groupPosition"  />
+                [(ngModel)]="questionChoice.groupPosition" />
         </div>
 
         <div class="form-group">

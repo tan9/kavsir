@@ -1,3 +1,4 @@
+
 {
     "kavsirApp": {
         "categoryNode" : {
@@ -24,7 +25,12 @@
             "trueOrFalse": "是非題",
             "choice": "選擇題",
             "essay": "問答題",
-            "group": "題組"
+            "group": "題組",
+            "help": {
+                "typeId": "類別 ID，在 type !== SEGMENT 時需指定到 type 對應表格資料",
+                "name": "名稱 (章、課、篇、節)，只有在 type == SEGMENT 時有效",
+                "position": "序位"
+            }
         }
     }
 }

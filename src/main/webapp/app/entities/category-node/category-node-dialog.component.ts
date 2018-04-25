@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Response } from '@angular/http';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
-import { Observable } from 'rxjs/Rx';
-import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { Observable } from 'rxjs/Observable';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
 import { CategoryNodePopupService } from './category-node-popup.service';
@@ -12,7 +12,6 @@ import { QuestionTrueFalse, QuestionTrueFalseService } from '../question-true-fa
 import { QuestionChoice, QuestionChoiceService } from '../question-choice';
 import { QuestionEssay, QuestionEssayService } from '../question-essay';
 import { QuestionGroup, QuestionGroupService } from '../question-group';
-import { ResponseWrapper } from '../../shared';
 
 @Component({
     selector: 'jhi-category-node-dialog',
@@ -48,15 +47,15 @@ export class CategoryNodeDialogComponent implements OnInit {
     ngOnInit() {
         this.isSaving = false;
         this.categoryNodeService.query()
-            .subscribe((res: ResponseWrapper) => { this.categorynodes = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+            .subscribe((res: HttpResponse<CategoryNode[]>) => { this.categorynodes = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.questionTrueFalseService.query()
-            .subscribe((res: ResponseWrapper) => { this.questiontruefalses = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+            .subscribe((res: HttpResponse<QuestionTrueFalse[]>) => { this.questiontruefalses = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.questionChoiceService.query()
-            .subscribe((res: ResponseWrapper) => { this.questionchoices = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+            .subscribe((res: HttpResponse<QuestionChoice[]>) => { this.questionchoices = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.questionEssayService.query()
-            .subscribe((res: ResponseWrapper) => { this.questionessays = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+            .subscribe((res: HttpResponse<QuestionEssay[]>) => { this.questionessays = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.questionGroupService.query()
-            .subscribe((res: ResponseWrapper) => { this.questiongroups = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+            .subscribe((res: HttpResponse<QuestionGroup[]>) => { this.questiongroups = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     clear() {
@@ -74,9 +73,9 @@ export class CategoryNodeDialogComponent implements OnInit {
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<CategoryNode>) {
-        result.subscribe((res: CategoryNode) =>
-            this.onSaveSuccess(res), (res: Response) => this.onSaveError());
+    private subscribeToSaveResponse(result: Observable<HttpResponse<CategoryNode>>) {
+        result.subscribe((res: HttpResponse<CategoryNode>) =>
+            this.onSaveSuccess(res.body), (res: HttpErrorResponse) => this.onSaveError());
     }
 
     private onSaveSuccess(result: CategoryNode) {

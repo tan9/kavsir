@@ -8,6 +8,7 @@ import com.tj.kvasir.domain.enumeration.CategoryType;
 import com.tj.kvasir.repository.CategoryNodeRepository;
 import com.tj.kvasir.repository.CategorySubjectRepository;
 import com.tj.kvasir.repository.search.CategorySubjectSearchRepository;
+import com.tj.kvasir.web.rest.errors.BadRequestAlertException;
 import com.tj.kvasir.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -64,7 +65,7 @@ public class CategorySubjectResource {
     public ResponseEntity<CategorySubject> createCategorySubject(@Valid @RequestBody CategorySubject categorySubject) throws URISyntaxException {
         log.debug("REST request to save CategorySubject : {}", categorySubject);
         if (categorySubject.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new categorySubject cannot already have an ID")).body(null);
+            throw new BadRequestAlertException("A new categorySubject cannot already have an ID", ENTITY_NAME, "idexists");
         }
         CategorySubject result = categorySubjectRepository.save(categorySubject);
         categorySubjectSearchRepository.save(result);

@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Rx';
+import { HttpResponse } from '@angular/common/http';
+import { Subscription } from 'rxjs/Subscription';
 import { JhiEventManager } from 'ng-jhipster';
 
 import { CategoryGrade } from './category-grade.model';
@@ -31,9 +32,10 @@ export class CategoryGradeDetailComponent implements OnInit, OnDestroy {
     }
 
     load(id) {
-        this.categoryGradeService.find(id).subscribe((categoryGrade) => {
-            this.categoryGrade = categoryGrade;
-        });
+        this.categoryGradeService.find(id)
+            .subscribe((categoryGradeResponse: HttpResponse<CategoryGrade>) => {
+                this.categoryGrade = categoryGradeResponse.body;
+            });
     }
     previousState() {
         window.history.back();

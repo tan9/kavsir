@@ -52,10 +52,10 @@ public class QuestionGroupService {
     }
 
     /**
-     *  Get all the questionGroups.
+     * Get all the questionGroups.
      *
-     *  @param pageable the pagination information
-     *  @return the list of entities
+     * @param pageable the pagination information
+     * @return the list of entities
      */
     @Transactional(readOnly = true)
     public Page<QuestionGroupDTO> findAll(Pageable pageable) {
@@ -65,10 +65,10 @@ public class QuestionGroupService {
     }
 
     /**
-     *  Get one questionGroup by id.
+     * Get one questionGroup by id.
      *
-     *  @param id the id of the entity
-     *  @return the entity
+     * @param id the id of the entity
+     * @return the entity
      */
     @Transactional(readOnly = true)
     public QuestionGroupDTO findOne(Long id) {
@@ -78,9 +78,9 @@ public class QuestionGroupService {
     }
 
     /**
-     *  Delete the  questionGroup by id.
+     * Delete the questionGroup by id.
      *
-     *  @param id the id of the entity
+     * @param id the id of the entity
      */
     public void delete(Long id) {
         log.debug("Request to delete QuestionGroup : {}", id);
@@ -91,9 +91,9 @@ public class QuestionGroupService {
     /**
      * Search for the questionGroup corresponding to the query.
      *
-     *  @param query the query of the search
-     *  @param pageable the pagination information
-     *  @return the list of entities
+     * @param query the query of the search
+     * @param pageable the pagination information
+     * @return the list of entities
      */
     @Transactional(readOnly = true)
     public Page<QuestionGroupDTO> search(String query, Pageable pageable) {

@@ -28,4 +28,5 @@
 
     <include file="config/liquibase/changelog/20170702013800_modified_datatype_Questions.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170823152534_renamed_entity_CategorySource.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180417224000_align_with_jhipster_4.14.3.xml" relativeToChangelogFile="false"/>
 </databaseChangeLog>

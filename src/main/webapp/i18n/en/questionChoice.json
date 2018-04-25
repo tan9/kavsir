@@ -1,3 +1,4 @@
+
 {
     "kavsirApp": {
         "questionChoice" : {
@@ -26,6 +27,12 @@
             "category": "Category",
             "image": "Image",
             "questionGroup": "Question Group",
+            "help": {
+                "multipleResponse": "是否為複選",
+                "text": "題目",
+                "memo": "備註",
+                "groupPosition": "題組中序位"
+            },
             "validation": {
                 "minoptions": "Not less than {{ min }} options.",
                 "hasanswer": "Mark at least one option as correct.",

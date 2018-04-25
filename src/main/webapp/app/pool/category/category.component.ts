@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { HttpResponse } from '@angular/common/http/src/response';
 import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
 
 import { Category } from '../../entities/category.model';
@@ -38,7 +39,7 @@ export class CategoryComponent implements OnInit {
         this.items[target] = tmp;
 
         // TODO Observable?
-        const promises: Promise<Category>[] = [];
+        const promises: Promise<HttpResponse<Category>>[] = [];
         this.items.forEach((item, i) => {
             if (item.position !== i) {
                 item.position = i;

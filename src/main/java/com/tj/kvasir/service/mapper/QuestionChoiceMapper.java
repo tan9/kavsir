@@ -8,15 +8,16 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity QuestionChoice and its DTO QuestionChoiceDTO.
  */
-@Mapper(componentModel = "spring", uses = {CategoryNodeMapper.class, ResourceImageMapper.class, QuestionGroupMapper.class, })
-public interface QuestionChoiceMapper extends EntityMapper <QuestionChoiceDTO, QuestionChoice> {
+@Mapper(componentModel = "spring", uses = {CategoryNodeMapper.class, ResourceImageMapper.class, QuestionGroupMapper.class})
+public interface QuestionChoiceMapper extends EntityMapper<QuestionChoiceDTO, QuestionChoice> {
 
     @Mapping(source = "questionGroup.id", target = "questionGroupId")
-    QuestionChoiceDTO toDto(QuestionChoice questionChoice); 
-    @Mapping(target = "options", ignore = true)
+    QuestionChoiceDTO toDto(QuestionChoice questionChoice);
 
+    @Mapping(target = "options", ignore = true)
     @Mapping(source = "questionGroupId", target = "questionGroup")
-    QuestionChoice toEntity(QuestionChoiceDTO questionChoiceDTO); 
+    QuestionChoice toEntity(QuestionChoiceDTO questionChoiceDTO);
+
     default QuestionChoice fromId(Long id) {
         if (id == null) {
             return null;

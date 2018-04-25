@@ -4,19 +4,19 @@
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="kavsirApp.questionTrueFalse.correct">Correct</span></dt>
+        <dt><span jhiTranslate="kavsirApp.questionTrueFalse.correct" [ngbTooltip]="'kavsirApp.questionTrueFalse.help.correct' | translate">Correct</span></dt>
         <dd>
             <span>{{questionTrueFalse.correct | trueFalseSymbol}}</span>
         </dd>
-        <dt><span jhiTranslate="kavsirApp.questionTrueFalse.text">Text</span></dt>
+        <dt><span jhiTranslate="kavsirApp.questionTrueFalse.text" [ngbTooltip]="'kavsirApp.questionTrueFalse.help.text' | translate">Text</span></dt>
         <dd>
             <jhi-markup-render [text]="questionTrueFalse.text" [images]="questionTrueFalse.images"></jhi-markup-render>
         </dd>
-        <dt><span jhiTranslate="kavsirApp.questionTrueFalse.memo">Memo</span></dt>
+        <dt><span jhiTranslate="kavsirApp.questionTrueFalse.memo" [ngbTooltip]="'kavsirApp.questionTrueFalse.help.memo' | translate">Memo</span></dt>
         <dd>
             <span>{{questionTrueFalse.memo}}</span>
         </dd>
-        <dt *ngIf="inGroup"><span jhiTranslate="kavsirApp.questionTrueFalse.groupPosition">Group Position</span></dt>
+        <dt *ngIf="inGroup"><span jhiTranslate="kavsirApp.questionTrueFalse.groupPosition" [ngbTooltip]="'kavsirApp.questionTrueFalse.help.groupPosition' | translate">Group Position</span></dt>
         <dd *ngIf="inGroup">
             <span>{{questionTrueFalse.groupPosition}}</span>
         </dd>
@@ -49,6 +49,7 @@
     <button type="button"
             [routerLink]="['/', { outlets: { popup: 'question-true-false/'+ questionTrueFalse.id + '/edit'} }]"
             replaceUrl="true"
+            queryParamsHandling="merge"
             class="btn btn-primary">
         <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
     </button>

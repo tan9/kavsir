@@ -4,11 +4,11 @@
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="kavsirApp.categoryGrade.position">Position</span></dt>
+        <dt><span jhiTranslate="kavsirApp.categoryGrade.position" [ngbTooltip]="'kavsirApp.categoryGrade.help.position' | translate">Position</span></dt>
         <dd>
             <span>{{categoryGrade.position}}</span>
         </dd>
-        <dt><span jhiTranslate="kavsirApp.categoryGrade.name">Name</span></dt>
+        <dt><span jhiTranslate="kavsirApp.categoryGrade.name" [ngbTooltip]="'kavsirApp.categoryGrade.help.name' | translate">Name</span></dt>
         <dd>
             <span>{{categoryGrade.name}}</span>
         </dd>
@@ -23,6 +23,7 @@
     <button type="button"
             [routerLink]="['/', { outlets: { popup: 'category-grade/'+ categoryGrade.id + '/edit'} }]"
             replaceUrl="true"
+            queryParamsHandling="merge"
             class="btn btn-primary">
         <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
     </button>

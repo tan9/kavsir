@@ -17,7 +17,11 @@
                 "title": "學年別"
             },
             "position": "序位",
-            "name": "名稱"
+            "name": "名稱",
+            "help": {
+                "position": "序位",
+                "name": "名稱"
+            }
         }
     }
 }

@@ -13,9 +13,9 @@
                    [(ngModel)]="questionGroup.id" readonly />
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="kavsirApp.questionGroup.text" for="field_text">Text</label>
+            <label class="form-control-label" jhiTranslate="kavsirApp.questionGroup.text" for="field_text" [ngbTooltip]="'kavsirApp.questionGroup.help.text' | translate">Text</label>
             <textarea class="form-control" name="text" id="field_text"
-                [(ngModel)]="questionGroup.text" required ></textarea>
+                [(ngModel)]="questionGroup.text" required></textarea>
             <div [hidden]="!(editForm.controls.text?.dirty && editForm.controls.text?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.text?.errors?.required" jhiTranslate="entity.validation.required">
@@ -24,9 +24,9 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="kavsirApp.questionGroup.memo" for="field_memo">Memo</label>
+            <label class="form-control-label" jhiTranslate="kavsirApp.questionGroup.memo" for="field_memo" [ngbTooltip]="'kavsirApp.questionGroup.help.memo' | translate">Memo</label>
             <input type="text" class="form-control" name="memo" id="field_memo"
-                [(ngModel)]="questionGroup.memo"  />
+                [(ngModel)]="questionGroup.memo" />
         </div>
 
         <div class="form-group">

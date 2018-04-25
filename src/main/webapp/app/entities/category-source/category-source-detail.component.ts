@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Rx';
+import { HttpResponse } from '@angular/common/http';
+import { Subscription } from 'rxjs/Subscription';
 import { JhiEventManager } from 'ng-jhipster';
 
 import { CategorySource } from './category-source.model';
@@ -31,9 +32,10 @@ export class CategorySourceDetailComponent implements OnInit, OnDestroy {
     }
 
     load(id) {
-        this.categorySourceService.find(id).subscribe((categorySource) => {
-            this.categorySource = categorySource;
-        });
+        this.categorySourceService.find(id)
+            .subscribe((categorySourceResponse: HttpResponse<CategorySource>) => {
+                this.categorySource = categorySourceResponse.body;
+            });
     }
     previousState() {
         window.history.back();

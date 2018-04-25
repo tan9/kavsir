@@ -1,3 +1,4 @@
+
 {
     "kavsirApp": {
         "questionGroup" : {
@@ -21,7 +22,11 @@
             "choice": "Choice",
             "trueFalse": "True False",
             "essay": "Essay",
-            "category": "Category"
+            "category": "Category",
+            "help": {
+                "text": "題目",
+                "memo": "備註"
+            }
         }
     }
 }

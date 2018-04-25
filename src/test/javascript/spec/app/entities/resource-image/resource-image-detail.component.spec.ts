@@ -1,12 +1,9 @@
 /* tslint:disable max-line-length */
-import { ComponentFixture, TestBed, async, inject } from '@angular/core/testing';
-import { OnInit } from '@angular/core';
-import { DatePipe } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs/Rx';
-import { JhiDateUtils, JhiDataUtils, JhiEventManager } from 'ng-jhipster';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
+
 import { KavsirTestModule } from '../../../test.module';
-import { MockActivatedRoute } from '../../../helpers/mock-route.service';
 import { ResourceImageDetailComponent } from '../../../../../../main/webapp/app/entities/resource-image/resource-image-detail.component';
 import { ResourceImageService } from '../../../../../../main/webapp/app/entities/resource-image/resource-image.service';
 import { ResourceImage } from '../../../../../../main/webapp/app/entities/resource-image/resource-image.model';
@@ -23,17 +20,10 @@ describe('Component Tests', () => {
                 imports: [KavsirTestModule],
                 declarations: [ResourceImageDetailComponent],
                 providers: [
-                    JhiDateUtils,
-                    JhiDataUtils,
-                    DatePipe,
-                    {
-                        provide: ActivatedRoute,
-                        useValue: new MockActivatedRoute({id: 123})
-                    },
-                    ResourceImageService,
-                    JhiEventManager
+                    ResourceImageService
                 ]
-            }).overrideTemplate(ResourceImageDetailComponent, '')
+            })
+            .overrideTemplate(ResourceImageDetailComponent, '')
             .compileComponents();
         }));
 
@@ -45,16 +35,18 @@ describe('Component Tests', () => {
 
         describe('OnInit', () => {
             it('Should call load all on init', () => {
-            // GIVEN
+                // GIVEN
 
-            spyOn(service, 'find').and.returnValue(Observable.of(new ResourceImage(10)));
+                spyOn(service, 'find').and.returnValue(Observable.of(new HttpResponse({
+                    body: new ResourceImage(123)
+                })));
 
-            // WHEN
-            comp.ngOnInit();
+                // WHEN
+                comp.ngOnInit();
 
-            // THEN
-            expect(service.find).toHaveBeenCalledWith(123);
-            expect(comp.resourceImage).toEqual(jasmine.objectContaining({id: 10}));
+                // THEN
+                expect(service.find).toHaveBeenCalledWith(123);
+                expect(comp.resourceImage).toEqual(jasmine.objectContaining({id: 123}));
             });
         });
     });

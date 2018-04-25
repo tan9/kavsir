@@ -1,5 +1,7 @@
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { registerLocaleData } from '@angular/common';
+import locale from '@angular/common/locales/zh-Hant';
 
 import {
     KavsirSharedLibsModule,
@@ -23,7 +25,7 @@ import {
         Title,
         {
             provide: LOCALE_ID,
-            useValue: 'zh-tw'
+            useValue: 'zh-Hant'
         },
     ],
     exports: [
@@ -33,4 +35,8 @@ import {
         JhiAlertErrorComponent
     ]
 })
-export class KavsirSharedCommonModule {}
+export class KavsirSharedCommonModule {
+    constructor() {
+        registerLocaleData(locale);
+    }
+}

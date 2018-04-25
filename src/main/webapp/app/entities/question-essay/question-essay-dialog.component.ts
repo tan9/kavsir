@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy, ViewChild, forwardRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Response } from '@angular/http';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
-import { Observable } from 'rxjs/Rx';
-import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { Observable } from 'rxjs/Observable';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
 
 import { QuestionEssay } from './question-essay.model';
@@ -12,7 +12,7 @@ import { QuestionEssayService } from './question-essay.service';
 import { CategoryNode } from '../category-node';
 import { ResourceImage } from '../resource-image';
 import { QuestionGroup, QuestionGroupService } from '../question-group';
-import { ResponseWrapper, CategoryHierarchyService } from '../../shared';
+import { CategoryHierarchyService } from '../../shared';
 import { ImagesComponent } from '../../shared/image/images.component';
 
 @Component({
@@ -55,7 +55,7 @@ export class QuestionEssayDialogComponent implements OnInit {
 
         this.categorynodes = this.categoryHierarchyService.getNodes();
         this.questionGroupService.query()
-            .subscribe((res: ResponseWrapper) => { this.questiongroups = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+            .subscribe((res: HttpResponse<QuestionGroup[]>) => { this.questiongroups = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     byteSize(field) {
@@ -85,9 +85,9 @@ export class QuestionEssayDialogComponent implements OnInit {
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<QuestionEssay>) {
-        result.subscribe((res: QuestionEssay) =>
-            this.onSaveSuccess(res), (res: Response) => this.onSaveError());
+    private subscribeToSaveResponse(result: Observable<HttpResponse<QuestionEssay>>) {
+        result.subscribe((res: HttpResponse<QuestionEssay>) =>
+            this.onSaveSuccess(res.body), (res: HttpErrorResponse) => this.onSaveError());
     }
 
     private onSaveSuccess(result: QuestionEssay) {

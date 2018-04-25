@@ -56,10 +56,10 @@ public class QuestionChoiceOptionService {
     }
 
     /**
-     *  Get all the questionChoiceOptions.
+     * Get all the questionChoiceOptions.
      *
-     *  @param pageable the pagination information
-     *  @return the list of entities
+     * @param pageable the pagination information
+     * @return the list of entities
      */
     @Transactional(readOnly = true)
     public Page<QuestionChoiceOptionDTO> findAll(Pageable pageable) {
@@ -84,10 +84,10 @@ public class QuestionChoiceOptionService {
     }
 
     /**
-     *  Get one questionChoiceOption by id.
+     * Get one questionChoiceOption by id.
      *
-     *  @param id the id of the entity
-     *  @return the entity
+     * @param id the id of the entity
+     * @return the entity
      */
     @Transactional(readOnly = true)
     public QuestionChoiceOptionDTO findOne(Long id) {
@@ -97,9 +97,9 @@ public class QuestionChoiceOptionService {
     }
 
     /**
-     *  Delete the  questionChoiceOption by id.
+     * Delete the questionChoiceOption by id.
      *
-     *  @param id the id of the entity
+     * @param id the id of the entity
      */
     public void delete(Long id) {
         log.debug("Request to delete QuestionChoiceOption : {}", id);
@@ -110,9 +110,9 @@ public class QuestionChoiceOptionService {
     /**
      * Search for the questionChoiceOption corresponding to the query.
      *
-     *  @param query the query of the search
-     *  @param pageable the pagination information
-     *  @return the list of entities
+     * @param query the query of the search
+     * @param pageable the pagination information
+     * @return the list of entities
      */
     @Transactional(readOnly = true)
     public Page<QuestionChoiceOptionDTO> search(String query, Pageable pageable) {

@@ -1,6 +1,7 @@
 import { Injectable, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { HttpResponse } from '@angular/common/http';
 import { QuestionChoiceOption } from './question-choice-option.model';
 import { QuestionChoiceOptionService } from './question-choice-option.service';
 
@@ -25,10 +26,12 @@ export class QuestionChoiceOptionPopupService {
             }
 
             if (id) {
-                this.questionChoiceOptionService.find(id).subscribe((questionChoiceOption) => {
-                    this.ngbModalRef = this.questionChoiceOptionModalRef(component, questionChoiceOption);
-                    resolve(this.ngbModalRef);
-                });
+                this.questionChoiceOptionService.find(id)
+                    .subscribe((questionChoiceOptionResponse: HttpResponse<QuestionChoiceOption>) => {
+                        const questionChoiceOption: QuestionChoiceOption = questionChoiceOptionResponse.body;
+                        this.ngbModalRef = this.questionChoiceOptionModalRef(component, questionChoiceOption);
+                        resolve(this.ngbModalRef);
+                    });
             } else {
                 // setTimeout used as a workaround for getting ExpressionChangedAfterItHasBeenCheckedError
                 setTimeout(() => {
@@ -43,10 +46,10 @@ export class QuestionChoiceOptionPopupService {
         const modalRef = this.modalService.open(component, { size: 'lg', backdrop: 'static'});
         modalRef.componentInstance.questionChoiceOption = questionChoiceOption;
         modalRef.result.then((result) => {
-            this.router.navigate([{ outlets: { popup: null }}], { replaceUrl: true });
+            this.router.navigate([{ outlets: { popup: null }}], { replaceUrl: true, queryParamsHandling: 'merge' });
             this.ngbModalRef = null;
         }, (reason) => {
-            this.router.navigate([{ outlets: { popup: null }}], { replaceUrl: true });
+            this.router.navigate([{ outlets: { popup: null }}], { replaceUrl: true, queryParamsHandling: 'merge' });
             this.ngbModalRef = null;
         });
         return modalRef;

@@ -2,11 +2,11 @@ package com.tj.kvasir.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.tj.kvasir.service.QuestionChoiceService;
-import com.tj.kvasir.service.dto.QuestionChoiceDTO;
+import com.tj.kvasir.web.rest.errors.BadRequestAlertException;
 import com.tj.kvasir.web.rest.util.HeaderUtil;
 import com.tj.kvasir.web.rest.util.PaginationUtil;
+import com.tj.kvasir.service.dto.QuestionChoiceDTO;
 import io.github.jhipster.web.util.ResponseUtil;
-import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -60,7 +60,7 @@ public class QuestionChoiceResource {
     public ResponseEntity<QuestionChoiceDTO> createQuestionChoice(@Valid @RequestBody QuestionChoiceDTO questionChoiceDTO) throws URISyntaxException {
         log.debug("REST request to save QuestionChoice : {}", questionChoiceDTO);
         if (questionChoiceDTO.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new questionChoice cannot already have an ID")).body(null);
+            throw new BadRequestAlertException("A new questionChoice cannot already have an ID", ENTITY_NAME, "idexists");
         }
         QuestionChoiceDTO result = questionChoiceService.save(questionChoiceDTO);
         return ResponseEntity.created(new URI("/api/question-choices/" + result.getId()))
@@ -102,7 +102,7 @@ public class QuestionChoiceResource {
     @Timed
     public ResponseEntity<List<QuestionChoiceDTO>> getAllQuestionChoices(@RequestParam Optional<Set<Long>> categories,
                                                                          @RequestParam Optional<Boolean> multi,
-                                                                         @ApiParam Pageable pageable) {
+                                                                         Pageable pageable) {
         log.debug("REST request to get a page of QuestionChoices in categories {} with multi {}", categories, multi);
         Page<QuestionChoiceDTO> page = questionChoiceService.findAll(categories, multi, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/question-choices");
@@ -152,7 +152,7 @@ public class QuestionChoiceResource {
     public ResponseEntity<List<QuestionChoiceDTO>> searchQuestionChoices(@RequestParam String query,
                                                                          @RequestParam Optional<Set<Long>> categories,
                                                                          @RequestParam Optional<Boolean> multi,
-                                                                         @ApiParam Pageable pageable) {
+                                                                         Pageable pageable) {
         log.debug("REST request to search for a page of QuestionChoices for query {} in categories {} with multi {}", query, categories, multi);
         Page<QuestionChoiceDTO> page = questionChoiceService.search(query, categories, multi, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/question-choices");

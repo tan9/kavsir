@@ -1,74 +1,75 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
-import { Observable } from 'rxjs/Rx';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
 import { SERVER_API_URL } from '../../app.constants';
 
 import { CategoryGrade } from './category-grade.model';
-import { ResponseWrapper, createRequestOption } from '../../shared';
+import { createRequestOption } from '../../shared';
 import { CategoryService } from '../category.service';
+
+export type EntityResponseType = HttpResponse<CategoryGrade>;
 
 @Injectable()
 export class CategoryGradeService implements CategoryService<CategoryGrade> {
 
-    private resourceUrl = SERVER_API_URL + 'api/category-grades';
+    private resourceUrl =  SERVER_API_URL + 'api/category-grades';
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/category-grades';
 
-    constructor(private http: Http) { }
+    constructor(private http: HttpClient) { }
 
-    create(categoryGrade: CategoryGrade): Observable<CategoryGrade> {
+    create(categoryGrade: CategoryGrade): Observable<EntityResponseType> {
         const copy = this.convert(categoryGrade);
-        return this.http.post(this.resourceUrl, copy).map((res: Response) => {
-            const jsonResponse = res.json();
-            return this.convertItemFromServer(jsonResponse);
-        });
+        return this.http.post<CategoryGrade>(this.resourceUrl, copy, { observe: 'response' })
+            .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
-    update(categoryGrade: CategoryGrade): Observable<CategoryGrade> {
+    update(categoryGrade: CategoryGrade): Observable<EntityResponseType> {
         const copy = this.convert(categoryGrade);
-        return this.http.put(this.resourceUrl, copy).map((res: Response) => {
-            const jsonResponse = res.json();
-            return this.convertItemFromServer(jsonResponse);
-        });
+        return this.http.put<CategoryGrade>(this.resourceUrl, copy, { observe: 'response' })
+            .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
-    find(id: number): Observable<CategoryGrade> {
-        return this.http.get(`${this.resourceUrl}/${id}`).map((res: Response) => {
-            const jsonResponse = res.json();
-            return this.convertItemFromServer(jsonResponse);
-        });
+    find(id: number): Observable<EntityResponseType> {
+        return this.http.get<CategoryGrade>(`${this.resourceUrl}/${id}`, { observe: 'response'})
+            .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
-    query(req?: any): Observable<ResponseWrapper> {
+    query(req?: any): Observable<HttpResponse<CategoryGrade[]>> {
         const options = createRequestOption(req);
-        return this.http.get(this.resourceUrl, options)
-            .map((res: Response) => this.convertResponse(res));
+        return this.http.get<CategoryGrade[]>(this.resourceUrl, { params: options, observe: 'response' })
+            .map((res: HttpResponse<CategoryGrade[]>) => this.convertArrayResponse(res));
     }
 
-    delete(id: number): Observable<Response> {
-        return this.http.delete(`${this.resourceUrl}/${id}`);
+    delete(id: number): Observable<HttpResponse<any>> {
+        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
     }
 
-    search(req?: any): Observable<ResponseWrapper> {
+    search(req?: any): Observable<HttpResponse<CategoryGrade[]>> {
         const options = createRequestOption(req);
-        return this.http.get(this.resourceSearchUrl, options)
-            .map((res: any) => this.convertResponse(res));
+        return this.http.get<CategoryGrade[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
+            .map((res: HttpResponse<CategoryGrade[]>) => this.convertArrayResponse(res));
     }
 
-    private convertResponse(res: Response): ResponseWrapper {
-        const jsonResponse = res.json();
-        const result = [];
+    private convertResponse(res: EntityResponseType): EntityResponseType {
+        const body: CategoryGrade = this.convertItemFromServer(res.body);
+        return res.clone({body});
+    }
+
+    private convertArrayResponse(res: HttpResponse<CategoryGrade[]>): HttpResponse<CategoryGrade[]> {
+        const jsonResponse: CategoryGrade[] = res.body;
+        const body: CategoryGrade[] = [];
         for (let i = 0; i < jsonResponse.length; i++) {
-            result.push(this.convertItemFromServer(jsonResponse[i]));
+            body.push(this.convertItemFromServer(jsonResponse[i]));
         }
-        return new ResponseWrapper(res.headers, result, res.status);
+        return res.clone({body});
     }
 
     /**
      * Convert a returned JSON object to CategoryGrade.
      */
-    private convertItemFromServer(json: any): CategoryGrade {
-        const entity: CategoryGrade = Object.assign(new CategoryGrade(), json);
-        return entity;
+    private convertItemFromServer(categoryGrade: CategoryGrade): CategoryGrade {
+        const copy: CategoryGrade = Object.assign({}, categoryGrade);
+        return copy;
     }
 
     /**

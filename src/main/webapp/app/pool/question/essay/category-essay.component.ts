@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { QuestionEssayComponent } from '../../../entities/question-essay/index';
-import { ResponseWrapper } from '../../../shared/model/response-wrapper.model';
+import { QuestionEssay, QuestionEssayComponent } from '../../../entities/question-essay/index';
 import { CategoryHierarchyService } from '../../../shared/category/category-hierarchy.service';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http/src/response';
 
 @Component({
     selector: 'jhi-category-essay',
@@ -61,8 +61,8 @@ export class CategoryEssayComponent extends QuestionEssayComponent {
                 searchReq['categories'] = [this.categoryHierarchyService.getWorkingCategory().id];
             }
             this.questionEssayService.search(searchReq).subscribe(
-                (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
-                (res: ResponseWrapper) => this.onError(res.json)
+                (res: HttpResponse<QuestionEssay[]>) => this.onSuccess(res.body, res.headers),
+                (res: HttpErrorResponse) => this.onError(res.message)
             );
             return;
         }
@@ -74,8 +74,8 @@ export class CategoryEssayComponent extends QuestionEssayComponent {
             req['categories'] = [this.categoryHierarchyService.getWorkingCategory().id];
         }
         this.questionEssayService.query(req).subscribe(
-            (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
-            (res: ResponseWrapper) => this.onError(res.json)
+            (res: HttpResponse<QuestionEssay[]>) => this.onSuccess(res.body, res.headers),
+            (res: HttpErrorResponse) => this.onError(res.message)
         );
     }
 

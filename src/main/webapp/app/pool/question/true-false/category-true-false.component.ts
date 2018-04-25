@@ -1,7 +1,8 @@
 import { Component, Input } from '@angular/core';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { QuestionTrueFalseComponent } from '../../../entities/question-true-false/index';
-import { ResponseWrapper } from '../../../shared/model/response-wrapper.model';
 import { CategoryHierarchyService } from '../../../shared/category/category-hierarchy.service';
+import { QuestionTrueFalse } from '../../../entities/question-true-false/question-true-false.model';
 
 @Component({
     selector: 'jhi-category-true-false',
@@ -61,8 +62,8 @@ export class CategoryTrueFalseComponent extends QuestionTrueFalseComponent {
                 searchReq['categories'] = [this.categoryHierarchyService.getWorkingCategory().id];
             }
             this.questionTrueFalseService.search(searchReq).subscribe(
-                (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
-                (res: ResponseWrapper) => this.onError(res.json)
+                (res: HttpResponse<QuestionTrueFalse[]>) => this.onSuccess(res.body, res.headers),
+                (res: HttpResponse<QuestionTrueFalse[]>) => this.onError(res.body)
             );
             return;
         }
@@ -74,8 +75,8 @@ export class CategoryTrueFalseComponent extends QuestionTrueFalseComponent {
             req['categories'] = [this.categoryHierarchyService.getWorkingCategory().id];
         }
         this.questionTrueFalseService.query(req).subscribe(
-            (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
-            (res: ResponseWrapper) => this.onError(res.json)
+            (res: HttpResponse<QuestionTrueFalse[]>) => this.onSuccess(res.body, res.headers),
+            (res: HttpErrorResponse) => this.onError(res.message)
         );
     }
 

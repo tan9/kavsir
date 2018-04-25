@@ -1,23 +1,27 @@
 import './vendor.ts';
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { Ng2Webstorage } from 'ng2-webstorage';
 
+import { NgModule, Injector } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { Ng2Webstorage } from 'ngx-webstorage';
+import { JhiEventManager } from 'ng-jhipster';
+
+import { AuthExpiredInterceptor } from './blocks/interceptor/auth-expired.interceptor';
+import { ErrorHandlerInterceptor } from './blocks/interceptor/errorhandler.interceptor';
+import { NotificationInterceptor } from './blocks/interceptor/notification.interceptor';
 import { KavsirSharedModule, UserRouteAccessService } from './shared';
+import { KavsirAppRoutingModule} from './app-routing.module';
 import { KavsirHomeModule } from './home/home.module';
 import { KavsirAdminModule } from './admin/admin.module';
 import { KavsirAccountModule } from './account/account.module';
 import { KavsirEntityModule } from './entities/entity.module';
 import { KavsirPoolModule } from './pool/pool.module';
 
-import { customHttpProvider } from './blocks/interceptor/http.provider';
 import { PaginationConfig } from './blocks/config/uib-pagination.config';
-
+import { StateStorageService } from './shared/auth/state-storage.service';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
-
 import {
     JhiMainComponent,
-    LayoutRoutingModule,
     NavbarComponent,
     FooterComponent,
     ProfileService,
@@ -29,7 +33,7 @@ import {
 @NgModule({
     imports: [
         BrowserModule,
-        LayoutRoutingModule,
+        KavsirAppRoutingModule,
         Ng2Webstorage.forRoot({ prefix: 'jhi', separator: '-'}),
         KavsirSharedModule,
         KavsirHomeModule,
@@ -49,9 +53,33 @@ import {
     ],
     providers: [
         ProfileService,
-        customHttpProvider(),
         PaginationConfig,
-        UserRouteAccessService
+        UserRouteAccessService,
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthExpiredInterceptor,
+            multi: true,
+            deps: [
+                StateStorageService,
+                Injector
+            ]
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: ErrorHandlerInterceptor,
+            multi: true,
+            deps: [
+                JhiEventManager
+            ]
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: NotificationInterceptor,
+            multi: true,
+            deps: [
+                Injector
+            ]
+        }
     ],
     bootstrap: [ JhiMainComponent ]
 })

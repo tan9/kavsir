@@ -8,6 +8,7 @@ import com.tj.kvasir.domain.enumeration.CategoryType;
 import com.tj.kvasir.repository.CategoryGradeRepository;
 import com.tj.kvasir.repository.CategoryNodeRepository;
 import com.tj.kvasir.repository.search.CategoryGradeSearchRepository;
+import com.tj.kvasir.web.rest.errors.BadRequestAlertException;
 import com.tj.kvasir.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -64,7 +65,7 @@ public class CategoryGradeResource {
     public ResponseEntity<CategoryGrade> createCategoryGrade(@Valid @RequestBody CategoryGrade categoryGrade) throws URISyntaxException {
         log.debug("REST request to save CategoryGrade : {}", categoryGrade);
         if (categoryGrade.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new categoryGrade cannot already have an ID")).body(null);
+            throw new BadRequestAlertException("A new categoryGrade cannot already have an ID", ENTITY_NAME, "idexists");
         }
         CategoryGrade result = categoryGradeRepository.save(categoryGrade);
         categoryGradeSearchRepository.save(result);

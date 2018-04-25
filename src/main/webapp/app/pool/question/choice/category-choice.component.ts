@@ -1,13 +1,13 @@
-import { Component, Input } from '@angular/core';
-import { QuestionChoiceComponent } from '../../../entities/question-choice/index';
-import { ResponseWrapper } from '../../../shared/model/response-wrapper.model';
+import { Component, Input, OnInit } from '@angular/core';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { QuestionChoice, QuestionChoiceComponent } from '../../../entities/question-choice/index';
 import { CategoryHierarchyService } from '../../../shared/category/category-hierarchy.service';
 
 @Component({
     selector: 'jhi-category-choice',
     templateUrl: './category-choice.component.html'
 })
-export class CategoryChoiceComponent extends QuestionChoiceComponent {
+export class CategoryChoiceComponent extends QuestionChoiceComponent implements OnInit {
 
     inGroup = false;
     multipleResponse: boolean;
@@ -72,8 +72,8 @@ export class CategoryChoiceComponent extends QuestionChoiceComponent {
                 searchReq['categories'] = [this.categoryHierarchyService.getWorkingCategory().id];
             }
             this.questionChoiceService.search(searchReq).subscribe(
-                (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
-                (res: ResponseWrapper) => this.onError(res.json)
+                (res: HttpResponse<QuestionChoice[]>) => this.onSuccess(res.body, res.headers),
+                (res: HttpErrorResponse) => this.onError(res.message)
             );
             return;
         }
@@ -86,8 +86,8 @@ export class CategoryChoiceComponent extends QuestionChoiceComponent {
             req['categories'] = [this.categoryHierarchyService.getWorkingCategory().id];
         }
         this.questionChoiceService.query(req).subscribe(
-            (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
-            (res: ResponseWrapper) => this.onError(res.json)
+            (res: HttpResponse<QuestionChoice[]>) => this.onSuccess(res.body, res.headers),
+            (res: HttpErrorResponse) => this.onError(res.message)
         );
     }
 
@@ -98,10 +98,10 @@ export class CategoryChoiceComponent extends QuestionChoiceComponent {
             // TODO move to backend for performance??
             this.questionChoiceOptionService
                 .query({questionChoiceId: questionChoice.id})
-                .subscribe((res) => questionChoice.options = res.json);
+                .subscribe((res) => questionChoice.options = res.body);
             this.resourceImageService
                 .query({})
-                .subscribe((res) => questionChoice.images = res.json);
+                .subscribe((res) => questionChoice.images = res.body);
         });
     }
 

@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes, CanActivate } from '@angular/router';
-
-import { UserRouteAccessService } from '../../shared';
+import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes } from '@angular/router';
 import { JhiPaginationUtil } from 'ng-jhipster';
 
+import { UserRouteAccessService } from '../../shared';
 import { QuestionEssayComponent } from './question-essay.component';
 import { QuestionEssayDetailComponent } from './question-essay-detail.component';
 import { QuestionEssayPopupComponent } from './question-essay-dialog.component';

@@ -1,4 +1,5 @@
 import { Injectable, OnInit } from '@angular/core';
+import { HttpResponse, HttpErrorResponse} from '@angular/common/http';
 import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
 import { CategoryNodeService } from '../../entities/category-node/category-node.service';
 import { Category } from '../../entities/category.model';
@@ -6,7 +7,6 @@ import { Category } from '../../entities/category.model';
 import { TreeNode } from 'angular-tree-component/dist/angular-tree-component';
 import { CategoryNode, CategoryType } from '../../entities/category-node/category-node.model';
 import { CategoriesService } from './categories.service';
-import { ResponseWrapper } from '../model/response-wrapper.model';
 
 @Injectable()
 export class CategoryHierarchyService implements OnInit {
@@ -64,15 +64,13 @@ export class CategoryHierarchyService implements OnInit {
 
     private loadAllCategoryNodes() {
         this.categoryNodeService.query({'page': 0, 'size': 10240}).subscribe(
-            (res: ResponseWrapper) => {
-                const nodes = res.json;
+            (res: HttpResponse<CategoryNode[]>) => {
+                const nodes = res.body;
 
                 this.nodes.length = 0;
                 Array.prototype.push.apply(this.nodes, nodes);
 
-                // TODO enum order/literal conversion?
                 nodes.forEach((item) => {
-                    item.type = CategoryType[item.type];
                     this.nodeMap.set(item.id, item);
                 });
 
@@ -84,7 +82,7 @@ export class CategoryHierarchyService implements OnInit {
                     content: 'OK'
                 });
             },
-            (res: ResponseWrapper) => this.onError(res.json)
+            (res: HttpErrorResponse) => this.onError(res.message)
         );
     }
 
@@ -223,7 +221,7 @@ export class CategoryHierarchyService implements OnInit {
                 } else {
                     // newly created node, save it first
                     promises.push(this.categoryNodeService.create(this.convert(node)).toPromise().then((resultNode) => {
-                            node.id = resultNode.id;
+                            node.id = resultNode.body.id;
                             if (node.children) {
                                 return this.saveTreeRecursively(node.children, node);
                             } else {

@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static com.tj.kvasir.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -88,6 +89,7 @@ public class QuestionChoiceResourceIntTest {
         this.restQuestionChoiceMockMvc = MockMvcBuilders.standaloneSetup(questionChoiceResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
+            .setConversionService(createFormattingConversionService())
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
@@ -135,7 +137,7 @@ public class QuestionChoiceResourceIntTest {
 
         // Validate the QuestionChoice in Elasticsearch
         QuestionChoice questionChoiceEs = questionChoiceSearchRepository.findOne(testQuestionChoice.getId());
-        assertThat(questionChoiceEs).isEqualToComparingFieldByField(testQuestionChoice);
+        assertThat(questionChoiceEs).isEqualToIgnoringGivenFields(testQuestionChoice);
     }
 
     @Test
@@ -248,6 +250,8 @@ public class QuestionChoiceResourceIntTest {
 
         // Update the questionChoice
         QuestionChoice updatedQuestionChoice = questionChoiceRepository.findOne(questionChoice.getId());
+        // Disconnect from session so that the updates on updatedQuestionChoice are not directly saved in db
+        em.detach(updatedQuestionChoice);
         updatedQuestionChoice
             .multipleResponse(UPDATED_MULTIPLE_RESPONSE)
             .text(UPDATED_TEXT)
@@ -271,7 +275,7 @@ public class QuestionChoiceResourceIntTest {
 
         // Validate the QuestionChoice in Elasticsearch
         QuestionChoice questionChoiceEs = questionChoiceSearchRepository.findOne(testQuestionChoice.getId());
-        assertThat(questionChoiceEs).isEqualToComparingFieldByField(testQuestionChoice);
+        assertThat(questionChoiceEs).isEqualToIgnoringGivenFields(testQuestionChoice);
     }
 
     @Test

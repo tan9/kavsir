@@ -25,7 +25,6 @@ export class CategoryHierarchyComponent implements OnInit, OnDestroy {
 
     treeOptions: ITreeOptions = {
         idField: 'treeNodeId',
-        isHiddenField: 'isMarkedToBeDeleted',
         allowDrag: false,
         allowDrop: false
     };
@@ -80,6 +79,7 @@ export class CategoryHierarchyComponent implements OnInit, OnDestroy {
 
     updateTree() {
         this.treeNodes[0].children = this.categoryHierarchyService.getTree();
+        console.log(this.treeNodes[0].children);
         this.tree.treeModel.update();
         this.updateTreeActivatedNode();
     }

@@ -1,19 +1,18 @@
-import { Response } from '@angular/http';
+import { HttpResponse } from '@angular/common/http/src/response';
 import { Observable } from 'rxjs/Rx';
 
-import { ResponseWrapper } from '../shared';
 import { Category } from "./category.model";
 
 export interface CategoryService<T extends Category> {
 
-    create(category: T): Observable<T>;
+    create(category: T): Observable<HttpResponse<T>>;
 
-    update(category: T): Observable<T>;
+    update(category: T): Observable<HttpResponse<T>>;
 
-    find(id: number): Observable<T>;
+    find(id: number): Observable<HttpResponse<T>>;
 
-    query(req?: any): Observable<ResponseWrapper>;
+    query(req?: any): Observable<HttpResponse<T[]>>;
 
-    delete(id: number): Observable<Response>;
+    delete(id: number): Observable<HttpResponse<any>>;
 
 }

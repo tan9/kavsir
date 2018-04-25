@@ -3,6 +3,7 @@ package com.tj.kvasir.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.tj.kvasir.service.QuestionTrueFalseService;
 import com.tj.kvasir.service.dto.QuestionTrueFalseDTO;
+import com.tj.kvasir.web.rest.errors.BadRequestAlertException;
 import com.tj.kvasir.web.rest.util.HeaderUtil;
 import com.tj.kvasir.web.rest.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -60,7 +61,7 @@ public class QuestionTrueFalseResource {
     public ResponseEntity<QuestionTrueFalseDTO> createQuestionTrueFalse(@Valid @RequestBody QuestionTrueFalseDTO questionTrueFalseDTO) throws URISyntaxException {
         log.debug("REST request to save QuestionTrueFalse : {}", questionTrueFalseDTO);
         if (questionTrueFalseDTO.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new questionTrueFalse cannot already have an ID")).body(null);
+            throw new BadRequestAlertException("A new questionTrueFalse cannot already have an ID", ENTITY_NAME, "idexists");
         }
         QuestionTrueFalseDTO result = questionTrueFalseService.save(questionTrueFalseDTO);
         return ResponseEntity.created(new URI("/api/question-true-falses/" + result.getId()))

@@ -5,10 +5,11 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+
+import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -260,7 +261,7 @@ public class QuestionChoice implements Serializable {
             ", multipleResponse='" + isMultipleResponse() + "'" +
             ", text='" + getText() + "'" +
             ", memo='" + getMemo() + "'" +
-            ", groupPosition='" + getGroupPosition() + "'" +
+            ", groupPosition=" + getGroupPosition() +
             "}";
     }
 }

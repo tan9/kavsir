@@ -5,11 +5,11 @@ import com.tj.kvasir.domain.ResourceImage;
 
 import com.tj.kvasir.repository.ResourceImageRepository;
 import com.tj.kvasir.repository.search.ResourceImageSearchRepository;
+import com.tj.kvasir.web.rest.errors.BadRequestAlertException;
 import com.tj.kvasir.web.rest.util.HeaderUtil;
 import com.tj.kvasir.web.rest.util.PaginationUtil;
 import com.tj.kvasir.service.dto.ResourceImageDTO;
 import com.tj.kvasir.service.mapper.ResourceImageMapper;
-import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,7 +66,7 @@ public class ResourceImageResource {
     public ResponseEntity<ResourceImageDTO> createResourceImage(@Valid @RequestBody ResourceImageDTO resourceImageDTO) throws URISyntaxException {
         log.debug("REST request to save ResourceImage : {}", resourceImageDTO);
         if (resourceImageDTO.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new resourceImage cannot already have an ID")).body(null);
+            throw new BadRequestAlertException("A new resourceImage cannot already have an ID", ENTITY_NAME, "idexists");
         }
         ResourceImage resourceImage = resourceImageMapper.toEntity(resourceImageDTO);
         resourceImage = resourceImageRepository.save(resourceImage);
@@ -110,7 +110,7 @@ public class ResourceImageResource {
      */
     @GetMapping("/resource-images")
     @Timed
-    public ResponseEntity<List<ResourceImageDTO>> getAllResourceImages(@ApiParam Pageable pageable) {
+    public ResponseEntity<List<ResourceImageDTO>> getAllResourceImages(Pageable pageable) {
         log.debug("REST request to get a page of ResourceImages");
         Page<ResourceImage> page = resourceImageRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/resource-images");
@@ -157,7 +157,7 @@ public class ResourceImageResource {
      */
     @GetMapping("/_search/resource-images")
     @Timed
-    public ResponseEntity<List<ResourceImageDTO>> searchResourceImages(@RequestParam String query, @ApiParam Pageable pageable) {
+    public ResponseEntity<List<ResourceImageDTO>> searchResourceImages(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of ResourceImages for query {}", query);
         Page<ResourceImage> page = resourceImageSearchRepository.search(queryStringQuery(query), pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/resource-images");

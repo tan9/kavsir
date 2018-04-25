@@ -1,6 +1,7 @@
 import { Injectable, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { HttpResponse } from '@angular/common/http';
 import { QuestionEssay } from './question-essay.model';
 import { QuestionEssayService } from './question-essay.service';
 
@@ -25,10 +26,12 @@ export class QuestionEssayPopupService {
             }
 
             if (id) {
-                this.questionEssayService.find(id).subscribe((questionEssay) => {
-                    this.ngbModalRef = this.questionEssayModalRef(component, questionEssay);
-                    resolve(this.ngbModalRef);
-                });
+                this.questionEssayService.find(id)
+                    .subscribe((questionEssayResponse: HttpResponse<QuestionEssay>) => {
+                        const questionEssay: QuestionEssay = questionEssayResponse.body;
+                        this.ngbModalRef = this.questionEssayModalRef(component, questionEssay);
+                        resolve(this.ngbModalRef);
+                    });
             } else {
                 // setTimeout used as a workaround for getting ExpressionChangedAfterItHasBeenCheckedError
                 setTimeout(() => {
@@ -43,10 +46,10 @@ export class QuestionEssayPopupService {
         const modalRef = this.modalService.open(component, { size: 'lg', backdrop: 'static'});
         modalRef.componentInstance.questionEssay = questionEssay;
         modalRef.result.then((result) => {
-            this.router.navigate([{ outlets: { popup: null }}], { replaceUrl: true });
+            this.router.navigate([{ outlets: { popup: null }}], { replaceUrl: true, queryParamsHandling: 'merge' });
             this.ngbModalRef = null;
         }, (reason) => {
-            this.router.navigate([{ outlets: { popup: null }}], { replaceUrl: true });
+            this.router.navigate([{ outlets: { popup: null }}], { replaceUrl: true, queryParamsHandling: 'merge' });
             this.ngbModalRef = null;
         });
         return modalRef;

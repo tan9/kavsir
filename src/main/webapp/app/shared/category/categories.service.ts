@@ -7,8 +7,8 @@ import { CategorySubjectService, CategorySubject } from '../../entities/category
 import { CategorySourceService, CategorySource } from '../../entities/category-source';
 import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
 import { Subscription } from 'rxjs/Subscription';
-import { ResponseWrapper } from '../model/response-wrapper.model';
 import { Category } from '../../entities/category.model';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 
 @Injectable()
 export class CategoriesService implements OnInit, OnDestroy {
@@ -68,16 +68,16 @@ export class CategoriesService implements OnInit, OnDestroy {
 
     loadAllCategoryItems(typeName: string) {
         this[typeName + 'Service'].query().subscribe(
-            (res: ResponseWrapper) => {
+            (res: HttpResponse<Category[]>) => {
                 this[typeName + 's'].length = 0;
-                const newItems = res.json.sort(
+                const newItems = res.body.sort(
                     (a: Category, b: Category) => {
                         const position = a.position - b.position;
                         return position !== 0 ? position : a.id - b.id;
                     });
                 Array.prototype.push.apply(this[typeName + 's'], newItems);
             },
-            (res: ResponseWrapper) => this.onError(res.json)
+            (res: HttpErrorResponse) => this.onError(res.message)
         );
     }
 

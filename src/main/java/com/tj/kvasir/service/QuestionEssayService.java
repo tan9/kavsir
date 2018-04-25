@@ -78,11 +78,11 @@ public class QuestionEssayService {
     }
 
     /**
-     *  Get all the questionEssays.
+     * Get all the questionEssays.
      *
-     *  @param categories limiting result in categories
+     * @param categories limiting result in categories
      *  @param pageable the pagination information
-     *  @return the list of entities
+     * @return the list of entities
      */
     @Transactional(readOnly = true)
     public Page<QuestionEssayDTO> findAll(Optional<Set<Long>> categories, Pageable pageable) {
@@ -98,10 +98,10 @@ public class QuestionEssayService {
     }
 
     /**
-     *  Get one questionEssay by id.
+     * Get one questionEssay by id.
      *
-     *  @param id the id of the entity
-     *  @return the entity
+     * @param id the id of the entity
+     * @return the entity
      */
     @Transactional(readOnly = true)
     public QuestionEssayDTO findOne(Long id) {
@@ -111,9 +111,9 @@ public class QuestionEssayService {
     }
 
     /**
-     *  Delete the  questionEssay by id.
+     * Delete the questionEssay by id.
      *
-     *  @param id the id of the entity
+     * @param id the id of the entity
      */
     public void delete(Long id) {
         log.debug("Request to delete QuestionEssay : {}", id);
@@ -124,10 +124,10 @@ public class QuestionEssayService {
     /**
      * Search for the questionEssay corresponding to the query.
      *
-     *  @param query the query of the search
-     *  @param categories  limiting result in category
+     * @param query the query of the search
+     * @param categories  limiting result in category
      *  @param pageable the pagination information
-     *  @return the list of entities
+     * @return the list of entities
      */
     @Transactional(readOnly = true)
     public Page<QuestionEssayDTO> search(String query, Optional<Set<Long>> categories, Pageable pageable) {

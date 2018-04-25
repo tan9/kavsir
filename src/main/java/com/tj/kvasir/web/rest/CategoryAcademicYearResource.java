@@ -8,6 +8,7 @@ import com.tj.kvasir.domain.enumeration.CategoryType;
 import com.tj.kvasir.repository.CategoryAcademicYearRepository;
 import com.tj.kvasir.repository.CategoryNodeRepository;
 import com.tj.kvasir.repository.search.CategoryAcademicYearSearchRepository;
+import com.tj.kvasir.web.rest.errors.BadRequestAlertException;
 import com.tj.kvasir.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -64,7 +65,7 @@ public class CategoryAcademicYearResource {
     public ResponseEntity<CategoryAcademicYear> createCategoryAcademicYear(@Valid @RequestBody CategoryAcademicYear categoryAcademicYear) throws URISyntaxException {
         log.debug("REST request to save CategoryAcademicYear : {}", categoryAcademicYear);
         if (categoryAcademicYear.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new categoryAcademicYear cannot already have an ID")).body(null);
+            throw new BadRequestAlertException("A new categoryAcademicYear cannot already have an ID", ENTITY_NAME, "idexists");
         }
         CategoryAcademicYear result = categoryAcademicYearRepository.save(categoryAcademicYear);
         categoryAcademicYearSearchRepository.save(result);

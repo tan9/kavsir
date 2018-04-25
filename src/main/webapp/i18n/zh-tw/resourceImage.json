@@ -21,7 +21,11 @@
             "choice": "選擇題",
             "choiceOption": "選擇題選項",
             "trueFalse": "是非題",
-            "essay": "問答題"
+            "essay": "問答題",
+            "help": {
+                "name": "名稱",
+                "content": "內容"
+            }
         }
     }
 }

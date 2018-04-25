@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Rx';
+import { HttpResponse } from '@angular/common/http';
+import { Subscription } from 'rxjs/Subscription';
 import { JhiEventManager, JhiDataUtils } from 'ng-jhipster';
 
 import { QuestionGroup } from './question-group.model';
@@ -32,9 +33,10 @@ export class QuestionGroupDetailComponent implements OnInit, OnDestroy {
     }
 
     load(id) {
-        this.questionGroupService.find(id).subscribe((questionGroup) => {
-            this.questionGroup = questionGroup;
-        });
+        this.questionGroupService.find(id)
+            .subscribe((questionGroupResponse: HttpResponse<QuestionGroup>) => {
+                this.questionGroup = questionGroupResponse.body;
+            });
     }
     byteSize(field) {
         return this.dataUtils.byteSize(field);

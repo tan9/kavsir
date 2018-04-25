@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static com.tj.kvasir.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -77,6 +78,7 @@ public class CategorySubjectResourceIntTest {
         this.restCategorySubjectMockMvc = MockMvcBuilders.standaloneSetup(categorySubjectResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
+            .setConversionService(createFormattingConversionService())
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
@@ -119,7 +121,7 @@ public class CategorySubjectResourceIntTest {
 
         // Validate the CategorySubject in Elasticsearch
         CategorySubject categorySubjectEs = categorySubjectSearchRepository.findOne(testCategorySubject.getId());
-        assertThat(categorySubjectEs).isEqualToComparingFieldByField(testCategorySubject);
+        assertThat(categorySubjectEs).isEqualToIgnoringGivenFields(testCategorySubject);
     }
 
     @Test
@@ -225,6 +227,8 @@ public class CategorySubjectResourceIntTest {
 
         // Update the categorySubject
         CategorySubject updatedCategorySubject = categorySubjectRepository.findOne(categorySubject.getId());
+        // Disconnect from session so that the updates on updatedCategorySubject are not directly saved in db
+        em.detach(updatedCategorySubject);
         updatedCategorySubject
             .position(UPDATED_POSITION)
             .name(UPDATED_NAME);
@@ -243,7 +247,7 @@ public class CategorySubjectResourceIntTest {
 
         // Validate the CategorySubject in Elasticsearch
         CategorySubject categorySubjectEs = categorySubjectSearchRepository.findOne(testCategorySubject.getId());
-        assertThat(categorySubjectEs).isEqualToComparingFieldByField(testCategorySubject);
+        assertThat(categorySubjectEs).isEqualToIgnoringGivenFields(testCategorySubject);
     }
 
     @Test

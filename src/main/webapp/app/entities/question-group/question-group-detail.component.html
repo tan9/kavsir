@@ -4,11 +4,11 @@
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="kavsirApp.questionGroup.text">Text</span></dt>
+        <dt><span jhiTranslate="kavsirApp.questionGroup.text" [ngbTooltip]="'kavsirApp.questionGroup.help.text' | translate">Text</span></dt>
         <dd>
             <span>{{questionGroup.text}}</span>
         </dd>
-        <dt><span jhiTranslate="kavsirApp.questionGroup.memo">Memo</span></dt>
+        <dt><span jhiTranslate="kavsirApp.questionGroup.memo" [ngbTooltip]="'kavsirApp.questionGroup.help.memo' | translate">Memo</span></dt>
         <dd>
             <span>{{questionGroup.memo}}</span>
         </dd>
@@ -29,6 +29,7 @@
     <button type="button"
             [routerLink]="['/', { outlets: { popup: 'question-group/'+ questionGroup.id + '/edit'} }]"
             replaceUrl="true"
+            queryParamsHandling="merge"
             class="btn btn-primary">
         <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
     </button>

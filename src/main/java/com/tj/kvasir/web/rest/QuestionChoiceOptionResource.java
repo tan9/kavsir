@@ -3,8 +3,10 @@ package com.tj.kvasir.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.tj.kvasir.service.QuestionChoiceOptionService;
 import com.tj.kvasir.service.dto.QuestionChoiceOptionDTO;
+import com.tj.kvasir.web.rest.errors.BadRequestAlertException;
 import com.tj.kvasir.web.rest.util.HeaderUtil;
 import com.tj.kvasir.web.rest.util.PaginationUtil;
+import com.tj.kvasir.service.dto.QuestionChoiceOptionDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -59,7 +61,7 @@ public class QuestionChoiceOptionResource {
     public ResponseEntity<QuestionChoiceOptionDTO> createQuestionChoiceOption(@Valid @RequestBody QuestionChoiceOptionDTO questionChoiceOptionDTO) throws URISyntaxException {
         log.debug("REST request to save QuestionChoiceOption : {}", questionChoiceOptionDTO);
         if (questionChoiceOptionDTO.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new questionChoiceOption cannot already have an ID")).body(null);
+            throw new BadRequestAlertException("A new questionChoiceOption cannot already have an ID", ENTITY_NAME, "idexists");
         }
         QuestionChoiceOptionDTO result = questionChoiceOptionService.save(questionChoiceOptionDTO);
         return ResponseEntity.created(new URI("/api/question-choice-options/" + result.getId()))
@@ -98,7 +100,7 @@ public class QuestionChoiceOptionResource {
     @GetMapping("/question-choice-options")
     @Timed
     public ResponseEntity<List<QuestionChoiceOptionDTO>> getAllQuestionChoiceOptions(@RequestParam Optional<Long> questionChoiceId,
-                                                                                     @ApiParam Pageable pageable) {
+                                                                                     Pageable pageable) {
         log.debug("REST request to get a page of QuestionChoiceOptions with questionChoiceId : {}", questionChoiceId);
         Page<QuestionChoiceOptionDTO> page;
 
@@ -150,7 +152,7 @@ public class QuestionChoiceOptionResource {
      */
     @GetMapping("/_search/question-choice-options")
     @Timed
-    public ResponseEntity<List<QuestionChoiceOptionDTO>> searchQuestionChoiceOptions(@RequestParam String query, @ApiParam Pageable pageable) {
+    public ResponseEntity<List<QuestionChoiceOptionDTO>> searchQuestionChoiceOptions(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of QuestionChoiceOptions for query {}", query);
         Page<QuestionChoiceOptionDTO> page = questionChoiceOptionService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/question-choice-options");

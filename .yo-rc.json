@@ -1,6 +1,6 @@
 {
   "generator-jhipster": {
-    "jhipsterVersion": "4.14.3",
+    "jhipsterVersion": "4.14.4",
     "baseName": "kavsir",
     "packageName": "com.tj.kvasir",
     "packageFolder": "com/tj/kvasir",

@@ -1,0 +1,28 @@
+
+{
+    "kavsirApp": {
+        "categorySubject" : {
+            "home": {
+                "title": "Category Subjects",
+                "createLabel": "Create a new Category Subject",
+                "createOrEditLabel": "Create or edit a Category Subject",
+                "search": "Search for Category Subject"
+            },
+            "created": "A new Category Subject is created with identifier {{ param }}",
+            "updated": "A Category Subject is updated with identifier {{ param }}",
+            "deleted": "A Category Subject is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Category Subject {{ id }}?"
+            },
+            "detail": {
+                "title": "Category Subject"
+            },
+            "position": "Position",
+            "name": "Name",
+            "help": {
+                "position": "序位",
+                "name": "名稱"
+            }
+        }
+    }
+}

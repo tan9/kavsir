@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity QuestionChoice.
+    -->
+    <changeSet id="20170302142432-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="question_choices_id"
+                                 baseTableName="question_choice_category"
+                                 constraintName="fk_question_choice_category_question_choices_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="question_choice"/>
+        <addForeignKeyConstraint baseColumnNames="categories_id"
+                                 baseTableName="question_choice_category"
+                                 constraintName="fk_question_choice_category_categories_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="category_node"/>
+        
+        <addForeignKeyConstraint baseColumnNames="question_choices_id"
+                                 baseTableName="question_choice_image"
+                                 constraintName="fk_question_choice_image_question_choices_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="question_choice"/>
+        <addForeignKeyConstraint baseColumnNames="images_id"
+                                 baseTableName="question_choice_image"
+                                 constraintName="fk_question_choice_image_images_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="resource_image"/>
+        
+        <addForeignKeyConstraint baseColumnNames="question_group_id"
+                                 baseTableName="question_choice"
+                                 constraintName="fk_question_choice_question_group_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="question_group"/>
+
+    </changeSet>
+</databaseChangeLog>

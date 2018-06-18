@@ -1,0 +1,56 @@
+
+<div *ngIf="questionEssay">
+    <h2><span jhiTranslate="kavsirApp.questionEssay.detail.title">Question Essay</span> {{questionEssay.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="kavsirApp.questionEssay.text" [ngbTooltip]="'kavsirApp.questionEssay.help.text' | translate">Text</span></dt>
+        <dd>
+            <span>{{questionEssay.text}}</span>
+        </dd>
+        <dt><span jhiTranslate="kavsirApp.questionEssay.answer" [ngbTooltip]="'kavsirApp.questionEssay.help.answer' | translate">Answer</span></dt>
+        <dd>
+            <span>{{questionEssay.answer}}</span>
+        </dd>
+        <dt><span jhiTranslate="kavsirApp.questionEssay.memo" [ngbTooltip]="'kavsirApp.questionEssay.help.memo' | translate">Memo</span></dt>
+        <dd>
+            <span>{{questionEssay.memo}}</span>
+        </dd>
+        <dt><span jhiTranslate="kavsirApp.questionEssay.groupPosition" [ngbTooltip]="'kavsirApp.questionEssay.help.groupPosition' | translate">Group Position</span></dt>
+        <dd>
+            <span>{{questionEssay.groupPosition}}</span>
+        </dd>
+        <dt><span jhiTranslate="kavsirApp.questionEssay.category">Category</span></dt>
+        <dd>
+            <span *ngFor="let category of questionEssay.categories; let last = last">
+                <a [routerLink]="['/category-node', category?.id ]">{{category.id}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
+        <dt><span jhiTranslate="kavsirApp.questionEssay.image">Image</span></dt>
+        <dd>
+            <span *ngFor="let image of questionEssay.images; let last = last">
+                <a [routerLink]="['/resource-image', image?.id ]">{{image.id}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
+        <dt><span jhiTranslate="kavsirApp.questionEssay.questionGroup">Question Group</span></dt>
+        <dd>
+            <div *ngIf="questionEssay.questionGroupId">
+                <a [routerLink]="['/question-group', questionEssay.questionGroupId]">{{questionEssay.questionGroupId}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'question-essay/'+ questionEssay.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

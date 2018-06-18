@@ -1,0 +1,36 @@
+
+{
+    "kavsirApp": {
+        "categoryNode" : {
+            "home": {
+                "title": "Category Nodes",
+                "createLabel": "Create a new Category Node",
+                "createOrEditLabel": "Create or edit a Category Node",
+                "search": "Search for Category Node"
+            },
+            "created": "A new Category Node is created with identifier {{ param }}",
+            "updated": "A Category Node is updated with identifier {{ param }}",
+            "deleted": "A Category Node is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Category Node {{ id }}?"
+            },
+            "detail": {
+                "title": "Category Node"
+            },
+            "type": "Type",
+            "typeId": "Type Id",
+            "name": "Name",
+            "position": "Position",
+            "parent": "Parent",
+            "trueOrFalse": "True Or False",
+            "choice": "Choice",
+            "essay": "Essay",
+            "group": "Group",
+            "help": {
+                "typeId": "類別 ID，在 type !== SEGMENT 時需指定到 type 對應表格資料",
+                "name": "名稱 (章、課、篇、節)，只有在 type == SEGMENT 時有效",
+                "position": "序位"
+            }
+        }
+    }
+}

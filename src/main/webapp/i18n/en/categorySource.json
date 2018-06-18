@@ -1,0 +1,28 @@
+
+{
+    "kavsirApp": {
+        "categorySource" : {
+            "home": {
+                "title": "Category Sources",
+                "createLabel": "Create a new Category Source",
+                "createOrEditLabel": "Create or edit a Category Source",
+                "search": "Search for Category Source"
+            },
+            "created": "A new Category Source is created with identifier {{ param }}",
+            "updated": "A Category Source is updated with identifier {{ param }}",
+            "deleted": "A Category Source is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Category Source {{ id }}?"
+            },
+            "detail": {
+                "title": "Category Source"
+            },
+            "position": "Position",
+            "name": "Name",
+            "help": {
+                "position": "序位",
+                "name": "名稱"
+            }
+        }
+    }
+}

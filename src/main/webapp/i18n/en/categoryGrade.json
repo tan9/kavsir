@@ -1,0 +1,28 @@
+
+{
+    "kavsirApp": {
+        "categoryGrade" : {
+            "home": {
+                "title": "Category Grades",
+                "createLabel": "Create a new Category Grade",
+                "createOrEditLabel": "Create or edit a Category Grade",
+                "search": "Search for Category Grade"
+            },
+            "created": "A new Category Grade is created with identifier {{ param }}",
+            "updated": "A Category Grade is updated with identifier {{ param }}",
+            "deleted": "A Category Grade is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Category Grade {{ id }}?"
+            },
+            "detail": {
+                "title": "Category Grade"
+            },
+            "position": "Position",
+            "name": "Name",
+            "help": {
+                "position": "序位",
+                "name": "名稱"
+            }
+        }
+    }
+}

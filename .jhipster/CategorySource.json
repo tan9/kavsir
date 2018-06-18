@@ -1,0 +1,28 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "position",
+            "javadoc": "序位",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "name",
+            "javadoc": "名稱",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20170823152534",
+    "javadoc": "來源 (學校、出版社...)",
+    "entityTableName": "category_source",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no"
+}

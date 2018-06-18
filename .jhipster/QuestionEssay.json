@@ -1,0 +1,63 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "essay",
+            "relationshipName": "category",
+            "otherEntityName": "categoryNode",
+            "otherEntityField": "id",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "essay",
+            "relationshipName": "image",
+            "otherEntityName": "resourceImage",
+            "otherEntityField": "id",
+            "ownerSide": true
+        },
+        {
+            "relationshipName": "questionGroup",
+            "otherEntityName": "questionGroup",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "text",
+            "javadoc": "題目",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "answer",
+            "javadoc": "答案",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "memo",
+            "javadoc": "備註",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "groupPosition",
+            "javadoc": "題組中序位",
+            "fieldType": "Integer"
+        }
+    ],
+    "changelogDate": "20170302142432",
+    "javadoc": "問答題",
+    "entityTableName": "question_essay",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass"
+}

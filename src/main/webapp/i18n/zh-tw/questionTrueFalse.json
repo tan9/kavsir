@@ -1,0 +1,35 @@
+
+{
+    "kavsirApp": {
+        "questionTrueFalse" : {
+            "home": {
+                "title": "Question True Falses",
+                "createLabel": "建立一筆新的 Question True False",
+                "createOrEditLabel": "建立或編輯 Question True False",
+                "search": "搜尋 Question True False"
+            },
+            "created": "新的 Question True False 建立成功，識別碼為 {{ param }}",
+            "updated": "識別碼為 {{ param }} 的 Question True False 更新成功",
+            "deleted": "識別碼為 {{ param }} 的 Question True False 刪除成功",
+            "delete": {
+                "question": "您確定要刪除 Question True False {{ id }} 嗎?"
+            },
+            "detail": {
+                "title": "Question True False"
+            },
+            "correct": "Correct",
+            "text": "Text",
+            "memo": "Memo",
+            "groupPosition": "Group Position",
+            "category": "Category",
+            "image": "Image",
+            "questionGroup": "Question Group",
+            "help": {
+                "correct": "答案",
+                "text": "題目",
+                "memo": "備註",
+                "groupPosition": "題組中序位"
+            }
+        }
+    }
+}

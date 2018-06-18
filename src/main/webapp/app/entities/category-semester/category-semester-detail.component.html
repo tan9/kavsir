@@ -1,0 +1,30 @@
+
+<div *ngIf="categorySemester">
+    <h2><span jhiTranslate="kavsirApp.categorySemester.detail.title">Category Semester</span> {{categorySemester.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="kavsirApp.categorySemester.position" [ngbTooltip]="'kavsirApp.categorySemester.help.position' | translate">Position</span></dt>
+        <dd>
+            <span>{{categorySemester.position}}</span>
+        </dd>
+        <dt><span jhiTranslate="kavsirApp.categorySemester.name" [ngbTooltip]="'kavsirApp.categorySemester.help.name' | translate">Name</span></dt>
+        <dd>
+            <span>{{categorySemester.name}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'category-semester/'+ categorySemester.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

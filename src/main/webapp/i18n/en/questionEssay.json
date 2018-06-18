@@ -1,0 +1,35 @@
+
+{
+    "kavsirApp": {
+        "questionEssay" : {
+            "home": {
+                "title": "Question Essays",
+                "createLabel": "Create a new Question Essay",
+                "createOrEditLabel": "Create or edit a Question Essay",
+                "search": "Search for Question Essay"
+            },
+            "created": "A new Question Essay is created with identifier {{ param }}",
+            "updated": "A Question Essay is updated with identifier {{ param }}",
+            "deleted": "A Question Essay is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Question Essay {{ id }}?"
+            },
+            "detail": {
+                "title": "Question Essay"
+            },
+            "text": "Text",
+            "answer": "Answer",
+            "memo": "Memo",
+            "groupPosition": "Group Position",
+            "category": "Category",
+            "image": "Image",
+            "questionGroup": "Question Group",
+            "help": {
+                "text": "題目",
+                "answer": "答案",
+                "memo": "備註",
+                "groupPosition": "題組中序位"
+            }
+        }
+    }
+}

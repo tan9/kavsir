@@ -1,22 +1,29 @@
 package com.tj.kvasir.repository;
 
 import com.tj.kvasir.domain.QuestionChoiceOption;
-import org.springframework.stereotype.Repository;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
+import java.util.Optional;
 
 /**
- * Spring Data JPA repository for the QuestionChoiceOption entity.
+ * Spring Data  repository for the QuestionChoiceOption entity.
  */
-@SuppressWarnings("unused")
 @Repository
 public interface QuestionChoiceOptionRepository extends JpaRepository<QuestionChoiceOption, Long> {
-    @Query("select distinct question_choice_option from QuestionChoiceOption question_choice_option left join fetch question_choice_option.images")
+
+    @Query(value = "select distinct questionChoiceOption from QuestionChoiceOption questionChoiceOption left join fetch questionChoiceOption.images",
+        countQuery = "select count(distinct questionChoiceOption) from QuestionChoiceOption questionChoiceOption")
+    Page<QuestionChoiceOption> findAllWithEagerRelationships(Pageable pageable);
+
+    @Query("select distinct questionChoiceOption from QuestionChoiceOption questionChoiceOption left join fetch questionChoiceOption.images")
     List<QuestionChoiceOption> findAllWithEagerRelationships();
 
-    @Query("select question_choice_option from QuestionChoiceOption question_choice_option left join fetch question_choice_option.images where question_choice_option.id =:id")
-    QuestionChoiceOption findOneWithEagerRelationships(@Param("id") Long id);
+    @Query("select questionChoiceOption from QuestionChoiceOption questionChoiceOption left join fetch questionChoiceOption.images where questionChoiceOption.id =:id")
+    Optional<QuestionChoiceOption> findOneWithEagerRelationships(@Param("id") Long id);
 
 }

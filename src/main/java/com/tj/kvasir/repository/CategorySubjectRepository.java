@@ -1,13 +1,12 @@
 package com.tj.kvasir.repository;
 
 import com.tj.kvasir.domain.CategorySubject;
-import org.springframework.stereotype.Repository;
-
 import org.springframework.data.jpa.repository.*;
+import org.springframework.stereotype.Repository;
 
 
 /**
- * Spring Data JPA repository for the CategorySubject entity.
+ * Spring Data  repository for the CategorySubject entity.
  */
 @SuppressWarnings("unused")
 @Repository

@@ -1,49 +1,45 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { JhiLanguageService } from 'ng-jhipster';
+import { JhiLanguageHelper } from 'app/core';
 
-import { KavsirSharedModule } from '../../shared';
+import { KavsirSharedModule } from 'app/shared';
 import {
-    CategorySubjectService,
-    CategorySubjectPopupService,
-    CategorySubjectComponent,
-    CategorySubjectDetailComponent,
-    CategorySubjectDialogComponent,
-    CategorySubjectPopupComponent,
-    CategorySubjectDeletePopupComponent,
-    CategorySubjectDeleteDialogComponent,
-    categorySubjectRoute,
-    categorySubjectPopupRoute,
+  CategorySubjectComponent,
+  CategorySubjectDetailComponent,
+  CategorySubjectUpdateComponent,
+  CategorySubjectDeletePopupComponent,
+  CategorySubjectDeleteDialogComponent,
+  categorySubjectRoute,
+  categorySubjectPopupRoute
 } from './';
 
-const ENTITY_STATES = [
-    ...categorySubjectRoute,
-    ...categorySubjectPopupRoute,
-];
+const ENTITY_STATES = [...categorySubjectRoute, ...categorySubjectPopupRoute];
 
 @NgModule({
-    imports: [
-        KavsirSharedModule,
-        RouterModule.forChild(ENTITY_STATES)
-    ],
-    declarations: [
-        CategorySubjectComponent,
-        CategorySubjectDetailComponent,
-        CategorySubjectDialogComponent,
-        CategorySubjectDeleteDialogComponent,
-        CategorySubjectPopupComponent,
-        CategorySubjectDeletePopupComponent,
-    ],
-    entryComponents: [
-        CategorySubjectComponent,
-        CategorySubjectDialogComponent,
-        CategorySubjectPopupComponent,
-        CategorySubjectDeleteDialogComponent,
-        CategorySubjectDeletePopupComponent,
-    ],
-    providers: [
-        CategorySubjectService,
-        CategorySubjectPopupService,
-    ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  imports: [KavsirSharedModule, RouterModule.forChild(ENTITY_STATES)],
+  declarations: [
+    CategorySubjectComponent,
+    CategorySubjectDetailComponent,
+    CategorySubjectUpdateComponent,
+    CategorySubjectDeleteDialogComponent,
+    CategorySubjectDeletePopupComponent
+  ],
+  entryComponents: [
+    CategorySubjectComponent,
+    CategorySubjectUpdateComponent,
+    CategorySubjectDeleteDialogComponent,
+    CategorySubjectDeletePopupComponent
+  ],
+  providers: [{ provide: JhiLanguageService, useClass: JhiLanguageService }],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class KavsirCategorySubjectModule {}
+export class KavsirCategorySubjectModule {
+  constructor(private languageService: JhiLanguageService, private languageHelper: JhiLanguageHelper) {
+    this.languageHelper.language.subscribe((languageKey: string) => {
+      if (languageKey !== undefined) {
+        this.languageService.changeLanguage(languageKey);
+      }
+    });
+  }
+}

@@ -1,54 +1,40 @@
 /* tslint:disable max-line-length */
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 
 import { KavsirTestModule } from '../../../test.module';
-import { CategorySourceDetailComponent } from '../../../../../../main/webapp/app/entities/category-source/category-source-detail.component';
-import { CategorySourceService } from '../../../../../../main/webapp/app/entities/category-source/category-source.service';
-import { CategorySource } from '../../../../../../main/webapp/app/entities/category-source/category-source.model';
+import { CategorySourceDetailComponent } from 'app/entities/category-source/category-source-detail.component';
+import { CategorySource } from 'app/shared/model/category-source.model';
 
 describe('Component Tests', () => {
+  describe('CategorySource Management Detail Component', () => {
+    let comp: CategorySourceDetailComponent;
+    let fixture: ComponentFixture<CategorySourceDetailComponent>;
+    const route = ({ data: of({ categorySource: new CategorySource(123) }) } as any) as ActivatedRoute;
 
-    describe('CategorySource Management Detail Component', () => {
-        let comp: CategorySourceDetailComponent;
-        let fixture: ComponentFixture<CategorySourceDetailComponent>;
-        let service: CategorySourceService;
-
-        beforeEach(async(() => {
-            TestBed.configureTestingModule({
-                imports: [KavsirTestModule],
-                declarations: [CategorySourceDetailComponent],
-                providers: [
-                    CategorySourceService
-                ]
-            })
-            .overrideTemplate(CategorySourceDetailComponent, '')
-            .compileComponents();
-        }));
-
-        beforeEach(() => {
-            fixture = TestBed.createComponent(CategorySourceDetailComponent);
-            comp = fixture.componentInstance;
-            service = fixture.debugElement.injector.get(CategorySourceService);
-        });
-
-        describe('OnInit', () => {
-            it('Should call load all on init', () => {
-                // GIVEN
-
-                spyOn(service, 'find').and.returnValue(Observable.of(new HttpResponse({
-                    body: new CategorySource(123)
-                })));
-
-                // WHEN
-                comp.ngOnInit();
-
-                // THEN
-                expect(service.find).toHaveBeenCalledWith(123);
-                expect(comp.categorySource).toEqual(jasmine.objectContaining({id: 123}));
-            });
-        });
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [KavsirTestModule],
+        declarations: [CategorySourceDetailComponent],
+        providers: [{ provide: ActivatedRoute, useValue: route }]
+      })
+        .overrideTemplate(CategorySourceDetailComponent, '')
+        .compileComponents();
+      fixture = TestBed.createComponent(CategorySourceDetailComponent);
+      comp = fixture.componentInstance;
     });
 
+    describe('OnInit', () => {
+      it('Should call load all on init', () => {
+        // GIVEN
+
+        // WHEN
+        comp.ngOnInit();
+
+        // THEN
+        expect(comp.categorySource).toEqual(jasmine.objectContaining({ id: 123 }));
+      });
+    });
+  });
 });

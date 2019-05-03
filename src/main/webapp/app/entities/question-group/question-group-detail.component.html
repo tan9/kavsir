@@ -1,36 +1,37 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="questionGroup">
+            <h2><span jhiTranslate="kavsirApp.questionGroup.detail.title">Question Group</span> {{questionGroup.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="kavsirApp.questionGroup.text" [ngbTooltip]="'kavsirApp.questionGroup.help.text' | translate">Text</span></dt>
+                <dd>
+                    <span>{{questionGroup.text}}</span>
+                </dd>
+                <dt><span jhiTranslate="kavsirApp.questionGroup.memo" [ngbTooltip]="'kavsirApp.questionGroup.help.memo' | translate">Memo</span></dt>
+                <dd>
+                    <span>{{questionGroup.memo}}</span>
+                </dd>
+                <dt><span jhiTranslate="kavsirApp.questionGroup.category">Category</span></dt>
+                <dd>
+                    <span *ngFor="let category of questionGroup.categories; let last = last">
+                        <a [routerLink]="['/category-node', category?.id, 'view' ]">{{category.id}}</a>{{last ? '' : ', '}}
+                    </span>
+                </dd>
+            </dl>
 
-<div *ngIf="questionGroup">
-    <h2><span jhiTranslate="kavsirApp.questionGroup.detail.title">Question Group</span> {{questionGroup.id}}</h2>
-    <hr>
-    <jhi-alert-error></jhi-alert-error>
-    <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="kavsirApp.questionGroup.text" [ngbTooltip]="'kavsirApp.questionGroup.help.text' | translate">Text</span></dt>
-        <dd>
-            <span>{{questionGroup.text}}</span>
-        </dd>
-        <dt><span jhiTranslate="kavsirApp.questionGroup.memo" [ngbTooltip]="'kavsirApp.questionGroup.help.memo' | translate">Memo</span></dt>
-        <dd>
-            <span>{{questionGroup.memo}}</span>
-        </dd>
-        <dt><span jhiTranslate="kavsirApp.questionGroup.category">Category</span></dt>
-        <dd>
-            <span *ngFor="let category of questionGroup.categories; let last = last">
-                <a [routerLink]="['/category-node', category?.id ]">{{category.id}}</a>{{last ? '' : ', '}}
-            </span>
-        </dd>
-    </dl>
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
 
-    <button type="submit"
-            (click)="previousState()"
-            class="btn btn-info">
-        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
-    </button>
-
-    <button type="button"
-            [routerLink]="['/', { outlets: { popup: 'question-group/'+ questionGroup.id + '/edit'} }]"
-            replaceUrl="true"
-            queryParamsHandling="merge"
-            class="btn btn-primary">
-        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
-    </button>
+            <button type="button"
+                    [routerLink]="['/question-group', questionGroup.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
 </div>

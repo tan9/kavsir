@@ -1,51 +1,45 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { JhiLanguageService } from 'ng-jhipster';
+import { JhiLanguageHelper } from 'app/core';
 
-import { KavsirSharedModule } from '../../shared';
+import { KavsirSharedModule } from 'app/shared';
 import {
-    QuestionChoiceOptionService,
-    QuestionChoiceOptionPopupService,
-    QuestionChoiceOptionComponent,
-    QuestionChoiceOptionDetailComponent,
-    QuestionChoiceOptionDialogComponent,
-    QuestionChoiceOptionPopupComponent,
-    QuestionChoiceOptionDeletePopupComponent,
-    QuestionChoiceOptionDeleteDialogComponent,
-    questionChoiceOptionRoute,
-    questionChoiceOptionPopupRoute,
-    QuestionChoiceOptionResolvePagingParams,
+  QuestionChoiceOptionComponent,
+  QuestionChoiceOptionDetailComponent,
+  QuestionChoiceOptionUpdateComponent,
+  QuestionChoiceOptionDeletePopupComponent,
+  QuestionChoiceOptionDeleteDialogComponent,
+  questionChoiceOptionRoute,
+  questionChoiceOptionPopupRoute
 } from './';
 
-const ENTITY_STATES = [
-    ...questionChoiceOptionRoute,
-    ...questionChoiceOptionPopupRoute,
-];
+const ENTITY_STATES = [...questionChoiceOptionRoute, ...questionChoiceOptionPopupRoute];
 
 @NgModule({
-    imports: [
-        KavsirSharedModule,
-        RouterModule.forChild(ENTITY_STATES)
-    ],
-    declarations: [
-        QuestionChoiceOptionComponent,
-        QuestionChoiceOptionDetailComponent,
-        QuestionChoiceOptionDialogComponent,
-        QuestionChoiceOptionDeleteDialogComponent,
-        QuestionChoiceOptionPopupComponent,
-        QuestionChoiceOptionDeletePopupComponent,
-    ],
-    entryComponents: [
-        QuestionChoiceOptionComponent,
-        QuestionChoiceOptionDialogComponent,
-        QuestionChoiceOptionPopupComponent,
-        QuestionChoiceOptionDeleteDialogComponent,
-        QuestionChoiceOptionDeletePopupComponent,
-    ],
-    providers: [
-        QuestionChoiceOptionService,
-        QuestionChoiceOptionPopupService,
-        QuestionChoiceOptionResolvePagingParams,
-    ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  imports: [KavsirSharedModule, RouterModule.forChild(ENTITY_STATES)],
+  declarations: [
+    QuestionChoiceOptionComponent,
+    QuestionChoiceOptionDetailComponent,
+    QuestionChoiceOptionUpdateComponent,
+    QuestionChoiceOptionDeleteDialogComponent,
+    QuestionChoiceOptionDeletePopupComponent
+  ],
+  entryComponents: [
+    QuestionChoiceOptionComponent,
+    QuestionChoiceOptionUpdateComponent,
+    QuestionChoiceOptionDeleteDialogComponent,
+    QuestionChoiceOptionDeletePopupComponent
+  ],
+  providers: [{ provide: JhiLanguageService, useClass: JhiLanguageService }],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class KavsirQuestionChoiceOptionModule {}
+export class KavsirQuestionChoiceOptionModule {
+  constructor(private languageService: JhiLanguageService, private languageHelper: JhiLanguageHelper) {
+    this.languageHelper.language.subscribe((languageKey: string) => {
+      if (languageKey !== undefined) {
+        this.languageService.changeLanguage(languageKey);
+      }
+    });
+  }
+}

@@ -1,14 +1,14 @@
 package com.tj.kvasir.domain;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,11 +17,10 @@ import java.util.Objects;
 /**
  * 選擇題選項
  */
-@ApiModel(description = "選擇題選項")
 @Entity
 @Table(name = "question_choice_option")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "questionchoiceoption")
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "questionchoiceoption")
 public class QuestionChoiceOption implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -29,21 +28,20 @@ public class QuestionChoiceOption implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
+    @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
     private Long id;
 
     /**
      * 是否為正解
      */
     @NotNull
-    @ApiModelProperty(value = "是否為正解", required = true)
     @Column(name = "correct", nullable = false)
     private Boolean correct;
 
     /**
      * 選項內容
      */
-    @NotNull
-    @ApiModelProperty(value = "選項內容", required = true)
+    
     @Lob
     @Column(name = "text", nullable = false)
     private String text;
@@ -51,18 +49,18 @@ public class QuestionChoiceOption implements Serializable {
     /**
      * 備註
      */
-    @ApiModelProperty(value = "備註")
     @Column(name = "memo")
     private String memo;
 
     @ManyToOne
+    @JsonIgnoreProperties("questionChoiceOptions")
     private QuestionChoice questionChoice;
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "question_choice_option_image",
-               joinColumns = @JoinColumn(name="question_choice_options_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="images_id", referencedColumnName="id"))
+               joinColumns = @JoinColumn(name = "question_choice_option_id", referencedColumnName = "id"),
+               inverseJoinColumns = @JoinColumn(name = "image_id", referencedColumnName = "id"))
     private Set<ResourceImage> images = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -157,19 +155,15 @@ public class QuestionChoiceOption implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof QuestionChoiceOption)) {
             return false;
         }
-        QuestionChoiceOption questionChoiceOption = (QuestionChoiceOption) o;
-        if (questionChoiceOption.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), questionChoiceOption.getId());
+        return id != null && id.equals(((QuestionChoiceOption) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.tj.kvasir.domain;
 
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.Cache;
@@ -8,7 +9,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -19,7 +20,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "category_semester")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "categorysemester")
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "categorysemester")
 public class CategorySemester implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -27,6 +28,7 @@ public class CategorySemester implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
+    @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
     private Long id;
 
     /**
@@ -86,19 +88,15 @@ public class CategorySemester implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof CategorySemester)) {
             return false;
         }
-        CategorySemester categorySemester = (CategorySemester) o;
-        if (categorySemester.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), categorySemester.getId());
+        return id != null && id.equals(((CategorySemester) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

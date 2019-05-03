@@ -7,16 +7,18 @@ import com.tj.kvasir.service.dto.QuestionChoiceOptionDTO;
 import com.tj.kvasir.service.mapper.QuestionChoiceOptionMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
- * Service Implementation for managing QuestionChoiceOption.
+ * Service Implementation for managing {@link QuestionChoiceOption}.
  */
 @Service
 @Transactional
@@ -39,8 +41,8 @@ public class QuestionChoiceOptionService {
     /**
      * Save a questionChoiceOption.
      *
-     * @param questionChoiceOptionDTO the entity to save
-     * @return the persisted entity
+     * @param questionChoiceOptionDTO the entity to save.
+     * @return the persisted entity.
      */
     public QuestionChoiceOptionDTO save(QuestionChoiceOptionDTO questionChoiceOptionDTO) {
         log.debug("Request to save QuestionChoiceOption : {}", questionChoiceOptionDTO);
@@ -54,8 +56,8 @@ public class QuestionChoiceOptionService {
     /**
      * Get all the questionChoiceOptions.
      *
-     * @param pageable the pagination information
-     * @return the list of entities
+     * @param pageable the pagination information.
+     * @return the list of entities.
      */
     @Transactional(readOnly = true)
     public Page<QuestionChoiceOptionDTO> findAll(Pageable pageable) {
@@ -65,40 +67,50 @@ public class QuestionChoiceOptionService {
     }
 
     /**
+     * Get all the questionChoiceOptions with eager load of many-to-many relationships.
+     *
+     * @return the list of entities.
+     */
+    public Page<QuestionChoiceOptionDTO> findAllWithEagerRelationships(Pageable pageable) {
+        return questionChoiceOptionRepository.findAllWithEagerRelationships(pageable).map(questionChoiceOptionMapper::toDto);
+    }
+    
+
+    /**
      * Get one questionChoiceOption by id.
      *
-     * @param id the id of the entity
-     * @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     @Transactional(readOnly = true)
-    public QuestionChoiceOptionDTO findOne(Long id) {
+    public Optional<QuestionChoiceOptionDTO> findOne(Long id) {
         log.debug("Request to get QuestionChoiceOption : {}", id);
-        QuestionChoiceOption questionChoiceOption = questionChoiceOptionRepository.findOneWithEagerRelationships(id);
-        return questionChoiceOptionMapper.toDto(questionChoiceOption);
+        return questionChoiceOptionRepository.findOneWithEagerRelationships(id)
+            .map(questionChoiceOptionMapper::toDto);
     }
 
     /**
      * Delete the questionChoiceOption by id.
      *
-     * @param id the id of the entity
+     * @param id the id of the entity.
      */
     public void delete(Long id) {
         log.debug("Request to delete QuestionChoiceOption : {}", id);
-        questionChoiceOptionRepository.delete(id);
-        questionChoiceOptionSearchRepository.delete(id);
+        questionChoiceOptionRepository.deleteById(id);
+        questionChoiceOptionSearchRepository.deleteById(id);
     }
 
     /**
      * Search for the questionChoiceOption corresponding to the query.
      *
-     * @param query the query of the search
-     * @param pageable the pagination information
-     * @return the list of entities
+     * @param query the query of the search.
+     * @param pageable the pagination information.
+     * @return the list of entities.
      */
     @Transactional(readOnly = true)
     public Page<QuestionChoiceOptionDTO> search(String query, Pageable pageable) {
         log.debug("Request to search for a page of QuestionChoiceOptions for query {}", query);
-        Page<QuestionChoiceOption> result = questionChoiceOptionSearchRepository.search(queryStringQuery(query), pageable);
-        return result.map(questionChoiceOptionMapper::toDto);
+        return questionChoiceOptionSearchRepository.search(queryStringQuery(query), pageable)
+            .map(questionChoiceOptionMapper::toDto);
     }
 }

@@ -1,55 +1,24 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { HttpResponse } from '@angular/common/http';
-import { Subscription } from 'rxjs/Subscription';
-import { JhiEventManager } from 'ng-jhipster';
 
-import { CategorySemester } from './category-semester.model';
-import { CategorySemesterService } from './category-semester.service';
+import { ICategorySemester } from 'app/shared/model/category-semester.model';
 
 @Component({
-    selector: 'jhi-category-semester-detail',
-    templateUrl: './category-semester-detail.component.html'
+  selector: 'jhi-category-semester-detail',
+  templateUrl: './category-semester-detail.component.html'
 })
-export class CategorySemesterDetailComponent implements OnInit, OnDestroy {
+export class CategorySemesterDetailComponent implements OnInit {
+  categorySemester: ICategorySemester;
 
-    categorySemester: CategorySemester;
-    private subscription: Subscription;
-    private eventSubscriber: Subscription;
+  constructor(protected activatedRoute: ActivatedRoute) {}
 
-    constructor(
-        private eventManager: JhiEventManager,
-        private categorySemesterService: CategorySemesterService,
-        private route: ActivatedRoute
-    ) {
-    }
+  ngOnInit() {
+    this.activatedRoute.data.subscribe(({ categorySemester }) => {
+      this.categorySemester = categorySemester;
+    });
+  }
 
-    ngOnInit() {
-        this.subscription = this.route.params.subscribe((params) => {
-            this.load(params['id']);
-        });
-        this.registerChangeInCategorySemesters();
-    }
-
-    load(id) {
-        this.categorySemesterService.find(id)
-            .subscribe((categorySemesterResponse: HttpResponse<CategorySemester>) => {
-                this.categorySemester = categorySemesterResponse.body;
-            });
-    }
-    previousState() {
-        window.history.back();
-    }
-
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
-        this.eventManager.destroy(this.eventSubscriber);
-    }
-
-    registerChangeInCategorySemesters() {
-        this.eventSubscriber = this.eventManager.subscribe(
-            'categorySemesterListModification',
-            (response) => this.load(this.categorySemester.id)
-        );
-    }
+  previousState() {
+    window.history.back();
+  }
 }

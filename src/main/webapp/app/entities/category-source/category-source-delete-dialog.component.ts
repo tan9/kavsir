@@ -1,64 +1,69 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
-import { CategorySource } from './category-source.model';
-import { CategorySourcePopupService } from './category-source-popup.service';
+import { ICategorySource } from 'app/shared/model/category-source.model';
 import { CategorySourceService } from './category-source.service';
 
 @Component({
-    selector: 'jhi-category-source-delete-dialog',
-    templateUrl: './category-source-delete-dialog.component.html'
+  selector: 'jhi-category-source-delete-dialog',
+  templateUrl: './category-source-delete-dialog.component.html'
 })
 export class CategorySourceDeleteDialogComponent {
+  categorySource: ICategorySource;
 
-    categorySource: CategorySource;
+  constructor(
+    protected categorySourceService: CategorySourceService,
+    public activeModal: NgbActiveModal,
+    protected eventManager: JhiEventManager
+  ) {}
 
-    constructor(
-        private categorySourceService: CategorySourceService,
-        public activeModal: NgbActiveModal,
-        private eventManager: JhiEventManager
-    ) {
-    }
+  clear() {
+    this.activeModal.dismiss('cancel');
+  }
 
-    clear() {
-        this.activeModal.dismiss('cancel');
-    }
-
-    confirmDelete(id: number) {
-        this.categorySourceService.delete(id).subscribe((response) => {
-            this.eventManager.broadcast({
-                name: 'categorySourceListModification',
-                content: 'Deleted an categorySource'
-            });
-            this.activeModal.dismiss(true);
-        });
-    }
+  confirmDelete(id: number) {
+    this.categorySourceService.delete(id).subscribe(response => {
+      this.eventManager.broadcast({
+        name: 'categorySourceListModification',
+        content: 'Deleted an categorySource'
+      });
+      this.activeModal.dismiss(true);
+    });
+  }
 }
 
 @Component({
-    selector: 'jhi-category-source-delete-popup',
-    template: ''
+  selector: 'jhi-category-source-delete-popup',
+  template: ''
 })
 export class CategorySourceDeletePopupComponent implements OnInit, OnDestroy {
+  protected ngbModalRef: NgbModalRef;
 
-    routeSub: any;
+  constructor(protected activatedRoute: ActivatedRoute, protected router: Router, protected modalService: NgbModal) {}
 
-    constructor(
-        private route: ActivatedRoute,
-        private categorySourcePopupService: CategorySourcePopupService
-    ) {}
+  ngOnInit() {
+    this.activatedRoute.data.subscribe(({ categorySource }) => {
+      setTimeout(() => {
+        this.ngbModalRef = this.modalService.open(CategorySourceDeleteDialogComponent as Component, { size: 'lg', backdrop: 'static' });
+        this.ngbModalRef.componentInstance.categorySource = categorySource;
+        this.ngbModalRef.result.then(
+          result => {
+            this.router.navigate(['/category-source', { outlets: { popup: null } }]);
+            this.ngbModalRef = null;
+          },
+          reason => {
+            this.router.navigate(['/category-source', { outlets: { popup: null } }]);
+            this.ngbModalRef = null;
+          }
+        );
+      }, 0);
+    });
+  }
 
-    ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.categorySourcePopupService
-                .open(CategorySourceDeleteDialogComponent as Component, params['id']);
-        });
-    }
-
-    ngOnDestroy() {
-        this.routeSub.unsubscribe();
-    }
+  ngOnDestroy() {
+    this.ngbModalRef = null;
+  }
 }

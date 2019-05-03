@@ -1,15 +1,14 @@
 package com.tj.kvasir.domain;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,11 +17,10 @@ import java.util.Objects;
 /**
  * 題組
  */
-@ApiModel(description = "題組")
 @Entity
 @Table(name = "question_group")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "questiongroup")
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "questiongroup")
 public class QuestionGroup implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -30,13 +28,13 @@ public class QuestionGroup implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
+    @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
     private Long id;
 
     /**
      * 題目
      */
-    @NotNull
-    @ApiModelProperty(value = "題目", required = true)
+    
     @Lob
     @Column(name = "text", nullable = false)
     private String text;
@@ -44,30 +42,26 @@ public class QuestionGroup implements Serializable {
     /**
      * 備註
      */
-    @ApiModelProperty(value = "備註")
     @Column(name = "memo")
     private String memo;
 
     @OneToMany(mappedBy = "questionGroup")
-    @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<QuestionChoice> choices = new HashSet<>();
 
     @OneToMany(mappedBy = "questionGroup")
-    @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<QuestionTrueFalse> trueFalses = new HashSet<>();
 
     @OneToMany(mappedBy = "questionGroup")
-    @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<QuestionEssay> essays = new HashSet<>();
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "question_group_category",
-               joinColumns = @JoinColumn(name="question_groups_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="categories_id", referencedColumnName="id"))
+               joinColumns = @JoinColumn(name = "question_group_id", referencedColumnName = "id"),
+               inverseJoinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id"))
     private Set<CategoryNode> categories = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -211,19 +205,15 @@ public class QuestionGroup implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof QuestionGroup)) {
             return false;
         }
-        QuestionGroup questionGroup = (QuestionGroup) o;
-        if (questionGroup.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), questionGroup.getId());
+        return id != null && id.equals(((QuestionGroup) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

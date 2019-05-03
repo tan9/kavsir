@@ -1,81 +1,98 @@
 import { Injectable } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes } from '@angular/router';
-import { JhiPaginationUtil } from 'ng-jhipster';
-
-import { UserRouteAccessService } from '../../shared';
+import { JhiPaginationUtil, JhiResolvePagingParams } from 'ng-jhipster';
+import { UserRouteAccessService } from 'app/core';
+import { Observable, of } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
+import { QuestionEssay } from 'app/shared/model/question-essay.model';
+import { QuestionEssayService } from './question-essay.service';
 import { QuestionEssayComponent } from './question-essay.component';
 import { QuestionEssayDetailComponent } from './question-essay-detail.component';
-import { QuestionEssayPopupComponent } from './question-essay-dialog.component';
+import { QuestionEssayUpdateComponent } from './question-essay-update.component';
 import { QuestionEssayDeletePopupComponent } from './question-essay-delete-dialog.component';
+import { IQuestionEssay } from 'app/shared/model/question-essay.model';
 
-@Injectable()
-export class QuestionEssayResolvePagingParams implements Resolve<any> {
+@Injectable({ providedIn: 'root' })
+export class QuestionEssayResolve implements Resolve<IQuestionEssay> {
+  constructor(private service: QuestionEssayService) {}
 
-    constructor(private paginationUtil: JhiPaginationUtil) {}
-
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        const page = route.queryParams['page'] ? route.queryParams['page'] : '1';
-        const sort = route.queryParams['sort'] ? route.queryParams['sort'] : 'id,asc';
-        return {
-            page: this.paginationUtil.parsePage(page),
-            predicate: this.paginationUtil.parsePredicate(sort),
-            ascending: this.paginationUtil.parseAscending(sort)
-      };
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IQuestionEssay> {
+    const id = route.params['id'] ? route.params['id'] : null;
+    if (id) {
+      return this.service.find(id).pipe(
+        filter((response: HttpResponse<QuestionEssay>) => response.ok),
+        map((questionEssay: HttpResponse<QuestionEssay>) => questionEssay.body)
+      );
     }
+    return of(new QuestionEssay());
+  }
 }
 
 export const questionEssayRoute: Routes = [
-    {
-        path: 'question-essay',
-        component: QuestionEssayComponent,
-        resolve: {
-            'pagingParams': QuestionEssayResolvePagingParams
-        },
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'kavsirApp.questionEssay.home.title'
-        },
-        canActivate: [UserRouteAccessService]
-    }, {
-        path: 'question-essay/:id',
-        component: QuestionEssayDetailComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'kavsirApp.questionEssay.home.title'
-        },
-        canActivate: [UserRouteAccessService]
-    }
+  {
+    path: '',
+    component: QuestionEssayComponent,
+    resolve: {
+      pagingParams: JhiResolvePagingParams
+    },
+    data: {
+      authorities: ['ROLE_USER'],
+      defaultSort: 'id,asc',
+      pageTitle: 'kavsirApp.questionEssay.home.title'
+    },
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: ':id/view',
+    component: QuestionEssayDetailComponent,
+    resolve: {
+      questionEssay: QuestionEssayResolve
+    },
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'kavsirApp.questionEssay.home.title'
+    },
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: 'new',
+    component: QuestionEssayUpdateComponent,
+    resolve: {
+      questionEssay: QuestionEssayResolve
+    },
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'kavsirApp.questionEssay.home.title'
+    },
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: ':id/edit',
+    component: QuestionEssayUpdateComponent,
+    resolve: {
+      questionEssay: QuestionEssayResolve
+    },
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'kavsirApp.questionEssay.home.title'
+    },
+    canActivate: [UserRouteAccessService]
+  }
 ];
 
 export const questionEssayPopupRoute: Routes = [
-    {
-        path: 'question-essay-new',
-        component: QuestionEssayPopupComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'kavsirApp.questionEssay.home.title'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
+  {
+    path: ':id/delete',
+    component: QuestionEssayDeletePopupComponent,
+    resolve: {
+      questionEssay: QuestionEssayResolve
     },
-    {
-        path: 'question-essay/:id/edit',
-        component: QuestionEssayPopupComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'kavsirApp.questionEssay.home.title'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'kavsirApp.questionEssay.home.title'
     },
-    {
-        path: 'question-essay/:id/delete',
-        component: QuestionEssayDeletePopupComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'kavsirApp.questionEssay.home.title'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
-    }
+    canActivate: [UserRouteAccessService],
+    outlet: 'popup'
+  }
 ];

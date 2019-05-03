@@ -1,15 +1,15 @@
 package com.tj.kvasir.domain;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -20,11 +20,10 @@ import com.tj.kvasir.domain.enumeration.CategoryType;
 /**
  * 類別節點
  */
-@ApiModel(description = "類別節點")
 @Entity
 @Table(name = "category_node")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "categorynode")
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "categorynode")
 public class CategoryNode implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -32,6 +31,7 @@ public class CategoryNode implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
+    @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
     private Long id;
 
     @NotNull
@@ -42,45 +42,43 @@ public class CategoryNode implements Serializable {
     /**
      * 類別 ID，在 type !== SEGMENT 時需指定到 type 對應表格資料
      */
-    @ApiModelProperty(value = "類別 ID，在 type !== SEGMENT 時需指定到 type 對應表格資料")
     @Column(name = "type_id")
     private Long typeId;
 
     /**
      * 名稱 (章、課、篇、節)，只有在 type == SEGMENT 時有效
      */
-    @ApiModelProperty(value = "名稱 (章、課、篇、節)，只有在 type == SEGMENT 時有效")
     @Column(name = "name")
     private String name;
 
     /**
      * 序位
      */
-    @ApiModelProperty(value = "序位")
     @Column(name = "position")
     private Integer position;
 
     @ManyToOne
+    @JsonIgnoreProperties("categoryNodes")
     private CategoryNode parent;
 
     @ManyToMany(mappedBy = "categories")
-    @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JsonIgnore
     private Set<QuestionTrueFalse> trueOrFalses = new HashSet<>();
 
     @ManyToMany(mappedBy = "categories")
-    @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JsonIgnore
     private Set<QuestionChoice> choices = new HashSet<>();
 
     @ManyToMany(mappedBy = "categories")
-    @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JsonIgnore
     private Set<QuestionEssay> essays = new HashSet<>();
 
     @ManyToMany(mappedBy = "categories")
-    @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JsonIgnore
     private Set<QuestionGroup> groups = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -263,19 +261,15 @@ public class CategoryNode implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof CategoryNode)) {
             return false;
         }
-        CategoryNode categoryNode = (CategoryNode) o;
-        if (categoryNode.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), categoryNode.getId());
+        return id != null && id.equals(((CategoryNode) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

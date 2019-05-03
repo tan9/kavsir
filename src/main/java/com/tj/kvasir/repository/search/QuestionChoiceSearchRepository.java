@@ -4,7 +4,7 @@ import com.tj.kvasir.domain.QuestionChoice;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
 /**
- * Spring Data Elasticsearch repository for the QuestionChoice entity.
+ * Spring Data Elasticsearch repository for the {@link QuestionChoice} entity.
  */
 public interface QuestionChoiceSearchRepository extends ElasticsearchRepository<QuestionChoice, Long> {
 }

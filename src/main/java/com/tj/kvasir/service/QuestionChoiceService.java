@@ -7,16 +7,18 @@ import com.tj.kvasir.service.dto.QuestionChoiceDTO;
 import com.tj.kvasir.service.mapper.QuestionChoiceMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
- * Service Implementation for managing QuestionChoice.
+ * Service Implementation for managing {@link QuestionChoice}.
  */
 @Service
 @Transactional
@@ -39,8 +41,8 @@ public class QuestionChoiceService {
     /**
      * Save a questionChoice.
      *
-     * @param questionChoiceDTO the entity to save
-     * @return the persisted entity
+     * @param questionChoiceDTO the entity to save.
+     * @return the persisted entity.
      */
     public QuestionChoiceDTO save(QuestionChoiceDTO questionChoiceDTO) {
         log.debug("Request to save QuestionChoice : {}", questionChoiceDTO);
@@ -54,8 +56,8 @@ public class QuestionChoiceService {
     /**
      * Get all the questionChoices.
      *
-     * @param pageable the pagination information
-     * @return the list of entities
+     * @param pageable the pagination information.
+     * @return the list of entities.
      */
     @Transactional(readOnly = true)
     public Page<QuestionChoiceDTO> findAll(Pageable pageable) {
@@ -65,40 +67,50 @@ public class QuestionChoiceService {
     }
 
     /**
+     * Get all the questionChoices with eager load of many-to-many relationships.
+     *
+     * @return the list of entities.
+     */
+    public Page<QuestionChoiceDTO> findAllWithEagerRelationships(Pageable pageable) {
+        return questionChoiceRepository.findAllWithEagerRelationships(pageable).map(questionChoiceMapper::toDto);
+    }
+    
+
+    /**
      * Get one questionChoice by id.
      *
-     * @param id the id of the entity
-     * @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     @Transactional(readOnly = true)
-    public QuestionChoiceDTO findOne(Long id) {
+    public Optional<QuestionChoiceDTO> findOne(Long id) {
         log.debug("Request to get QuestionChoice : {}", id);
-        QuestionChoice questionChoice = questionChoiceRepository.findOneWithEagerRelationships(id);
-        return questionChoiceMapper.toDto(questionChoice);
+        return questionChoiceRepository.findOneWithEagerRelationships(id)
+            .map(questionChoiceMapper::toDto);
     }
 
     /**
      * Delete the questionChoice by id.
      *
-     * @param id the id of the entity
+     * @param id the id of the entity.
      */
     public void delete(Long id) {
         log.debug("Request to delete QuestionChoice : {}", id);
-        questionChoiceRepository.delete(id);
-        questionChoiceSearchRepository.delete(id);
+        questionChoiceRepository.deleteById(id);
+        questionChoiceSearchRepository.deleteById(id);
     }
 
     /**
      * Search for the questionChoice corresponding to the query.
      *
-     * @param query the query of the search
-     * @param pageable the pagination information
-     * @return the list of entities
+     * @param query the query of the search.
+     * @param pageable the pagination information.
+     * @return the list of entities.
      */
     @Transactional(readOnly = true)
     public Page<QuestionChoiceDTO> search(String query, Pageable pageable) {
         log.debug("Request to search for a page of QuestionChoices for query {}", query);
-        Page<QuestionChoice> result = questionChoiceSearchRepository.search(queryStringQuery(query), pageable);
-        return result.map(questionChoiceMapper::toDto);
+        return questionChoiceSearchRepository.search(queryStringQuery(query), pageable)
+            .map(questionChoiceMapper::toDto);
     }
 }

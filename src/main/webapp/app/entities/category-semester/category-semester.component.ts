@@ -1,85 +1,97 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
-import { CategorySemester } from './category-semester.model';
+import { ICategorySemester } from 'app/shared/model/category-semester.model';
+import { AccountService } from 'app/core';
 import { CategorySemesterService } from './category-semester.service';
-import { Principal } from '../../shared';
 
 @Component({
-    selector: 'jhi-category-semester',
-    templateUrl: './category-semester.component.html'
+  selector: 'jhi-category-semester',
+  templateUrl: './category-semester.component.html'
 })
 export class CategorySemesterComponent implements OnInit, OnDestroy {
-categorySemesters: CategorySemester[];
-    currentAccount: any;
-    eventSubscriber: Subscription;
-    currentSearch: string;
+  categorySemesters: ICategorySemester[];
+  currentAccount: any;
+  eventSubscriber: Subscription;
+  currentSearch: string;
 
-    constructor(
-        private categorySemesterService: CategorySemesterService,
-        private jhiAlertService: JhiAlertService,
-        private eventManager: JhiEventManager,
-        private activatedRoute: ActivatedRoute,
-        private principal: Principal
-    ) {
-        this.currentSearch = this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search'] ?
-            this.activatedRoute.snapshot.params['search'] : '';
-    }
+  constructor(
+    protected categorySemesterService: CategorySemesterService,
+    protected jhiAlertService: JhiAlertService,
+    protected eventManager: JhiEventManager,
+    protected activatedRoute: ActivatedRoute,
+    protected accountService: AccountService
+  ) {
+    this.currentSearch =
+      this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search'] ? this.activatedRoute.snapshot.params['search'] : '';
+  }
 
-    loadAll() {
-        if (this.currentSearch) {
-            this.categorySemesterService.search({
-                query: this.currentSearch,
-                }).subscribe(
-                    (res: HttpResponse<CategorySemester[]>) => this.categorySemesters = res.body,
-                    (res: HttpErrorResponse) => this.onError(res.message)
-                );
-            return;
-       }
-        this.categorySemesterService.query().subscribe(
-            (res: HttpResponse<CategorySemester[]>) => {
-                this.categorySemesters = res.body;
-                this.currentSearch = '';
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
+  loadAll() {
+    if (this.currentSearch) {
+      this.categorySemesterService
+        .search({
+          query: this.currentSearch
+        })
+        .pipe(
+          filter((res: HttpResponse<ICategorySemester[]>) => res.ok),
+          map((res: HttpResponse<ICategorySemester[]>) => res.body)
+        )
+        .subscribe((res: ICategorySemester[]) => (this.categorySemesters = res), (res: HttpErrorResponse) => this.onError(res.message));
+      return;
     }
+    this.categorySemesterService
+      .query()
+      .pipe(
+        filter((res: HttpResponse<ICategorySemester[]>) => res.ok),
+        map((res: HttpResponse<ICategorySemester[]>) => res.body)
+      )
+      .subscribe(
+        (res: ICategorySemester[]) => {
+          this.categorySemesters = res;
+          this.currentSearch = '';
+        },
+        (res: HttpErrorResponse) => this.onError(res.message)
+      );
+  }
 
-    search(query) {
-        if (!query) {
-            return this.clear();
-        }
-        this.currentSearch = query;
-        this.loadAll();
+  search(query) {
+    if (!query) {
+      return this.clear();
     }
+    this.currentSearch = query;
+    this.loadAll();
+  }
 
-    clear() {
-        this.currentSearch = '';
-        this.loadAll();
-    }
-    ngOnInit() {
-        this.loadAll();
-        this.principal.identity().then((account) => {
-            this.currentAccount = account;
-        });
-        this.registerChangeInCategorySemesters();
-    }
+  clear() {
+    this.currentSearch = '';
+    this.loadAll();
+  }
 
-    ngOnDestroy() {
-        this.eventManager.destroy(this.eventSubscriber);
-    }
+  ngOnInit() {
+    this.loadAll();
+    this.accountService.identity().then(account => {
+      this.currentAccount = account;
+    });
+    this.registerChangeInCategorySemesters();
+  }
 
-    trackId(index: number, item: CategorySemester) {
-        return item.id;
-    }
-    registerChangeInCategorySemesters() {
-        this.eventSubscriber = this.eventManager.subscribe('categorySemesterListModification', (response) => this.loadAll());
-    }
+  ngOnDestroy() {
+    this.eventManager.destroy(this.eventSubscriber);
+  }
 
-    private onError(error) {
-        this.jhiAlertService.error(error.message, null, null);
-    }
+  trackId(index: number, item: ICategorySemester) {
+    return item.id;
+  }
+
+  registerChangeInCategorySemesters() {
+    this.eventSubscriber = this.eventManager.subscribe('categorySemesterListModification', response => this.loadAll());
+  }
+
+  protected onError(errorMessage: string) {
+    this.jhiAlertService.error(errorMessage, null, null);
+  }
 }

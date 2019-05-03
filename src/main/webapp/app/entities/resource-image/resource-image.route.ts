@@ -1,81 +1,98 @@
 import { Injectable } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes } from '@angular/router';
-import { JhiPaginationUtil } from 'ng-jhipster';
-
-import { UserRouteAccessService } from '../../shared';
+import { JhiPaginationUtil, JhiResolvePagingParams } from 'ng-jhipster';
+import { UserRouteAccessService } from 'app/core';
+import { Observable, of } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
+import { ResourceImage } from 'app/shared/model/resource-image.model';
+import { ResourceImageService } from './resource-image.service';
 import { ResourceImageComponent } from './resource-image.component';
 import { ResourceImageDetailComponent } from './resource-image-detail.component';
-import { ResourceImagePopupComponent } from './resource-image-dialog.component';
+import { ResourceImageUpdateComponent } from './resource-image-update.component';
 import { ResourceImageDeletePopupComponent } from './resource-image-delete-dialog.component';
+import { IResourceImage } from 'app/shared/model/resource-image.model';
 
-@Injectable()
-export class ResourceImageResolvePagingParams implements Resolve<any> {
+@Injectable({ providedIn: 'root' })
+export class ResourceImageResolve implements Resolve<IResourceImage> {
+  constructor(private service: ResourceImageService) {}
 
-    constructor(private paginationUtil: JhiPaginationUtil) {}
-
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        const page = route.queryParams['page'] ? route.queryParams['page'] : '1';
-        const sort = route.queryParams['sort'] ? route.queryParams['sort'] : 'id,asc';
-        return {
-            page: this.paginationUtil.parsePage(page),
-            predicate: this.paginationUtil.parsePredicate(sort),
-            ascending: this.paginationUtil.parseAscending(sort)
-      };
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IResourceImage> {
+    const id = route.params['id'] ? route.params['id'] : null;
+    if (id) {
+      return this.service.find(id).pipe(
+        filter((response: HttpResponse<ResourceImage>) => response.ok),
+        map((resourceImage: HttpResponse<ResourceImage>) => resourceImage.body)
+      );
     }
+    return of(new ResourceImage());
+  }
 }
 
 export const resourceImageRoute: Routes = [
-    {
-        path: 'resource-image',
-        component: ResourceImageComponent,
-        resolve: {
-            'pagingParams': ResourceImageResolvePagingParams
-        },
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'kavsirApp.resourceImage.home.title'
-        },
-        canActivate: [UserRouteAccessService]
-    }, {
-        path: 'resource-image/:id',
-        component: ResourceImageDetailComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'kavsirApp.resourceImage.home.title'
-        },
-        canActivate: [UserRouteAccessService]
-    }
+  {
+    path: '',
+    component: ResourceImageComponent,
+    resolve: {
+      pagingParams: JhiResolvePagingParams
+    },
+    data: {
+      authorities: ['ROLE_USER'],
+      defaultSort: 'id,asc',
+      pageTitle: 'kavsirApp.resourceImage.home.title'
+    },
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: ':id/view',
+    component: ResourceImageDetailComponent,
+    resolve: {
+      resourceImage: ResourceImageResolve
+    },
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'kavsirApp.resourceImage.home.title'
+    },
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: 'new',
+    component: ResourceImageUpdateComponent,
+    resolve: {
+      resourceImage: ResourceImageResolve
+    },
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'kavsirApp.resourceImage.home.title'
+    },
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: ':id/edit',
+    component: ResourceImageUpdateComponent,
+    resolve: {
+      resourceImage: ResourceImageResolve
+    },
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'kavsirApp.resourceImage.home.title'
+    },
+    canActivate: [UserRouteAccessService]
+  }
 ];
 
 export const resourceImagePopupRoute: Routes = [
-    {
-        path: 'resource-image-new',
-        component: ResourceImagePopupComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'kavsirApp.resourceImage.home.title'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
+  {
+    path: ':id/delete',
+    component: ResourceImageDeletePopupComponent,
+    resolve: {
+      resourceImage: ResourceImageResolve
     },
-    {
-        path: 'resource-image/:id/edit',
-        component: ResourceImagePopupComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'kavsirApp.resourceImage.home.title'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'kavsirApp.resourceImage.home.title'
     },
-    {
-        path: 'resource-image/:id/delete',
-        component: ResourceImageDeletePopupComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'kavsirApp.resourceImage.home.title'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
-    }
+    canActivate: [UserRouteAccessService],
+    outlet: 'popup'
+  }
 ];

@@ -1,13 +1,12 @@
 package com.tj.kvasir.repository;
 
 import com.tj.kvasir.domain.CategoryAcademicYear;
-import org.springframework.stereotype.Repository;
-
 import org.springframework.data.jpa.repository.*;
+import org.springframework.stereotype.Repository;
 
 
 /**
- * Spring Data JPA repository for the CategoryAcademicYear entity.
+ * Spring Data  repository for the CategoryAcademicYear entity.
  */
 @SuppressWarnings("unused")
 @Repository

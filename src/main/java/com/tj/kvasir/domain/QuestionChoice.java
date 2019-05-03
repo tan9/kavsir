@@ -1,15 +1,15 @@
 package com.tj.kvasir.domain;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,11 +18,10 @@ import java.util.Objects;
 /**
  * 選擇題
  */
-@ApiModel(description = "選擇題")
 @Entity
 @Table(name = "question_choice")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "questionchoice")
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "questionchoice")
 public class QuestionChoice implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -30,21 +29,20 @@ public class QuestionChoice implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
+    @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
     private Long id;
 
     /**
      * 是否為複選
      */
     @NotNull
-    @ApiModelProperty(value = "是否為複選", required = true)
     @Column(name = "multiple_response", nullable = false)
     private Boolean multipleResponse;
 
     /**
      * 題目
      */
-    @NotNull
-    @ApiModelProperty(value = "題目", required = true)
+    
     @Lob
     @Column(name = "text", nullable = false)
     private String text;
@@ -52,37 +50,35 @@ public class QuestionChoice implements Serializable {
     /**
      * 備註
      */
-    @ApiModelProperty(value = "備註")
     @Column(name = "memo")
     private String memo;
 
     /**
      * 題組中序位
      */
-    @ApiModelProperty(value = "題組中序位")
     @Column(name = "group_position")
     private Integer groupPosition;
 
     @OneToMany(mappedBy = "questionChoice")
-    @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<QuestionChoiceOption> options = new HashSet<>();
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "question_choice_category",
-               joinColumns = @JoinColumn(name="question_choices_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="categories_id", referencedColumnName="id"))
+               joinColumns = @JoinColumn(name = "question_choice_id", referencedColumnName = "id"),
+               inverseJoinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id"))
     private Set<CategoryNode> categories = new HashSet<>();
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "question_choice_image",
-               joinColumns = @JoinColumn(name="question_choices_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="images_id", referencedColumnName="id"))
+               joinColumns = @JoinColumn(name = "question_choice_id", referencedColumnName = "id"),
+               inverseJoinColumns = @JoinColumn(name = "image_id", referencedColumnName = "id"))
     private Set<ResourceImage> images = new HashSet<>();
 
     @ManyToOne
+    @JsonIgnoreProperties("questionChoices")
     private QuestionGroup questionGroup;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -240,19 +236,15 @@ public class QuestionChoice implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof QuestionChoice)) {
             return false;
         }
-        QuestionChoice questionChoice = (QuestionChoice) o;
-        if (questionChoice.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), questionChoice.getId());
+        return id != null && id.equals(((QuestionChoice) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

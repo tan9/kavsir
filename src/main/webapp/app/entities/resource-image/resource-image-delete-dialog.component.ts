@@ -1,64 +1,69 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
-import { ResourceImage } from './resource-image.model';
-import { ResourceImagePopupService } from './resource-image-popup.service';
+import { IResourceImage } from 'app/shared/model/resource-image.model';
 import { ResourceImageService } from './resource-image.service';
 
 @Component({
-    selector: 'jhi-resource-image-delete-dialog',
-    templateUrl: './resource-image-delete-dialog.component.html'
+  selector: 'jhi-resource-image-delete-dialog',
+  templateUrl: './resource-image-delete-dialog.component.html'
 })
 export class ResourceImageDeleteDialogComponent {
+  resourceImage: IResourceImage;
 
-    resourceImage: ResourceImage;
+  constructor(
+    protected resourceImageService: ResourceImageService,
+    public activeModal: NgbActiveModal,
+    protected eventManager: JhiEventManager
+  ) {}
 
-    constructor(
-        private resourceImageService: ResourceImageService,
-        public activeModal: NgbActiveModal,
-        private eventManager: JhiEventManager
-    ) {
-    }
+  clear() {
+    this.activeModal.dismiss('cancel');
+  }
 
-    clear() {
-        this.activeModal.dismiss('cancel');
-    }
-
-    confirmDelete(id: number) {
-        this.resourceImageService.delete(id).subscribe((response) => {
-            this.eventManager.broadcast({
-                name: 'resourceImageListModification',
-                content: 'Deleted an resourceImage'
-            });
-            this.activeModal.dismiss(true);
-        });
-    }
+  confirmDelete(id: number) {
+    this.resourceImageService.delete(id).subscribe(response => {
+      this.eventManager.broadcast({
+        name: 'resourceImageListModification',
+        content: 'Deleted an resourceImage'
+      });
+      this.activeModal.dismiss(true);
+    });
+  }
 }
 
 @Component({
-    selector: 'jhi-resource-image-delete-popup',
-    template: ''
+  selector: 'jhi-resource-image-delete-popup',
+  template: ''
 })
 export class ResourceImageDeletePopupComponent implements OnInit, OnDestroy {
+  protected ngbModalRef: NgbModalRef;
 
-    routeSub: any;
+  constructor(protected activatedRoute: ActivatedRoute, protected router: Router, protected modalService: NgbModal) {}
 
-    constructor(
-        private route: ActivatedRoute,
-        private resourceImagePopupService: ResourceImagePopupService
-    ) {}
+  ngOnInit() {
+    this.activatedRoute.data.subscribe(({ resourceImage }) => {
+      setTimeout(() => {
+        this.ngbModalRef = this.modalService.open(ResourceImageDeleteDialogComponent as Component, { size: 'lg', backdrop: 'static' });
+        this.ngbModalRef.componentInstance.resourceImage = resourceImage;
+        this.ngbModalRef.result.then(
+          result => {
+            this.router.navigate(['/resource-image', { outlets: { popup: null } }]);
+            this.ngbModalRef = null;
+          },
+          reason => {
+            this.router.navigate(['/resource-image', { outlets: { popup: null } }]);
+            this.ngbModalRef = null;
+          }
+        );
+      }, 0);
+    });
+  }
 
-    ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.resourceImagePopupService
-                .open(ResourceImageDeleteDialogComponent as Component, params['id']);
-        });
-    }
-
-    ngOnDestroy() {
-        this.routeSub.unsubscribe();
-    }
+  ngOnDestroy() {
+    this.ngbModalRef = null;
+  }
 }

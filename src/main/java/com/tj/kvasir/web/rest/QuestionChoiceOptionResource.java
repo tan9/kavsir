@@ -1,18 +1,21 @@
 package com.tj.kvasir.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
 import com.tj.kvasir.service.QuestionChoiceOptionService;
 import com.tj.kvasir.web.rest.errors.BadRequestAlertException;
-import com.tj.kvasir.web.rest.util.HeaderUtil;
-import com.tj.kvasir.web.rest.util.PaginationUtil;
 import com.tj.kvasir.service.dto.QuestionChoiceOptionDTO;
+
+import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +30,7 @@ import java.util.stream.StreamSupport;
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
- * REST controller for managing QuestionChoiceOption.
+ * REST controller for managing {@link com.tj.kvasir.domain.QuestionChoiceOption}.
  */
 @RestController
 @RequestMapping("/api")
@@ -37,6 +40,9 @@ public class QuestionChoiceOptionResource {
 
     private static final String ENTITY_NAME = "questionChoiceOption";
 
+    @Value("${jhipster.clientApp.name}")
+    private String applicationName;
+
     private final QuestionChoiceOptionService questionChoiceOptionService;
 
     public QuestionChoiceOptionResource(QuestionChoiceOptionService questionChoiceOptionService) {
@@ -44,14 +50,13 @@ public class QuestionChoiceOptionResource {
     }
 
     /**
-     * POST  /question-choice-options : Create a new questionChoiceOption.
+     * {@code POST  /question-choice-options} : Create a new questionChoiceOption.
      *
-     * @param questionChoiceOptionDTO the questionChoiceOptionDTO to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new questionChoiceOptionDTO, or with status 400 (Bad Request) if the questionChoiceOption has already an ID
-     * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @param questionChoiceOptionDTO the questionChoiceOptionDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new questionChoiceOptionDTO, or with status {@code 400 (Bad Request)} if the questionChoiceOption has already an ID.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/question-choice-options")
-    @Timed
     public ResponseEntity<QuestionChoiceOptionDTO> createQuestionChoiceOption(@Valid @RequestBody QuestionChoiceOptionDTO questionChoiceOptionDTO) throws URISyntaxException {
         log.debug("REST request to save QuestionChoiceOption : {}", questionChoiceOptionDTO);
         if (questionChoiceOptionDTO.getId() != null) {
@@ -59,90 +64,91 @@ public class QuestionChoiceOptionResource {
         }
         QuestionChoiceOptionDTO result = questionChoiceOptionService.save(questionChoiceOptionDTO);
         return ResponseEntity.created(new URI("/api/question-choice-options/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
     /**
-     * PUT  /question-choice-options : Updates an existing questionChoiceOption.
+     * {@code PUT  /question-choice-options} : Updates an existing questionChoiceOption.
      *
-     * @param questionChoiceOptionDTO the questionChoiceOptionDTO to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated questionChoiceOptionDTO,
-     * or with status 400 (Bad Request) if the questionChoiceOptionDTO is not valid,
-     * or with status 500 (Internal Server Error) if the questionChoiceOptionDTO couldn't be updated
-     * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @param questionChoiceOptionDTO the questionChoiceOptionDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated questionChoiceOptionDTO,
+     * or with status {@code 400 (Bad Request)} if the questionChoiceOptionDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the questionChoiceOptionDTO couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/question-choice-options")
-    @Timed
     public ResponseEntity<QuestionChoiceOptionDTO> updateQuestionChoiceOption(@Valid @RequestBody QuestionChoiceOptionDTO questionChoiceOptionDTO) throws URISyntaxException {
         log.debug("REST request to update QuestionChoiceOption : {}", questionChoiceOptionDTO);
         if (questionChoiceOptionDTO.getId() == null) {
-            return createQuestionChoiceOption(questionChoiceOptionDTO);
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         QuestionChoiceOptionDTO result = questionChoiceOptionService.save(questionChoiceOptionDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, questionChoiceOptionDTO.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, questionChoiceOptionDTO.getId().toString()))
             .body(result);
     }
 
     /**
-     * GET  /question-choice-options : get all the questionChoiceOptions.
+     * {@code GET  /question-choice-options} : get all the questionChoiceOptions.
      *
-     * @param pageable the pagination information
-     * @return the ResponseEntity with status 200 (OK) and the list of questionChoiceOptions in body
+     * @param pageable the pagination information.
+     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of questionChoiceOptions in body.
      */
     @GetMapping("/question-choice-options")
-    @Timed
-    public ResponseEntity<List<QuestionChoiceOptionDTO>> getAllQuestionChoiceOptions(Pageable pageable) {
+    public ResponseEntity<List<QuestionChoiceOptionDTO>> getAllQuestionChoiceOptions(Pageable pageable, @RequestParam MultiValueMap<String, String> queryParams, UriComponentsBuilder uriBuilder, @RequestParam(required = false, defaultValue = "false") boolean eagerload) {
         log.debug("REST request to get a page of QuestionChoiceOptions");
-        Page<QuestionChoiceOptionDTO> page = questionChoiceOptionService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/question-choice-options");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        Page<QuestionChoiceOptionDTO> page;
+        if (eagerload) {
+            page = questionChoiceOptionService.findAllWithEagerRelationships(pageable);
+        } else {
+            page = questionChoiceOptionService.findAll(pageable);
+        }
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(uriBuilder.queryParams(queryParams), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
-     * GET  /question-choice-options/:id : get the "id" questionChoiceOption.
+     * {@code GET  /question-choice-options/:id} : get the "id" questionChoiceOption.
      *
-     * @param id the id of the questionChoiceOptionDTO to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the questionChoiceOptionDTO, or with status 404 (Not Found)
+     * @param id the id of the questionChoiceOptionDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the questionChoiceOptionDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/question-choice-options/{id}")
-    @Timed
     public ResponseEntity<QuestionChoiceOptionDTO> getQuestionChoiceOption(@PathVariable Long id) {
         log.debug("REST request to get QuestionChoiceOption : {}", id);
-        QuestionChoiceOptionDTO questionChoiceOptionDTO = questionChoiceOptionService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(questionChoiceOptionDTO));
+        Optional<QuestionChoiceOptionDTO> questionChoiceOptionDTO = questionChoiceOptionService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(questionChoiceOptionDTO);
     }
 
     /**
-     * DELETE  /question-choice-options/:id : delete the "id" questionChoiceOption.
+     * {@code DELETE  /question-choice-options/:id} : delete the "id" questionChoiceOption.
      *
-     * @param id the id of the questionChoiceOptionDTO to delete
-     * @return the ResponseEntity with status 200 (OK)
+     * @param id the id of the questionChoiceOptionDTO to delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/question-choice-options/{id}")
-    @Timed
     public ResponseEntity<Void> deleteQuestionChoiceOption(@PathVariable Long id) {
         log.debug("REST request to delete QuestionChoiceOption : {}", id);
         questionChoiceOptionService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
 
     /**
-     * SEARCH  /_search/question-choice-options?query=:query : search for the questionChoiceOption corresponding
+     * {@code SEARCH  /_search/question-choice-options?query=:query} : search for the questionChoiceOption corresponding
      * to the query.
      *
-     * @param query the query of the questionChoiceOption search
-     * @param pageable the pagination information
-     * @return the result of the search
+     * @param query the query of the questionChoiceOption search.
+     * @param pageable the pagination information.
+     * @return the result of the search.
      */
     @GetMapping("/_search/question-choice-options")
-    @Timed
-    public ResponseEntity<List<QuestionChoiceOptionDTO>> searchQuestionChoiceOptions(@RequestParam String query, Pageable pageable) {
+    public ResponseEntity<List<QuestionChoiceOptionDTO>> searchQuestionChoiceOptions(@RequestParam String query, Pageable pageable, @RequestParam MultiValueMap<String, String> queryParams, UriComponentsBuilder uriBuilder) {
         log.debug("REST request to search for a page of QuestionChoiceOptions for query {}", query);
         Page<QuestionChoiceOptionDTO> page = questionChoiceOptionService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/question-choice-options");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(uriBuilder.queryParams(queryParams), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
 }

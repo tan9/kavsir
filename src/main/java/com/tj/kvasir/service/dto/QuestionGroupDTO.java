@@ -1,6 +1,6 @@
 package com.tj.kvasir.service.dto;
-
-
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -9,17 +9,27 @@ import java.util.Objects;
 import javax.persistence.Lob;
 
 /**
- * A DTO for the QuestionGroup entity.
+ * A DTO for the {@link com.tj.kvasir.domain.QuestionGroup} entity.
  */
+@ApiModel(description = "題組")
 public class QuestionGroupDTO implements Serializable {
 
     private Long id;
 
-    @NotNull
+    /**
+     * 題目
+     */
+    
+    @ApiModelProperty(value = "題目", required = true)
     @Lob
     private String text;
 
+    /**
+     * 備註
+     */
+    @ApiModelProperty(value = "備註")
     private String memo;
+
 
     private Set<CategoryNodeDTO> categories = new HashSet<>();
 
@@ -65,7 +75,7 @@ public class QuestionGroupDTO implements Serializable {
         }
 
         QuestionGroupDTO questionGroupDTO = (QuestionGroupDTO) o;
-        if(questionGroupDTO.getId() == null || getId() == null) {
+        if (questionGroupDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), questionGroupDTO.getId());

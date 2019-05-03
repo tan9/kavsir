@@ -1,0 +1,64 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-question-choice-option-heading" jhiTranslate="kavsirApp.questionChoiceOption.home.createOrEditLabel">Create or edit a Question Choice Option</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!questionChoiceOption.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
+                        readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="kavsirApp.questionChoiceOption.correct" for="field_correct" [ngbTooltip]="'kavsirApp.questionChoiceOption.help.correct' | translate">Correct</label>
+                    <input type="checkbox" class="form-control" name="correct" id="field_correct"
+                           formControlName="correct"/>
+                    <div *ngIf="editForm.get('correct').invalid && (editForm.get('correct').dirty || editForm.get('correct').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('correct').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="kavsirApp.questionChoiceOption.text" for="field_text" [ngbTooltip]="'kavsirApp.questionChoiceOption.help.text' | translate">Text</label>
+                    <textarea class="form-control" name="text" id="field_text"
+                              formControlName="text"></textarea>
+                    <div *ngIf="editForm.get('text').invalid && (editForm.get('text').dirty || editForm.get('text').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('text').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="kavsirApp.questionChoiceOption.memo" for="field_memo" [ngbTooltip]="'kavsirApp.questionChoiceOption.help.memo' | translate">Memo</label>
+                    <input type="text" class="form-control" name="memo" id="field_memo"
+                           formControlName="memo"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="kavsirApp.questionChoiceOption.questionChoice" for="field_questionChoice">Question Choice</label>
+                    <select class="form-control" id="field_questionChoice" name="questionChoice" formControlName="questionChoiceId">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="questionChoiceOption.id" *ngFor="let questionChoiceOption of questionchoices; trackBy: trackQuestionChoiceById">{{questionChoiceOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label jhiTranslate="kavsirApp.questionChoiceOption.image" for="field_images">Image</label>
+                    <select class="form-control" id="field_images" multiple name="images" formControlName="images">
+                        <option [ngValue]="getSelected(editForm.get('images').value, resourceImageOption)" *ngFor="let resourceImageOption of resourceimages; trackBy: trackResourceImageById">{{resourceImageOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

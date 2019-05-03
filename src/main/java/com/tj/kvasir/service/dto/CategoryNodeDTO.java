@@ -1,16 +1,15 @@
 package com.tj.kvasir.service.dto;
-
-
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 import com.tj.kvasir.domain.enumeration.CategoryType;
 
 /**
- * A DTO for the CategoryNode entity.
+ * A DTO for the {@link com.tj.kvasir.domain.CategoryNode} entity.
  */
+@ApiModel(description = "類別節點")
 public class CategoryNodeDTO implements Serializable {
 
     private Long id;
@@ -18,11 +17,24 @@ public class CategoryNodeDTO implements Serializable {
     @NotNull
     private CategoryType type;
 
+    /**
+     * 類別 ID，在 type !== SEGMENT 時需指定到 type 對應表格資料
+     */
+    @ApiModelProperty(value = "類別 ID，在 type !== SEGMENT 時需指定到 type 對應表格資料")
     private Long typeId;
 
+    /**
+     * 名稱 (章、課、篇、節)，只有在 type == SEGMENT 時有效
+     */
+    @ApiModelProperty(value = "名稱 (章、課、篇、節)，只有在 type == SEGMENT 時有效")
     private String name;
 
+    /**
+     * 序位
+     */
+    @ApiModelProperty(value = "序位")
     private Integer position;
+
 
     private Long parentId;
 
@@ -84,7 +96,7 @@ public class CategoryNodeDTO implements Serializable {
         }
 
         CategoryNodeDTO categoryNodeDTO = (CategoryNodeDTO) o;
-        if(categoryNodeDTO.getId() == null || getId() == null) {
+        if (categoryNodeDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), categoryNodeDTO.getId());
@@ -103,6 +115,7 @@ public class CategoryNodeDTO implements Serializable {
             ", typeId=" + getTypeId() +
             ", name='" + getName() + "'" +
             ", position=" + getPosition() +
+            ", parent=" + getParentId() +
             "}";
     }
 }

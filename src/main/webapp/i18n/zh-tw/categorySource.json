@@ -1,28 +1,27 @@
-
 {
-    "kavsirApp": {
-        "categorySource" : {
-            "home": {
-                "title": "Category Sources",
-                "createLabel": "建立一筆新的 Category Source",
-                "createOrEditLabel": "建立或編輯 Category Source",
-                "search": "搜尋 Category Source"
-            },
-            "created": "新的 Category Source 建立成功，識別碼為 {{ param }}",
-            "updated": "識別碼為 {{ param }} 的 Category Source 更新成功",
-            "deleted": "識別碼為 {{ param }} 的 Category Source 刪除成功",
-            "delete": {
-                "question": "您確定要刪除 Category Source {{ id }} 嗎?"
-            },
-            "detail": {
-                "title": "Category Source"
-            },
-            "position": "Position",
-            "name": "Name",
-            "help": {
-                "position": "序位",
-                "name": "名稱"
-            }
-        }
+  "kavsirApp": {
+    "categorySource": {
+      "home": {
+        "title": "Category Sources",
+        "createLabel": "建立一筆新的 Category Source",
+        "createOrEditLabel": "建立或編輯 Category Source",
+        "search": "搜尋 Category Source"
+      },
+      "created": "新的 Category Source 建立成功，識別碼為 {{ param }}",
+      "updated": "識別碼為 {{ param }} 的 Category Source 更新成功",
+      "deleted": "識別碼為 {{ param }} 的 Category Source 刪除成功",
+      "delete": {
+        "question": "您確定要刪除 Category Source {{ id }} 嗎?"
+      },
+      "detail": {
+        "title": "Category Source"
+      },
+      "position": "Position",
+      "name": "Name",
+      "help": {
+        "position": "序位",
+        "name": "名稱"
+      }
     }
+  }
 }

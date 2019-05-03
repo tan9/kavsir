@@ -1,64 +1,69 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
-import { CategorySemester } from './category-semester.model';
-import { CategorySemesterPopupService } from './category-semester-popup.service';
+import { ICategorySemester } from 'app/shared/model/category-semester.model';
 import { CategorySemesterService } from './category-semester.service';
 
 @Component({
-    selector: 'jhi-category-semester-delete-dialog',
-    templateUrl: './category-semester-delete-dialog.component.html'
+  selector: 'jhi-category-semester-delete-dialog',
+  templateUrl: './category-semester-delete-dialog.component.html'
 })
 export class CategorySemesterDeleteDialogComponent {
+  categorySemester: ICategorySemester;
 
-    categorySemester: CategorySemester;
+  constructor(
+    protected categorySemesterService: CategorySemesterService,
+    public activeModal: NgbActiveModal,
+    protected eventManager: JhiEventManager
+  ) {}
 
-    constructor(
-        private categorySemesterService: CategorySemesterService,
-        public activeModal: NgbActiveModal,
-        private eventManager: JhiEventManager
-    ) {
-    }
+  clear() {
+    this.activeModal.dismiss('cancel');
+  }
 
-    clear() {
-        this.activeModal.dismiss('cancel');
-    }
-
-    confirmDelete(id: number) {
-        this.categorySemesterService.delete(id).subscribe((response) => {
-            this.eventManager.broadcast({
-                name: 'categorySemesterListModification',
-                content: 'Deleted an categorySemester'
-            });
-            this.activeModal.dismiss(true);
-        });
-    }
+  confirmDelete(id: number) {
+    this.categorySemesterService.delete(id).subscribe(response => {
+      this.eventManager.broadcast({
+        name: 'categorySemesterListModification',
+        content: 'Deleted an categorySemester'
+      });
+      this.activeModal.dismiss(true);
+    });
+  }
 }
 
 @Component({
-    selector: 'jhi-category-semester-delete-popup',
-    template: ''
+  selector: 'jhi-category-semester-delete-popup',
+  template: ''
 })
 export class CategorySemesterDeletePopupComponent implements OnInit, OnDestroy {
+  protected ngbModalRef: NgbModalRef;
 
-    routeSub: any;
+  constructor(protected activatedRoute: ActivatedRoute, protected router: Router, protected modalService: NgbModal) {}
 
-    constructor(
-        private route: ActivatedRoute,
-        private categorySemesterPopupService: CategorySemesterPopupService
-    ) {}
+  ngOnInit() {
+    this.activatedRoute.data.subscribe(({ categorySemester }) => {
+      setTimeout(() => {
+        this.ngbModalRef = this.modalService.open(CategorySemesterDeleteDialogComponent as Component, { size: 'lg', backdrop: 'static' });
+        this.ngbModalRef.componentInstance.categorySemester = categorySemester;
+        this.ngbModalRef.result.then(
+          result => {
+            this.router.navigate(['/category-semester', { outlets: { popup: null } }]);
+            this.ngbModalRef = null;
+          },
+          reason => {
+            this.router.navigate(['/category-semester', { outlets: { popup: null } }]);
+            this.ngbModalRef = null;
+          }
+        );
+      }, 0);
+    });
+  }
 
-    ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.categorySemesterPopupService
-                .open(CategorySemesterDeleteDialogComponent as Component, params['id']);
-        });
-    }
-
-    ngOnDestroy() {
-        this.routeSub.unsubscribe();
-    }
+  ngOnDestroy() {
+    this.ngbModalRef = null;
+  }
 }

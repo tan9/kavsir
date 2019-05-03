@@ -1,6 +1,6 @@
 package com.tj.kvasir.service.dto;
-
-
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -9,23 +9,41 @@ import java.util.Objects;
 import javax.persistence.Lob;
 
 /**
- * A DTO for the QuestionEssay entity.
+ * A DTO for the {@link com.tj.kvasir.domain.QuestionEssay} entity.
  */
+@ApiModel(description = "問答題")
 public class QuestionEssayDTO implements Serializable {
 
     private Long id;
 
-    @NotNull
+    /**
+     * 題目
+     */
+    
+    @ApiModelProperty(value = "題目", required = true)
     @Lob
     private String text;
 
-    @NotNull
+    /**
+     * 答案
+     */
+    
+    @ApiModelProperty(value = "答案", required = true)
     @Lob
     private String answer;
 
+    /**
+     * 備註
+     */
+    @ApiModelProperty(value = "備註")
     private String memo;
 
+    /**
+     * 題組中序位
+     */
+    @ApiModelProperty(value = "題組中序位")
     private Integer groupPosition;
+
 
     private Set<CategoryNodeDTO> categories = new HashSet<>();
 
@@ -107,7 +125,7 @@ public class QuestionEssayDTO implements Serializable {
         }
 
         QuestionEssayDTO questionEssayDTO = (QuestionEssayDTO) o;
-        if(questionEssayDTO.getId() == null || getId() == null) {
+        if (questionEssayDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), questionEssayDTO.getId());
@@ -126,6 +144,7 @@ public class QuestionEssayDTO implements Serializable {
             ", answer='" + getAnswer() + "'" +
             ", memo='" + getMemo() + "'" +
             ", groupPosition=" + getGroupPosition() +
+            ", questionGroup=" + getQuestionGroupId() +
             "}";
     }
 }

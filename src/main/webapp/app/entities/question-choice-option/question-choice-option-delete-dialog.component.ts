@@ -1,64 +1,72 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
-import { QuestionChoiceOption } from './question-choice-option.model';
-import { QuestionChoiceOptionPopupService } from './question-choice-option-popup.service';
+import { IQuestionChoiceOption } from 'app/shared/model/question-choice-option.model';
 import { QuestionChoiceOptionService } from './question-choice-option.service';
 
 @Component({
-    selector: 'jhi-question-choice-option-delete-dialog',
-    templateUrl: './question-choice-option-delete-dialog.component.html'
+  selector: 'jhi-question-choice-option-delete-dialog',
+  templateUrl: './question-choice-option-delete-dialog.component.html'
 })
 export class QuestionChoiceOptionDeleteDialogComponent {
+  questionChoiceOption: IQuestionChoiceOption;
 
-    questionChoiceOption: QuestionChoiceOption;
+  constructor(
+    protected questionChoiceOptionService: QuestionChoiceOptionService,
+    public activeModal: NgbActiveModal,
+    protected eventManager: JhiEventManager
+  ) {}
 
-    constructor(
-        private questionChoiceOptionService: QuestionChoiceOptionService,
-        public activeModal: NgbActiveModal,
-        private eventManager: JhiEventManager
-    ) {
-    }
+  clear() {
+    this.activeModal.dismiss('cancel');
+  }
 
-    clear() {
-        this.activeModal.dismiss('cancel');
-    }
-
-    confirmDelete(id: number) {
-        this.questionChoiceOptionService.delete(id).subscribe((response) => {
-            this.eventManager.broadcast({
-                name: 'questionChoiceOptionListModification',
-                content: 'Deleted an questionChoiceOption'
-            });
-            this.activeModal.dismiss(true);
-        });
-    }
+  confirmDelete(id: number) {
+    this.questionChoiceOptionService.delete(id).subscribe(response => {
+      this.eventManager.broadcast({
+        name: 'questionChoiceOptionListModification',
+        content: 'Deleted an questionChoiceOption'
+      });
+      this.activeModal.dismiss(true);
+    });
+  }
 }
 
 @Component({
-    selector: 'jhi-question-choice-option-delete-popup',
-    template: ''
+  selector: 'jhi-question-choice-option-delete-popup',
+  template: ''
 })
 export class QuestionChoiceOptionDeletePopupComponent implements OnInit, OnDestroy {
+  protected ngbModalRef: NgbModalRef;
 
-    routeSub: any;
+  constructor(protected activatedRoute: ActivatedRoute, protected router: Router, protected modalService: NgbModal) {}
 
-    constructor(
-        private route: ActivatedRoute,
-        private questionChoiceOptionPopupService: QuestionChoiceOptionPopupService
-    ) {}
-
-    ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.questionChoiceOptionPopupService
-                .open(QuestionChoiceOptionDeleteDialogComponent as Component, params['id']);
+  ngOnInit() {
+    this.activatedRoute.data.subscribe(({ questionChoiceOption }) => {
+      setTimeout(() => {
+        this.ngbModalRef = this.modalService.open(QuestionChoiceOptionDeleteDialogComponent as Component, {
+          size: 'lg',
+          backdrop: 'static'
         });
-    }
+        this.ngbModalRef.componentInstance.questionChoiceOption = questionChoiceOption;
+        this.ngbModalRef.result.then(
+          result => {
+            this.router.navigate(['/question-choice-option', { outlets: { popup: null } }]);
+            this.ngbModalRef = null;
+          },
+          reason => {
+            this.router.navigate(['/question-choice-option', { outlets: { popup: null } }]);
+            this.ngbModalRef = null;
+          }
+        );
+      }, 0);
+    });
+  }
 
-    ngOnDestroy() {
-        this.routeSub.unsubscribe();
-    }
+  ngOnDestroy() {
+    this.ngbModalRef = null;
+  }
 }

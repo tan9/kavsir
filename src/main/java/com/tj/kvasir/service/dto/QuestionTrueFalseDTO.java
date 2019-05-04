@@ -2,7 +2,6 @@ package com.tj.kvasir.service.dto;
 
 
 import javax.validation.constraints.*;
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
@@ -11,9 +10,7 @@ import javax.persistence.Lob;
 /**
  * A DTO for the QuestionTrueFalse entity.
  */
-public class QuestionTrueFalseDTO implements Serializable {
-
-    private Long id;
+public class QuestionTrueFalseDTO extends QuestionDTO {
 
     @NotNull
     private Boolean correct;
@@ -31,14 +28,6 @@ public class QuestionTrueFalseDTO implements Serializable {
     private Set<ResourceImageDTO> images = new HashSet<>();
 
     private Long questionGroupId;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public Boolean isCorrect() {
         return correct;

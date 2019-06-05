@@ -1,56 +1,57 @@
-
-<div *ngIf="questionChoice">
-    <h2><span jhiTranslate="kavsirApp.questionChoice.detail.title">Question Choice</span> {{questionChoice.id}}</h2>
-    <hr>
-    <jhi-alert-error></jhi-alert-error>
-    <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="kavsirApp.questionChoice.multipleResponse" [ngbTooltip]="'kavsirApp.questionChoice.help.multipleResponse' | translate">Multiple Response</span></dt>
-        <dd>
-            <span>{{questionChoice.multipleResponse}}</span>
-        </dd>
-        <dt><span jhiTranslate="kavsirApp.questionChoice.text" [ngbTooltip]="'kavsirApp.questionChoice.help.text' | translate">Text</span></dt>
-        <dd>
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="questionChoice">
+            <h2><span jhiTranslate="kavsirApp.questionChoice.detail.title">Question Choice</span> {{questionChoice.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="kavsirApp.questionChoice.multipleResponse" [ngbTooltip]="'kavsirApp.questionChoice.help.multipleResponse' | translate">Multiple Response</span></dt>
+                <dd>
+                    <span>{{questionChoice.multipleResponse}}</span>
+                </dd>
+                <dt><span jhiTranslate="kavsirApp.questionChoice.text" [ngbTooltip]="'kavsirApp.questionChoice.help.text' | translate">Text</span></dt>
+                <dd>
             <jhi-markup-render [text]="questionChoice.text" [images]="questionChoice.images"></jhi-markup-render>
-        </dd>
-        <dt><span jhiTranslate="kavsirApp.questionChoice.memo" [ngbTooltip]="'kavsirApp.questionChoice.help.memo' | translate">Memo</span></dt>
-        <dd>
-            <span>{{questionChoice.memo}}</span>
-        </dd>
+                </dd>
+                <dt><span jhiTranslate="kavsirApp.questionChoice.memo" [ngbTooltip]="'kavsirApp.questionChoice.help.memo' | translate">Memo</span></dt>
+                <dd>
+                    <span>{{questionChoice.memo}}</span>
+                </dd>
         <dt *ngIf="inGroup"><span jhiTranslate="kavsirApp.questionChoice.groupPosition" [ngbTooltip]="'kavsirApp.questionChoice.help.groupPosition' | translate">Group Position</span></dt>
         <dd *ngIf="inGroup">
-            <span>{{questionChoice.groupPosition}}</span>
-        </dd>
-        <dt><span jhiTranslate="kavsirApp.questionChoice.category">Category</span></dt>
-        <dd>
-            <span *ngFor="let category of questionChoice.categories; let last = last">
-                <a [routerLink]="['/category-node', category?.id ]">{{category.id | categoryPathName}}<span class="category-id">{{category.id}}</span></a>{{last ? '' : ', '}}
-            </span>
-        </dd>
-        <dt><span jhiTranslate="kavsirApp.questionChoice.image">Image</span></dt>
-        <dd>
-            <span *ngFor="let image of questionChoice.images; let last = last">
-                <a [routerLink]="['/resource-image', image?.id ]">{{image.id}}</a>{{last ? '' : ', '}}
-            </span>
-        </dd>
+                    <span>{{questionChoice.groupPosition}}</span>
+                </dd>
+                <dt><span jhiTranslate="kavsirApp.questionChoice.category">Category</span></dt>
+                <dd>
+                    <span *ngFor="let category of questionChoice.categories; let last = last">
+                        <a [routerLink]="['/category-node', category?.id, 'view' ]">{{category.id | categoryPathName}}<span class="category-id">{{category.id}}</span></a>{{last ? '' : ', '}}
+                    </span>
+                </dd>
+                <dt><span jhiTranslate="kavsirApp.questionChoice.image">Image</span></dt>
+                <dd>
+                    <span *ngFor="let image of questionChoice.images; let last = last">
+                        <a [routerLink]="['/resource-image', image?.id, 'view' ]">{{image.id}}</a>{{last ? '' : ', '}}
+                    </span>
+                </dd>
         <dt *ngIf="inGroup"><span jhiTranslate="kavsirApp.questionChoice.questionGroup">Question Group</span></dt>
         <dd *ngIf="inGroup">
-            <div *ngIf="questionChoice.questionGroupId">
-                <a [routerLink]="['/question-group', questionChoice.questionGroupId]">{{questionChoice.questionGroupId}}</a>
-            </div>
-        </dd>
-    </dl>
+                    <div *ngIf="questionChoice.questionGroupId">
+                        <a [routerLink]="['/question-group', questionChoice.questionGroupId, 'view']">{{questionChoice.questionGroupId}}</a>
+                    </div>
+                </dd>
+            </dl>
 
-    <button type="submit"
-            (click)="previousState()"
-            class="btn btn-info">
-        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
-    </button>
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
 
-    <button type="button"
-            [routerLink]="['/', { outlets: { popup: 'question-choice/'+ questionChoice.id + '/edit'} }]"
-            replaceUrl="true"
-            queryParamsHandling="merge"
-            class="btn btn-primary">
-        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
-    </button>
+            <button type="button"
+                    [routerLink]="['/question-choice', questionChoice.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
 </div>

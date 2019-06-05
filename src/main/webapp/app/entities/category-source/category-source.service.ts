@@ -1,82 +1,45 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { SERVER_API_URL } from '../../app.constants';
+import { Observable } from 'rxjs';
 
-import { CategorySource } from './category-source.model';
-import { createRequestOption } from '../../shared';
+import { SERVER_API_URL } from 'app/app.constants';
+import { createRequestOption } from 'app/shared';
+import { ICategorySource } from 'app/shared/model/category-source.model';
 import { CategoryService } from '../category.service';
 
-export type EntityResponseType = HttpResponse<CategorySource>;
+type EntityResponseType = HttpResponse<ICategorySource>;
+type EntityArrayResponseType = HttpResponse<ICategorySource[]>;
 
-@Injectable()
-export class CategorySourceService implements CategoryService<CategorySource> {
+@Injectable({ providedIn: 'root' })
+export class CategorySourceService implements CategoryService<ICategorySource> {
+  public resourceUrl = SERVER_API_URL + 'api/category-sources';
+  public resourceSearchUrl = SERVER_API_URL + 'api/_search/category-sources';
 
-    private resourceUrl =  SERVER_API_URL + 'api/category-sources';
-    private resourceSearchUrl = SERVER_API_URL + 'api/_search/category-sources';
+  constructor(protected http: HttpClient) {}
 
-    constructor(private http: HttpClient) { }
+  create(categorySource: ICategorySource): Observable<EntityResponseType> {
+    return this.http.post<ICategorySource>(this.resourceUrl, categorySource, { observe: 'response' });
+  }
 
-    create(categorySource: CategorySource): Observable<EntityResponseType> {
-        const copy = this.convert(categorySource);
-        return this.http.post<CategorySource>(this.resourceUrl, copy, { observe: 'response' })
-            .map((res: EntityResponseType) => this.convertResponse(res));
-    }
+  update(categorySource: ICategorySource): Observable<EntityResponseType> {
+    return this.http.put<ICategorySource>(this.resourceUrl, categorySource, { observe: 'response' });
+  }
 
-    update(categorySource: CategorySource): Observable<EntityResponseType> {
-        const copy = this.convert(categorySource);
-        return this.http.put<CategorySource>(this.resourceUrl, copy, { observe: 'response' })
-            .map((res: EntityResponseType) => this.convertResponse(res));
-    }
+  find(id: number): Observable<EntityResponseType> {
+    return this.http.get<ICategorySource>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
 
-    find(id: number): Observable<EntityResponseType> {
-        return this.http.get<CategorySource>(`${this.resourceUrl}/${id}`, { observe: 'response'})
-            .map((res: EntityResponseType) => this.convertResponse(res));
-    }
+  query(req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http.get<ICategorySource[]>(this.resourceUrl, { params: options, observe: 'response' });
+  }
 
-    query(req?: any): Observable<HttpResponse<CategorySource[]>> {
-        const options = createRequestOption(req);
-        return this.http.get<CategorySource[]>(this.resourceUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<CategorySource[]>) => this.convertArrayResponse(res));
-    }
+  delete(id: number): Observable<HttpResponse<any>> {
+    return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
 
-    delete(id: number): Observable<HttpResponse<any>> {
-        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
-    }
-
-    search(req?: any): Observable<HttpResponse<CategorySource[]>> {
-        const options = createRequestOption(req);
-        return this.http.get<CategorySource[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<CategorySource[]>) => this.convertArrayResponse(res));
-    }
-
-    private convertResponse(res: EntityResponseType): EntityResponseType {
-        const body: CategorySource = this.convertItemFromServer(res.body);
-        return res.clone({body});
-    }
-
-    private convertArrayResponse(res: HttpResponse<CategorySource[]>): HttpResponse<CategorySource[]> {
-        const jsonResponse: CategorySource[] = res.body;
-        const body: CategorySource[] = [];
-        for (let i = 0; i < jsonResponse.length; i++) {
-            body.push(this.convertItemFromServer(jsonResponse[i]));
-        }
-        return res.clone({body});
-    }
-
-    /**
-     * Convert a returned JSON object to CategorySource.
-     */
-    private convertItemFromServer(categorySource: CategorySource): CategorySource {
-        const copy: CategorySource = Object.assign({}, categorySource);
-        return copy;
-    }
-
-    /**
-     * Convert a CategorySource to a JSON which can be sent to the server.
-     */
-    private convert(categorySource: CategorySource): CategorySource {
-        const copy: CategorySource = Object.assign({}, categorySource);
-        return copy;
-    }
+  search(req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http.get<ICategorySource[]>(this.resourceSearchUrl, { params: options, observe: 'response' });
+  }
 }

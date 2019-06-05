@@ -1,81 +1,44 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { SERVER_API_URL } from '../../app.constants';
+import { Observable } from 'rxjs';
 
-import { ResourceImage } from './resource-image.model';
-import { createRequestOption } from '../../shared';
+import { SERVER_API_URL } from 'app/app.constants';
+import { createRequestOption } from 'app/shared';
+import { IResourceImage } from 'app/shared/model/resource-image.model';
 
-export type EntityResponseType = HttpResponse<ResourceImage>;
+type EntityResponseType = HttpResponse<IResourceImage>;
+type EntityArrayResponseType = HttpResponse<IResourceImage[]>;
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class ResourceImageService {
+  public resourceUrl = SERVER_API_URL + 'api/resource-images';
+  public resourceSearchUrl = SERVER_API_URL + 'api/_search/resource-images';
 
-    private resourceUrl =  SERVER_API_URL + 'api/resource-images';
-    private resourceSearchUrl = SERVER_API_URL + 'api/_search/resource-images';
+  constructor(protected http: HttpClient) {}
 
-    constructor(private http: HttpClient) { }
+  create(resourceImage: IResourceImage): Observable<EntityResponseType> {
+    return this.http.post<IResourceImage>(this.resourceUrl, resourceImage, { observe: 'response' });
+  }
 
-    create(resourceImage: ResourceImage): Observable<EntityResponseType> {
-        const copy = this.convert(resourceImage);
-        return this.http.post<ResourceImage>(this.resourceUrl, copy, { observe: 'response' })
-            .map((res: EntityResponseType) => this.convertResponse(res));
-    }
+  update(resourceImage: IResourceImage): Observable<EntityResponseType> {
+    return this.http.put<IResourceImage>(this.resourceUrl, resourceImage, { observe: 'response' });
+  }
 
-    update(resourceImage: ResourceImage): Observable<EntityResponseType> {
-        const copy = this.convert(resourceImage);
-        return this.http.put<ResourceImage>(this.resourceUrl, copy, { observe: 'response' })
-            .map((res: EntityResponseType) => this.convertResponse(res));
-    }
+  find(id: number): Observable<EntityResponseType> {
+    return this.http.get<IResourceImage>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
 
-    find(id: number): Observable<EntityResponseType> {
-        return this.http.get<ResourceImage>(`${this.resourceUrl}/${id}`, { observe: 'response'})
-            .map((res: EntityResponseType) => this.convertResponse(res));
-    }
+  query(req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http.get<IResourceImage[]>(this.resourceUrl, { params: options, observe: 'response' });
+  }
 
-    query(req?: any): Observable<HttpResponse<ResourceImage[]>> {
-        const options = createRequestOption(req);
-        return this.http.get<ResourceImage[]>(this.resourceUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<ResourceImage[]>) => this.convertArrayResponse(res));
-    }
+  delete(id: number): Observable<HttpResponse<any>> {
+    return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
 
-    delete(id: number): Observable<HttpResponse<any>> {
-        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
-    }
-
-    search(req?: any): Observable<HttpResponse<ResourceImage[]>> {
-        const options = createRequestOption(req);
-        return this.http.get<ResourceImage[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<ResourceImage[]>) => this.convertArrayResponse(res));
-    }
-
-    private convertResponse(res: EntityResponseType): EntityResponseType {
-        const body: ResourceImage = this.convertItemFromServer(res.body);
-        return res.clone({body});
-    }
-
-    private convertArrayResponse(res: HttpResponse<ResourceImage[]>): HttpResponse<ResourceImage[]> {
-        const jsonResponse: ResourceImage[] = res.body;
-        const body: ResourceImage[] = [];
-        for (let i = 0; i < jsonResponse.length; i++) {
-            body.push(this.convertItemFromServer(jsonResponse[i]));
-        }
-        return res.clone({body});
-    }
-
-    /**
-     * Convert a returned JSON object to ResourceImage.
-     */
-    private convertItemFromServer(resourceImage: ResourceImage): ResourceImage {
-        const copy: ResourceImage = Object.assign({}, resourceImage);
-        return copy;
-    }
-
-    /**
-     * Convert a ResourceImage to a JSON which can be sent to the server.
-     */
-    private convert(resourceImage: ResourceImage): ResourceImage {
-        const copy: ResourceImage = Object.assign({}, resourceImage);
-        return copy;
-    }
+  search(req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http.get<IResourceImage[]>(this.resourceSearchUrl, { params: options, observe: 'response' });
+  }
 }

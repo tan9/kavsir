@@ -1,43 +1,42 @@
-
 {
-    "kavsirApp": {
-        "questionChoice" : {
-            "home": {
-                "title": "選擇題",
-                "createLabel": "建立一筆新的「選擇題」",
-                "createOrEditLabel": "建立或編輯「選擇題」",
-                "createOrEditChoiceLabel": "建立或編輯「單選題」",
-                "createOrEditMultipleResponseLabel": "建立或編輯「多選題」",
-                "search": "搜尋「選擇題」"
-            },
-            "created": "新的「選擇題」建立成功，識別碼為 {{ param }}",
-            "updated": "識別碼為 {{ param }} 的「選擇題」更新成功",
-            "deleted": "識別碼為 {{ param }} 的「選擇題」刪除成功",
-            "delete": {
-                "question": "您確定要刪除「選擇題」 {{ id }} 嗎?"
-            },
-            "detail": {
-                "title": "選擇題"
-            },
-            "multipleResponse": "是否為複選",
-            "text": "題目",
-            "memo": "備註",
-            "groupPosition": "題組中序位",
-            "option": "選項",
-            "category": "類別",
-            "image": "圖片",
-            "questionGroup": "題組",
-            "help": {
-                "multipleResponse": "是否為複選",
-                "text": "題目",
-                "memo": "備註",
-                "groupPosition": "題組中序位"
-            },
-            "validation": {
-                "minoptions": "最少要輸入 {{ min }} 個選項。",
-                "hasanswer": "至少要有一個選項是正解。",
-                "exactoneanswer": "單選題只能有一個正解。"
-            }
-        }
+  "kavsirApp": {
+    "questionChoice": {
+      "home": {
+        "title": "選擇題",
+        "createLabel": "建立一筆新的「選擇題」",
+        "createOrEditLabel": "建立或編輯「選擇題」",
+        "createOrEditChoiceLabel": "建立或編輯「單選題」",
+        "createOrEditMultipleResponseLabel": "建立或編輯「多選題」",
+        "search": "搜尋「選擇題」"
+      },
+      "created": "新的「選擇題」建立成功，識別碼為 {{ param }}",
+      "updated": "識別碼為 {{ param }} 的「選擇題」更新成功",
+      "deleted": "識別碼為 {{ param }} 的「選擇題」刪除成功",
+      "delete": {
+        "question": "您確定要刪除「選擇題」 {{ id }} 嗎?"
+      },
+      "detail": {
+        "title": "選擇題"
+      },
+      "multipleResponse": "是否為複選",
+      "text": "題目",
+      "memo": "備註",
+      "groupPosition": "題組中序位",
+      "option": "選項",
+      "category": "類別",
+      "image": "圖片",
+      "questionGroup": "題組",
+      "help": {
+        "multipleResponse": "是否為複選",
+        "text": "題目",
+        "memo": "備註",
+        "groupPosition": "題組中序位"
+      },
+      "validation": {
+        "minoptions": "最少要輸入 {{ min }} 個選項。",
+        "hasanswer": "至少要有一個選項是正解。",
+        "exactoneanswer": "單選題只能有一個正解。"
+      }
     }
+  }
 }

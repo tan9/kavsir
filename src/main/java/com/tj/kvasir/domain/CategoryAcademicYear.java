@@ -1,5 +1,6 @@
 package com.tj.kvasir.domain;
 
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.Cache;
@@ -8,7 +9,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -19,7 +20,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "category_academic_year")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "categoryacademicyear")
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "categoryacademicyear")
 public class CategoryAcademicYear implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -27,6 +28,7 @@ public class CategoryAcademicYear implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
+    @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
     private Long id;
 
     /**
@@ -86,19 +88,15 @@ public class CategoryAcademicYear implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof CategoryAcademicYear)) {
             return false;
         }
-        CategoryAcademicYear categoryAcademicYear = (CategoryAcademicYear) o;
-        if (categoryAcademicYear.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), categoryAcademicYear.getId());
+        return id != null && id.equals(((CategoryAcademicYear) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

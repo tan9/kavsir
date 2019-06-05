@@ -2,24 +2,24 @@
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
 
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20170302142432_added_entity_QuestionChoice.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170302142432_added_entity_CategoryAcademicYear.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170302142432_added_entity_CategoryGrade.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170302142432_added_entity_CategoryNode.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170302142432_added_entity_CategoryPublisher.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170302142432_added_entity_CategorySemester.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170302142432_added_entity_CategorySubject.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20170302142432_added_entity_CategoryGrade.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170302142432_added_entity_QuestionChoice.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170302142432_added_entity_QuestionChoiceOption.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170302142432_added_entity_QuestionEssay.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170302142432_added_entity_QuestionGroup.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170302142432_added_entity_QuestionTrueFalse.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170302142432_added_entity_ResourceImage.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
-    <include file="config/liquibase/changelog/20170302142432_added_entity_constraints_QuestionChoice.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170302142432_added_entity_constraints_CategoryNode.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170302142432_added_entity_constraints_QuestionChoice.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170302142432_added_entity_constraints_QuestionChoiceOption.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170302142432_added_entity_constraints_QuestionEssay.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170302142432_added_entity_constraints_QuestionGroup.xml" relativeToChangelogFile="false"/>

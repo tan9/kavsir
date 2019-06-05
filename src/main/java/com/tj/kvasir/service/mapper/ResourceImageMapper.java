@@ -6,7 +6,7 @@ import com.tj.kvasir.service.dto.ResourceImageDTO;
 import org.mapstruct.*;
 
 /**
- * Mapper for the entity ResourceImage and its DTO ResourceImageDTO.
+ * Mapper for the entity {@link ResourceImage} and its DTO {@link ResourceImageDTO}.
  */
 @Mapper(componentModel = "spring", uses = {})
 public interface ResourceImageMapper extends EntityMapper<ResourceImageDTO, ResourceImage> {

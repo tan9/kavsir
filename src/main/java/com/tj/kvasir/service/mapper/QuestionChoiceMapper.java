@@ -6,7 +6,7 @@ import com.tj.kvasir.service.dto.QuestionChoiceDTO;
 import org.mapstruct.*;
 
 /**
- * Mapper for the entity QuestionChoice and its DTO QuestionChoiceDTO.
+ * Mapper for the entity {@link QuestionChoice} and its DTO {@link QuestionChoiceDTO}.
  */
 @Mapper(componentModel = "spring", uses = {CategoryNodeMapper.class, ResourceImageMapper.class, QuestionGroupMapper.class})
 public interface QuestionChoiceMapper extends EntityMapper<QuestionChoiceDTO, QuestionChoice> {

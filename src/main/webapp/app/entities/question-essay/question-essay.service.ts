@@ -1,87 +1,50 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { SERVER_API_URL } from '../../app.constants';
+import { Observable } from 'rxjs';
 
-import { QuestionEssay } from './question-essay.model';
-import { createRequestOption } from '../../shared';
+import { SERVER_API_URL } from 'app/app.constants';
+import { createRequestOption } from 'app/shared';
+import { IQuestionEssay } from 'app/shared/model/question-essay.model';
 
-export type EntityResponseType = HttpResponse<QuestionEssay>;
+type EntityResponseType = HttpResponse<IQuestionEssay>;
+type EntityArrayResponseType = HttpResponse<IQuestionEssay[]>;
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class QuestionEssayService {
+  public resourceUrl = SERVER_API_URL + 'api/question-essays';
+  public resourceSearchUrl = SERVER_API_URL + 'api/_search/question-essays';
 
-    private resourceUrl =  SERVER_API_URL + 'api/question-essays';
-    private resourceSearchUrl = SERVER_API_URL + 'api/_search/question-essays';
+  constructor(protected http: HttpClient) {}
 
-    constructor(private http: HttpClient) { }
+  create(questionEssay: IQuestionEssay): Observable<EntityResponseType> {
+    return this.http.post<IQuestionEssay>(this.resourceUrl, questionEssay, { observe: 'response' });
+  }
 
-    create(questionEssay: QuestionEssay): Observable<EntityResponseType> {
-        const copy = this.convert(questionEssay);
-        return this.http.post<QuestionEssay>(this.resourceUrl, copy, { observe: 'response' })
-            .map((res: EntityResponseType) => this.convertResponse(res));
+  update(questionEssay: IQuestionEssay): Observable<EntityResponseType> {
+    return this.http.put<IQuestionEssay>(this.resourceUrl, questionEssay, { observe: 'response' });
+  }
+
+  find(id: number): Observable<EntityResponseType> {
+    return this.http.get<IQuestionEssay>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
+
+  query(req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    if (req && req.categories) {
+      options.append('categories', req.categories);
     }
+    return this.http.get<IQuestionEssay[]>(this.resourceUrl, { params: options, observe: 'response' });
+  }
 
-    update(questionEssay: QuestionEssay): Observable<EntityResponseType> {
-        const copy = this.convert(questionEssay);
-        return this.http.put<QuestionEssay>(this.resourceUrl, copy, { observe: 'response' })
-            .map((res: EntityResponseType) => this.convertResponse(res));
-    }
+  delete(id: number): Observable<HttpResponse<any>> {
+    return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
 
-    find(id: number): Observable<EntityResponseType> {
-        return this.http.get<QuestionEssay>(`${this.resourceUrl}/${id}`, { observe: 'response'})
-            .map((res: EntityResponseType) => this.convertResponse(res));
+  search(req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    if (req && req.categories) {
+      options.append('categories', req.categories);
     }
-
-    query(req?: any): Observable<HttpResponse<QuestionEssay[]>> {
-        const options = createRequestOption(req);
-        if (req && req.categories) {
-            options.append('categories', req.categories);
-        }
-        return this.http.get<QuestionEssay[]>(this.resourceUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<QuestionEssay[]>) => this.convertArrayResponse(res));
-    }
-
-    delete(id: number): Observable<HttpResponse<any>> {
-        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
-    }
-
-    search(req?: any): Observable<HttpResponse<QuestionEssay[]>> {
-        const options = createRequestOption(req);
-        if (req && req.categories) {
-            options.append('categories', req.categories);
-        }
-        return this.http.get<QuestionEssay[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<QuestionEssay[]>) => this.convertArrayResponse(res));
-    }
-
-    private convertResponse(res: EntityResponseType): EntityResponseType {
-        const body: QuestionEssay = this.convertItemFromServer(res.body);
-        return res.clone({body});
-    }
-
-    private convertArrayResponse(res: HttpResponse<QuestionEssay[]>): HttpResponse<QuestionEssay[]> {
-        const jsonResponse: QuestionEssay[] = res.body;
-        const body: QuestionEssay[] = [];
-        for (let i = 0; i < jsonResponse.length; i++) {
-            body.push(this.convertItemFromServer(jsonResponse[i]));
-        }
-        return res.clone({body});
-    }
-
-    /**
-     * Convert a returned JSON object to QuestionEssay.
-     */
-    private convertItemFromServer(questionEssay: QuestionEssay): QuestionEssay {
-        const copy: QuestionEssay = Object.assign({}, questionEssay);
-        return copy;
-    }
-
-    /**
-     * Convert a QuestionEssay to a JSON which can be sent to the server.
-     */
-    private convert(questionEssay: QuestionEssay): QuestionEssay {
-        const copy: QuestionEssay = Object.assign({}, questionEssay);
-        return copy;
-    }
+    return this.http.get<IQuestionEssay[]>(this.resourceSearchUrl, { params: options, observe: 'response' });
+  }
 }

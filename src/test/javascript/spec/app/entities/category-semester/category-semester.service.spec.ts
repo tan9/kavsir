@@ -1,70 +1,113 @@
 /* tslint:disable max-line-length */
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { JhiDateUtils } from 'ng-jhipster';
-
-import { CategorySemesterService } from '../../../../../../main/webapp/app/entities/category-semester/category-semester.service';
-import { SERVER_API_URL } from '../../../../../../main/webapp/app/app.constants';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { of } from 'rxjs';
+import { take, map } from 'rxjs/operators';
+import { CategorySemesterService } from 'app/entities/category-semester/category-semester.service';
+import { ICategorySemester, CategorySemester } from 'app/shared/model/category-semester.model';
 
 describe('Service Tests', () => {
+  describe('CategorySemester Service', () => {
+    let injector: TestBed;
+    let service: CategorySemesterService;
+    let httpMock: HttpTestingController;
+    let elemDefault: ICategorySemester;
+    let expectedResult;
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [HttpClientTestingModule]
+      });
+      expectedResult = {};
+      injector = getTestBed();
+      service = injector.get(CategorySemesterService);
+      httpMock = injector.get(HttpTestingController);
 
-    describe('CategorySemester Service', () => {
-        let injector: TestBed;
-        let service: CategorySemesterService;
-        let httpMock: HttpTestingController;
-
-        beforeEach(() => {
-            TestBed.configureTestingModule({
-                imports: [
-                    HttpClientTestingModule
-                ],
-                providers: [
-                    JhiDateUtils,
-                    CategorySemesterService
-                ]
-            });
-            injector = getTestBed();
-            service = injector.get(CategorySemesterService);
-            httpMock = injector.get(HttpTestingController);
-        });
-
-        describe('Service methods', () => {
-            it('should call correct URL', () => {
-                service.find(123).subscribe(() => {});
-
-                const req  = httpMock.expectOne({ method: 'GET' });
-
-                const resourceUrl = SERVER_API_URL + 'api/category-semesters';
-                expect(req.request.url).toEqual(resourceUrl + '/' + 123);
-            });
-            it('should return CategorySemester', () => {
-
-                service.find(123).subscribe((received) => {
-                    expect(received.body.id).toEqual(123);
-                });
-
-                const req = httpMock.expectOne({ method: 'GET' });
-                req.flush({id: 123});
-            });
-
-            it('should propagate not found response', () => {
-
-                service.find(123).subscribe(null, (_error: any) => {
-                    expect(_error.status).toEqual(404);
-                });
-
-                const req  = httpMock.expectOne({ method: 'GET' });
-                req.flush('Invalid request parameters', {
-                    status: 404, statusText: 'Bad Request'
-                });
-
-            });
-        });
-
-        afterEach(() => {
-            httpMock.verify();
-        });
-
+      elemDefault = new CategorySemester(0, 0, 'AAAAAAA');
     });
 
+    describe('Service methods', () => {
+      it('should find an element', async () => {
+        const returnedFromService = Object.assign({}, elemDefault);
+        service
+          .find(123)
+          .pipe(take(1))
+          .subscribe(resp => (expectedResult = resp));
+
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush(returnedFromService);
+        expect(expectedResult).toMatchObject({ body: elemDefault });
+      });
+
+      it('should create a CategorySemester', async () => {
+        const returnedFromService = Object.assign(
+          {
+            id: 0
+          },
+          elemDefault
+        );
+        const expected = Object.assign({}, returnedFromService);
+        service
+          .create(new CategorySemester(null))
+          .pipe(take(1))
+          .subscribe(resp => (expectedResult = resp));
+        const req = httpMock.expectOne({ method: 'POST' });
+        req.flush(returnedFromService);
+        expect(expectedResult).toMatchObject({ body: expected });
+      });
+
+      it('should update a CategorySemester', async () => {
+        const returnedFromService = Object.assign(
+          {
+            position: 1,
+            name: 'BBBBBB'
+          },
+          elemDefault
+        );
+
+        const expected = Object.assign({}, returnedFromService);
+        service
+          .update(expected)
+          .pipe(take(1))
+          .subscribe(resp => (expectedResult = resp));
+        const req = httpMock.expectOne({ method: 'PUT' });
+        req.flush(returnedFromService);
+        expect(expectedResult).toMatchObject({ body: expected });
+      });
+
+      it('should return a list of CategorySemester', async () => {
+        const returnedFromService = Object.assign(
+          {
+            position: 1,
+            name: 'BBBBBB'
+          },
+          elemDefault
+        );
+        const expected = Object.assign({}, returnedFromService);
+        service
+          .query(expected)
+          .pipe(
+            take(1),
+            map(resp => resp.body)
+          )
+          .subscribe(body => (expectedResult = body));
+        const req = httpMock.expectOne({ method: 'GET' });
+        req.flush([returnedFromService]);
+        httpMock.verify();
+        expect(expectedResult).toContainEqual(expected);
+      });
+
+      it('should delete a CategorySemester', async () => {
+        const rxPromise = service.delete(123).subscribe(resp => (expectedResult = resp.ok));
+
+        const req = httpMock.expectOne({ method: 'DELETE' });
+        req.flush({ status: 200 });
+        expect(expectedResult);
+      });
+    });
+
+    afterEach(() => {
+      httpMock.verify();
+    });
+  });
 });

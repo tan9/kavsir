@@ -1,81 +1,98 @@
 import { Injectable } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes } from '@angular/router';
-import { JhiPaginationUtil } from 'ng-jhipster';
-
-import { UserRouteAccessService } from '../../shared';
+import { JhiPaginationUtil, JhiResolvePagingParams } from 'ng-jhipster';
+import { UserRouteAccessService } from 'app/core';
+import { Observable, of } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
+import { QuestionTrueFalse } from 'app/shared/model/question-true-false.model';
+import { QuestionTrueFalseService } from './question-true-false.service';
 import { QuestionTrueFalseComponent } from './question-true-false.component';
 import { QuestionTrueFalseDetailComponent } from './question-true-false-detail.component';
-import { QuestionTrueFalsePopupComponent } from './question-true-false-dialog.component';
+import { QuestionTrueFalseUpdateComponent } from './question-true-false-update.component';
 import { QuestionTrueFalseDeletePopupComponent } from './question-true-false-delete-dialog.component';
+import { IQuestionTrueFalse } from 'app/shared/model/question-true-false.model';
 
-@Injectable()
-export class QuestionTrueFalseResolvePagingParams implements Resolve<any> {
+@Injectable({ providedIn: 'root' })
+export class QuestionTrueFalseResolve implements Resolve<IQuestionTrueFalse> {
+  constructor(private service: QuestionTrueFalseService) {}
 
-    constructor(private paginationUtil: JhiPaginationUtil) {}
-
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        const page = route.queryParams['page'] ? route.queryParams['page'] : '1';
-        const sort = route.queryParams['sort'] ? route.queryParams['sort'] : 'id,asc';
-        return {
-            page: this.paginationUtil.parsePage(page),
-            predicate: this.paginationUtil.parsePredicate(sort),
-            ascending: this.paginationUtil.parseAscending(sort)
-      };
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IQuestionTrueFalse> {
+    const id = route.params['id'] ? route.params['id'] : null;
+    if (id) {
+      return this.service.find(id).pipe(
+        filter((response: HttpResponse<QuestionTrueFalse>) => response.ok),
+        map((questionTrueFalse: HttpResponse<QuestionTrueFalse>) => questionTrueFalse.body)
+      );
     }
+    return of(new QuestionTrueFalse());
+  }
 }
 
 export const questionTrueFalseRoute: Routes = [
-    {
-        path: 'question-true-false',
-        component: QuestionTrueFalseComponent,
-        resolve: {
-            'pagingParams': QuestionTrueFalseResolvePagingParams
-        },
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'kavsirApp.questionTrueFalse.home.title'
-        },
-        canActivate: [UserRouteAccessService]
-    }, {
-        path: 'question-true-false/:id',
-        component: QuestionTrueFalseDetailComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'kavsirApp.questionTrueFalse.home.title'
-        },
-        canActivate: [UserRouteAccessService]
-    }
+  {
+    path: '',
+    component: QuestionTrueFalseComponent,
+    resolve: {
+      pagingParams: JhiResolvePagingParams
+    },
+    data: {
+      authorities: ['ROLE_USER'],
+      defaultSort: 'id,asc',
+      pageTitle: 'kavsirApp.questionTrueFalse.home.title'
+    },
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: ':id/view',
+    component: QuestionTrueFalseDetailComponent,
+    resolve: {
+      questionTrueFalse: QuestionTrueFalseResolve
+    },
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'kavsirApp.questionTrueFalse.home.title'
+    },
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: 'new',
+    component: QuestionTrueFalseUpdateComponent,
+    resolve: {
+      questionTrueFalse: QuestionTrueFalseResolve
+    },
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'kavsirApp.questionTrueFalse.home.title'
+    },
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: ':id/edit',
+    component: QuestionTrueFalseUpdateComponent,
+    resolve: {
+      questionTrueFalse: QuestionTrueFalseResolve
+    },
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'kavsirApp.questionTrueFalse.home.title'
+    },
+    canActivate: [UserRouteAccessService]
+  }
 ];
 
 export const questionTrueFalsePopupRoute: Routes = [
-    {
-        path: 'question-true-false-new',
-        component: QuestionTrueFalsePopupComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'kavsirApp.questionTrueFalse.home.title'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
+  {
+    path: ':id/delete',
+    component: QuestionTrueFalseDeletePopupComponent,
+    resolve: {
+      questionTrueFalse: QuestionTrueFalseResolve
     },
-    {
-        path: 'question-true-false/:id/edit',
-        component: QuestionTrueFalsePopupComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'kavsirApp.questionTrueFalse.home.title'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'kavsirApp.questionTrueFalse.home.title'
     },
-    {
-        path: 'question-true-false/:id/delete',
-        component: QuestionTrueFalseDeletePopupComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'kavsirApp.questionTrueFalse.home.title'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
-    }
+    canActivate: [UserRouteAccessService],
+    outlet: 'popup'
+  }
 ];

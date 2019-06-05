@@ -1,6 +1,6 @@
 {
   "generator-jhipster": {
-    "jhipsterVersion": "4.14.4",
+    "jhipsterVersion": "6.0.0",
     "baseName": "kavsir",
     "packageName": "com.tj.kvasir",
     "packageFolder": "com/tj/kvasir",
@@ -18,21 +18,20 @@
     "buildTool": "maven",
     "enableSocialSignIn": false,
     "rememberMeKey": "0fc60084fbe11673c3ae8bcae846c082dc76ba7e",
-    "useSass": false,
+    "useSass": true,
     "clientPackageManager": "yarn",
     "applicationType": "monolith",
     "clientFramework": "angularX",
-    "testFrameworks": [
-      "gatling"
-    ],
+    "testFrameworks": ["gatling"],
     "jhiPrefix": "jhi",
     "enableTranslation": true,
     "nativeLanguage": "zh-tw",
-    "languages": [
-      "zh-tw",
-      "en"
-    ],
+    "languages": ["zh-tw", "en"],
     "cacheProvider": "ehcache",
-    "enableHibernateCache": true
+    "enableHibernateCache": true,
+    "clientTheme": "none",
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": []
   }
 }

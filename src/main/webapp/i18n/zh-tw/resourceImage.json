@@ -1,31 +1,31 @@
 {
-    "kavsirApp": {
-        "resourceImage" : {
-            "home": {
-                "title": "圖檔",
-                "createLabel": "建立一筆新的圖檔",
-                "createOrEditLabel": "建立或編輯圖檔",
-                "search": "搜尋圖檔"
-            },
-            "created": "新的圖檔建立成功，識別碼為 {{ param }}",
-            "updated": "識別碼為 {{ param }} 的圖檔更新成功",
-            "deleted": "識別碼為 {{ param }} 的圖檔刪除成功",
-            "delete": {
-                "question": "您確定要刪除圖檔 {{ id }} 嗎?"
-            },
-            "detail": {
-                "title": "圖檔"
-            },
-            "name": "名稱",
-            "content": "內容",
-            "choice": "選擇題",
-            "choiceOption": "選擇題選項",
-            "trueFalse": "是非題",
-            "essay": "問答題",
-            "help": {
-                "name": "名稱",
-                "content": "內容"
-            }
-        }
+  "kavsirApp": {
+    "resourceImage": {
+      "home": {
+        "title": "圖檔",
+        "createLabel": "建立一筆新的圖檔",
+        "createOrEditLabel": "建立或編輯圖檔",
+        "search": "搜尋圖檔"
+      },
+      "created": "新的圖檔建立成功，識別碼為 {{ param }}",
+      "updated": "識別碼為 {{ param }} 的圖檔更新成功",
+      "deleted": "識別碼為 {{ param }} 的圖檔刪除成功",
+      "delete": {
+        "question": "您確定要刪除圖檔 {{ id }} 嗎?"
+      },
+      "detail": {
+        "title": "圖檔"
+      },
+      "name": "名稱",
+      "content": "內容",
+      "choice": "選擇題",
+      "choiceOption": "選擇題選項",
+      "trueFalse": "是非題",
+      "essay": "問答題",
+      "help": {
+        "name": "名稱",
+        "content": "內容"
+      }
     }
+  }
 }

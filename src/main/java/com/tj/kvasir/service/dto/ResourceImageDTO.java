@@ -1,26 +1,34 @@
 package com.tj.kvasir.service.dto;
-
-
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 import javax.persistence.Lob;
 
 /**
- * A DTO for the ResourceImage entity.
+ * A DTO for the {@link com.tj.kvasir.domain.ResourceImage} entity.
  */
+@ApiModel(description = "圖檔")
 public class ResourceImageDTO implements Serializable {
 
     private Long id;
 
+    /**
+     * 名稱
+     */
     @NotNull
+    @ApiModelProperty(value = "名稱", required = true)
     private String name;
 
-    @NotNull
+    /**
+     * 內容
+     */
+    
+    @ApiModelProperty(value = "內容", required = true)
     @Lob
     private byte[] content;
+
     private String contentContentType;
 
     public Long getId() {
@@ -65,7 +73,7 @@ public class ResourceImageDTO implements Serializable {
         }
 
         ResourceImageDTO resourceImageDTO = (ResourceImageDTO) o;
-        if(resourceImageDTO.getId() == null || getId() == null) {
+        if (resourceImageDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), resourceImageDTO.getId());

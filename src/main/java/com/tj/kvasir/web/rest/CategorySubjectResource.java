@@ -1,18 +1,18 @@
 package com.tj.kvasir.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
 import com.tj.kvasir.domain.CategoryNode;
 import com.tj.kvasir.domain.CategorySubject;
-
 import com.tj.kvasir.domain.enumeration.CategoryType;
 import com.tj.kvasir.repository.CategoryNodeRepository;
 import com.tj.kvasir.repository.CategorySubjectRepository;
 import com.tj.kvasir.repository.search.CategorySubjectSearchRepository;
 import com.tj.kvasir.web.rest.errors.BadRequestAlertException;
-import com.tj.kvasir.web.rest.util.HeaderUtil;
+
+import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Example;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -31,7 +31,7 @@ import java.util.stream.StreamSupport;
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
- * REST controller for managing CategorySubject.
+ * REST controller for managing {@link com.tj.kvasir.domain.CategorySubject}.
  */
 @RestController
 @RequestMapping("/api")
@@ -40,6 +40,9 @@ public class CategorySubjectResource {
     private final Logger log = LoggerFactory.getLogger(CategorySubjectResource.class);
 
     private static final String ENTITY_NAME = "categorySubject";
+
+    @Value("${jhipster.clientApp.name}")
+    private String applicationName;
 
     private final CategorySubjectRepository categorySubjectRepository;
 
@@ -54,14 +57,13 @@ public class CategorySubjectResource {
     }
 
     /**
-     * POST  /category-subjects : Create a new categorySubject.
+     * {@code POST  /category-subjects} : Create a new categorySubject.
      *
-     * @param categorySubject the categorySubject to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new categorySubject, or with status 400 (Bad Request) if the categorySubject has already an ID
-     * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @param categorySubject the categorySubject to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new categorySubject, or with status {@code 400 (Bad Request)} if the categorySubject has already an ID.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/category-subjects")
-    @Timed
     public ResponseEntity<CategorySubject> createCategorySubject(@Valid @RequestBody CategorySubject categorySubject) throws URISyntaxException {
         log.debug("REST request to save CategorySubject : {}", categorySubject);
         if (categorySubject.getId() != null) {
@@ -70,67 +72,63 @@ public class CategorySubjectResource {
         CategorySubject result = categorySubjectRepository.save(categorySubject);
         categorySubjectSearchRepository.save(result);
         return ResponseEntity.created(new URI("/api/category-subjects/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
     /**
-     * PUT  /category-subjects : Updates an existing categorySubject.
+     * {@code PUT  /category-subjects} : Updates an existing categorySubject.
      *
-     * @param categorySubject the categorySubject to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated categorySubject,
-     * or with status 400 (Bad Request) if the categorySubject is not valid,
-     * or with status 500 (Internal Server Error) if the categorySubject couldn't be updated
-     * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @param categorySubject the categorySubject to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated categorySubject,
+     * or with status {@code 400 (Bad Request)} if the categorySubject is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the categorySubject couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/category-subjects")
-    @Timed
     public ResponseEntity<CategorySubject> updateCategorySubject(@Valid @RequestBody CategorySubject categorySubject) throws URISyntaxException {
         log.debug("REST request to update CategorySubject : {}", categorySubject);
         if (categorySubject.getId() == null) {
-            return createCategorySubject(categorySubject);
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         CategorySubject result = categorySubjectRepository.save(categorySubject);
         categorySubjectSearchRepository.save(result);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, categorySubject.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, categorySubject.getId().toString()))
             .body(result);
     }
 
     /**
-     * GET  /category-subjects : get all the categorySubjects.
+     * {@code GET  /category-subjects} : get all the categorySubjects.
      *
-     * @return the ResponseEntity with status 200 (OK) and the list of categorySubjects in body
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of categorySubjects in body.
      */
     @GetMapping("/category-subjects")
-    @Timed
     public List<CategorySubject> getAllCategorySubjects() {
         log.debug("REST request to get all CategorySubjects");
         return categorySubjectRepository.findAll();
     }
 
     /**
-     * GET  /category-subjects/:id : get the "id" categorySubject.
+     * {@code GET  /category-subjects/:id} : get the "id" categorySubject.
      *
-     * @param id the id of the categorySubject to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the categorySubject, or with status 404 (Not Found)
+     * @param id the id of the categorySubject to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the categorySubject, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/category-subjects/{id}")
-    @Timed
     public ResponseEntity<CategorySubject> getCategorySubject(@PathVariable Long id) {
         log.debug("REST request to get CategorySubject : {}", id);
-        CategorySubject categorySubject = categorySubjectRepository.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(categorySubject));
+        Optional<CategorySubject> categorySubject = categorySubjectRepository.findById(id);
+        return ResponseUtil.wrapOrNotFound(categorySubject);
     }
 
     /**
-     * DELETE  /category-subjects/:id : delete the "id" categorySubject.
+     * {@code DELETE  /category-subjects/:id} : delete the "id" categorySubject.
      *
-     * @param id the id of the categorySubject to delete
-     * @return the ResponseEntity with status 200 (OK)
+     * @param id the id of the categorySubject to delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/category-subjects/{id}")
-    @Timed
     public ResponseEntity<Void> deleteCategorySubject(@PathVariable Long id) {
         log.debug("REST request to delete CategorySubject : {}", id);
         CategoryNode node = new CategoryNode();
@@ -138,24 +136,23 @@ public class CategorySubjectResource {
         node.setTypeId(id);
         List<CategoryNode> nodes = categoryNodeRepository.findAll(Example.of(node));
         if (nodes.isEmpty()) {
-            categorySubjectRepository.delete(id);
-            categorySubjectSearchRepository.delete(id);
-            return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+            categorySubjectRepository.deleteById(id);
+            categorySubjectSearchRepository.deleteById(id);
+            return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
         } else {
-            HttpHeaders alert = HeaderUtil.createFailureAlert(ENTITY_NAME, "categoryinuse", "Can not delete category in use");
+            HttpHeaders alert = HeaderUtil.createFailureAlert(applicationName, true, ENTITY_NAME, "categoryinuse", "Can not delete category in use");
             return ResponseEntity.status(HttpStatus.CONFLICT).headers(alert).build();
         }
     }
 
     /**
-     * SEARCH  /_search/category-subjects?query=:query : search for the categorySubject corresponding
+     * {@code SEARCH  /_search/category-subjects?query=:query} : search for the categorySubject corresponding
      * to the query.
      *
-     * @param query the query of the categorySubject search
-     * @return the result of the search
+     * @param query the query of the categorySubject search.
+     * @return the result of the search.
      */
     @GetMapping("/_search/category-subjects")
-    @Timed
     public List<CategorySubject> searchCategorySubjects(@RequestParam String query) {
         log.debug("REST request to search CategorySubjects for query {}", query);
         return StreamSupport

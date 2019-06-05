@@ -1,32 +1,31 @@
-
 {
-    "kavsirApp": {
-        "questionChoiceOption" : {
-            "home": {
-                "title": "選擇題選項",
-                "createLabel": "建立一筆新的「選擇題選項」",
-                "createOrEditLabel": "建立或編輯「選擇題選項」",
-                "search": "搜尋「選擇題選項」"
-            },
-            "created": "新的「選擇題選項」建立成功，識別碼為 {{ param }}",
-            "updated": "識別碼為 {{ param }} 的「選擇題選項」更新成功",
-            "deleted": "識別碼為 {{ param }} 的「選擇題選項」刪除成功",
-            "delete": {
-                "question": "您確定要刪除「選擇題選項」 {{ id }} 嗎?"
-            },
-            "detail": {
-                "title": "選擇題選項"
-            },
-            "correct": "是否為正解",
-            "text": "選項內容",
-            "memo": "備註",
-            "questionChoice": "選擇題",
-            "image": "圖片",
-            "help": {
-                "correct": "是否為正解",
-                "text": "選項內容",
-                "memo": "備註"
-            }
-        }
+  "kavsirApp": {
+    "questionChoiceOption": {
+      "home": {
+        "title": "選擇題選項",
+        "createLabel": "建立一筆新的「選擇題選項」",
+        "createOrEditLabel": "建立或編輯「選擇題選項」",
+        "search": "搜尋「選擇題選項」"
+      },
+      "created": "新的「選擇題選項」建立成功，識別碼為 {{ param }}",
+      "updated": "識別碼為 {{ param }} 的「選擇題選項」更新成功",
+      "deleted": "識別碼為 {{ param }} 的「選擇題選項」刪除成功",
+      "delete": {
+        "question": "您確定要刪除「選擇題選項」 {{ id }} 嗎?"
+      },
+      "detail": {
+        "title": "選擇題選項"
+      },
+      "correct": "是否為正解",
+      "text": "選項內容",
+      "memo": "備註",
+      "questionChoice": "選擇題",
+      "image": "圖片",
+      "help": {
+        "correct": "是否為正解",
+        "text": "選項內容",
+        "memo": "備註"
+      }
     }
+  }
 }

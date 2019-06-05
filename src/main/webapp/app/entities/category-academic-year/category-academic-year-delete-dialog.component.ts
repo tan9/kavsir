@@ -1,68 +1,79 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
 
-import { CategoryAcademicYear } from './category-academic-year.model';
-import { CategoryAcademicYearPopupService } from './category-academic-year-popup.service';
+import { ICategoryAcademicYear } from 'app/shared/model/category-academic-year.model';
 import { CategoryAcademicYearService } from './category-academic-year.service';
 
 @Component({
-    selector: 'jhi-category-academic-year-delete-dialog',
-    templateUrl: './category-academic-year-delete-dialog.component.html'
+  selector: 'jhi-category-academic-year-delete-dialog',
+  templateUrl: './category-academic-year-delete-dialog.component.html'
 })
 export class CategoryAcademicYearDeleteDialogComponent {
+  categoryAcademicYear: ICategoryAcademicYear;
 
-    categoryAcademicYear: CategoryAcademicYear;
+  constructor(
+    protected categoryAcademicYearService: CategoryAcademicYearService,
+    private alertService: JhiAlertService,
+    public activeModal: NgbActiveModal,
+    protected eventManager: JhiEventManager
+  ) {}
 
-    constructor(
-        private categoryAcademicYearService: CategoryAcademicYearService,
-        private alertService: JhiAlertService,
-        public activeModal: NgbActiveModal,
-        private eventManager: JhiEventManager
-    ) {
-    }
+  clear() {
+    this.activeModal.dismiss('cancel');
+  }
 
-    clear() {
-        this.activeModal.dismiss('cancel');
-    }
-
-    confirmDelete(id: number) {
-        this.categoryAcademicYearService.delete(id).subscribe((response) => {
-            this.eventManager.broadcast({
-                name: 'categoryAcademicYearListModification',
-                content: 'Deleted an categoryAcademicYear'
-            });
-            this.activeModal.dismiss(true);
-        }, (response: Response) => {
-            this.alertService.error(response.headers.get('X-kavsirApp-error'), null, null);
-            this.activeModal.dismiss(true);
+  confirmDelete(id: number) {
+    this.categoryAcademicYearService.delete(id).subscribe(
+      response => {
+        this.eventManager.broadcast({
+          name: 'categoryAcademicYearListModification',
+          content: 'Deleted an categoryAcademicYear'
         });
-    }
+        this.activeModal.dismiss(true);
+      },
+      (response: Response) => {
+        this.alertService.error(response.headers.get('X-kavsirApp-error'), null, null);
+        this.activeModal.dismiss(true);
+      }
+    );
+  }
 }
 
 @Component({
-    selector: 'jhi-category-academic-year-delete-popup',
-    template: ''
+  selector: 'jhi-category-academic-year-delete-popup',
+  template: ''
 })
 export class CategoryAcademicYearDeletePopupComponent implements OnInit, OnDestroy {
+  protected ngbModalRef: NgbModalRef;
 
-    routeSub: any;
+  constructor(protected activatedRoute: ActivatedRoute, protected router: Router, protected modalService: NgbModal) {}
 
-    constructor(
-        private route: ActivatedRoute,
-        private categoryAcademicYearPopupService: CategoryAcademicYearPopupService
-    ) {}
-
-    ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.categoryAcademicYearPopupService
-                .open(CategoryAcademicYearDeleteDialogComponent as Component, params['id']);
+  ngOnInit() {
+    this.activatedRoute.data.subscribe(({ categoryAcademicYear }) => {
+      setTimeout(() => {
+        this.ngbModalRef = this.modalService.open(CategoryAcademicYearDeleteDialogComponent as Component, {
+          size: 'lg',
+          backdrop: 'static'
         });
-    }
+        this.ngbModalRef.componentInstance.categoryAcademicYear = categoryAcademicYear;
+        this.ngbModalRef.result.then(
+          result => {
+            this.router.navigate(['/category-academic-year', { outlets: { popup: null } }]);
+            this.ngbModalRef = null;
+          },
+          reason => {
+            this.router.navigate(['/category-academic-year', { outlets: { popup: null } }]);
+            this.ngbModalRef = null;
+          }
+        );
+      }, 0);
+    });
+  }
 
-    ngOnDestroy() {
-        this.routeSub.unsubscribe();
-    }
+  ngOnDestroy() {
+    this.ngbModalRef = null;
+  }
 }

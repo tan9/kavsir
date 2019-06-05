@@ -20,13 +20,14 @@ class QuestionChoiceOptionGatlingTest extends Simulation {
     val baseURL = Option(System.getProperty("baseURL")) getOrElse """http://localhost:8080"""
 
     val httpConf = http
-        .baseURL(baseURL)
+        .baseUrl(baseURL)
         .inferHtmlResources()
         .acceptHeader("*/*")
         .acceptEncodingHeader("gzip, deflate")
         .acceptLanguageHeader("fr,fr-fr;q=0.8,en-us;q=0.5,en;q=0.3")
         .connectionHeader("keep-alive")
         .userAgentHeader("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:33.0) Gecko/20100101 Firefox/33.0")
+        .silentResources // Silence all resources like css or css so they don't clutter the results
 
     val headers_http = Map(
         "Accept" -> """application/json"""
@@ -47,17 +48,18 @@ class QuestionChoiceOptionGatlingTest extends Simulation {
         .get("/api/account")
         .headers(headers_http)
         .check(status.is(401))
-        .check(headerRegex("Set-Cookie", "XSRF-TOKEN=(.*);[\\s]").saveAs("xsrf_token"))).exitHereIfFailed
+        .check(headerRegex("Set-Cookie", "XSRF-TOKEN=(.*);[\\s]").saveAs("xsrf_token"))
+        ).exitHereIfFailed
         .pause(10)
         .exec(http("Authentication")
         .post("/api/authentication")
         .headers(headers_http_authenticated)
-        .formParam("j_username", "admin")
-        .formParam("j_password", "admin")
+        .formParam("username", "admin")
+        .formParam("password", "admin")
         .formParam("remember-me", "true")
         .formParam("submit", "Login")
         .check(headerRegex("Set-Cookie", "XSRF-TOKEN=(.*);[\\s]").saveAs("xsrf_token"))).exitHereIfFailed
-        .pause(1)
+        .pause(2)
         .exec(http("Authenticated request")
         .get("/api/account")
         .headers(headers_http_authenticated)
@@ -72,7 +74,12 @@ class QuestionChoiceOptionGatlingTest extends Simulation {
             .exec(http("Create new questionChoiceOption")
             .post("/api/question-choice-options")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "correct":null, "text":null, "memo":"SAMPLE_TEXT"}""")).asJSON
+            .body(StringBody("""{
+                "id":null
+                , "correct":null
+                , "text":null
+                , "memo":"SAMPLE_TEXT"
+                }""")).asJson
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_questionChoiceOption_url"))).exitHereIfFailed
             .pause(10)
@@ -91,6 +98,6 @@ class QuestionChoiceOptionGatlingTest extends Simulation {
     val users = scenario("Users").exec(scn)
 
     setUp(
-        users.inject(rampUsers(Integer.getInteger("users", 100)) over (Integer.getInteger("ramp", 1) minutes))
+        users.inject(rampUsers(Integer.getInteger("users", 100)) during (Integer.getInteger("ramp", 1) minutes))
     ).protocols(httpConf)
 }

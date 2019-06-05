@@ -1,8 +1,8 @@
 <div>
-    <h2>
+    <h2 id="page-heading">
         <span jhiTranslate="kavsirApp.questionEssay.home.title">Question Essays</span>
-        <button class="btn btn-primary float-right jh-create-entity create-question-essay" [routerLink]="['/', { outlets: { popup: ['question-essay-new'] } }]">
-            <span class="fa fa-plus"></span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-question-essay" [routerLink]="['/question-essay/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
             <span class="hidden-sm-down"  jhiTranslate="kavsirApp.questionEssay.home.createLabel">
             Create new Question Essay
             </span>
@@ -15,10 +15,10 @@
                 <div class="input-group w-100 mt-3">
                     <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'kavsirApp.questionEssay.home.search' | translate }}">
                     <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
-                        <span class="fa fa-search"></span>
+                        <fa-icon [icon]="'search'"></fa-icon>
                     </button>
                     <button class="input-group-append btn btn-danger" (click)="clear()" *ngIf="currentSearch">
-                        <span class="fa fa-trash-o"></span>
+                        <fa-icon [icon]="'trash-alt'"></fa-icon>
                     </button>
                 </div>
             </form>
@@ -29,49 +29,47 @@
         <table class="table table-striped">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="text"><span jhiTranslate="kavsirApp.questionEssay.text">Text</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="answer"><span jhiTranslate="kavsirApp.questionEssay.answer">Answer</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="memo"><span jhiTranslate="kavsirApp.questionEssay.memo">Memo</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="groupPosition"><span jhiTranslate="kavsirApp.questionEssay.groupPosition">Group Position</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="questionGroupId"><span jhiTranslate="kavsirApp.questionEssay.questionGroup">Question Group</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="text"><span jhiTranslate="kavsirApp.questionEssay.text">Text</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="answer"><span jhiTranslate="kavsirApp.questionEssay.answer">Answer</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="memo"><span jhiTranslate="kavsirApp.questionEssay.memo">Memo</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="groupPosition"><span jhiTranslate="kavsirApp.questionEssay.groupPosition">Group Position</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="questionGroupId"><span jhiTranslate="kavsirApp.questionEssay.questionGroup">Question Group</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let questionEssay of questionEssays ;trackBy: trackId">
-                <td><a [routerLink]="['../question-essay', questionEssay.id ]">{{questionEssay.id}}</a></td>
+                <td><a [routerLink]="['/question-essay', questionEssay.id, 'view' ]">{{questionEssay.id}}</a></td>
                 <td><jhi-markup-render [text]="questionEssay.text" [images]="questionEssay.images"></jhi-markup-render></td>
                 <td><jhi-markup-render [text]="questionEssay.answer" [images]="questionEssay.images"></jhi-markup-render></td>
                 <td>{{questionEssay.memo}}</td>
                 <td>{{questionEssay.groupPosition}}</td>
                 <td>
                     <div *ngIf="questionEssay.questionGroupId">
-                        <a [routerLink]="['../question-group', questionEssay.questionGroupId  ]" >{{questionEssay.questionGroupId}}</a>
+                        <a [routerLink]="['../question-group', questionEssay.questionGroupId , 'view' ]" >{{questionEssay.questionGroupId}}</a>
                     </div>
                 </td>
                 <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
+                    <div class="btn-group">
                         <button type="submit"
-                                [routerLink]="['../question-essay', questionEssay.id ]"
+                                [routerLink]="['/question-essay', questionEssay.id, 'view' ]"
                                 class="btn btn-info btn-sm">
-                            <span class="fa fa-eye"></span>
+                            <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'question-essay/'+ questionEssay.id + '/edit'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
+                                [routerLink]="['/question-essay', questionEssay.id, 'edit']"
                                 class="btn btn-primary btn-sm">
-                            <span class="fa fa-pencil"></span>
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'question-essay/'+ questionEssay.id + '/delete'} }]"
+                                [routerLink]="['/', 'question-essay', { outlets: { popup: questionEssay.id + '/delete'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">
-                            <span class="fa fa-remove"></span>
+                            <fa-icon [icon]="'times'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
                         </button>
                     </div>
@@ -82,7 +80,7 @@
     </div>
     <div *ngIf="questionEssays && questionEssays.length">
         <div class="row justify-content-center">
-            <jhi-item-count [page]="page" [total]="queryCount" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+            <jhi-item-count [page]="page" [total]="totalItems" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
         </div>
         <div class="row justify-content-center">
             <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>

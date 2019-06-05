@@ -1,163 +1,179 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { JhiEventManager, JhiParseLinks, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
 
-import { QuestionChoice } from './question-choice.model';
+import { IQuestionChoice } from 'app/shared/model/question-choice.model';
+import { AccountService } from 'app/core';
+
+import { ITEMS_PER_PAGE } from 'app/shared';
 import { QuestionChoiceService } from './question-choice.service';
-import { ITEMS_PER_PAGE, Principal } from '../../shared';
 import { QuestionChoiceOptionService } from '../question-choice-option/question-choice-option.service';
 import { ResourceImageService } from '../resource-image/resource-image.service';
 
 @Component({
-    selector: 'jhi-question-choice',
-    templateUrl: './question-choice.component.html'
+  selector: 'jhi-question-choice',
+  templateUrl: './question-choice.component.html'
 })
 export class QuestionChoiceComponent implements OnInit, OnDestroy {
+  currentAccount: any;
+  questionChoices: IQuestionChoice[];
+  error: any;
+  success: any;
+  eventSubscriber: Subscription;
+  currentSearch: string;
+  routeData: any;
+  links: any;
+  totalItems: any;
+  itemsPerPage: any;
+  page: any;
+  predicate: any;
+  previousPage: any;
+  reverse: any;
 
-currentAccount: any;
-    questionChoices: QuestionChoice[];
-    error: any;
-    success: any;
-    eventSubscriber: Subscription;
-    currentSearch: string;
-    routeData: any;
-    links: any;
-    totalItems: any;
-    queryCount: any;
-    itemsPerPage: any;
-    page: any;
-    predicate: any;
-    previousPage: any;
-    reverse: any;
+  constructor(
+    protected questionChoiceService: QuestionChoiceService,
+    protected questionChoiceOptionService: QuestionChoiceOptionService,
+    protected resourceImageService: ResourceImageService,
+    protected parseLinks: JhiParseLinks,
+    protected jhiAlertService: JhiAlertService,
+    protected accountService: AccountService,
+    protected activatedRoute: ActivatedRoute,
+    protected dataUtils: JhiDataUtils,
+    protected router: Router,
+    protected eventManager: JhiEventManager
+  ) {
+    this.itemsPerPage = ITEMS_PER_PAGE;
+    this.routeData = this.activatedRoute.data.subscribe(data => {
+      this.page = data.pagingParams.page;
+      this.previousPage = data.pagingParams.page;
+      this.reverse = data.pagingParams.ascending;
+      this.predicate = data.pagingParams.predicate;
+    });
+    this.currentSearch =
+      this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search'] ? this.activatedRoute.snapshot.params['search'] : '';
+  }
 
-    constructor(
-        protected questionChoiceService: QuestionChoiceService,
-        protected questionChoiceOptionService: QuestionChoiceOptionService,
-        protected resourceImageService: ResourceImageService,
-        private parseLinks: JhiParseLinks,
-        private jhiAlertService: JhiAlertService,
-        private principal: Principal,
-        protected activatedRoute: ActivatedRoute,
-        private dataUtils: JhiDataUtils,
-        protected router: Router,
-        private eventManager: JhiEventManager
-    ) {
-        this.itemsPerPage = ITEMS_PER_PAGE;
-        this.routeData = this.activatedRoute.data.subscribe((data) => {
-            this.page = data.pagingParams.page;
-            this.previousPage = data.pagingParams.page;
-            this.reverse = data.pagingParams.ascending;
-            this.predicate = data.pagingParams.predicate;
-        });
-        this.currentSearch = this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search'] ?
-            this.activatedRoute.snapshot.params['search'] : '';
-    }
-
-    loadAll() {
-        if (this.currentSearch) {
-            this.questionChoiceService.search({
-                page: this.page - 1,
-                query: this.currentSearch,
-                size: this.itemsPerPage,
-                sort: this.sort()}).subscribe(
-                    (res: HttpResponse<QuestionChoice[]>) => this.onSuccess(res.body, res.headers),
-                    (res: HttpErrorResponse) => this.onError(res.message)
-                );
-            return;
-        }
-        this.questionChoiceService.query({
-            page: this.page - 1,
-            size: this.itemsPerPage,
-            sort: this.sort()}).subscribe(
-                (res: HttpResponse<QuestionChoice[]>) => this.onSuccess(res.body, res.headers),
-                (res: HttpErrorResponse) => this.onError(res.message)
+  loadAll() {
+    if (this.currentSearch) {
+      this.questionChoiceService
+        .search({
+          page: this.page - 1,
+          query: this.currentSearch,
+          size: this.itemsPerPage,
+          sort: this.sort()
+        })
+        .subscribe(
+          (res: HttpResponse<IQuestionChoice[]>) => this.paginateQuestionChoices(res.body, res.headers),
+          (res: HttpErrorResponse) => this.onError(res.message)
         );
+      return;
     }
-    loadPage(page: number) {
-        if (page !== this.previousPage) {
-            this.previousPage = page;
-            this.transition();
-        }
-    }
-    transition() {
-        this.router.navigate(['/question-choice'], {queryParams:
-            {
-                page: this.page,
-                size: this.itemsPerPage,
-                search: this.currentSearch,
-                sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
-            }
-        });
-        this.loadAll();
-    }
+    this.questionChoiceService
+      .query({
+        page: this.page - 1,
+        size: this.itemsPerPage,
+        sort: this.sort()
+      })
+      .subscribe(
+        (res: HttpResponse<IQuestionChoice[]>) => this.paginateQuestionChoices(res.body, res.headers),
+        (res: HttpErrorResponse) => this.onError(res.message)
+      );
+  }
 
-    clear() {
-        this.page = 0;
-        this.currentSearch = '';
-        this.router.navigate(['/question-choice', {
-            page: this.page,
-            sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
-        }]);
-        this.loadAll();
+  loadPage(page: number) {
+    if (page !== this.previousPage) {
+      this.previousPage = page;
+      this.transition();
     }
-    search(query) {
-        if (!query) {
-            return this.clear();
-        }
-        this.page = 0;
-        this.currentSearch = query;
-        this.router.navigate(['/question-choice', {
-            search: this.currentSearch,
-            page: this.page,
-            sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
-        }]);
-        this.loadAll();
-    }
-    ngOnInit() {
-        this.loadAll();
-        this.principal.identity().then((account) => {
-            this.currentAccount = account;
-        });
-        this.registerChangeInQuestionChoices();
-    }
+  }
 
-    ngOnDestroy() {
-        this.eventManager.destroy(this.eventSubscriber);
-    }
+  transition() {
+    this.router.navigate(['/question-choice'], {
+      queryParams: {
+        page: this.page,
+        size: this.itemsPerPage,
+        search: this.currentSearch,
+        sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
+      }
+    });
+    this.loadAll();
+  }
 
-    trackId(index: number, item: QuestionChoice) {
-        return item.id;
-    }
+  clear() {
+    this.page = 0;
+    this.currentSearch = '';
+    this.router.navigate([
+      '/question-choice',
+      {
+        page: this.page,
+        sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
+      }
+    ]);
+    this.loadAll();
+  }
 
-    byteSize(field) {
-        return this.dataUtils.byteSize(field);
+  search(query) {
+    if (!query) {
+      return this.clear();
     }
+    this.page = 0;
+    this.currentSearch = query;
+    this.router.navigate([
+      '/question-choice',
+      {
+        search: this.currentSearch,
+        page: this.page,
+        sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
+      }
+    ]);
+    this.loadAll();
+  }
 
-    openFile(contentType, field) {
-        return this.dataUtils.openFile(contentType, field);
-    }
-    registerChangeInQuestionChoices() {
-        this.eventSubscriber = this.eventManager.subscribe('questionChoiceListModification', (response) => this.loadAll());
-    }
+  ngOnInit() {
+    this.loadAll();
+    this.accountService.identity().then(account => {
+      this.currentAccount = account;
+    });
+    this.registerChangeInQuestionChoices();
+  }
 
-    sort() {
-        const result = [this.predicate + ',' + (this.reverse ? 'asc' : 'desc')];
-        if (this.predicate !== 'id') {
-            result.push('id');
-        }
-        return result;
-    }
+  ngOnDestroy() {
+    this.eventManager.destroy(this.eventSubscriber);
+  }
 
-    protected onSuccess(data, headers) {
-        this.links = this.parseLinks.parse(headers.get('link'));
-        this.totalItems = headers.get('X-Total-Count');
-        this.queryCount = this.totalItems;
-        // this.page = pagingParams.page;
-        this.questionChoices = data;
+  trackId(index: number, item: IQuestionChoice) {
+    return item.id;
+  }
+
+  byteSize(field) {
+    return this.dataUtils.byteSize(field);
+  }
+
+  openFile(contentType, field) {
+    return this.dataUtils.openFile(contentType, field);
+  }
+
+  registerChangeInQuestionChoices() {
+    this.eventSubscriber = this.eventManager.subscribe('questionChoiceListModification', response => this.loadAll());
+  }
+
+  sort() {
+    const result = [this.predicate + ',' + (this.reverse ? 'asc' : 'desc')];
+    if (this.predicate !== 'id') {
+      result.push('id');
     }
-    protected onError(error) {
-        this.jhiAlertService.error(error.message, null, null);
-    }
+    return result;
+  }
+
+  protected paginateQuestionChoices(data: IQuestionChoice[], headers: HttpHeaders) {
+    this.links = this.parseLinks.parse(headers.get('link'));
+    this.totalItems = parseInt(headers.get('X-Total-Count'), 10);
+    this.questionChoices = data;
+  }
+
+  protected onError(errorMessage: string) {
+    this.jhiAlertService.error(errorMessage, null, null);
+  }
 }

@@ -1,51 +1,45 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { JhiLanguageService } from 'ng-jhipster';
+import { JhiLanguageHelper } from 'app/core';
 
-import { KavsirSharedModule } from '../../shared';
+import { KavsirSharedModule } from 'app/shared';
 import {
-    QuestionGroupService,
-    QuestionGroupPopupService,
-    QuestionGroupComponent,
-    QuestionGroupDetailComponent,
-    QuestionGroupDialogComponent,
-    QuestionGroupPopupComponent,
-    QuestionGroupDeletePopupComponent,
-    QuestionGroupDeleteDialogComponent,
-    questionGroupRoute,
-    questionGroupPopupRoute,
-    QuestionGroupResolvePagingParams,
+  QuestionGroupComponent,
+  QuestionGroupDetailComponent,
+  QuestionGroupUpdateComponent,
+  QuestionGroupDeletePopupComponent,
+  QuestionGroupDeleteDialogComponent,
+  questionGroupRoute,
+  questionGroupPopupRoute
 } from './';
 
-const ENTITY_STATES = [
-    ...questionGroupRoute,
-    ...questionGroupPopupRoute,
-];
+const ENTITY_STATES = [...questionGroupRoute, ...questionGroupPopupRoute];
 
 @NgModule({
-    imports: [
-        KavsirSharedModule,
-        RouterModule.forChild(ENTITY_STATES)
-    ],
-    declarations: [
-        QuestionGroupComponent,
-        QuestionGroupDetailComponent,
-        QuestionGroupDialogComponent,
-        QuestionGroupDeleteDialogComponent,
-        QuestionGroupPopupComponent,
-        QuestionGroupDeletePopupComponent,
-    ],
-    entryComponents: [
-        QuestionGroupComponent,
-        QuestionGroupDialogComponent,
-        QuestionGroupPopupComponent,
-        QuestionGroupDeleteDialogComponent,
-        QuestionGroupDeletePopupComponent,
-    ],
-    providers: [
-        QuestionGroupService,
-        QuestionGroupPopupService,
-        QuestionGroupResolvePagingParams,
-    ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  imports: [KavsirSharedModule, RouterModule.forChild(ENTITY_STATES)],
+  declarations: [
+    QuestionGroupComponent,
+    QuestionGroupDetailComponent,
+    QuestionGroupUpdateComponent,
+    QuestionGroupDeleteDialogComponent,
+    QuestionGroupDeletePopupComponent
+  ],
+  entryComponents: [
+    QuestionGroupComponent,
+    QuestionGroupUpdateComponent,
+    QuestionGroupDeleteDialogComponent,
+    QuestionGroupDeletePopupComponent
+  ],
+  providers: [{ provide: JhiLanguageService, useClass: JhiLanguageService }],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class KavsirQuestionGroupModule {}
+export class KavsirQuestionGroupModule {
+  constructor(private languageService: JhiLanguageService, private languageHelper: JhiLanguageHelper) {
+    this.languageHelper.language.subscribe((languageKey: string) => {
+      if (languageKey !== undefined) {
+        this.languageService.changeLanguage(languageKey);
+      }
+    });
+  }
+}

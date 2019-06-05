@@ -10,6 +10,7 @@ import com.tj.kvasir.service.mapper.QuestionEssayMapper;
 import com.tj.kvasir.web.rest.ResourceHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
@@ -22,7 +23,7 @@ import java.util.Set;
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
- * Service Implementation for managing QuestionEssay.
+ * Service Implementation for managing {@link QuestionEssay}.
  */
 @Service
 @Transactional
@@ -52,8 +53,8 @@ public class QuestionEssayService {
     /**
      * Save a questionEssay.
      *
-     * @param questionEssayDTO the entity to save
-     * @return the persisted entity
+     * @param questionEssayDTO the entity to save.
+     * @return the persisted entity.
      */
     public QuestionEssayDTO save(QuestionEssayDTO questionEssayDTO) {
         log.debug("Request to save QuestionEssay : {}", questionEssayDTO);
@@ -81,8 +82,8 @@ public class QuestionEssayService {
      * Get all the questionEssays.
      *
      * @param categories limiting result in categories
-     *  @param pageable the pagination information
-     * @return the list of entities
+     *  @param pageable the pagination information.
+     * @return the list of entities.
      */
     @Transactional(readOnly = true)
     public Page<QuestionEssayDTO> findAll(Optional<Set<Long>> categories, Pageable pageable) {
@@ -98,36 +99,46 @@ public class QuestionEssayService {
     }
 
     /**
+     * Get all the questionEssays with eager load of many-to-many relationships.
+     *
+     * @return the list of entities.
+     */
+    public Page<QuestionEssayDTO> findAllWithEagerRelationships(Pageable pageable) {
+        return questionEssayRepository.findAllWithEagerRelationships(pageable).map(questionEssayMapper::toDto);
+    }
+
+
+    /**
      * Get one questionEssay by id.
      *
-     * @param id the id of the entity
-     * @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     @Transactional(readOnly = true)
-    public QuestionEssayDTO findOne(Long id) {
+    public Optional<QuestionEssayDTO> findOne(Long id) {
         log.debug("Request to get QuestionEssay : {}", id);
-        QuestionEssay questionEssay = questionEssayRepository.findOneWithEagerRelationships(id);
-        return questionEssayMapper.toDto(questionEssay);
+        return questionEssayRepository.findOneWithEagerRelationships(id)
+            .map(questionEssayMapper::toDto);
     }
 
     /**
      * Delete the questionEssay by id.
      *
-     * @param id the id of the entity
+     * @param id the id of the entity.
      */
     public void delete(Long id) {
         log.debug("Request to delete QuestionEssay : {}", id);
-        questionEssayRepository.delete(id);
-        questionEssaySearchRepository.delete(id);
+        questionEssayRepository.deleteById(id);
+        questionEssaySearchRepository.deleteById(id);
     }
 
     /**
      * Search for the questionEssay corresponding to the query.
      *
-     * @param query the query of the search
+     * @param query the query of the search.
      * @param categories  limiting result in category
-     *  @param pageable the pagination information
-     * @return the list of entities
+     *  @param pageable the pagination information.
+     * @return the list of entities.
      */
     @Transactional(readOnly = true)
     public Page<QuestionEssayDTO> search(String query, Optional<Set<Long>> categories, Pageable pageable) {
@@ -138,7 +149,7 @@ public class QuestionEssayService {
         if (categories.isPresent()) {
             builder.withFilter(resourceHelper.asCategoriesFilter(categories.get()));
         }
-        Page<QuestionEssay> result = questionEssaySearchRepository.search(builder.build());
-        return result.map(questionEssayMapper::toDto);
+        return questionEssaySearchRepository.search(builder.build())
+            .map(questionEssayMapper::toDto);
     }
 }

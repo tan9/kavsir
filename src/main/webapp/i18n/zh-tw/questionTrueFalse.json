@@ -1,35 +1,34 @@
-
 {
-    "kavsirApp": {
-        "questionTrueFalse" : {
-            "home": {
-                "title": "是非題",
-                "createLabel": "建立一筆新的「是非題」",
-                "createOrEditLabel": "建立或編輯「是非題」",
-                "search": "搜尋「是非題」"
-            },
-            "created": "新的「是非題」建立成功，識別碼為 {{ param }}",
-            "updated": "識別碼為 {{ param }} 的「是非題」更新成功",
-            "deleted": "識別碼為 {{ param }} 的「是非題」刪除成功",
-            "delete": {
-                "question": "您確定要刪除「是非題」 {{ id }} 嗎?"
-            },
-            "detail": {
-                "title": "是非題"
-            },
-            "correct": "答案",
-            "text": "題目",
-            "memo": "備註",
-            "groupPosition": "題組中序位",
-            "category": "類別",
-            "image": "圖片",
-            "questionGroup": "題組",
-            "help": {
-                "correct": "答案",
-                "text": "題目",
-                "memo": "備註",
-                "groupPosition": "題組中序位"
-            }
-        }
+  "kavsirApp": {
+    "questionTrueFalse": {
+      "home": {
+        "title": "是非題",
+        "createLabel": "建立一筆新的「是非題」",
+        "createOrEditLabel": "建立或編輯「是非題」",
+        "search": "搜尋「是非題」"
+      },
+      "created": "新的「是非題」建立成功，識別碼為 {{ param }}",
+      "updated": "識別碼為 {{ param }} 的「是非題」更新成功",
+      "deleted": "識別碼為 {{ param }} 的「是非題」刪除成功",
+      "delete": {
+        "question": "您確定要刪除「是非題」 {{ id }} 嗎?"
+      },
+      "detail": {
+        "title": "是非題"
+      },
+      "correct": "答案",
+      "text": "題目",
+      "memo": "備註",
+      "groupPosition": "題組中序位",
+      "category": "類別",
+      "image": "圖片",
+      "questionGroup": "題組",
+      "help": {
+        "correct": "答案",
+        "text": "題目",
+        "memo": "備註",
+        "groupPosition": "題組中序位"
+      }
     }
+  }
 }

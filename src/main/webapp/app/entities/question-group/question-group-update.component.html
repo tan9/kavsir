@@ -1,0 +1,46 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-question-group-heading" jhiTranslate="kavsirApp.questionGroup.home.createOrEditLabel">Create or edit a Question Group</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!questionGroup.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
+                        readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="kavsirApp.questionGroup.text" for="field_text" [ngbTooltip]="'kavsirApp.questionGroup.help.text' | translate">Text</label>
+                    <textarea class="form-control" name="text" id="field_text"
+                              formControlName="text"></textarea>
+                    <div *ngIf="editForm.get('text').invalid && (editForm.get('text').dirty || editForm.get('text').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('text').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="kavsirApp.questionGroup.memo" for="field_memo" [ngbTooltip]="'kavsirApp.questionGroup.help.memo' | translate">Memo</label>
+                    <input type="text" class="form-control" name="memo" id="field_memo"
+                           formControlName="memo"/>
+                </div>
+
+                <div class="form-group">
+                    <label jhiTranslate="kavsirApp.questionGroup.category" for="field_categories">Category</label>
+                    <select class="form-control" id="field_categories" multiple name="categories" formControlName="categories">
+                        <option [ngValue]="getSelected(editForm.get('categories').value, categoryNodeOption)" *ngFor="let categoryNodeOption of categorynodes; trackBy: trackCategoryNodeById">{{categoryNodeOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,6 +1,6 @@
 package com.tj.kvasir.service.dto;
-
-
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -9,22 +9,40 @@ import java.util.Objects;
 import javax.persistence.Lob;
 
 /**
- * A DTO for the QuestionChoice entity.
+ * A DTO for the {@link com.tj.kvasir.domain.QuestionChoice} entity.
  */
+@ApiModel(description = "選擇題")
 public class QuestionChoiceDTO implements Serializable {
 
     private Long id;
 
+    /**
+     * 是否為複選
+     */
     @NotNull
+    @ApiModelProperty(value = "是否為複選", required = true)
     private Boolean multipleResponse;
 
-    @NotNull
+    /**
+     * 題目
+     */
+    
+    @ApiModelProperty(value = "題目", required = true)
     @Lob
     private String text;
 
+    /**
+     * 備註
+     */
+    @ApiModelProperty(value = "備註")
     private String memo;
 
+    /**
+     * 題組中序位
+     */
+    @ApiModelProperty(value = "題組中序位")
     private Integer groupPosition;
+
 
     private Set<CategoryNodeDTO> categories = new HashSet<>();
 
@@ -106,7 +124,7 @@ public class QuestionChoiceDTO implements Serializable {
         }
 
         QuestionChoiceDTO questionChoiceDTO = (QuestionChoiceDTO) o;
-        if(questionChoiceDTO.getId() == null || getId() == null) {
+        if (questionChoiceDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), questionChoiceDTO.getId());
@@ -125,6 +143,7 @@ public class QuestionChoiceDTO implements Serializable {
             ", text='" + getText() + "'" +
             ", memo='" + getMemo() + "'" +
             ", groupPosition=" + getGroupPosition() +
+            ", questionGroup=" + getQuestionGroupId() +
             "}";
     }
 }

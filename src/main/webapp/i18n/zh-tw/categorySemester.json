@@ -1,28 +1,27 @@
-
 {
-    "kavsirApp": {
-        "categorySemester" : {
-            "home": {
-                "title": "學期別",
-                "createLabel": "建立一筆新的「學期別」",
-                "createOrEditLabel": "建立或編輯「學期別」",
-                "search": "搜尋「學期別」"
-            },
-            "created": "新的「學期別」建立成功，識別碼為 {{ param }}",
-            "updated": "識別碼為 {{ param }} 的「學期別」更新成功",
-            "deleted": "識別碼為 {{ param }} 的「學期別」刪除成功",
-            "delete": {
-                "question": "您確定要刪除「學期別」 {{ id }} 嗎?"
-            },
-            "detail": {
-                "title": "學期別"
-            },
-            "position": "序位",
-            "name": "名稱",
-            "help": {
-                "position": "序位",
-                "name": "名稱"
-            }
-        }
+  "kavsirApp": {
+    "categorySemester": {
+      "home": {
+        "title": "學期別",
+        "createLabel": "建立一筆新的「學期別」",
+        "createOrEditLabel": "建立或編輯「學期別」",
+        "search": "搜尋「學期別」"
+      },
+      "created": "新的「學期別」建立成功，識別碼為 {{ param }}",
+      "updated": "識別碼為 {{ param }} 的「學期別」更新成功",
+      "deleted": "識別碼為 {{ param }} 的「學期別」刪除成功",
+      "delete": {
+        "question": "您確定要刪除「學期別」 {{ id }} 嗎?"
+      },
+      "detail": {
+        "title": "學期別"
+      },
+      "position": "序位",
+      "name": "名稱",
+      "help": {
+        "position": "序位",
+        "name": "名稱"
+      }
     }
+  }
 }

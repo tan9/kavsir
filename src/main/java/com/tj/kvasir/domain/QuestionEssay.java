@@ -1,14 +1,14 @@
 package com.tj.kvasir.domain;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,11 +17,10 @@ import java.util.Objects;
 /**
  * 問答題
  */
-@ApiModel(description = "問答題")
 @Entity
 @Table(name = "question_essay")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "questionessay")
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "questionessay")
 public class QuestionEssay implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -29,53 +28,51 @@ public class QuestionEssay implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
+    @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
     private Long id;
 
     /**
      * 題目
      */
-    @NotNull
-    @ApiModelProperty(value = "題目", required = true)
+
     @Column(name = "text", columnDefinition = "text", nullable = false)
     private String text;
 
     /**
      * 答案
      */
-    @NotNull
-    @ApiModelProperty(value = "答案", required = true)
+
     @Column(name = "answer", columnDefinition = "text", nullable = false)
     private String answer;
 
     /**
      * 備註
      */
-    @ApiModelProperty(value = "備註")
     @Column(name = "memo")
     private String memo;
 
     /**
      * 題組中序位
      */
-    @ApiModelProperty(value = "題組中序位")
     @Column(name = "group_position")
     private Integer groupPosition;
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "question_essay_category",
-               joinColumns = @JoinColumn(name="question_essays_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="categories_id", referencedColumnName="id"))
+               joinColumns = @JoinColumn(name = "question_essay_id", referencedColumnName = "id"),
+               inverseJoinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id"))
     private Set<CategoryNode> categories = new HashSet<>();
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "question_essay_image",
-               joinColumns = @JoinColumn(name="question_essays_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="images_id", referencedColumnName="id"))
+               joinColumns = @JoinColumn(name = "question_essay_id", referencedColumnName = "id"),
+               inverseJoinColumns = @JoinColumn(name = "image_id", referencedColumnName = "id"))
     private Set<ResourceImage> images = new HashSet<>();
 
     @ManyToOne
+    @JsonIgnoreProperties("questionEssays")
     private QuestionGroup questionGroup;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -208,19 +205,15 @@ public class QuestionEssay implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof QuestionEssay)) {
             return false;
         }
-        QuestionEssay questionEssay = (QuestionEssay) o;
-        if (questionEssay.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), questionEssay.getId());
+        return id != null && id.equals(((QuestionEssay) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

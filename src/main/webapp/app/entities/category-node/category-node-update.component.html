@@ -1,0 +1,63 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-category-node-heading" jhiTranslate="kavsirApp.categoryNode.home.createOrEditLabel">Create or edit a Category Node</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!categoryNode.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
+                        readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="kavsirApp.categoryNode.type" for="field_type">Type</label>
+                    <select class="form-control" name="type" formControlName="type" id="field_type">
+                        <option value="ACADEMIC_YEAR">{{'kavsirApp.CategoryType.ACADEMIC_YEAR' | translate}}</option>
+                        <option value="GRADE">{{'kavsirApp.CategoryType.GRADE' | translate}}</option>
+                        <option value="SEMESTER">{{'kavsirApp.CategoryType.SEMESTER' | translate}}</option>
+                        <option value="SUBJECT">{{'kavsirApp.CategoryType.SUBJECT' | translate}}</option>
+                        <option value="SOURCE">{{'kavsirApp.CategoryType.SOURCE' | translate}}</option>
+                        <option value="SEGMENT">{{'kavsirApp.CategoryType.SEGMENT' | translate}}</option>
+                    </select>
+                    <div *ngIf="editForm.get('type').invalid && (editForm.get('type').dirty || editForm.get('type').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('type').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="kavsirApp.categoryNode.typeId" for="field_typeId" [ngbTooltip]="'kavsirApp.categoryNode.help.typeId' | translate">Type Id</label>
+                    <input type="number" class="form-control" name="typeId" id="field_typeId"
+                           formControlName="typeId"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="kavsirApp.categoryNode.name" for="field_name" [ngbTooltip]="'kavsirApp.categoryNode.help.name' | translate">Name</label>
+                    <input type="text" class="form-control" name="name" id="field_name"
+                           formControlName="name"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="kavsirApp.categoryNode.position" for="field_position" [ngbTooltip]="'kavsirApp.categoryNode.help.position' | translate">Position</label>
+                    <input type="number" class="form-control" name="position" id="field_position"
+                           formControlName="position"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="kavsirApp.categoryNode.parent" for="field_parent">Parent</label>
+                    <select class="form-control" id="field_parent" name="parent" formControlName="parentId">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="categoryNodeOption.id" *ngFor="let categoryNodeOption of categorynodes; trackBy: trackCategoryNodeById">{{categoryNodeOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

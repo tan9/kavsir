@@ -1,64 +1,69 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
-import { QuestionChoice } from './question-choice.model';
-import { QuestionChoicePopupService } from './question-choice-popup.service';
+import { IQuestionChoice } from 'app/shared/model/question-choice.model';
 import { QuestionChoiceService } from './question-choice.service';
 
 @Component({
-    selector: 'jhi-question-choice-delete-dialog',
-    templateUrl: './question-choice-delete-dialog.component.html'
+  selector: 'jhi-question-choice-delete-dialog',
+  templateUrl: './question-choice-delete-dialog.component.html'
 })
 export class QuestionChoiceDeleteDialogComponent {
+  questionChoice: IQuestionChoice;
 
-    questionChoice: QuestionChoice;
+  constructor(
+    protected questionChoiceService: QuestionChoiceService,
+    public activeModal: NgbActiveModal,
+    protected eventManager: JhiEventManager
+  ) {}
 
-    constructor(
-        private questionChoiceService: QuestionChoiceService,
-        public activeModal: NgbActiveModal,
-        private eventManager: JhiEventManager
-    ) {
-    }
+  clear() {
+    this.activeModal.dismiss('cancel');
+  }
 
-    clear() {
-        this.activeModal.dismiss('cancel');
-    }
-
-    confirmDelete(id: number) {
-        this.questionChoiceService.delete(id).subscribe((response) => {
-            this.eventManager.broadcast({
-                name: 'questionChoiceListModification',
-                content: 'Deleted an questionChoice'
-            });
-            this.activeModal.dismiss(true);
-        });
-    }
+  confirmDelete(id: number) {
+    this.questionChoiceService.delete(id).subscribe(response => {
+      this.eventManager.broadcast({
+        name: 'questionChoiceListModification',
+        content: 'Deleted an questionChoice'
+      });
+      this.activeModal.dismiss(true);
+    });
+  }
 }
 
 @Component({
-    selector: 'jhi-question-choice-delete-popup',
-    template: ''
+  selector: 'jhi-question-choice-delete-popup',
+  template: ''
 })
 export class QuestionChoiceDeletePopupComponent implements OnInit, OnDestroy {
+  protected ngbModalRef: NgbModalRef;
 
-    routeSub: any;
+  constructor(protected activatedRoute: ActivatedRoute, protected router: Router, protected modalService: NgbModal) {}
 
-    constructor(
-        private route: ActivatedRoute,
-        private questionChoicePopupService: QuestionChoicePopupService
-    ) {}
+  ngOnInit() {
+    this.activatedRoute.data.subscribe(({ questionChoice }) => {
+      setTimeout(() => {
+        this.ngbModalRef = this.modalService.open(QuestionChoiceDeleteDialogComponent as Component, { size: 'lg', backdrop: 'static' });
+        this.ngbModalRef.componentInstance.questionChoice = questionChoice;
+        this.ngbModalRef.result.then(
+          result => {
+            this.router.navigate(['/question-choice', { outlets: { popup: null } }]);
+            this.ngbModalRef = null;
+          },
+          reason => {
+            this.router.navigate(['/question-choice', { outlets: { popup: null } }]);
+            this.ngbModalRef = null;
+          }
+        );
+      }, 0);
+    });
+  }
 
-    ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.questionChoicePopupService
-                .open(QuestionChoiceDeleteDialogComponent as Component, params['id']);
-        });
-    }
-
-    ngOnDestroy() {
-        this.routeSub.unsubscribe();
-    }
+  ngOnDestroy() {
+    this.ngbModalRef = null;
+  }
 }

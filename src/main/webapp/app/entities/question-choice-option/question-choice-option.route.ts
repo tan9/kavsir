@@ -1,81 +1,98 @@
 import { Injectable } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes } from '@angular/router';
-import { JhiPaginationUtil } from 'ng-jhipster';
-
-import { UserRouteAccessService } from '../../shared';
+import { JhiPaginationUtil, JhiResolvePagingParams } from 'ng-jhipster';
+import { UserRouteAccessService } from 'app/core';
+import { Observable, of } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
+import { QuestionChoiceOption } from 'app/shared/model/question-choice-option.model';
+import { QuestionChoiceOptionService } from './question-choice-option.service';
 import { QuestionChoiceOptionComponent } from './question-choice-option.component';
 import { QuestionChoiceOptionDetailComponent } from './question-choice-option-detail.component';
-import { QuestionChoiceOptionPopupComponent } from './question-choice-option-dialog.component';
+import { QuestionChoiceOptionUpdateComponent } from './question-choice-option-update.component';
 import { QuestionChoiceOptionDeletePopupComponent } from './question-choice-option-delete-dialog.component';
+import { IQuestionChoiceOption } from 'app/shared/model/question-choice-option.model';
 
-@Injectable()
-export class QuestionChoiceOptionResolvePagingParams implements Resolve<any> {
+@Injectable({ providedIn: 'root' })
+export class QuestionChoiceOptionResolve implements Resolve<IQuestionChoiceOption> {
+  constructor(private service: QuestionChoiceOptionService) {}
 
-    constructor(private paginationUtil: JhiPaginationUtil) {}
-
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        const page = route.queryParams['page'] ? route.queryParams['page'] : '1';
-        const sort = route.queryParams['sort'] ? route.queryParams['sort'] : 'id,asc';
-        return {
-            page: this.paginationUtil.parsePage(page),
-            predicate: this.paginationUtil.parsePredicate(sort),
-            ascending: this.paginationUtil.parseAscending(sort)
-      };
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IQuestionChoiceOption> {
+    const id = route.params['id'] ? route.params['id'] : null;
+    if (id) {
+      return this.service.find(id).pipe(
+        filter((response: HttpResponse<QuestionChoiceOption>) => response.ok),
+        map((questionChoiceOption: HttpResponse<QuestionChoiceOption>) => questionChoiceOption.body)
+      );
     }
+    return of(new QuestionChoiceOption());
+  }
 }
 
 export const questionChoiceOptionRoute: Routes = [
-    {
-        path: 'question-choice-option',
-        component: QuestionChoiceOptionComponent,
-        resolve: {
-            'pagingParams': QuestionChoiceOptionResolvePagingParams
-        },
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'kavsirApp.questionChoiceOption.home.title'
-        },
-        canActivate: [UserRouteAccessService]
-    }, {
-        path: 'question-choice-option/:id',
-        component: QuestionChoiceOptionDetailComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'kavsirApp.questionChoiceOption.home.title'
-        },
-        canActivate: [UserRouteAccessService]
-    }
+  {
+    path: '',
+    component: QuestionChoiceOptionComponent,
+    resolve: {
+      pagingParams: JhiResolvePagingParams
+    },
+    data: {
+      authorities: ['ROLE_USER'],
+      defaultSort: 'id,asc',
+      pageTitle: 'kavsirApp.questionChoiceOption.home.title'
+    },
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: ':id/view',
+    component: QuestionChoiceOptionDetailComponent,
+    resolve: {
+      questionChoiceOption: QuestionChoiceOptionResolve
+    },
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'kavsirApp.questionChoiceOption.home.title'
+    },
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: 'new',
+    component: QuestionChoiceOptionUpdateComponent,
+    resolve: {
+      questionChoiceOption: QuestionChoiceOptionResolve
+    },
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'kavsirApp.questionChoiceOption.home.title'
+    },
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: ':id/edit',
+    component: QuestionChoiceOptionUpdateComponent,
+    resolve: {
+      questionChoiceOption: QuestionChoiceOptionResolve
+    },
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'kavsirApp.questionChoiceOption.home.title'
+    },
+    canActivate: [UserRouteAccessService]
+  }
 ];
 
 export const questionChoiceOptionPopupRoute: Routes = [
-    {
-        path: 'question-choice-option-new',
-        component: QuestionChoiceOptionPopupComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'kavsirApp.questionChoiceOption.home.title'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
+  {
+    path: ':id/delete',
+    component: QuestionChoiceOptionDeletePopupComponent,
+    resolve: {
+      questionChoiceOption: QuestionChoiceOptionResolve
     },
-    {
-        path: 'question-choice-option/:id/edit',
-        component: QuestionChoiceOptionPopupComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'kavsirApp.questionChoiceOption.home.title'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'kavsirApp.questionChoiceOption.home.title'
     },
-    {
-        path: 'question-choice-option/:id/delete',
-        component: QuestionChoiceOptionDeletePopupComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'kavsirApp.questionChoiceOption.home.title'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
-    }
+    canActivate: [UserRouteAccessService],
+    outlet: 'popup'
+  }
 ];

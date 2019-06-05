@@ -6,7 +6,7 @@ import com.tj.kvasir.service.dto.CategoryNodeDTO;
 import org.mapstruct.*;
 
 /**
- * Mapper for the entity CategoryNode and its DTO CategoryNodeDTO.
+ * Mapper for the entity {@link CategoryNode} and its DTO {@link CategoryNodeDTO}.
  */
 @Mapper(componentModel = "spring", uses = {})
 public interface CategoryNodeMapper extends EntityMapper<CategoryNodeDTO, CategoryNode> {

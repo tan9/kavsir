@@ -6,7 +6,7 @@ import com.tj.kvasir.service.dto.QuestionTrueFalseDTO;
 import org.mapstruct.*;
 
 /**
- * Mapper for the entity QuestionTrueFalse and its DTO QuestionTrueFalseDTO.
+ * Mapper for the entity {@link QuestionTrueFalse} and its DTO {@link QuestionTrueFalseDTO}.
  */
 @Mapper(componentModel = "spring", uses = {CategoryNodeMapper.class, ResourceImageMapper.class, QuestionGroupMapper.class})
 public interface QuestionTrueFalseMapper extends EntityMapper<QuestionTrueFalseDTO, QuestionTrueFalse> {

@@ -1,72 +1,43 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { HttpResponse } from '@angular/common/http';
-import { Subscription } from 'rxjs/Subscription';
-import { JhiEventManager, JhiDataUtils } from 'ng-jhipster';
+import { JhiDataUtils } from 'ng-jhipster';
 
-import { QuestionTrueFalse } from './question-true-false.model';
-import { QuestionTrueFalseService } from './question-true-false.service';
+import { IQuestionTrueFalse } from 'app/shared/model/question-true-false.model';
+import { Subscription } from 'rxjs';
 
 @Component({
-    selector: 'jhi-question-true-false-detail',
-    templateUrl: './question-true-false-detail.component.html',
-    styleUrls: [ './question-true-false-detail.component.css' ]
+  selector: 'jhi-question-true-false-detail',
+  templateUrl: './question-true-false-detail.component.html',
+  styleUrls: ['./question-true-false-detail.component.scss']
 })
 export class QuestionTrueFalseDetailComponent implements OnInit, OnDestroy {
+  inGroup = false;
 
-    inGroup = false;
+  questionTrueFalse: IQuestionTrueFalse;
+  private queryParamsSubscription: Subscription;
+  constructor(protected dataUtils: JhiDataUtils, protected activatedRoute: ActivatedRoute) {}
 
-    questionTrueFalse: QuestionTrueFalse;
-    private subscription: Subscription;
-    private queryParamsSubscription: Subscription;
-    private eventSubscriber: Subscription;
+  ngOnInit() {
+    this.activatedRoute.data.subscribe(({ questionTrueFalse }) => {
+      this.questionTrueFalse = questionTrueFalse;
+    });
+    this.queryParamsSubscription = this.activatedRoute.queryParams.subscribe(queryParams => {
+      this.inGroup = queryParams['group'] !== 'false';
+    });
+  }
 
-    constructor(
-        private eventManager: JhiEventManager,
-        private dataUtils: JhiDataUtils,
-        private questionTrueFalseService: QuestionTrueFalseService,
-        private route: ActivatedRoute
-    ) {
-    }
+  byteSize(field) {
+    return this.dataUtils.byteSize(field);
+  }
 
-    ngOnInit() {
-        this.subscription = this.route.params.subscribe((params) => {
-            this.load(params['id']);
-        });
-        this.queryParamsSubscription = this.route.queryParams.subscribe((queryParams) => {
-            this.inGroup = queryParams['group'] !== 'false';
-            }
-        );
-        this.registerChangeInQuestionTrueFalses();
-    }
+  openFile(contentType, field) {
+    return this.dataUtils.openFile(contentType, field);
+  }
+  previousState() {
+    window.history.back();
+  }
 
-    load(id) {
-        this.questionTrueFalseService.find(id)
-            .subscribe((questionTrueFalseResponse: HttpResponse<QuestionTrueFalse>) => {
-                this.questionTrueFalse = questionTrueFalseResponse.body;
-            });
-    }
-    byteSize(field) {
-        return this.dataUtils.byteSize(field);
-    }
-
-    openFile(contentType, field) {
-        return this.dataUtils.openFile(contentType, field);
-    }
-    previousState() {
-        window.history.back();
-    }
-
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
-        this.queryParamsSubscription.unsubscribe();
-        this.eventManager.destroy(this.eventSubscriber);
-    }
-
-    registerChangeInQuestionTrueFalses() {
-        this.eventSubscriber = this.eventManager.subscribe(
-            'questionTrueFalseListModification',
-            (response) => this.load(this.questionTrueFalse.id)
-        );
-    }
+  ngOnDestroy() {
+    this.queryParamsSubscription.unsubscribe();
+  }
 }

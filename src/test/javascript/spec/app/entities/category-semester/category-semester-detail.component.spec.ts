@@ -1,54 +1,40 @@
 /* tslint:disable max-line-length */
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 
 import { KavsirTestModule } from '../../../test.module';
-import { CategorySemesterDetailComponent } from '../../../../../../main/webapp/app/entities/category-semester/category-semester-detail.component';
-import { CategorySemesterService } from '../../../../../../main/webapp/app/entities/category-semester/category-semester.service';
-import { CategorySemester } from '../../../../../../main/webapp/app/entities/category-semester/category-semester.model';
+import { CategorySemesterDetailComponent } from 'app/entities/category-semester/category-semester-detail.component';
+import { CategorySemester } from 'app/shared/model/category-semester.model';
 
 describe('Component Tests', () => {
+  describe('CategorySemester Management Detail Component', () => {
+    let comp: CategorySemesterDetailComponent;
+    let fixture: ComponentFixture<CategorySemesterDetailComponent>;
+    const route = ({ data: of({ categorySemester: new CategorySemester(123) }) } as any) as ActivatedRoute;
 
-    describe('CategorySemester Management Detail Component', () => {
-        let comp: CategorySemesterDetailComponent;
-        let fixture: ComponentFixture<CategorySemesterDetailComponent>;
-        let service: CategorySemesterService;
-
-        beforeEach(async(() => {
-            TestBed.configureTestingModule({
-                imports: [KavsirTestModule],
-                declarations: [CategorySemesterDetailComponent],
-                providers: [
-                    CategorySemesterService
-                ]
-            })
-            .overrideTemplate(CategorySemesterDetailComponent, '')
-            .compileComponents();
-        }));
-
-        beforeEach(() => {
-            fixture = TestBed.createComponent(CategorySemesterDetailComponent);
-            comp = fixture.componentInstance;
-            service = fixture.debugElement.injector.get(CategorySemesterService);
-        });
-
-        describe('OnInit', () => {
-            it('Should call load all on init', () => {
-                // GIVEN
-
-                spyOn(service, 'find').and.returnValue(Observable.of(new HttpResponse({
-                    body: new CategorySemester(123)
-                })));
-
-                // WHEN
-                comp.ngOnInit();
-
-                // THEN
-                expect(service.find).toHaveBeenCalledWith(123);
-                expect(comp.categorySemester).toEqual(jasmine.objectContaining({id: 123}));
-            });
-        });
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [KavsirTestModule],
+        declarations: [CategorySemesterDetailComponent],
+        providers: [{ provide: ActivatedRoute, useValue: route }]
+      })
+        .overrideTemplate(CategorySemesterDetailComponent, '')
+        .compileComponents();
+      fixture = TestBed.createComponent(CategorySemesterDetailComponent);
+      comp = fixture.componentInstance;
     });
 
+    describe('OnInit', () => {
+      it('Should call load all on init', () => {
+        // GIVEN
+
+        // WHEN
+        comp.ngOnInit();
+
+        // THEN
+        expect(comp.categorySemester).toEqual(jasmine.objectContaining({ id: 123 }));
+      });
+    });
+  });
 });

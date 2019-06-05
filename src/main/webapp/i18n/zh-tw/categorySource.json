@@ -1,23 +1,23 @@
 {
-    "kavsirApp": {
-        "categorySource" : {
-            "home": {
-                "title": "來源別",
-                "createLabel": "建立一筆新的「來源別」",
-                "createOrEditLabel": "建立或編輯「來源別」",
-                "search": "搜尋「來源別」"
-            },
-            "created": "新的「來源別」 建立成功，識別碼為 {{ param }}",
-            "updated": "識別碼為 {{ param }} 的「來源別」更新成功",
-            "deleted": "識別碼為 {{ param }} 的「來源別」刪除成功",
-            "delete": {
-                "question": "您確定要刪除「來源別」 {{ id }} 嗎?"
-            },
-            "detail": {
-                "title": "來源別"
-            },
-            "position": "序位",
-            "name": "名稱"
-        }
+  "kavsirApp": {
+    "categorySource": {
+      "home": {
+        "title": "來源別",
+        "createLabel": "建立一筆新的「來源別」",
+        "createOrEditLabel": "建立或編輯「來源別」",
+        "search": "搜尋「來源別」"
+      },
+      "created": "新的「來源別」 建立成功，識別碼為 {{ param }}",
+      "updated": "識別碼為 {{ param }} 的「來源別」更新成功",
+      "deleted": "識別碼為 {{ param }} 的「來源別」刪除成功",
+      "delete": {
+        "question": "您確定要刪除「來源別」 {{ id }} 嗎?"
+      },
+      "detail": {
+        "title": "來源別"
+      },
+      "position": "序位",
+      "name": "名稱"
     }
+  }
 }

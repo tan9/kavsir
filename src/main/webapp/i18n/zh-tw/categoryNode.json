@@ -1,36 +1,35 @@
-
 {
-    "kavsirApp": {
-        "categoryNode" : {
-            "home": {
-                "title": "類別節點",
-                "createLabel": "建立一筆新的「類別節點」",
-                "createOrEditLabel": "建立或編輯「類別節點」",
-                "search": "搜尋「類別節點」"
-            },
-            "created": "新的「類別節點」建立成功，識別碼為 {{ param }}",
-            "updated": "識別碼為 {{ param }} 的「類別節點」更新成功",
-            "deleted": "識別碼為 {{ param }} 的「類別節點」刪除成功",
-            "delete": {
-                "question": "您確定要刪除「類別節點」 {{ id }} 嗎?"
-            },
-            "detail": {
-                "title": "類別節點"
-            },
-            "type": "類別",
-            "typeId": "類別 ID",
-            "name": "名稱",
-            "position": "序位",
-            "parent": "上層節點",
-            "trueOrFalse": "是非題",
-            "choice": "選擇題",
-            "essay": "問答題",
-            "group": "題組",
-            "help": {
-                "typeId": "類別 ID，在 type !== SEGMENT 時需指定到 type 對應表格資料",
-                "name": "名稱 (章、課、篇、節)，只有在 type == SEGMENT 時有效",
-                "position": "序位"
-            }
-        }
+  "kavsirApp": {
+    "categoryNode": {
+      "home": {
+        "title": "類別節點",
+        "createLabel": "建立一筆新的「類別節點」",
+        "createOrEditLabel": "建立或編輯「類別節點」",
+        "search": "搜尋「類別節點」"
+      },
+      "created": "新的「類別節點」建立成功，識別碼為 {{ param }}",
+      "updated": "識別碼為 {{ param }} 的「類別節點」更新成功",
+      "deleted": "識別碼為 {{ param }} 的「類別節點」刪除成功",
+      "delete": {
+        "question": "您確定要刪除「類別節點」 {{ id }} 嗎?"
+      },
+      "detail": {
+        "title": "類別節點"
+      },
+      "type": "類別",
+      "typeId": "類別 ID",
+      "name": "名稱",
+      "position": "序位",
+      "parent": "上層節點",
+      "trueOrFalse": "是非題",
+      "choice": "選擇題",
+      "essay": "問答題",
+      "group": "題組",
+      "help": {
+        "typeId": "類別 ID，在 type !== SEGMENT 時需指定到 type 對應表格資料",
+        "name": "名稱 (章、課、篇、節)，只有在 type == SEGMENT 時有效",
+        "position": "序位"
+      }
     }
+  }
 }

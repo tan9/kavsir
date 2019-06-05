@@ -1,27 +1,27 @@
 {
-    "kavsirApp": {
-        "categoryAcademicYear" : {
-            "home": {
-                "title": "學年別",
-                "createLabel": "建立一筆新的「學年別」",
-                "createOrEditLabel": "建立或編輯「學年別」",
-                "search": "搜尋「學年別」"
-            },
-            "created": "新的「學年別」建立成功，識別碼為 {{ param }}",
-            "updated": "識別碼為 {{ param }} 的「學年別」更新成功",
-            "deleted": "識別碼為 {{ param }} 的「學年別」刪除成功",
-            "delete": {
-                "question": "您確定要刪除「學年別」 {{ id }} 嗎?"
-            },
-            "detail": {
-                "title": "學年別"
-            },
-            "position": "序位",
-            "name": "名稱",
-            "help": {
-                "position": "序位",
-                "name": "名稱"
-            }
-        }
+  "kavsirApp": {
+    "categoryAcademicYear": {
+      "home": {
+        "title": "學年別",
+        "createLabel": "建立一筆新的「學年別」",
+        "createOrEditLabel": "建立或編輯「學年別」",
+        "search": "搜尋「學年別」"
+      },
+      "created": "新的「學年別」建立成功，識別碼為 {{ param }}",
+      "updated": "識別碼為 {{ param }} 的「學年別」更新成功",
+      "deleted": "識別碼為 {{ param }} 的「學年別」刪除成功",
+      "delete": {
+        "question": "您確定要刪除「學年別」 {{ id }} 嗎?"
+      },
+      "detail": {
+        "title": "學年別"
+      },
+      "position": "序位",
+      "name": "名稱",
+      "help": {
+        "position": "序位",
+        "name": "名稱"
+      }
     }
+  }
 }

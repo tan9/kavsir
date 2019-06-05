@@ -1,0 +1,95 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-question-true-false-heading" jhiTranslate="kavsirApp.questionTrueFalse.home.createOrEditLabel">Create or edit a Question True False</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!questionTrueFalse.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
+                        readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="kavsirApp.questionTrueFalse.correct" for="field_correct" [ngbTooltip]="'kavsirApp.questionTrueFalse.help.correct' | translate">Correct</label>
+                    <input type="checkbox" class="form-control" name="correct" id="field_correct"
+                           formControlName="correct" hidden/>
+                    <div class="form-check form-check-inline">
+                        <label class="form-check-label" (change)="questionTrueFalse.correct = !questionTrueFalse.correct">
+                            <input class="form-check-input" type="checkbox"
+                                   [checked]="questionTrueFalse.correct"> {{true | trueFalseSymbol}}
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <label class="form-check-label" (change)="questionTrueFalse.correct = !questionTrueFalse.correct">
+                            <input class="form-check-input" type="checkbox"
+                                   [checked]="!questionTrueFalse.correct"> {{false | trueFalseSymbol}}
+                        </label>
+                    </div>
+                    <div *ngIf="editForm.get('correct').invalid && (editForm.get('correct').dirty || editForm.get('correct').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('correct').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="kavsirApp.questionTrueFalse.text" for="field_text" [ngbTooltip]="'kavsirApp.questionTrueFalse.help.text' | translate">Text</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="text" id="field_text"
+                               [(ngModel)]="questionTrueFalse.text" required />
+                        <button type="button" class="input-group-addon btn btn-info" (click)="showPreview = !showPreview">
+                            <span [class]="'fa fa-eye' + (showPreview ? '-slash' : '')"></span>
+                        </button>
+                    </div>
+                    <div *ngIf="editForm.get('text').invalid && (editForm.get('text').dirty || editForm.get('text').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('text').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                    <div *ngIf="showPreview" class="card"
+                         style="margin-top: 0.5em; padding: 0.5em; background-color: #eee">
+                        <span [jhiMathJax]="questionTrueFalse.text"></span>
+                        <jhi-markup-render [text]="questionTrueFalse.text" [images]="questionTrueFalse.images"></jhi-markup-render>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="kavsirApp.questionTrueFalse.memo" for="field_memo" [ngbTooltip]="'kavsirApp.questionTrueFalse.help.memo' | translate">Memo</label>
+                    <input type="text" class="form-control" name="memo" id="field_memo"
+                           formControlName="memo"/>
+                </div>
+                <div *ngIf="inGroup" class="form-group">
+                    <label class="form-control-label" jhiTranslate="kavsirApp.questionTrueFalse.groupPosition" for="field_groupPosition" [ngbTooltip]="'kavsirApp.questionTrueFalse.help.groupPosition' | translate">Group Position</label>
+                    <input type="number" class="form-control" name="groupPosition" id="field_groupPosition"
+                           formControlName="groupPosition"/>
+                </div>
+
+                <div class="form-group">
+                    <label jhiTranslate="kavsirApp.questionTrueFalse.category" for="field_categories">Category</label>
+                    <select class="form-control" id="field_categories" multiple name="categories" formControlName="categories">
+                        <option [ngValue]="getSelected(editForm.get('categories').value, categoryNodeOption)" *ngFor="let categoryNodeOption of categorynodes; trackBy: trackCategoryNodeById">{{categoryNodeOption.id | categoryPathName}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label jhiTranslate="kavsirApp.questionTrueFalse.image" for="field_images">Image</label>
+                    <jhi-images [images]="questionTrueFalse.images" id="field_image"></jhi-images>
+                </div>
+                <div *ngIf="inGroup" class="form-group">
+                    <label class="form-control-label" jhiTranslate="kavsirApp.questionTrueFalse.questionGroup" for="field_questionGroup">Question Group</label>
+                    <select class="form-control" id="field_questionGroup" name="questionGroup" formControlName="questionGroupId">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="questionGroupOption.id" *ngFor="let questionGroupOption of questiongroups; trackBy: trackQuestionGroupById">{{questionGroupOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

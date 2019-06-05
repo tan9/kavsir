@@ -1,32 +1,31 @@
-
 {
-    "kavsirApp": {
-        "questionChoiceOption" : {
-            "home": {
-                "title": "Question Choice Options",
-                "createLabel": "Create a new Question Choice Option",
-                "createOrEditLabel": "Create or edit a Question Choice Option",
-                "search": "Search for Question Choice Option"
-            },
-            "created": "A new Question Choice Option is created with identifier {{ param }}",
-            "updated": "A Question Choice Option is updated with identifier {{ param }}",
-            "deleted": "A Question Choice Option is deleted with identifier {{ param }}",
-            "delete": {
-                "question": "Are you sure you want to delete Question Choice Option {{ id }}?"
-            },
-            "detail": {
-                "title": "Question Choice Option"
-            },
-            "correct": "Correct",
-            "text": "Text",
-            "memo": "Memo",
-            "questionChoice": "Question Choice",
-            "image": "Image",
-            "help": {
-                "correct": "是否為正解",
-                "text": "選項內容",
-                "memo": "備註"
-            }
-        }
+  "kavsirApp": {
+    "questionChoiceOption": {
+      "home": {
+        "title": "Question Choice Options",
+        "createLabel": "Create a new Question Choice Option",
+        "createOrEditLabel": "Create or edit a Question Choice Option",
+        "search": "Search for Question Choice Option"
+      },
+      "created": "A new Question Choice Option is created with identifier {{ param }}",
+      "updated": "A Question Choice Option is updated with identifier {{ param }}",
+      "deleted": "A Question Choice Option is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Question Choice Option {{ id }}?"
+      },
+      "detail": {
+        "title": "Question Choice Option"
+      },
+      "correct": "Correct",
+      "text": "Text",
+      "memo": "Memo",
+      "questionChoice": "Question Choice",
+      "image": "Image",
+      "help": {
+        "correct": "是否為正解",
+        "text": "選項內容",
+        "memo": "備註"
+      }
     }
+  }
 }

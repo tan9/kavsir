@@ -1,13 +1,11 @@
 package com.tj.kvasir.service;
 
-import com.codahale.metrics.annotation.Timed;
 import com.tj.kvasir.domain.*;
 import com.tj.kvasir.repository.*;
 import com.tj.kvasir.repository.search.*;
-import org.elasticsearch.indices.IndexAlreadyExistsException;
+import org.elasticsearch.ResourceAlreadyExistsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.scheduling.annotation.Async;
@@ -76,8 +74,6 @@ public class ElasticsearchIndexService {
 
     private final UserSearchRepository userSearchRepository;
 
-    private final ElasticsearchTemplate elasticsearchTemplate;
-
     public ElasticsearchIndexService(
         UserRepository userRepository,
         UserSearchRepository userSearchRepository,
@@ -104,8 +100,7 @@ public class ElasticsearchIndexService {
         QuestionTrueFalseRepository questionTrueFalseRepository,
         QuestionTrueFalseSearchRepository questionTrueFalseSearchRepository,
         ResourceImageRepository resourceImageRepository,
-        ResourceImageSearchRepository resourceImageSearchRepository,
-        ElasticsearchTemplate elasticsearchTemplate) {
+        ResourceImageSearchRepository resourceImageSearchRepository) {
         this.userRepository = userRepository;
         this.userSearchRepository = userSearchRepository;
         this.categoryAcademicYearRepository = categoryAcademicYearRepository;
@@ -132,11 +127,9 @@ public class ElasticsearchIndexService {
         this.questionTrueFalseSearchRepository = questionTrueFalseSearchRepository;
         this.resourceImageRepository = resourceImageRepository;
         this.resourceImageSearchRepository = resourceImageSearchRepository;
-        this.elasticsearchTemplate = elasticsearchTemplate;
     }
 
     @Async
-    @Timed
     @Scheduled(cron = "0 0 0 * * *")
     public void reindexAll() {
         reindexForClass(CategoryAcademicYear.class, categoryAcademicYearRepository, categoryAcademicYearSearchRepository);
@@ -160,19 +153,12 @@ public class ElasticsearchIndexService {
     @SuppressWarnings("unchecked")
     private <T, ID extends Serializable> void reindexForClass(Class<T> entityClass, JpaRepository<T, ID> jpaRepository,
                                                               ElasticsearchRepository<T, ID> elasticsearchRepository) {
-        elasticsearchTemplate.deleteIndex(entityClass);
-        try {
-            elasticsearchTemplate.createIndex(entityClass);
-        } catch (IndexAlreadyExistsException e) {
-            // Do nothing. Index was already concurrently recreated by some other service.
-        }
-        elasticsearchTemplate.putMapping(entityClass);
         if (jpaRepository.count() > 0) {
             try {
                 Method m = jpaRepository.getClass().getMethod("findAllWithEagerRelationships");
-                elasticsearchRepository.save((List<T>) m.invoke(jpaRepository));
+                elasticsearchRepository.saveAll((List<T>) m.invoke(jpaRepository));
             } catch (Exception e) {
-                elasticsearchRepository.save(jpaRepository.findAll());
+                elasticsearchRepository.saveAll(jpaRepository.findAll());
             }
         }
         log.info("Elasticsearch: Indexed all rows for " + entityClass.getSimpleName());

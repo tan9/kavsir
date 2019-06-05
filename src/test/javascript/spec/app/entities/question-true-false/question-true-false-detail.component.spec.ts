@@ -1,54 +1,40 @@
 /* tslint:disable max-line-length */
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 
 import { KavsirTestModule } from '../../../test.module';
-import { QuestionTrueFalseDetailComponent } from '../../../../../../main/webapp/app/entities/question-true-false/question-true-false-detail.component';
-import { QuestionTrueFalseService } from '../../../../../../main/webapp/app/entities/question-true-false/question-true-false.service';
-import { QuestionTrueFalse } from '../../../../../../main/webapp/app/entities/question-true-false/question-true-false.model';
+import { QuestionTrueFalseDetailComponent } from 'app/entities/question-true-false/question-true-false-detail.component';
+import { QuestionTrueFalse } from 'app/shared/model/question-true-false.model';
 
 describe('Component Tests', () => {
+  describe('QuestionTrueFalse Management Detail Component', () => {
+    let comp: QuestionTrueFalseDetailComponent;
+    let fixture: ComponentFixture<QuestionTrueFalseDetailComponent>;
+    const route = ({ data: of({ questionTrueFalse: new QuestionTrueFalse(123) }) } as any) as ActivatedRoute;
 
-    describe('QuestionTrueFalse Management Detail Component', () => {
-        let comp: QuestionTrueFalseDetailComponent;
-        let fixture: ComponentFixture<QuestionTrueFalseDetailComponent>;
-        let service: QuestionTrueFalseService;
-
-        beforeEach(async(() => {
-            TestBed.configureTestingModule({
-                imports: [KavsirTestModule],
-                declarations: [QuestionTrueFalseDetailComponent],
-                providers: [
-                    QuestionTrueFalseService
-                ]
-            })
-            .overrideTemplate(QuestionTrueFalseDetailComponent, '')
-            .compileComponents();
-        }));
-
-        beforeEach(() => {
-            fixture = TestBed.createComponent(QuestionTrueFalseDetailComponent);
-            comp = fixture.componentInstance;
-            service = fixture.debugElement.injector.get(QuestionTrueFalseService);
-        });
-
-        describe('OnInit', () => {
-            it('Should call load all on init', () => {
-                // GIVEN
-
-                spyOn(service, 'find').and.returnValue(Observable.of(new HttpResponse({
-                    body: new QuestionTrueFalse(123)
-                })));
-
-                // WHEN
-                comp.ngOnInit();
-
-                // THEN
-                expect(service.find).toHaveBeenCalledWith(123);
-                expect(comp.questionTrueFalse).toEqual(jasmine.objectContaining({id: 123}));
-            });
-        });
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [KavsirTestModule],
+        declarations: [QuestionTrueFalseDetailComponent],
+        providers: [{ provide: ActivatedRoute, useValue: route }]
+      })
+        .overrideTemplate(QuestionTrueFalseDetailComponent, '')
+        .compileComponents();
+      fixture = TestBed.createComponent(QuestionTrueFalseDetailComponent);
+      comp = fixture.componentInstance;
     });
 
+    describe('OnInit', () => {
+      it('Should call load all on init', () => {
+        // GIVEN
+
+        // WHEN
+        comp.ngOnInit();
+
+        // THEN
+        expect(comp.questionTrueFalse).toEqual(jasmine.objectContaining({ id: 123 }));
+      });
+    });
+  });
 });

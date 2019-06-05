@@ -1,85 +1,97 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
-import { CategoryGrade } from './category-grade.model';
+import { ICategoryGrade } from 'app/shared/model/category-grade.model';
+import { AccountService } from 'app/core';
 import { CategoryGradeService } from './category-grade.service';
-import { Principal } from '../../shared';
 
 @Component({
-    selector: 'jhi-category-grade',
-    templateUrl: './category-grade.component.html'
+  selector: 'jhi-category-grade',
+  templateUrl: './category-grade.component.html'
 })
 export class CategoryGradeComponent implements OnInit, OnDestroy {
-categoryGrades: CategoryGrade[];
-    currentAccount: any;
-    eventSubscriber: Subscription;
-    currentSearch: string;
+  categoryGrades: ICategoryGrade[];
+  currentAccount: any;
+  eventSubscriber: Subscription;
+  currentSearch: string;
 
-    constructor(
-        private categoryGradeService: CategoryGradeService,
-        private jhiAlertService: JhiAlertService,
-        private eventManager: JhiEventManager,
-        private activatedRoute: ActivatedRoute,
-        private principal: Principal
-    ) {
-        this.currentSearch = this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search'] ?
-            this.activatedRoute.snapshot.params['search'] : '';
-    }
+  constructor(
+    protected categoryGradeService: CategoryGradeService,
+    protected jhiAlertService: JhiAlertService,
+    protected eventManager: JhiEventManager,
+    protected activatedRoute: ActivatedRoute,
+    protected accountService: AccountService
+  ) {
+    this.currentSearch =
+      this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search'] ? this.activatedRoute.snapshot.params['search'] : '';
+  }
 
-    loadAll() {
-        if (this.currentSearch) {
-            this.categoryGradeService.search({
-                query: this.currentSearch,
-                }).subscribe(
-                    (res: HttpResponse<CategoryGrade[]>) => this.categoryGrades = res.body,
-                    (res: HttpErrorResponse) => this.onError(res.message)
-                );
-            return;
-       }
-        this.categoryGradeService.query().subscribe(
-            (res: HttpResponse<CategoryGrade[]>) => {
-                this.categoryGrades = res.body;
-                this.currentSearch = '';
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
+  loadAll() {
+    if (this.currentSearch) {
+      this.categoryGradeService
+        .search({
+          query: this.currentSearch
+        })
+        .pipe(
+          filter((res: HttpResponse<ICategoryGrade[]>) => res.ok),
+          map((res: HttpResponse<ICategoryGrade[]>) => res.body)
+        )
+        .subscribe((res: ICategoryGrade[]) => (this.categoryGrades = res), (res: HttpErrorResponse) => this.onError(res.message));
+      return;
     }
+    this.categoryGradeService
+      .query()
+      .pipe(
+        filter((res: HttpResponse<ICategoryGrade[]>) => res.ok),
+        map((res: HttpResponse<ICategoryGrade[]>) => res.body)
+      )
+      .subscribe(
+        (res: ICategoryGrade[]) => {
+          this.categoryGrades = res;
+          this.currentSearch = '';
+        },
+        (res: HttpErrorResponse) => this.onError(res.message)
+      );
+  }
 
-    search(query) {
-        if (!query) {
-            return this.clear();
-        }
-        this.currentSearch = query;
-        this.loadAll();
+  search(query) {
+    if (!query) {
+      return this.clear();
     }
+    this.currentSearch = query;
+    this.loadAll();
+  }
 
-    clear() {
-        this.currentSearch = '';
-        this.loadAll();
-    }
-    ngOnInit() {
-        this.loadAll();
-        this.principal.identity().then((account) => {
-            this.currentAccount = account;
-        });
-        this.registerChangeInCategoryGrades();
-    }
+  clear() {
+    this.currentSearch = '';
+    this.loadAll();
+  }
 
-    ngOnDestroy() {
-        this.eventManager.destroy(this.eventSubscriber);
-    }
+  ngOnInit() {
+    this.loadAll();
+    this.accountService.identity().then(account => {
+      this.currentAccount = account;
+    });
+    this.registerChangeInCategoryGrades();
+  }
 
-    trackId(index: number, item: CategoryGrade) {
-        return item.id;
-    }
-    registerChangeInCategoryGrades() {
-        this.eventSubscriber = this.eventManager.subscribe('categoryGradeListModification', (response) => this.loadAll());
-    }
+  ngOnDestroy() {
+    this.eventManager.destroy(this.eventSubscriber);
+  }
 
-    private onError(error) {
-        this.jhiAlertService.error(error.message, null, null);
-    }
+  trackId(index: number, item: ICategoryGrade) {
+    return item.id;
+  }
+
+  registerChangeInCategoryGrades() {
+    this.eventSubscriber = this.eventManager.subscribe('categoryGradeListModification', response => this.loadAll());
+  }
+
+  protected onError(errorMessage: string) {
+    this.jhiAlertService.error(errorMessage, null, null);
+  }
 }

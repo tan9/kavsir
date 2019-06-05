@@ -1,64 +1,69 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
-import { CategoryNode } from './category-node.model';
-import { CategoryNodePopupService } from './category-node-popup.service';
+import { ICategoryNode } from 'app/shared/model/category-node.model';
 import { CategoryNodeService } from './category-node.service';
 
 @Component({
-    selector: 'jhi-category-node-delete-dialog',
-    templateUrl: './category-node-delete-dialog.component.html'
+  selector: 'jhi-category-node-delete-dialog',
+  templateUrl: './category-node-delete-dialog.component.html'
 })
 export class CategoryNodeDeleteDialogComponent {
+  categoryNode: ICategoryNode;
 
-    categoryNode: CategoryNode;
+  constructor(
+    protected categoryNodeService: CategoryNodeService,
+    public activeModal: NgbActiveModal,
+    protected eventManager: JhiEventManager
+  ) {}
 
-    constructor(
-        private categoryNodeService: CategoryNodeService,
-        public activeModal: NgbActiveModal,
-        private eventManager: JhiEventManager
-    ) {
-    }
+  clear() {
+    this.activeModal.dismiss('cancel');
+  }
 
-    clear() {
-        this.activeModal.dismiss('cancel');
-    }
-
-    confirmDelete(id: number) {
-        this.categoryNodeService.delete(id).subscribe((response) => {
-            this.eventManager.broadcast({
-                name: 'categoryNodeListModification',
-                content: 'Deleted an categoryNode'
-            });
-            this.activeModal.dismiss(true);
-        });
-    }
+  confirmDelete(id: number) {
+    this.categoryNodeService.delete(id).subscribe(response => {
+      this.eventManager.broadcast({
+        name: 'categoryNodeListModification',
+        content: 'Deleted an categoryNode'
+      });
+      this.activeModal.dismiss(true);
+    });
+  }
 }
 
 @Component({
-    selector: 'jhi-category-node-delete-popup',
-    template: ''
+  selector: 'jhi-category-node-delete-popup',
+  template: ''
 })
 export class CategoryNodeDeletePopupComponent implements OnInit, OnDestroy {
+  protected ngbModalRef: NgbModalRef;
 
-    routeSub: any;
+  constructor(protected activatedRoute: ActivatedRoute, protected router: Router, protected modalService: NgbModal) {}
 
-    constructor(
-        private route: ActivatedRoute,
-        private categoryNodePopupService: CategoryNodePopupService
-    ) {}
+  ngOnInit() {
+    this.activatedRoute.data.subscribe(({ categoryNode }) => {
+      setTimeout(() => {
+        this.ngbModalRef = this.modalService.open(CategoryNodeDeleteDialogComponent as Component, { size: 'lg', backdrop: 'static' });
+        this.ngbModalRef.componentInstance.categoryNode = categoryNode;
+        this.ngbModalRef.result.then(
+          result => {
+            this.router.navigate(['/category-node', { outlets: { popup: null } }]);
+            this.ngbModalRef = null;
+          },
+          reason => {
+            this.router.navigate(['/category-node', { outlets: { popup: null } }]);
+            this.ngbModalRef = null;
+          }
+        );
+      }, 0);
+    });
+  }
 
-    ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.categoryNodePopupService
-                .open(CategoryNodeDeleteDialogComponent as Component, params['id']);
-        });
-    }
-
-    ngOnDestroy() {
-        this.routeSub.unsubscribe();
-    }
+  ngOnDestroy() {
+    this.ngbModalRef = null;
+  }
 }

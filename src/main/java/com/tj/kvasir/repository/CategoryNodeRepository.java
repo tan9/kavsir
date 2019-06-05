@@ -1,15 +1,14 @@
 package com.tj.kvasir.repository;
 
 import com.tj.kvasir.domain.CategoryNode;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Set;
 
 /**
- * Spring Data JPA repository for the CategoryNode entity.
+ * Spring Data  repository for the CategoryNode entity.
  */
 @SuppressWarnings("unused")
 @Repository

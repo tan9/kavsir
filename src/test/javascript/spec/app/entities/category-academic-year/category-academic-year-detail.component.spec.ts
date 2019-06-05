@@ -1,54 +1,40 @@
 /* tslint:disable max-line-length */
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 
 import { KavsirTestModule } from '../../../test.module';
-import { CategoryAcademicYearDetailComponent } from '../../../../../../main/webapp/app/entities/category-academic-year/category-academic-year-detail.component';
-import { CategoryAcademicYearService } from '../../../../../../main/webapp/app/entities/category-academic-year/category-academic-year.service';
-import { CategoryAcademicYear } from '../../../../../../main/webapp/app/entities/category-academic-year/category-academic-year.model';
+import { CategoryAcademicYearDetailComponent } from 'app/entities/category-academic-year/category-academic-year-detail.component';
+import { CategoryAcademicYear } from 'app/shared/model/category-academic-year.model';
 
 describe('Component Tests', () => {
+  describe('CategoryAcademicYear Management Detail Component', () => {
+    let comp: CategoryAcademicYearDetailComponent;
+    let fixture: ComponentFixture<CategoryAcademicYearDetailComponent>;
+    const route = ({ data: of({ categoryAcademicYear: new CategoryAcademicYear(123) }) } as any) as ActivatedRoute;
 
-    describe('CategoryAcademicYear Management Detail Component', () => {
-        let comp: CategoryAcademicYearDetailComponent;
-        let fixture: ComponentFixture<CategoryAcademicYearDetailComponent>;
-        let service: CategoryAcademicYearService;
-
-        beforeEach(async(() => {
-            TestBed.configureTestingModule({
-                imports: [KavsirTestModule],
-                declarations: [CategoryAcademicYearDetailComponent],
-                providers: [
-                    CategoryAcademicYearService
-                ]
-            })
-            .overrideTemplate(CategoryAcademicYearDetailComponent, '')
-            .compileComponents();
-        }));
-
-        beforeEach(() => {
-            fixture = TestBed.createComponent(CategoryAcademicYearDetailComponent);
-            comp = fixture.componentInstance;
-            service = fixture.debugElement.injector.get(CategoryAcademicYearService);
-        });
-
-        describe('OnInit', () => {
-            it('Should call load all on init', () => {
-                // GIVEN
-
-                spyOn(service, 'find').and.returnValue(Observable.of(new HttpResponse({
-                    body: new CategoryAcademicYear(123)
-                })));
-
-                // WHEN
-                comp.ngOnInit();
-
-                // THEN
-                expect(service.find).toHaveBeenCalledWith(123);
-                expect(comp.categoryAcademicYear).toEqual(jasmine.objectContaining({id: 123}));
-            });
-        });
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [KavsirTestModule],
+        declarations: [CategoryAcademicYearDetailComponent],
+        providers: [{ provide: ActivatedRoute, useValue: route }]
+      })
+        .overrideTemplate(CategoryAcademicYearDetailComponent, '')
+        .compileComponents();
+      fixture = TestBed.createComponent(CategoryAcademicYearDetailComponent);
+      comp = fixture.componentInstance;
     });
 
+    describe('OnInit', () => {
+      it('Should call load all on init', () => {
+        // GIVEN
+
+        // WHEN
+        comp.ngOnInit();
+
+        // THEN
+        expect(comp.categoryAcademicYear).toEqual(jasmine.objectContaining({ id: 123 }));
+      });
+    });
+  });
 });

@@ -1,6 +1,6 @@
 package com.tj.kvasir.service.dto;
-
-
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -9,20 +9,34 @@ import java.util.Objects;
 import javax.persistence.Lob;
 
 /**
- * A DTO for the QuestionChoiceOption entity.
+ * A DTO for the {@link com.tj.kvasir.domain.QuestionChoiceOption} entity.
  */
+@ApiModel(description = "選擇題選項")
 public class QuestionChoiceOptionDTO implements Serializable {
 
     private Long id;
 
+    /**
+     * 是否為正解
+     */
     @NotNull
+    @ApiModelProperty(value = "是否為正解", required = true)
     private Boolean correct;
 
-    @NotNull
+    /**
+     * 選項內容
+     */
+    
+    @ApiModelProperty(value = "選項內容", required = true)
     @Lob
     private String text;
 
+    /**
+     * 備註
+     */
+    @ApiModelProperty(value = "備註")
     private String memo;
+
 
     private Long questionChoiceId;
 
@@ -86,7 +100,7 @@ public class QuestionChoiceOptionDTO implements Serializable {
         }
 
         QuestionChoiceOptionDTO questionChoiceOptionDTO = (QuestionChoiceOptionDTO) o;
-        if(questionChoiceOptionDTO.getId() == null || getId() == null) {
+        if (questionChoiceOptionDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), questionChoiceOptionDTO.getId());
@@ -104,6 +118,7 @@ public class QuestionChoiceOptionDTO implements Serializable {
             ", correct='" + isCorrect() + "'" +
             ", text='" + getText() + "'" +
             ", memo='" + getMemo() + "'" +
+            ", questionChoice=" + getQuestionChoiceId() +
             "}";
     }
 }

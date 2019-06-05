@@ -1,46 +1,47 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="questionChoiceOption">
+            <h2><span jhiTranslate="kavsirApp.questionChoiceOption.detail.title">Question Choice Option</span> {{questionChoiceOption.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="kavsirApp.questionChoiceOption.correct" [ngbTooltip]="'kavsirApp.questionChoiceOption.help.correct' | translate">Correct</span></dt>
+                <dd>
+                    <span>{{questionChoiceOption.correct}}</span>
+                </dd>
+                <dt><span jhiTranslate="kavsirApp.questionChoiceOption.text" [ngbTooltip]="'kavsirApp.questionChoiceOption.help.text' | translate">Text</span></dt>
+                <dd>
+                    <span>{{questionChoiceOption.text}}</span>
+                </dd>
+                <dt><span jhiTranslate="kavsirApp.questionChoiceOption.memo" [ngbTooltip]="'kavsirApp.questionChoiceOption.help.memo' | translate">Memo</span></dt>
+                <dd>
+                    <span>{{questionChoiceOption.memo}}</span>
+                </dd>
+                <dt><span jhiTranslate="kavsirApp.questionChoiceOption.questionChoice">Question Choice</span></dt>
+                <dd>
+                    <div *ngIf="questionChoiceOption.questionChoiceId">
+                        <a [routerLink]="['/question-choice', questionChoiceOption.questionChoiceId, 'view']">{{questionChoiceOption.questionChoiceId}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="kavsirApp.questionChoiceOption.image">Image</span></dt>
+                <dd>
+                    <span *ngFor="let image of questionChoiceOption.images; let last = last">
+                        <a [routerLink]="['/resource-image', image?.id, 'view' ]">{{image.id}}</a>{{last ? '' : ', '}}
+                    </span>
+                </dd>
+            </dl>
 
-<div *ngIf="questionChoiceOption">
-    <h2><span jhiTranslate="kavsirApp.questionChoiceOption.detail.title">Question Choice Option</span> {{questionChoiceOption.id}}</h2>
-    <hr>
-    <jhi-alert-error></jhi-alert-error>
-    <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="kavsirApp.questionChoiceOption.correct" [ngbTooltip]="'kavsirApp.questionChoiceOption.help.correct' | translate">Correct</span></dt>
-        <dd>
-            <span>{{questionChoiceOption.correct}}</span>
-        </dd>
-        <dt><span jhiTranslate="kavsirApp.questionChoiceOption.text" [ngbTooltip]="'kavsirApp.questionChoiceOption.help.text' | translate">Text</span></dt>
-        <dd>
-            <span>{{questionChoiceOption.text}}</span>
-        </dd>
-        <dt><span jhiTranslate="kavsirApp.questionChoiceOption.memo" [ngbTooltip]="'kavsirApp.questionChoiceOption.help.memo' | translate">Memo</span></dt>
-        <dd>
-            <span>{{questionChoiceOption.memo}}</span>
-        </dd>
-        <dt><span jhiTranslate="kavsirApp.questionChoiceOption.questionChoice">Question Choice</span></dt>
-        <dd>
-            <div *ngIf="questionChoiceOption.questionChoiceId">
-                <a [routerLink]="['/question-choice', questionChoiceOption.questionChoiceId]">{{questionChoiceOption.questionChoiceId}}</a>
-            </div>
-        </dd>
-        <dt><span jhiTranslate="kavsirApp.questionChoiceOption.image">Image</span></dt>
-        <dd>
-            <span *ngFor="let image of questionChoiceOption.images; let last = last">
-                <a [routerLink]="['/resource-image', image?.id ]">{{image.id}}</a>{{last ? '' : ', '}}
-            </span>
-        </dd>
-    </dl>
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
 
-    <button type="submit"
-            (click)="previousState()"
-            class="btn btn-info">
-        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
-    </button>
-
-    <button type="button"
-            [routerLink]="['/', { outlets: { popup: 'question-choice-option/'+ questionChoiceOption.id + '/edit'} }]"
-            replaceUrl="true"
-            queryParamsHandling="merge"
-            class="btn btn-primary">
-        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
-    </button>
+            <button type="button"
+                    [routerLink]="['/question-choice-option', questionChoiceOption.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
 </div>

@@ -1,8 +1,8 @@
 <div>
-    <h2>
+    <h2 id="page-heading">
         <span jhiTranslate="kavsirApp.categorySource.home.title">Category Sources</span>
-        <button class="btn btn-primary float-right jh-create-entity create-category-source" [routerLink]="['/', { outlets: { popup: ['category-source-new'] } }]">
-            <span class="fa fa-plus"></span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-category-source" [routerLink]="['/category-source/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
             <span class="hidden-sm-down"  jhiTranslate="kavsirApp.categorySource.home.createLabel">
             Create new Category Source
             </span>
@@ -15,10 +15,10 @@
                 <div class="input-group w-100 mt-3">
                     <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'kavsirApp.categorySource.home.search' | translate }}">
                     <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
-                        <span class="fa fa-search"></span>
+                        <fa-icon [icon]="'search'"></fa-icon>
                     </button>
                     <button class="input-group-append btn btn-danger" (click)="clear()" *ngIf="currentSearch">
-                        <span class="fa fa-trash-o"></span>
+                        <fa-icon [icon]="'trash-alt'"></fa-icon>
                     </button>
                 </div>
             </form>
@@ -37,31 +37,29 @@
             </thead>
             <tbody>
             <tr *ngFor="let categorySource of categorySources ;trackBy: trackId">
-                <td><a [routerLink]="['../category-source', categorySource.id ]">{{categorySource.id}}</a></td>
+                <td><a [routerLink]="['/category-source', categorySource.id, 'view' ]">{{categorySource.id}}</a></td>
                 <td>{{categorySource.position}}</td>
                 <td>{{categorySource.name}}</td>
                 <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
+                    <div class="btn-group">
                         <button type="submit"
-                                [routerLink]="['../category-source', categorySource.id ]"
+                                [routerLink]="['/category-source', categorySource.id, 'view' ]"
                                 class="btn btn-info btn-sm">
-                            <span class="fa fa-eye"></span>
+                            <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'category-source/'+ categorySource.id + '/edit'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
+                                [routerLink]="['/category-source', categorySource.id, 'edit']"
                                 class="btn btn-primary btn-sm">
-                            <span class="fa fa-pencil"></span>
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'category-source/'+ categorySource.id + '/delete'} }]"
+                                [routerLink]="['/', 'category-source', { outlets: { popup: categorySource.id + '/delete'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">
-                            <span class="fa fa-remove"></span>
+                            <fa-icon [icon]="'times'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
                         </button>
                     </div>

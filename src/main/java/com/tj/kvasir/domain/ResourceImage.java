@@ -1,15 +1,14 @@
 package com.tj.kvasir.domain;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,11 +17,10 @@ import java.util.Objects;
 /**
  * 圖檔
  */
-@ApiModel(description = "圖檔")
 @Entity
 @Table(name = "resource_image")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "resourceimage")
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "resourceimage")
 public class ResourceImage implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -30,21 +28,20 @@ public class ResourceImage implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
+    @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
     private Long id;
 
     /**
      * 名稱
      */
     @NotNull
-    @ApiModelProperty(value = "名稱", required = true)
     @Column(name = "name", nullable = false)
     private String name;
 
     /**
      * 內容
      */
-    @NotNull
-    @ApiModelProperty(value = "內容", required = true)
+    
     @Lob
     @Column(name = "content", nullable = false)
     private byte[] content;
@@ -53,23 +50,23 @@ public class ResourceImage implements Serializable {
     private String contentContentType;
 
     @ManyToMany(mappedBy = "images")
-    @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JsonIgnore
     private Set<QuestionChoice> choices = new HashSet<>();
 
     @ManyToMany(mappedBy = "images")
-    @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JsonIgnore
     private Set<QuestionChoiceOption> choiceOptions = new HashSet<>();
 
     @ManyToMany(mappedBy = "images")
-    @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JsonIgnore
     private Set<QuestionTrueFalse> trueFalses = new HashSet<>();
 
     @ManyToMany(mappedBy = "images")
-    @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JsonIgnore
     private Set<QuestionEssay> essays = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -226,19 +223,15 @@ public class ResourceImage implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof ResourceImage)) {
             return false;
         }
-        ResourceImage resourceImage = (ResourceImage) o;
-        if (resourceImage.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), resourceImage.getId());
+        return id != null && id.equals(((ResourceImage) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

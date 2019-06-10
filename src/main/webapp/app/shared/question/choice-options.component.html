@@ -30,15 +30,15 @@
                 <button class="btn btn-primary btn-sm" type="submit"
                         (click)="option.isEditing = !option.isEditing"
                         [disabled]="(!option.isEditing && isEditing()) || optionsForm.form.invalid">
-                    <span *ngIf="!option.isEditing" class="fa fa-pencil"></span>
-                    <span *ngIf="option.isEditing" class="fa fa-save"></span>
+                    <fa-icon *ngIf="!option.isEditing" icon="pencil"></fa-icon>
+                    <fa-icon *ngIf="option.isEditing" icon="save"></fa-icon>
                     <span *ngIf="!option.isEditing" class="hidden-sm-down"
                           jhiTranslate="entity.action.edit">Edit</span>
                     <span *ngIf="option.isEditing" class="hidden-sm-down"
                           jhiTranslate="entity.action.save">Save</span>
                 </button>
                 <button (click)="removeOption(i)"class="btn btn-danger btn-sm">
-                    <span class="fa fa-remove"></span>
+                    <fa-icon icon="remove"></fa-icon>
                     <span class="hidden-md-down" jhiTranslate="entity.action.delete">Delete</span>
                 </button>
             </span>
@@ -48,7 +48,7 @@
         <div class="col-sm-12">
             <button *ngIf="editable" (click)="addOption()" [disabled]="isEditing()"
                     class="btn btn-sm btn-primary pull-right">
-                <span class="fa fa-plus"></span>
+                <fa-icon icon="plus"></fa-icon>
                 <span class="hidden-sm-down"  jhiTranslate="kavsirApp.questionChoiceOption.home.createLabel">
                     Create new Question Choice Option
                 </span>

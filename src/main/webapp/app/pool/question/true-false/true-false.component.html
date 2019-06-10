@@ -9,7 +9,7 @@
                 [routerLink]="['/', { outlets: { popup: 'category-select/' + (categoryHierarchyService.getWorkingCategory() ? categoryHierarchyService.getWorkingCategory().id : -1) } }]"
                 replaceUrl="true"
                 class="btn btn-primary btn-sm category-select-button" style="display: inline-block">
-            <span class="fa fa-tags"></span>
+            <fa-icon icon="tags"></fa-icon>
             <span class="hidden-md-down" jhiTranslate="category.action.select">Select</span>
         </button>
     </div>

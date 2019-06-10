@@ -15,7 +15,7 @@
                             [routerLink]="['../category-' + hyphenSeparatedTypeName(), item.id ]"
                             [disabled]="isSaving"
                             class="btn btn-info btn-sm">
-                        <span class="fa fa-eye"></span>
+                        <fa-icon icon="eye"></fa-icon>
                         <span class="hidden-md-down"
                               jhiTranslate="entity.action.view">View</span>
                     </button>
@@ -24,7 +24,7 @@
                             replaceUrl="true"
                             [disabled]="isSaving"
                             class="btn btn-primary btn-sm">
-                        <span class="fa fa-pencil"></span>
+                        <fa-icon icon="pencil"></fa-icon>
                         <span class="hidden-md-down"
                               jhiTranslate="entity.action.edit">Edit</span>
                     </button>
@@ -33,7 +33,7 @@
                             replaceUrl="true"
                             [disabled]="isSaving"
                             class="btn btn-danger btn-sm">
-                        <span class="fa fa-remove"></span>
+                        <fa-icon icon="remove"></fa-icon>
                         <span class="hidden-md-down"
                               jhiTranslate="entity.action.delete">Delete</span>
                     </button>
@@ -41,7 +41,7 @@
                             [disabled]="first || isSaving"
                             (click)="move(index, 'UP')"
                             class="btn btn-info btn-sm">
-                        <span class="fa fa-arrow-up"></span>
+                        <fa-icon icon="arrow-up"></fa-icon>
                         <span class="hidden-md-down"
                               jhiTranslate="global.action.move.up">Move Up</span>
                     </button>
@@ -49,7 +49,7 @@
                             [disabled]="last || isSaving"
                             (click)="move(index, 'DOWN')"
                             class="btn btn-info btn-sm">
-                        <span class="fa fa-arrow-down"></span>
+                        <fa-icon icon="arrow-down"></fa-icon>
                         <span class="hidden-md-down"
                               jhiTranslate="global.action.move.down">Move Down</span>
                     </button>
@@ -61,7 +61,7 @@
 </div>
 <button class="btn btn-primary float-right"
         [routerLink]="['/', { outlets: { popup: ['category-' + hyphenSeparatedTypeName() + '-new'] } }]">
-    <span class="fa fa-plus"></span>
+    <fa-icon icon="plus"></fa-icon>
     <span class="hidden-sm-down" [jhiTranslate]="'kavsirApp.category' + typeName + '.home.createLabel'">
     Create new Category
 </span>

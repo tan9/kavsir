@@ -20,15 +20,15 @@
                 <button class="btn btn-primary btn-sm" type="submit"
                         (click)="image.isEditing = !image.isEditing"
                         [disabled]="(!image.isEditing && isEditing()) || imagesForm.form.invalid">
-                    <span *ngIf="!image.isEditing" class="fa fa-pencil"></span>
-                    <span *ngIf="image.isEditing" class="fa fa-save"></span>
+                    <fa-icon *ngIf="!image.isEditing" icon="pencil"></fa-icon>
+                    <fa-icon *ngIf="image.isEditing" icon="save"></fa-icon>
                     <span *ngIf="!image.isEditing" class="hidden-sm-down"
                           jhiTranslate="entity.action.edit">Edit</span>
                     <span *ngIf="image.isEditing" class="hidden-sm-down"
                           jhiTranslate="entity.action.save">Save</span>
                 </button>
                 <button (click)="removeImage(i)" class="btn btn-danger btn-sm">
-                    <span class="fa fa-remove"></span>
+                    <fa-icon icon="remove"></fa-icon>
                     <span class="hidden-md-down" jhiTranslate="entity.action.delete">Delete</span>
                 </button>
             </span>
@@ -38,7 +38,7 @@
         <div class="col-sm-12">
             <button (click)="addImage()" [disabled]="isEditing()"
                     class="btn btn-sm btn-primary pull-right">
-                <span class="fa fa-plus"></span>
+                <fa-icon icon="plus"></fa-icon>
                 <span class="hidden-sm-down"  jhiTranslate="kavsirApp.resourceImage.home.createLabel">
                     Create a new Resource Image
                 </span>

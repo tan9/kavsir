@@ -125,6 +125,20 @@ public class QuestionChoiceResourceIT {
             .groupPosition(DEFAULT_GROUP_POSITION);
         return questionChoice;
     }
+    /**
+     * Create an updated entity for this test.
+     *
+     * This is a static method, as tests for other entities might also need it,
+     * if they test an entity which requires the current entity.
+     */
+    public static QuestionChoice createUpdatedEntity(EntityManager em) {
+        QuestionChoice questionChoice = new QuestionChoice()
+            .multipleResponse(UPDATED_MULTIPLE_RESPONSE)
+            .text(UPDATED_TEXT)
+            .memo(UPDATED_MEMO)
+            .groupPosition(UPDATED_GROUP_POSITION);
+        return questionChoice;
+    }
 
     @BeforeEach
     public void initTest() {

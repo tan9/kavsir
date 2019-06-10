@@ -108,6 +108,19 @@ public class ResourceImageResourceIT {
             .contentContentType(DEFAULT_CONTENT_CONTENT_TYPE);
         return resourceImage;
     }
+    /**
+     * Create an updated entity for this test.
+     *
+     * This is a static method, as tests for other entities might also need it,
+     * if they test an entity which requires the current entity.
+     */
+    public static ResourceImage createUpdatedEntity(EntityManager em) {
+        ResourceImage resourceImage = new ResourceImage()
+            .name(UPDATED_NAME)
+            .content(UPDATED_CONTENT)
+            .contentContentType(UPDATED_CONTENT_CONTENT_TYPE);
+        return resourceImage;
+    }
 
     @BeforeEach
     public void initTest() {

@@ -121,6 +121,19 @@ public class QuestionChoiceOptionResourceIT {
             .memo(DEFAULT_MEMO);
         return questionChoiceOption;
     }
+    /**
+     * Create an updated entity for this test.
+     *
+     * This is a static method, as tests for other entities might also need it,
+     * if they test an entity which requires the current entity.
+     */
+    public static QuestionChoiceOption createUpdatedEntity(EntityManager em) {
+        QuestionChoiceOption questionChoiceOption = new QuestionChoiceOption()
+            .correct(UPDATED_CORRECT)
+            .text(UPDATED_TEXT)
+            .memo(UPDATED_MEMO);
+        return questionChoiceOption;
+    }
 
     @BeforeEach
     public void initTest() {

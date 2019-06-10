@@ -4163,10 +4163,10 @@ generate-object-property@^1.1.0:
   dependencies:
     is-property "^1.0.0"
 
-generator-jhipster@6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/generator-jhipster/-/generator-jhipster-6.0.0.tgz#280d06769404b853eceebb7fa910479cbcc34415"
-  integrity sha512-NwF+/CwOrmQiro12gbc244XBSH7utrM2NDGWfY6Iaq3qOzzgFefzhGBc9qrWA/bVm14aga/BieVODjJL7CODQQ==
+generator-jhipster@6.0.1:
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/generator-jhipster/-/generator-jhipster-6.0.1.tgz#0af0ec320458ac81964a1ee4cdd9c62616550711"
+  integrity sha512-ZfLaT9S+qg5bgOaw6KSwAcZEnU25cc0QgXGBG5rSrGU2Y0lAw9Euq9M2t0AkcD6CFCkBY+NvjsxGIzSy1m/kqg==
   dependencies:
     axios "0.18.0"
     chalk "2.4.2"

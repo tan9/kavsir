@@ -113,6 +113,20 @@ public class CategoryNodeResourceIT {
             .position(DEFAULT_POSITION);
         return categoryNode;
     }
+    /**
+     * Create an updated entity for this test.
+     *
+     * This is a static method, as tests for other entities might also need it,
+     * if they test an entity which requires the current entity.
+     */
+    public static CategoryNode createUpdatedEntity(EntityManager em) {
+        CategoryNode categoryNode = new CategoryNode()
+            .type(UPDATED_TYPE)
+            .typeId(UPDATED_TYPE_ID)
+            .name(UPDATED_NAME)
+            .position(UPDATED_POSITION);
+        return categoryNode;
+    }
 
     @BeforeEach
     public void initTest() {

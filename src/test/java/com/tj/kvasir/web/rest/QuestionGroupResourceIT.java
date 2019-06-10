@@ -117,6 +117,18 @@ public class QuestionGroupResourceIT {
             .memo(DEFAULT_MEMO);
         return questionGroup;
     }
+    /**
+     * Create an updated entity for this test.
+     *
+     * This is a static method, as tests for other entities might also need it,
+     * if they test an entity which requires the current entity.
+     */
+    public static QuestionGroup createUpdatedEntity(EntityManager em) {
+        QuestionGroup questionGroup = new QuestionGroup()
+            .text(UPDATED_TEXT)
+            .memo(UPDATED_MEMO);
+        return questionGroup;
+    }
 
     @BeforeEach
     public void initTest() {

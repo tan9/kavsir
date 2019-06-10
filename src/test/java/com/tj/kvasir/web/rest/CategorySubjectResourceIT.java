@@ -101,6 +101,18 @@ public class CategorySubjectResourceIT {
             .name(DEFAULT_NAME);
         return categorySubject;
     }
+    /**
+     * Create an updated entity for this test.
+     *
+     * This is a static method, as tests for other entities might also need it,
+     * if they test an entity which requires the current entity.
+     */
+    public static CategorySubject createUpdatedEntity(EntityManager em) {
+        CategorySubject categorySubject = new CategorySubject()
+            .position(UPDATED_POSITION)
+            .name(UPDATED_NAME);
+        return categorySubject;
+    }
 
     @BeforeEach
     public void initTest() {

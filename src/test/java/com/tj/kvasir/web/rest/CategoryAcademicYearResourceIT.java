@@ -101,6 +101,18 @@ public class CategoryAcademicYearResourceIT {
             .name(DEFAULT_NAME);
         return categoryAcademicYear;
     }
+    /**
+     * Create an updated entity for this test.
+     *
+     * This is a static method, as tests for other entities might also need it,
+     * if they test an entity which requires the current entity.
+     */
+    public static CategoryAcademicYear createUpdatedEntity(EntityManager em) {
+        CategoryAcademicYear categoryAcademicYear = new CategoryAcademicYear()
+            .position(UPDATED_POSITION)
+            .name(UPDATED_NAME);
+        return categoryAcademicYear;
+    }
 
     @BeforeEach
     public void initTest() {

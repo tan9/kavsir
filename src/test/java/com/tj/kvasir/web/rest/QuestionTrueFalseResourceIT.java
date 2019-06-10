@@ -125,6 +125,20 @@ public class QuestionTrueFalseResourceIT {
             .groupPosition(DEFAULT_GROUP_POSITION);
         return questionTrueFalse;
     }
+    /**
+     * Create an updated entity for this test.
+     *
+     * This is a static method, as tests for other entities might also need it,
+     * if they test an entity which requires the current entity.
+     */
+    public static QuestionTrueFalse createUpdatedEntity(EntityManager em) {
+        QuestionTrueFalse questionTrueFalse = new QuestionTrueFalse()
+            .correct(UPDATED_CORRECT)
+            .text(UPDATED_TEXT)
+            .memo(UPDATED_MEMO)
+            .groupPosition(UPDATED_GROUP_POSITION);
+        return questionTrueFalse;
+    }
 
     @BeforeEach
     public void initTest() {

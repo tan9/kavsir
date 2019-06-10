@@ -125,6 +125,20 @@ public class QuestionEssayResourceIT {
             .groupPosition(DEFAULT_GROUP_POSITION);
         return questionEssay;
     }
+    /**
+     * Create an updated entity for this test.
+     *
+     * This is a static method, as tests for other entities might also need it,
+     * if they test an entity which requires the current entity.
+     */
+    public static QuestionEssay createUpdatedEntity(EntityManager em) {
+        QuestionEssay questionEssay = new QuestionEssay()
+            .text(UPDATED_TEXT)
+            .answer(UPDATED_ANSWER)
+            .memo(UPDATED_MEMO)
+            .groupPosition(UPDATED_GROUP_POSITION);
+        return questionEssay;
+    }
 
     @BeforeEach
     public void initTest() {

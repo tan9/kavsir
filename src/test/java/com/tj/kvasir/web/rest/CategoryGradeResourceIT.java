@@ -97,6 +97,18 @@ public class CategoryGradeResourceIT {
             .name(DEFAULT_NAME);
         return categoryGrade;
     }
+    /**
+     * Create an updated entity for this test.
+     *
+     * This is a static method, as tests for other entities might also need it,
+     * if they test an entity which requires the current entity.
+     */
+    public static CategoryGrade createUpdatedEntity(EntityManager em) {
+        CategoryGrade categoryGrade = new CategoryGrade()
+            .position(UPDATED_POSITION)
+            .name(UPDATED_NAME);
+        return categoryGrade;
+    }
 
     @BeforeEach
     public void initTest() {

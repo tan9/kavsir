@@ -84,7 +84,7 @@ export class UserMgmtComponent implements OnInit, OnDestroy {
         size: this.itemsPerPage,
         sort: this.sort()
       })
-      .subscribe((res: HttpResponse<User[]>) => this.success(res.body, res.headers), (res: HttpResponse<any>) => this.onError(res.body));
+      .subscribe((res: HttpResponse<User[]>) => this.onSuccess(res.body, res.headers), (res: HttpResponse<any>) => this.onError(res.body));
   }
 
   trackIdentity(index, item: User) {

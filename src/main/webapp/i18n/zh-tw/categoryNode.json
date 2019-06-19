@@ -5,7 +5,8 @@
         "title": "Category Nodes",
         "createLabel": "建立一筆新的 Category Node",
         "createOrEditLabel": "建立或編輯 Category Node",
-        "search": "搜尋 Category Node"
+        "search": "搜尋 Category Node",
+        "notFound": "No Category Node found"
       },
       "created": "新的 Category Node 建立成功，識別碼為 {{ param }}",
       "updated": "識別碼為 {{ param }} 的 Category Node 更新成功",

@@ -43,11 +43,10 @@
         <loadData
                   file="config/liquibase/data/resource_image.csv"
                   separator=";"
-                  tableName="resource_image"
-                  context="dev">
+                  tableName="resource_image">
             <column name="id" type="numeric"/>
             <column name="name" type="string"/>
-            <column name="content" type="string"/>
+            <column name="content" type="blob"/>
             <column name="content_content_type" type="string"/>
         </loadData>
     </changeSet>

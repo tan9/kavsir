@@ -15,6 +15,7 @@ public interface QuestionChoiceOptionMapper extends EntityMapper<QuestionChoiceO
     QuestionChoiceOptionDTO toDto(QuestionChoiceOption questionChoiceOption);
 
     @Mapping(source = "questionChoiceId", target = "questionChoice")
+    @Mapping(target = "removeImage", ignore = true)
     QuestionChoiceOption toEntity(QuestionChoiceOptionDTO questionChoiceOptionDTO);
 
     default QuestionChoiceOption fromId(Long id) {

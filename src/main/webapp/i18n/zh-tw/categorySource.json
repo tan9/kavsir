@@ -5,7 +5,8 @@
         "title": "Category Sources",
         "createLabel": "建立一筆新的 Category Source",
         "createOrEditLabel": "建立或編輯 Category Source",
-        "search": "搜尋 Category Source"
+        "search": "搜尋 Category Source",
+        "notFound": "No Category Source found"
       },
       "created": "新的 Category Source 建立成功，識別碼為 {{ param }}",
       "updated": "識別碼為 {{ param }} 的 Category Source 更新成功",

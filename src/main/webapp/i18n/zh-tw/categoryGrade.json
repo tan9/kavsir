@@ -5,7 +5,8 @@
         "title": "Category Grades",
         "createLabel": "建立一筆新的 Category Grade",
         "createOrEditLabel": "建立或編輯 Category Grade",
-        "search": "搜尋 Category Grade"
+        "search": "搜尋 Category Grade",
+        "notFound": "No Category Grade found"
       },
       "created": "新的 Category Grade 建立成功，識別碼為 {{ param }}",
       "updated": "識別碼為 {{ param }} 的 Category Grade 更新成功",

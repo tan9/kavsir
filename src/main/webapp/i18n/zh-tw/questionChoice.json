@@ -5,7 +5,8 @@
         "title": "Question Choices",
         "createLabel": "建立一筆新的 Question Choice",
         "createOrEditLabel": "建立或編輯 Question Choice",
-        "search": "搜尋 Question Choice"
+        "search": "搜尋 Question Choice",
+        "notFound": "No Question Choice found"
       },
       "created": "新的 Question Choice 建立成功，識別碼為 {{ param }}",
       "updated": "識別碼為 {{ param }} 的 Question Choice 更新成功",

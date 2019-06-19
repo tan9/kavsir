@@ -5,7 +5,8 @@
         "title": "Category Academic Years",
         "createLabel": "建立一筆新的 Category Academic Year",
         "createOrEditLabel": "建立或編輯 Category Academic Year",
-        "search": "搜尋 Category Academic Year"
+        "search": "搜尋 Category Academic Year",
+        "notFound": "No Category Academic Year found"
       },
       "created": "新的 Category Academic Year 建立成功，識別碼為 {{ param }}",
       "updated": "識別碼為 {{ param }} 的 Category Academic Year 更新成功",

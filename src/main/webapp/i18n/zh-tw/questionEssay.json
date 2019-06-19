@@ -5,7 +5,8 @@
         "title": "Question Essays",
         "createLabel": "建立一筆新的 Question Essay",
         "createOrEditLabel": "建立或編輯 Question Essay",
-        "search": "搜尋 Question Essay"
+        "search": "搜尋 Question Essay",
+        "notFound": "No Question Essay found"
       },
       "created": "新的 Question Essay 建立成功，識別碼為 {{ param }}",
       "updated": "識別碼為 {{ param }} 的 Question Essay 更新成功",

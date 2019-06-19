@@ -5,7 +5,8 @@
         "title": "Category Semesters",
         "createLabel": "建立一筆新的 Category Semester",
         "createOrEditLabel": "建立或編輯 Category Semester",
-        "search": "搜尋 Category Semester"
+        "search": "搜尋 Category Semester",
+        "notFound": "No Category Semester found"
       },
       "created": "新的 Category Semester 建立成功，識別碼為 {{ param }}",
       "updated": "識別碼為 {{ param }} 的 Category Semester 更新成功",

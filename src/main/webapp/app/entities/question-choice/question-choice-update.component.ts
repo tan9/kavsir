@@ -19,7 +19,6 @@ import { QuestionGroupService } from 'app/entities/question-group';
   templateUrl: './question-choice-update.component.html'
 })
 export class QuestionChoiceUpdateComponent implements OnInit {
-  questionChoice: IQuestionChoice;
   isSaving: boolean;
 
   categorynodes: ICategoryNode[];
@@ -54,7 +53,6 @@ export class QuestionChoiceUpdateComponent implements OnInit {
     this.isSaving = false;
     this.activatedRoute.data.subscribe(({ questionChoice }) => {
       this.updateForm(questionChoice);
-      this.questionChoice = questionChoice;
     });
     this.categoryNodeService
       .query()

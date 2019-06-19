@@ -19,7 +19,6 @@ import { QuestionGroupService } from 'app/entities/question-group';
   templateUrl: './question-true-false-update.component.html'
 })
 export class QuestionTrueFalseUpdateComponent implements OnInit {
-  questionTrueFalse: IQuestionTrueFalse;
   isSaving: boolean;
 
   categorynodes: ICategoryNode[];
@@ -54,7 +53,6 @@ export class QuestionTrueFalseUpdateComponent implements OnInit {
     this.isSaving = false;
     this.activatedRoute.data.subscribe(({ questionTrueFalse }) => {
       this.updateForm(questionTrueFalse);
-      this.questionTrueFalse = questionTrueFalse;
     });
     this.categoryNodeService
       .query()

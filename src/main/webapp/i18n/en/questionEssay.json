@@ -5,7 +5,8 @@
         "title": "Question Essays",
         "createLabel": "Create a new Question Essay",
         "createOrEditLabel": "Create or edit a Question Essay",
-        "search": "Search for Question Essay"
+        "search": "Search for Question Essay",
+        "notFound": "No Question Essay found"
       },
       "created": "A new Question Essay is created with identifier {{ param }}",
       "updated": "A Question Essay is updated with identifier {{ param }}",

@@ -5,7 +5,8 @@
         "title": "Category Subjects",
         "createLabel": "建立一筆新的 Category Subject",
         "createOrEditLabel": "建立或編輯 Category Subject",
-        "search": "搜尋 Category Subject"
+        "search": "搜尋 Category Subject",
+        "notFound": "No Category Subject found"
       },
       "created": "新的 Category Subject 建立成功，識別碼為 {{ param }}",
       "updated": "識別碼為 {{ param }} 的 Category Subject 更新成功",

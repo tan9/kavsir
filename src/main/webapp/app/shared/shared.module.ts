@@ -1,8 +1,8 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { KavsirSharedLibsModule, KavsirSharedCommonModule, JhiLoginModalComponent, HasAnyAuthorityDirective } from './';
+import { KavsirSharedCommonModule, JhiLoginModalComponent, HasAnyAuthorityDirective } from './';
 
 @NgModule({
-  imports: [KavsirSharedLibsModule, KavsirSharedCommonModule],
+  imports: [KavsirSharedCommonModule],
   declarations: [JhiLoginModalComponent, HasAnyAuthorityDirective],
   entryComponents: [JhiLoginModalComponent],
   exports: [KavsirSharedCommonModule, JhiLoginModalComponent, HasAnyAuthorityDirective],

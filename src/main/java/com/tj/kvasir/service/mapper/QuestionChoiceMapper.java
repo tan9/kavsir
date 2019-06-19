@@ -15,6 +15,9 @@ public interface QuestionChoiceMapper extends EntityMapper<QuestionChoiceDTO, Qu
     QuestionChoiceDTO toDto(QuestionChoice questionChoice);
 
     @Mapping(target = "options", ignore = true)
+    @Mapping(target = "removeOption", ignore = true)
+    @Mapping(target = "removeCategory", ignore = true)
+    @Mapping(target = "removeImage", ignore = true)
     @Mapping(source = "questionGroupId", target = "questionGroup")
     QuestionChoice toEntity(QuestionChoiceDTO questionChoiceDTO);
 

@@ -5,7 +5,8 @@
         "title": "Question True Falses",
         "createLabel": "建立一筆新的 Question True False",
         "createOrEditLabel": "建立或編輯 Question True False",
-        "search": "搜尋 Question True False"
+        "search": "搜尋 Question True False",
+        "notFound": "No Question True False found"
       },
       "created": "新的 Question True False 建立成功，識別碼為 {{ param }}",
       "updated": "識別碼為 {{ param }} 的 Question True False 更新成功",

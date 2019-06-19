@@ -5,7 +5,8 @@
         "title": "Category Academic Years",
         "createLabel": "Create a new Category Academic Year",
         "createOrEditLabel": "Create or edit a Category Academic Year",
-        "search": "Search for Category Academic Year"
+        "search": "Search for Category Academic Year",
+        "notFound": "No Category Academic Year found"
       },
       "created": "A new Category Academic Year is created with identifier {{ param }}",
       "updated": "A Category Academic Year is updated with identifier {{ param }}",

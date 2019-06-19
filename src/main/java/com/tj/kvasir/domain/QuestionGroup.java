@@ -1,9 +1,7 @@
 package com.tj.kvasir.domain;
-
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -12,7 +10,6 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Objects;
 
 /**
  * 題組
@@ -36,6 +33,7 @@ public class QuestionGroup implements Serializable {
      */
     
     @Lob
+    @Type(type = "org.hibernate.type.TextType")
     @Column(name = "text", nullable = false)
     private String text;
 

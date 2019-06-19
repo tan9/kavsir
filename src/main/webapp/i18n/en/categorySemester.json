@@ -5,7 +5,8 @@
         "title": "Category Semesters",
         "createLabel": "Create a new Category Semester",
         "createOrEditLabel": "Create or edit a Category Semester",
-        "search": "Search for Category Semester"
+        "search": "Search for Category Semester",
+        "notFound": "No Category Semester found"
       },
       "created": "A new Category Semester is created with identifier {{ param }}",
       "updated": "A Category Semester is updated with identifier {{ param }}",

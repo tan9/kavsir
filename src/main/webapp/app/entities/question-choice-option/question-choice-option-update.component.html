@@ -4,7 +4,7 @@
             <h2 id="jhi-question-choice-option-heading" jhiTranslate="kavsirApp.questionChoiceOption.home.createOrEditLabel">Create or edit a Question Choice Option</h2>
             <div>
                 <jhi-alert-error></jhi-alert-error>
-                <div class="form-group" [hidden]="!questionChoiceOption.id">
+                <div class="form-group" [hidden]="!editForm.get('id').value">
                     <label for="id" jhiTranslate="global.field.id">ID</label>
                     <input type="text" class="form-control" id="id" name="id" formControlName="id"
                         readonly />

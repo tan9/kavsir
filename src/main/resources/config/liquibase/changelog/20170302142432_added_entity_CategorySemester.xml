@@ -40,8 +40,7 @@
         <loadData
                   file="config/liquibase/data/category_semester.csv"
                   separator=";"
-                  tableName="category_semester"
-                  context="dev">
+                  tableName="category_semester">
             <column name="id" type="numeric"/>
             <column name="position" type="numeric"/>
             <column name="name" type="string"/>

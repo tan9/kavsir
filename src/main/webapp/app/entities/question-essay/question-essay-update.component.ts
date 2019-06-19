@@ -20,7 +20,6 @@ import { CategoryHierarchyService } from 'app/shared';
   templateUrl: './question-essay-update.component.html'
 })
 export class QuestionEssayUpdateComponent implements OnInit {
-  questionEssay: IQuestionEssay;
   isSaving: boolean;
   inGroup = true;
   showPreview = false;
@@ -60,7 +59,6 @@ export class QuestionEssayUpdateComponent implements OnInit {
     this.inGroup = this.activatedRoute.snapshot.queryParams['group'] !== 'false';
     this.activatedRoute.data.subscribe(({ questionEssay }) => {
       this.updateForm(questionEssay);
-      this.questionEssay = questionEssay;
     });
 
     if (

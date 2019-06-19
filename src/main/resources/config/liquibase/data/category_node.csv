@@ -1,11 +1,11 @@
-id;jhi_type;type_id;name;position
-1;ACADEMIC_YEAR;16526;Industrial;42340
-2;ACADEMIC_YEAR;19884;monitor 1080p Checking Account;92630
+id;type;type_id;name;position
+1;SEGMENT;16526;Industrial;42340
+2;SEGMENT;19884;monitor 1080p Checking Account;92630
 3;ACADEMIC_YEAR;85003;Highway Ergonomic;37081
-4;ACADEMIC_YEAR;66592;New York tangible Mississippi;38292
-5;ACADEMIC_YEAR;84891;hard drive Robust Networked;4043
-6;ACADEMIC_YEAR;43933;red;89576
-7;ACADEMIC_YEAR;69551;Concrete Investment Account Saint Lucia;20306
-8;ACADEMIC_YEAR;59886;Chilean Peso Unidades de fomento;88046
+4;SUBJECT;66592;New York tangible Mississippi;38292
+5;SEGMENT;84891;hard drive Robust Networked;4043
+6;SEMESTER;43933;red;89576
+7;GRADE;69551;Concrete Investment Account Saint Lucia;20306
+8;SEMESTER;59886;Chilean Peso Unidades de fomento;88046
 9;ACADEMIC_YEAR;45653;mint green e-business EXE;32434
-10;ACADEMIC_YEAR;27213;withdrawal;52
+10;SEMESTER;27213;withdrawal;52

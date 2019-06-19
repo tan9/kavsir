@@ -11,7 +11,6 @@ import { CategorySubjectService } from './category-subject.service';
   templateUrl: './category-subject-update.component.html'
 })
 export class CategorySubjectUpdateComponent implements OnInit {
-  categorySubject: ICategorySubject;
   isSaving: boolean;
 
   editForm = this.fb.group({
@@ -30,7 +29,6 @@ export class CategorySubjectUpdateComponent implements OnInit {
     this.isSaving = false;
     this.activatedRoute.data.subscribe(({ categorySubject }) => {
       this.updateForm(categorySubject);
-      this.categorySubject = categorySubject;
     });
   }
 

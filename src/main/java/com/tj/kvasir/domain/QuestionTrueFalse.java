@@ -1,9 +1,8 @@
 package com.tj.kvasir.domain;
-
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -12,7 +11,6 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Objects;
 
 /**
  * 是非題
@@ -42,7 +40,9 @@ public class QuestionTrueFalse implements Serializable {
      * 題目
      */
 
-    @Column(name = "text", columnDefinition = "text", nullable = false)
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
+    @Column(name = "text", nullable = false)
     private String text;
 
     /**

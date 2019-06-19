@@ -25,7 +25,10 @@
         </div>
     </div>
     <br/>
-    <div class="table-responsive" *ngIf="categoryGrades">
+    <div class="alert alert-warning" *ngIf="categoryGrades?.length === 0">
+        <span jhiTranslate="kavsirApp.categoryGrade.home.notFound">No categoryGrades found</span>
+    </div>
+    <div class="table-responsive" *ngIf="categoryGrades?.length > 0">
         <table class="table table-striped">
             <thead>
             <tr>

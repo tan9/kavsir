@@ -5,7 +5,8 @@
         "title": "Category Grades",
         "createLabel": "Create a new Category Grade",
         "createOrEditLabel": "Create or edit a Category Grade",
-        "search": "Search for Category Grade"
+        "search": "Search for Category Grade",
+        "notFound": "No Category Grade found"
       },
       "created": "A new Category Grade is created with identifier {{ param }}",
       "updated": "A Category Grade is updated with identifier {{ param }}",

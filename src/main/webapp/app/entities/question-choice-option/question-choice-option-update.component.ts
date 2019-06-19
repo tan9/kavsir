@@ -17,7 +17,6 @@ import { ResourceImageService } from 'app/entities/resource-image';
   templateUrl: './question-choice-option-update.component.html'
 })
 export class QuestionChoiceOptionUpdateComponent implements OnInit {
-  questionChoiceOption: IQuestionChoiceOption;
   isSaving: boolean;
 
   questionchoices: IQuestionChoice[];
@@ -47,7 +46,6 @@ export class QuestionChoiceOptionUpdateComponent implements OnInit {
     this.isSaving = false;
     this.activatedRoute.data.subscribe(({ questionChoiceOption }) => {
       this.updateForm(questionChoiceOption);
-      this.questionChoiceOption = questionChoiceOption;
     });
     this.questionChoiceService
       .query()

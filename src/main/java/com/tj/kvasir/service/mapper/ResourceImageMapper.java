@@ -13,9 +13,13 @@ public interface ResourceImageMapper extends EntityMapper<ResourceImageDTO, Reso
 
 
     @Mapping(target = "choices", ignore = true)
+    @Mapping(target = "removeChoice", ignore = true)
     @Mapping(target = "choiceOptions", ignore = true)
+    @Mapping(target = "removeChoiceOption", ignore = true)
     @Mapping(target = "trueFalses", ignore = true)
+    @Mapping(target = "removeTrueFalse", ignore = true)
     @Mapping(target = "essays", ignore = true)
+    @Mapping(target = "removeEssay", ignore = true)
     ResourceImage toEntity(ResourceImageDTO resourceImageDTO);
 
     default ResourceImage fromId(Long id) {

@@ -15,11 +15,11 @@
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="text" type="varchar(255)" remarks="題目">
+            <column name="text" type="${clobType}" remarks="題目">
                 <constraints nullable="false" />
             </column>
 
-            <column name="answer" type="varchar(255)" remarks="答案">
+            <column name="answer" type="${clobType}" remarks="答案">
                 <constraints nullable="false" />
             </column>
 
@@ -52,11 +52,10 @@
         <loadData
                   file="config/liquibase/data/question_essay.csv"
                   separator=";"
-                  tableName="question_essay"
-                  context="dev">
+                  tableName="question_essay">
             <column name="id" type="numeric"/>
-            <column name="text" type="string"/>
-            <column name="answer" type="string"/>
+            <column name="text" type="clob"/>
+            <column name="answer" type="clob"/>
             <column name="memo" type="string"/>
             <column name="group_position" type="numeric"/>
         </loadData>

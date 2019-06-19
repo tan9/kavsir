@@ -14,6 +14,8 @@ public interface QuestionTrueFalseMapper extends EntityMapper<QuestionTrueFalseD
     @Mapping(source = "questionGroup.id", target = "questionGroupId")
     QuestionTrueFalseDTO toDto(QuestionTrueFalse questionTrueFalse);
 
+    @Mapping(target = "removeCategory", ignore = true)
+    @Mapping(target = "removeImage", ignore = true)
     @Mapping(source = "questionGroupId", target = "questionGroup")
     QuestionTrueFalse toEntity(QuestionTrueFalseDTO questionTrueFalseDTO);
 

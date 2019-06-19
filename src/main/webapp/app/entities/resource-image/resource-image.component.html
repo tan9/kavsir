@@ -25,7 +25,10 @@
         </div>
     </div>
     <br/>
-    <div class="table-responsive" *ngIf="resourceImages">
+    <div class="alert alert-warning" *ngIf="resourceImages?.length === 0">
+        <span jhiTranslate="kavsirApp.resourceImage.home.notFound">No resourceImages found</span>
+    </div>
+    <div class="table-responsive" *ngIf="resourceImages?.length > 0">
         <table class="table table-striped">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
@@ -73,7 +76,7 @@
             </tbody>
         </table>
     </div>
-    <div *ngIf="resourceImages && resourceImages.length">
+    <div [hidden]="resourceImages?.length === 0">
         <div class="row justify-content-center">
             <jhi-item-count [page]="page" [total]="totalItems" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
         </div>

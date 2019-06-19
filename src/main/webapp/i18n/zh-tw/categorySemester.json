@@ -5,7 +5,8 @@
         "title": "學期別",
         "createLabel": "建立一筆新的「學期別」",
         "createOrEditLabel": "建立或編輯「學期別」",
-        "search": "搜尋「學期別」"
+        "search": "搜尋「學期別」",
+        "notFound": "找不到「學期別」"
       },
       "created": "新的「學期別」建立成功，識別碼為 {{ param }}",
       "updated": "識別碼為 {{ param }} 的「學期別」更新成功",

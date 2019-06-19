@@ -19,7 +19,7 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="text" type="varchar(255)" remarks="題目">
+            <column name="text" type="${clobType}" remarks="題目">
                 <constraints nullable="false" />
             </column>
 
@@ -52,11 +52,10 @@
         <loadData
                   file="config/liquibase/data/question_choice.csv"
                   separator=";"
-                  tableName="question_choice"
-                  context="dev">
+                  tableName="question_choice">
             <column name="id" type="numeric"/>
             <column name="multiple_response" type="boolean"/>
-            <column name="text" type="string"/>
+            <column name="text" type="clob"/>
             <column name="memo" type="string"/>
             <column name="group_position" type="numeric"/>
         </loadData>

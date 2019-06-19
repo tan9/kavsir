@@ -20,7 +20,6 @@ import { IQuestionChoiceOption } from 'app/shared/model/question-choice-option.m
   templateUrl: './question-choice-update.component.html'
 })
 export class QuestionChoiceUpdateComponent implements OnInit {
-  questionChoice: IQuestionChoice;
   isSaving: boolean;
   inGroup = false;
   multi: boolean; /* valid values: true, false, undefined (not specified) */
@@ -89,7 +88,6 @@ export class QuestionChoiceUpdateComponent implements OnInit {
     }
     this.activatedRoute.data.subscribe(({ questionChoice }) => {
       this.updateForm(questionChoice);
-      this.questionChoice = questionChoice;
     });
 
     this.initAggregatedImages();

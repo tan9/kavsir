@@ -5,7 +5,8 @@
         "title": "Category Nodes",
         "createLabel": "Create a new Category Node",
         "createOrEditLabel": "Create or edit a Category Node",
-        "search": "Search for Category Node"
+        "search": "Search for Category Node",
+        "notFound": "No Category Node found"
       },
       "created": "A new Category Node is created with identifier {{ param }}",
       "updated": "A Category Node is updated with identifier {{ param }}",

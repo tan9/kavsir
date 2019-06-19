@@ -5,7 +5,8 @@
         "title": "Resource Images",
         "createLabel": "Create a new Resource Image",
         "createOrEditLabel": "Create or edit a Resource Image",
-        "search": "Search for Resource Image"
+        "search": "Search for Resource Image",
+        "notFound": "No Resource Image found"
       },
       "created": "A new Resource Image is created with identifier {{ param }}",
       "updated": "A Resource Image is updated with identifier {{ param }}",

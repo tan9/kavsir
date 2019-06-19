@@ -13,8 +13,12 @@ public interface QuestionGroupMapper extends EntityMapper<QuestionGroupDTO, Ques
 
 
     @Mapping(target = "choices", ignore = true)
+    @Mapping(target = "removeChoice", ignore = true)
     @Mapping(target = "trueFalses", ignore = true)
+    @Mapping(target = "removeTrueFalse", ignore = true)
     @Mapping(target = "essays", ignore = true)
+    @Mapping(target = "removeEssay", ignore = true)
+    @Mapping(target = "removeCategory", ignore = true)
     QuestionGroup toEntity(QuestionGroupDTO questionGroupDTO);
 
     default QuestionGroup fromId(Long id) {

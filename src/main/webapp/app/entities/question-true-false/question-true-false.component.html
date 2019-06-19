@@ -25,7 +25,10 @@
         </div>
     </div>
     <br/>
-    <div class="table-responsive" *ngIf="questionTrueFalses">
+    <div class="alert alert-warning" *ngIf="questionTrueFalses?.length === 0">
+        <span jhiTranslate="kavsirApp.questionTrueFalse.home.notFound">No questionTrueFalses found</span>
+    </div>
+    <div class="table-responsive" *ngIf="questionTrueFalses?.length > 0">
         <table class="table table-striped">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
@@ -78,7 +81,7 @@
             </tbody>
         </table>
     </div>
-    <div *ngIf="questionTrueFalses && questionTrueFalses.length">
+    <div [hidden]="questionTrueFalses?.length === 0">
         <div class="row justify-content-center">
             <jhi-item-count [page]="page" [total]="totalItems" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
         </div>

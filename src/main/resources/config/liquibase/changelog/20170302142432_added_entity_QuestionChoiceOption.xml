@@ -19,7 +19,7 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="text" type="varchar(255)" remarks="選項內容">
+            <column name="text" type="${clobType}" remarks="選項內容">
                 <constraints nullable="false" />
             </column>
 
@@ -48,11 +48,10 @@
         <loadData
                   file="config/liquibase/data/question_choice_option.csv"
                   separator=";"
-                  tableName="question_choice_option"
-                  context="dev">
+                  tableName="question_choice_option">
             <column name="id" type="numeric"/>
             <column name="correct" type="boolean"/>
-            <column name="text" type="string"/>
+            <column name="text" type="clob"/>
             <column name="memo" type="string"/>
         </loadData>
     </changeSet>

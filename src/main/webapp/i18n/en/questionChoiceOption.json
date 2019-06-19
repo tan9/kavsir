@@ -5,7 +5,8 @@
         "title": "Question Choice Options",
         "createLabel": "Create a new Question Choice Option",
         "createOrEditLabel": "Create or edit a Question Choice Option",
-        "search": "Search for Question Choice Option"
+        "search": "Search for Question Choice Option",
+        "notFound": "No Question Choice Option found"
       },
       "created": "A new Question Choice Option is created with identifier {{ param }}",
       "updated": "A Question Choice Option is updated with identifier {{ param }}",

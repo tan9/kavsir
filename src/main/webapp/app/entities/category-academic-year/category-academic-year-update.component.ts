@@ -11,7 +11,6 @@ import { CategoryAcademicYearService } from './category-academic-year.service';
   templateUrl: './category-academic-year-update.component.html'
 })
 export class CategoryAcademicYearUpdateComponent implements OnInit {
-  categoryAcademicYear: ICategoryAcademicYear;
   isSaving: boolean;
 
   editForm = this.fb.group({
@@ -30,7 +29,6 @@ export class CategoryAcademicYearUpdateComponent implements OnInit {
     this.isSaving = false;
     this.activatedRoute.data.subscribe(({ categoryAcademicYear }) => {
       this.updateForm(categoryAcademicYear);
-      this.categoryAcademicYear = categoryAcademicYear;
     });
   }
 

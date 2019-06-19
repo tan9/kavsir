@@ -20,7 +20,6 @@ import { ImagesComponent } from '../../shared/image/images.component';
   templateUrl: './question-true-false-update.component.html'
 })
 export class QuestionTrueFalseUpdateComponent implements OnInit {
-  questionTrueFalse: IQuestionTrueFalse;
   isSaving: boolean;
   inGroup = true;
 
@@ -61,7 +60,6 @@ export class QuestionTrueFalseUpdateComponent implements OnInit {
     this.inGroup = this.activatedRoute.snapshot.queryParams['group'] !== 'false';
     this.activatedRoute.data.subscribe(({ questionTrueFalse }) => {
       this.updateForm(questionTrueFalse);
-      this.questionTrueFalse = questionTrueFalse;
     });
 
     if (

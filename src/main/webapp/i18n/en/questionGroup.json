@@ -5,7 +5,8 @@
         "title": "Question Groups",
         "createLabel": "Create a new Question Group",
         "createOrEditLabel": "Create or edit a Question Group",
-        "search": "Search for Question Group"
+        "search": "Search for Question Group",
+        "notFound": "No Question Group found"
       },
       "created": "A new Question Group is created with identifier {{ param }}",
       "updated": "A Question Group is updated with identifier {{ param }}",

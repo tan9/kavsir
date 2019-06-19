@@ -5,7 +5,8 @@
         "title": "問答題",
         "createLabel": "建立一筆新的「問答題」",
         "createOrEditLabel": "建立或編輯「問答題」",
-        "search": "搜尋「問答題」"
+        "search": "搜尋「問答題」",
+        "notFound": "找不到「問答題」"
       },
       "created": "新的「問答題」建立成功，識別碼為 {{ param }}",
       "updated": "識別碼為 {{ param }} 的「問答題」更新成功",

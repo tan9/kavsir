@@ -5,7 +5,8 @@
         "title": "題組",
         "createLabel": "建立一筆新的「題組」",
         "createOrEditLabel": "建立或編輯「題組」",
-        "search": "搜尋「題組」"
+        "search": "搜尋「題組」",
+        "notFound": "找不到「題組」"
       },
       "created": "新的「題組」建立成功，識別碼為 {{ param }}",
       "updated": "識別碼為 {{ param }} 的「題組」更新成功",

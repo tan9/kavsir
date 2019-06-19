@@ -5,7 +5,8 @@
         "title": "Category Subjects",
         "createLabel": "Create a new Category Subject",
         "createOrEditLabel": "Create or edit a Category Subject",
-        "search": "Search for Category Subject"
+        "search": "Search for Category Subject",
+        "notFound": "No Category Subject found"
       },
       "created": "A new Category Subject is created with identifier {{ param }}",
       "updated": "A Category Subject is updated with identifier {{ param }}",

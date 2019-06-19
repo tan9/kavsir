@@ -16,9 +16,13 @@ public interface CategoryNodeMapper extends EntityMapper<CategoryNodeDTO, Catego
 
     @Mapping(source = "parentId", target = "parent")
     @Mapping(target = "trueOrFalses", ignore = true)
+    @Mapping(target = "removeTrueOrFalse", ignore = true)
     @Mapping(target = "choices", ignore = true)
+    @Mapping(target = "removeChoice", ignore = true)
     @Mapping(target = "essays", ignore = true)
+    @Mapping(target = "removeEssay", ignore = true)
     @Mapping(target = "groups", ignore = true)
+    @Mapping(target = "removeGroup", ignore = true)
     CategoryNode toEntity(CategoryNodeDTO categoryNodeDTO);
 
     default CategoryNode fromId(Long id) {

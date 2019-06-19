@@ -14,6 +14,8 @@ public interface QuestionEssayMapper extends EntityMapper<QuestionEssayDTO, Ques
     @Mapping(source = "questionGroup.id", target = "questionGroupId")
     QuestionEssayDTO toDto(QuestionEssay questionEssay);
 
+    @Mapping(target = "removeCategory", ignore = true)
+    @Mapping(target = "removeImage", ignore = true)
     @Mapping(source = "questionGroupId", target = "questionGroup")
     QuestionEssay toEntity(QuestionEssayDTO questionEssayDTO);
 
